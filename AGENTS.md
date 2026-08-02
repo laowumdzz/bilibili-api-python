@@ -1,0 +1,216 @@
+# AGENTS.md — bilibili-api-python
+
+> AI 编码助手工作指南。在此项目下工作时遵循这些规则。
+
+## 项目概要
+
+`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。400+ API 接口，全部异步，支持多请求客户端（aiohttp / httpx / curl_cffi）。
+
+- **语言:** Python ≥ 3.10（代码须兼容 CPython 3.10，不得使用更高版本独有特性）
+- **许可证:** GPL-3.0-or-later
+- **当前版本:** 见 `bilibili_api/__init__.py` 中的 `BILIBILI_API_VERSION`
+- **上游仓库:** https://github.com/LaowuClaw/bilibili-api-python
+- **PR 目标分支:** `dev`（不是 `main`）
+- **Python 环境:** 使用 uv 管理的 `.venv` 虚拟环境，所有命令用 `uv run` 前缀
+
+## 项目结构
+
+```
+bilibili_api/            # 库源码
+├── __init__.py          # 统一导出所有子模块
+├── video.py             # 视频（最大模块，2600+ 行）
+├── live.py              # 直播 + 弹幕 WebSocket
+├── user.py              # 用户
+├── dynamic.py           # 动态
+├── article.py           # 专栏
+├── bangumi.py           # 番剧
+├── login_v2.py          # 登录（密码/二维码/短信）
+├── video_uploader.py    # 视频上传
+├── interactive_video.py # 互动视频
+├── session.py           # 私信
+├── comment.py           # 评论
+├── search.py            # 搜索
+├── ...                  # 其他功能模块
+├── utils/
+│   ├── network.py       # 核心网络层（Credential / Api / request_settings / 反爬虫）
+│   ├── utils.py         # get_api() / 工具函数
+│   ├── sync.py          # 同步包装器 (@sync)
+│   ├── AsyncEvent.py    # 事件系统基类
+│   ├── danmaku.py       # 弹幕数据结构
+│   ├── danmaku2ass.py   # 弹幕转 ASS 字幕
+│   ├── picture.py       # Picture 类
+│   ├── parse_link.py    # 链接解析
+│   └── ...
+├── exceptions/          # 异常体系（每个异常一个文件）
+├── clients/             # 请求客户端适配
+│   ├── AioHTTPClient.py
+│   ├── HTTPXClient.py
+│   └── CurlCFFIClient.py
+├── data/
+│   ├── api/             # API 定义 JSON（URL / method / params / verify）
+│   └── *.json           # 静态数据（分区、语言、标签等）
+└── tools/               # 附带工具（ivitools / parser）
+scripts/                 # 开发脚本
+├── doc_gen.py           # 文档自动生成（从 docstring）
+├── lint.py              # ruff check + format + pyrefly 类型检查
+└── get_*.py             # 数据抓取脚本
+tests/                   # 测试套件
+├── main.py              # 测试入口
+├── common.py            # 测试用 Credential 获取
+└── test_*.py            # 各模块测试
+docs/                    # docsify 文档站
+.githooks/               # commit-msg + pre-commit 钩子
+```
+
+## 核心架构模式
+
+### 1. API 定义与调用
+
+API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP 方法、参数和是否需要登录验证。运行时通过 `get_api("field")` 加载。
+
+调用链路：`get_api()` 加载 JSON → `Api(**api).update_params(**params).result` 发起请求 → 自动注入 Wbi 签名、buvid、bili_ticket 等反爬参数 → 返回解析后的 JSON。
+
+**新增 API 时：** 在对应的 `data/api/*.json` 中添加条目，然后在对应模块的 Python 文件中编写异步方法调用它。
+
+### 2. Credential 凭据体系
+
+`Credential` 类（`utils/network.py`）封装登录态：`sessdata`、`bili_jct`、`buvid3`、`buvid4`、`dedeuserid`、`ac_time_value`。大部分写操作需要 Credential。通过 `credential.get_cached_cookies()` 获取完整 Cookies。
+
+### 3. 请求客户端抽象
+
+`BiliAPIClient`（ABC）定义了 HTTP 请求、WebSocket、文件下载的统一接口。三种实现按优先级自动选择：`curl_cffi` > `aiohttp` > `httpx`。可通过 `select_client()` 切换，也可 `register_client()` 注册自定义实现。
+
+### 4. 反爬虫机制
+
+`network.py` 中内置了 Wbi 签名（`recalculate_wbi`）、buvid 自动生成（`get_buvid`）、bili_ticket 获取（`get_bili_ticket`）等反爬逻辑。`request_settings` 全局管理代理、超时、SSL 验证等配置。
+
+### 5. 异步事件系统
+
+`AsyncEvent`（`utils/AsyncEvent.py`）是事件总线基类，`LiveRoom`（直播弹幕）、`RequestLog`（请求日志）等均继承它。使用 `@event.on("EVENT_NAME")` 注册监听器。
+
+## 编码规范
+
+### 风格
+
+- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行）
+- **下划线命名**，与现有代码保持一致
+- **全面类型注解**：函数参数、返回值均需类型注释
+- **docstring 必须完整**：每个公共函数都应有中文 docstring（Args / Returns / Raises），因为 `scripts/doc_gen.py` 会从 docstring 自动生成文档
+- **中英文之间加半角空格**（包括 docstring 和代码注释）
+
+### 异步
+
+- 所有 API 调用函数必须是 `async def`
+- 禁止在库代码中使用 `asyncio.run()`（由调用方负责）
+- 注意并发请求不要过快，会触发 412 风控
+
+### 参数传递
+
+- API 调用使用**关键字参数**（指名传参），不要用位置参数
+- 新增参数优先考虑设置默认值，避免破坏性变更
+
+### 异常
+
+- 使用项目自定义异常体系（`bilibili_api/exceptions/`），不要直接 `raise Exception`
+- 常用异常：`ArgsException`（参数错误）、`ResponseCodeException`（API 返回错误码）、`NetworkException`（网络错误）
+
+## 提交规范
+
+### Conventional Commits（强制）
+
+Git Hook 会校验 commit message 格式：
+
+```
+<type>(<scope>)?: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+**允许的 type：** `build` `chore` `ci` `docs` `feat` `fix` `perf` `refactor` `release` `revert` `style` `test` `tests`
+
+示例：
+- `feat: 新增视频评论区关键词搜索`
+- `fix(video): 修复 get_info 在无 bvid 时崩溃`
+- `docs: 更新 Credential 获取方式说明`
+
+### 破坏性变更
+
+尽量避免。如必须，在 commit message 中标注：
+```
+fix!: Video.like() 参数变更
+
+BREAKING CHANGE: Video.like() 移除了 deprecated 参数
+```
+
+### 提交粒度
+
+一个提交只做一件事。修 bug + 加功能 = 两个提交。
+
+## 开发流程
+
+本项目使用 **uv** 管理依赖和虚拟环境。
+
+1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx / curl_cffi）
+2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
+3. 从 `dev` 分支切出新分支开发
+4. 完成后运行 `uv run python scripts/lint.py` 或单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`
+5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（建议 Python ≥ 3.13）
+6. 向 `dev` 分支发起 PR
+
+> 没有 uv 的环境可回退到 `pip install -r requirements.txt` + 手动装 dev 工具。
+
+## 测试
+
+```bash
+# 运行全部测试
+uv run python -m tests.main -a
+
+# 运行指定模块测试
+uv run python -m tests.main -m video
+
+# 需要的环境变量
+BILI_SESSDATA=xxx        # SESSDATA cookie
+BILI_CSRF=xxx            # bili_jct cookie
+BILI_BUVID3=xxx          # BUVID3 cookie
+BILI_DEDEUSERID=xxx      # DedeUserID cookie
+BILI_RATELIMIT=1.5       # 测试间隔秒数（可选）
+```
+
+测试入口 `tests/main.py` 会自动发现 `test_*.py` 中以 `test` 开头的函数并依次执行。模块可定义 `before_all()` / `after_all()` 作为 setup/teardown。
+
+## 常见陷阱
+
+- **412 Precondition Failed**：请求过快，需降低并发或设置代理 `request_settings.set_proxy(...)`
+- **Wbi 签名失效**：B 站会不定期更新 Wbi 密钥，如遇大批 API 失效优先检查 `recalculate_wbi` 逻辑
+- **Cookies 过期**：`Credential` 有 `check_refresh()` 方法可用于检查并刷新
+- **请求库缺失**：至少需安装 aiohttp / httpx / curl_cffi 之一，否则初始化报错
+- **b 站接口变更**：爬虫库的天然风险，API 可能随时失效，需跟进上游 `bilibili-API-collect` 的最新成果
+
+## 关键依赖
+
+| 依赖 | 用途 |
+|------|------|
+| `aiohttp` / `httpx` / `curl_cffi` | 异步 HTTP 客户端（三选一或多选） |
+| `beautifulsoup4` + `lxml` | HTML 解析（专栏爬取等） |
+| `yarl` | URL 处理 |
+| `pycryptodomex` | 加密（RSA 密码登录、Wbi 签名等） |
+| `PyJWT` | JWT 解析（用户信息） |
+| `brotli` | Brotli 解压（直播弹幕） |
+| `pillow` | 图片处理 |
+| `qrcode` / `qrcode_terminal` | 二维码生成（扫码登录） |
+| `APScheduler` | 定时任务（cookies 刷新等） |
+| `colorama` | 终端彩色输出（测试） |
+| `pyyaml` | YAML 解析 |
+
+## 不要做的事
+
+- ❌ 不要直接修改 `docs/` 下的 API 文档，改 docstring 后用 `doc_gen.py` 生成
+- ❌ 不要用 `pip install` 直接装包，统一用 `uv add` / `uv sync`
+- ❌ 不要在库代码中硬编码凭据（SESSDATA 等）
+- ❌ 不要用 `print()` 调试，用 `logging`
+- ❌ 不要忽略 ruff check 报出的错误，不要跳过 `scripts/lint.py`
+- ❌ 不要向 `main` 分支直接提交，PR 目标永远是 `dev`
+- ❌ 不要使用位置参数调用 API 函数，统一用关键字参数
+- ❌ 不要在异步代码中使用同步阻塞操作（`time.sleep`、`requests.get` 等）

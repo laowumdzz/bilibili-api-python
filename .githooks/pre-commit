@@ -1,16 +1,46 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf-8
 
 import os
+import subprocess
+import sys
 
 CONSOLE_COLORS = {
-  'RED': '\x1b[0;31m',
-  'RESET': '\x1b[0m'
+    "RED": "\x1b[0;31m",
+    "RESET": "\x1b[0m",
 }
 
-code = os.system("python scripts/lint.py")
+# .git/hooks/pre-commit → project root
+repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-if code != 0:
-  print(CONSOLE_COLORS['RED'] + "Please check above problems of your code before commit!")
-  print(CONSOLE_COLORS['RESET'])
-  exit(1)
+# 获取暂存的 .py 文件
+result = subprocess.run(
+    ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMR", "--", "*.py"],
+    cwd=repo_root,
+    capture_output=True,
+    text=True,
+)
+staged_files = [f for f in result.stdout.strip().split("\n") if f]
+
+if not staged_files:
+    exit(0)
+
+print(f"Checking {len(staged_files)} staged file(s) with ruff ...")
+
+use_uv = os.system("which uv > /dev/null 2>&1") == 0
+ruff_cmd = ["uv", "run", "ruff"] if use_uv else [sys.executable, "-m", "ruff"]
+
+# 只检查暂存文件
+check = subprocess.call([*ruff_cmd, "check", *staged_files], cwd=repo_root)
+if check != 0:
+    print(CONSOLE_COLORS["RED"] + "ruff check 发现问题，请修复后再提交！")
+    print(CONSOLE_COLORS["RESET"])
+    exit(1)
+
+fmt = subprocess.call([*ruff_cmd, "format", "--check", *staged_files], cwd=repo_root)
+if fmt != 0:
+    print(CONSOLE_COLORS["RED"] + "ruff format 检查未通过，请运行 ruff format 后再提交！")
+    print(CONSOLE_COLORS["RESET"])
+    exit(1)
+
+print("ruff check + format passed ✓")

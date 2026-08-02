@@ -1,4 +1,25 @@
-import os
+import subprocess
+import sys
+import shutil
 
-# Check the code.
-exit(os.system("pylint -E ./bilibili_api"))
+
+# 优先用 uv run（自动使用 .venv），否则直接调用当前 python
+def run(cmd: list[str]) -> int:
+    if shutil.which("uv"):
+        return subprocess.call(["uv", "run", *cmd])
+    return subprocess.call([sys.executable, "-m", *cmd[0:1], *cmd[1:]])
+
+
+print("Running ruff check ...")
+ret = run(["ruff", "check", "./bilibili_api/"])
+if ret != 0:
+    sys.exit(ret)
+
+print("Running ruff format --check ...")
+ret = run(["ruff", "format", "--check", "./bilibili_api/"])
+if ret != 0:
+    sys.exit(ret)
+
+print("Running pyrefly check ...")
+ret = run(["pyrefly", "check", "./bilibili_api/"])
+sys.exit(ret)
