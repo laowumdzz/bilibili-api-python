@@ -1,7 +1,17 @@
-#!/usr/bin/env python3
+#!/bin/sh
+''':'
+# shell 部分：选择可用的 Python 解释器重新执行本脚本（兼容 Windows，无 env python3 时也可运行）
+if command -v uv >/dev/null 2>&1; then
+    exec uv run python "$0" "$@"
+elif command -v python3 >/dev/null 2>&1; then
+    exec python3 "$0" "$@"
+else
+    exec python "$0" "$@"
+fi
+':'''
 # coding=utf-8
 
-import os
+import shutil
 import subprocess
 import sys
 
@@ -10,8 +20,13 @@ CONSOLE_COLORS = {
     "RESET": "\x1b[0m",
 }
 
-# .git/hooks/pre-commit → project root
-repo_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 通过 git 获取仓库根目录（hook 经 core.hooksPath 从 .githooks/ 直接执行）
+repo_root = subprocess.run(
+    ["git", "rev-parse", "--show-toplevel"],
+    capture_output=True,
+    text=True,
+    check=True,
+).stdout.strip()
 
 # 获取暂存的 .py 文件
 result = subprocess.run(
@@ -27,7 +42,7 @@ if not staged_files:
 
 print(f"Checking {len(staged_files)} staged file(s) with ruff ...")
 
-use_uv = os.system("which uv > /dev/null 2>&1") == 0
+use_uv = shutil.which("uv") is not None
 ruff_cmd = ["uv", "run", "ruff"] if use_uv else [sys.executable, "-m", "ruff"]
 
 # 只检查暂存文件
@@ -43,4 +58,4 @@ if fmt != 0:
     print(CONSOLE_COLORS["RESET"])
     exit(1)
 
-print("ruff check + format passed ✓")
+print("ruff check + format passed")

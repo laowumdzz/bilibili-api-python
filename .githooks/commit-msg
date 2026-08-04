@@ -1,4 +1,14 @@
-#!/usr/bin/env python3
+#!/bin/sh
+''':'
+# shell 部分：选择可用的 Python 解释器重新执行本脚本（兼容 Windows，无 env python3 时也可运行）
+if command -v uv >/dev/null 2>&1; then
+    exec uv run python "$0" "$@"
+elif command -v python3 >/dev/null 2>&1; then
+    exec python3 "$0" "$@"
+else
+    exec python "$0" "$@"
+fi
+':'''
 # coding=utf-8
 
 import re

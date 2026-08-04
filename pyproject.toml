@@ -113,6 +113,8 @@ ignore = [
 "bilibili_api/dynamic.py" = ["F821", "F841"]
 # ivitools 为命令行工具，允许 print；PyQt6 探测导入
 "bilibili_api/tools/**" = ["T201", "F401", "E722"]
+# install.py 为命令行安装脚本，允许 print
+"install.py" = ["T201"]
 # 上游有意在异步函数中使用阻塞 open/os.path（读取本地小文件），待后续引入 aiofiles 再改
 "bilibili_api/**" = ["ASYNC230", "ASYNC240"]
 
