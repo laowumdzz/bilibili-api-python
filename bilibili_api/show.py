@@ -4,10 +4,10 @@ bilibili_api.show
 展出相关
 """
 
+from dataclasses import dataclass, field
 import json
 import random
 import time
-from dataclasses import dataclass, field
 
 from .utils.network import Api, Credential
 from .utils.utils import get_api, get_deviceid
@@ -138,9 +138,7 @@ async def get_available_sessions(project_id: int) -> list[Session]:
     rtn_list = []
     project_info = await get_project_info(project_id)
     for v in project_info["screen_list"]:
-        sess_obj = Session(
-            id=v["id"], start_time=v["start_time"], formatted_time=v["name"]
-        )
+        sess_obj = Session(id=v["id"], start_time=v["start_time"], formatted_time=v["name"])
         for t in v["ticket_list"]:
             sess_obj.ticket_list.append(
                 Ticket(
@@ -279,9 +277,7 @@ class OrderTicket:
             "screen_id": self.session.id,
             "sku_id": self.ticket.id,
         }
-        return (
-            await Api(**api, credential=self.credential).update_data(**payload).result
-        )
+        return await Api(**api, credential=self.credential).update_data(**payload).result
 
     async def create_order(self):
         """

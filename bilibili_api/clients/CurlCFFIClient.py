@@ -4,7 +4,12 @@ bilibili_api.clients.curl_cffi
 CurlCFFIClient 实现
 """
 
+import asyncio
 from select import select
+
+import curl_cffi  # pylint: disable=E0401
+from curl_cffi import requests  # pylint: disable=E0401
+
 from ..utils.network import (
     BiliAPIClient,
     BiliAPIFile,
@@ -12,9 +17,6 @@ from ..utils.network import (
     BiliWsMsgType,
     request_log,
 )
-from curl_cffi import requests  # pylint: disable=E0401
-import curl_cffi  # pylint: disable=E0401
-import asyncio
 
 
 class CurlCFFIClient(BiliAPIClient):
@@ -133,7 +135,7 @@ class CurlCFFIClient(BiliAPIClient):
                 multipart.addpart(
                     name=key,
                     content_type=item.mime_type,
-                    filename=f'{cnt}.{item.path.split(".")[1]}',
+                    filename=f"{cnt}.{item.path.split('.')[1]}",
                     local_path=item.path,
                 )
                 cnt += 1
@@ -198,9 +200,7 @@ class CurlCFFIClient(BiliAPIClient):
                 "headers": headers,
             },
         )
-        self.__downloads[self.__download_cnt] = await self.__session.get(
-            url=url, headers=headers, stream=True
-        )
+        self.__downloads[self.__download_cnt] = await self.__session.get(url=url, headers=headers, stream=True)
         return self.__download_cnt
 
     async def download_chunk(self, cnt: int) -> bytes:
@@ -227,9 +227,7 @@ class CurlCFFIClient(BiliAPIClient):
             {"id": cnt},
         )
 
-    async def ws_create(
-        self, url: str = "", params: dict = {}, headers: dict = {}
-    ) -> int:
+    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
         if headers.get("User-Agent") and self.__session.impersonate != "":
             headers.pop("User-Agent")
         if headers.get("user-agent") and self.__session.impersonate != "":
@@ -268,9 +266,7 @@ class CurlCFFIClient(BiliAPIClient):
         flags = 0
         sock_fd = ws.curl.getinfo(curl_cffi.CurlInfo.ACTIVESOCKET)
         if sock_fd == curl_cffi.aio.CURL_SOCKET_BAD:
-            raise curl_cffi.WebSocketError(
-                "Invalid active socket", curl_cffi.CurlECode.NO_CONNECTION_AVAILABLE
-            )
+            raise curl_cffi.WebSocketError("Invalid active socket", curl_cffi.CurlECode.NO_CONNECTION_AVAILABLE)
         while True:
             if self.__ws_is_closed[cnt]:
                 return (b"", BiliWsMsgType.CLOSED)

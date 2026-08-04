@@ -2,14 +2,14 @@
 bilibili_api.utils.upos
 """
 
-import os
-import json
 import asyncio
 from asyncio.tasks import create_task
+import json
+import os
 
-from .network import get_client, BiliAPIClient
 from ..exceptions.NetworkException import NetworkException
 from ..exceptions.ResponseCodeException import ResponseCodeException
+from .network import BiliAPIClient, get_client
 
 
 class UposFile:
@@ -59,7 +59,7 @@ class UposFileUploader:
         self.file = file
         self.preupload = preupload
         self._upload_id = preupload["upload_id"]
-        self._upload_url = f'https:{preupload["endpoint"]}/{preupload["upos_uri"].removeprefix("upos://")}'
+        self._upload_url = f"https:{preupload['endpoint']}/{preupload['upos_uri'].removeprefix('upos://')}"
         self._session = get_client()
 
     async def upload(self) -> dict:
@@ -200,11 +200,7 @@ class UposFileUploader:
             dict: filename: 该分 P 的标识符，用于最后提交视频。cid: 分 P 的 cid
         """
 
-        data = {
-            "parts": list(
-                map(lambda x: {"partNumber": x, "eTag": "etag"}, range(1, chunks + 1))
-            )
-        }
+        data = {"parts": [{"partNumber": x, "eTag": "etag"} for x in range(1, chunks + 1)]}
 
         params = {
             "output": "json",
@@ -231,5 +227,5 @@ class UposFileUploader:
         data = resp.json()
 
         if data["OK"] != 1:
-            err = ResponseCodeException(-1, f'提交分 P 失败，原因: {data["message"]}')
+            err = ResponseCodeException(-1, f"提交分 P 失败，原因: {data['message']}")
             raise err

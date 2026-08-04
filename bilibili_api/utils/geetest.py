@@ -5,16 +5,16 @@ bilibili_api.utils.geetest
 """
 
 from dataclasses import dataclass
+import email.message
+import enum
+import http.server
 import os
 import select
 import threading
-import http.server
-import email.message
-import enum
 
 from ..exceptions import GeetestException
-from .utils import get_api
 from .network import Api
+from .utils import get_api
 
 API = get_api("login")
 
@@ -26,6 +26,7 @@ class GeetestType(enum.Enum):
     - LOGIN: 登录
     - VERIFY: 登录验证
     """
+
     LOGIN = "password"
     VERIFY = "safecenter"
 
@@ -57,7 +58,7 @@ class DocHandler(http.server.BaseHTTPRequestHandler):
         else:
             content_type = "text/html"
         self.send_response(200)
-        self.send_header("Content-Type", "%s; charset=UTF-8" % content_type)
+        self.send_header("Content-Type", f"{content_type}; charset=UTF-8")
         self.end_headers()
         self.wfile.write(self.urlhandler(self.path, content_type).encode("utf-8"))  # type: ignore
 
@@ -76,7 +77,7 @@ class DocServer(http.server.HTTPServer):
 
     def serve_until_quit(self):
         while not self.quit:
-            rd, wr, ex = select.select([self.socket.fileno()], [], [], 1)
+            rd, _wr, _ex = select.select([self.socket.fileno()], [], [], 1)
             if rd:
                 self.handle_request()
         self.server_close()
@@ -113,11 +114,11 @@ class ServerThread(threading.Thread):
         self.serving = True
         self.host = server.host
         self.port = server.server_port
-        self.url = "http://%s:%d/" % (self.host, self.port)
+        self.url = f"http://{self.host}:{self.port}/"
 
     def stop(self):
         """Stop the server and this thread nicely"""
-        if self.docserver != None:
+        if self.docserver is not None:
             self.docserver.quit = True
             self.join()
             # explicitly break a reference cycle: DocServer.callback
@@ -182,7 +183,7 @@ class Geetest:
         Returns:
             bool: 是否有创建的测试
         """
-        return self.key != None
+        return self.key is not None
 
     def get_info(self) -> GeetestMeta:
         """
@@ -218,7 +219,9 @@ class Geetest:
                 seccode=self.seccode,
             )
         else:
-            raise GeetestException("未完成验证。请调用 `complete_test` 或来到 `get_geetest_server_url` 页面完成验证码。")
+            raise GeetestException(
+                "未完成验证。请调用 `complete_test` 或来到 `get_geetest_server_url` 页面完成验证码。"
+            )
 
     def complete_test(self, validate: str, seccode: str) -> None:
         """
@@ -247,11 +250,7 @@ class Geetest:
                     self.seccode = data[8:].replace("%7C", "|")
                 self.done = True
             with open(
-                os.path.abspath(
-                    os.path.join(
-                        os.path.dirname(__file__), "..", "data", "geetest", "done.html"
-                    )
-                ),
+                os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "geetest", "done.html")),
                 encoding="utf8",
             ) as f:
                 html_source_bytes = f.read()

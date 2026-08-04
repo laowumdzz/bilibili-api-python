@@ -8,14 +8,12 @@ from re import Pattern, compile
 import time
 from typing import Any
 
-from .network import Credential
-from .initial_state import get_initial_state
-
 import jwt
 
-RENDER_DATA_PATTERN: Pattern[str] = compile(
-    r"<script id=\"__RENDER_DATA__\" type=\"application/json\">(.*?)</script>"
-)
+from .initial_state import get_initial_state
+from .network import Credential
+
+RENDER_DATA_PATTERN: Pattern[str] = compile(r"<script id=\"__RENDER_DATA__\" type=\"application/json\">(.*?)</script>")
 
 access_ids = {}
 last_timestamp = {}
@@ -38,9 +36,7 @@ async def get_webid(url: str, credential: Credential) -> dict[str, Any]:
     return access_ids[url]
 
 
-async def get_user_dynamic_render_data(
-    uid: int, credential: Credential
-) -> dict[str, Any]:
+async def get_user_dynamic_render_data(uid: int, credential: Credential) -> dict[str, Any]:
     """
     获取用户动态页面加载静态渲染数据 获取部分接口需要的 w_webid 关键参数
 

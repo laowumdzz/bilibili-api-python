@@ -6,10 +6,9 @@ bilibili_api.channel_series
 
 from enum import Enum
 
-from .utils.utils import get_api, raise_for_statement
-from .utils.network import Api, Credential
-
 from . import user
+from .utils.network import Api, Credential
+from .utils.utils import get_api, raise_for_statement
 
 API_USER = get_api("user")
 API = get_api("channel-series")
@@ -73,7 +72,7 @@ class ChannelSeries:
         """
         global channel_meta_cache
         raise_for_statement(id_ != -1)
-        raise_for_statement(type_ != None)
+        raise_for_statement(type_ is not None)
         from .user import User
 
         self.__uid = uid
@@ -145,9 +144,7 @@ class ChannelSeries:
             await self.__fetch_meta()
         return self.owner
 
-    async def get_videos(
-        self, sort: ChannelOrder = ChannelOrder.DEFAULT, pn: int = 1, ps: int = 100
-    ) -> dict:
+    async def get_videos(self, sort: ChannelOrder = ChannelOrder.DEFAULT, pn: int = 1, ps: int = 100) -> dict:
         """
         获取合集视频
         Args:
@@ -201,7 +198,7 @@ async def create_channel_series(
     info = await get_self_info(credential)
     data = {
         "mid": info["mid"],
-        "aids": ",".join(map(lambda x: str(x), aids)),
+        "aids": ",".join(str(x) for x in aids),
         "name": name,
         "keywords": ",".join(keywords),
         "description": description,
@@ -225,30 +222,26 @@ async def del_channel_series(series_id: int, credential: Credential) -> dict:
 
     credential.raise_for_no_sessdata()
     credential.raise_for_no_bili_jct()
-    series_total = ChannelSeries(
-        type_=ChannelSeriesType.SERIES, id_=series_id, credential=credential
-    ).get_meta()["total"]
+    series_total = ChannelSeries(type_=ChannelSeriesType.SERIES, id_=series_id, credential=credential).get_meta()[
+        "total"
+    ]
     self_uid = (await get_self_info(credential))["mid"]
     aids = []
     pages = series_total // 20 + (1 if (series_total % 20 != 0) else 0)
     for page in range(1, pages + 1, 1):
-        page_info = await User(self_uid, credential).get_channel_videos_series(
-            series_id, pn=page, ps=20
-        )
+        page_info = await User(self_uid, credential).get_channel_videos_series(series_id, pn=page, ps=20)
         for aid in page_info["aids"]:
             aids.append(aid)
     api = API_USER["channel_series"]["del_channel_series"]
     data = {
         "mid": self_uid,
         "series_id": series_id,
-        "aids": ",".join(map(lambda x: str(x), aids)),
+        "aids": ",".join(str(x) for x in aids),
     }
     return await Api(**api, credential=credential).update_data(**data).result
 
 
-async def add_aids_to_series(
-    series_id: int, aids: list[int], credential: Credential
-) -> dict:
+async def add_aids_to_series(series_id: int, aids: list[int], credential: Credential) -> dict:
     """
     添加视频至视频列表(旧版合集)
 
@@ -271,14 +264,12 @@ async def add_aids_to_series(
     data = {
         "mid": self_info["mid"],
         "series_id": series_id,
-        "aids": ",".join(map(lambda x: str(x), aids)),
+        "aids": ",".join(str(x) for x in aids),
     }
     return await Api(**api, credential=credential).update_data(**data).result
 
 
-async def del_aids_from_series(
-    series_id: int, aids: list[int], credential: Credential
-) -> dict:
+async def del_aids_from_series(series_id: int, aids: list[int], credential: Credential) -> dict:
     """
     从视频列表(旧版合集)删除视频
 
@@ -301,14 +292,12 @@ async def del_aids_from_series(
     data = {
         "mid": self_info["mid"],
         "series_id": series_id,
-        "aids": ",".join(map(lambda x: str(x), aids)),
+        "aids": ",".join(str(x) for x in aids),
     }
     return await Api(**api, credential=credential).update_data(**data).result
 
 
-async def set_follow_channel_season(
-    season_id: int, status: bool = True, credential: Credential | None = None
-) -> dict:
+async def set_follow_channel_season(season_id: int, status: bool = True, credential: Credential | None = None) -> dict:
     """
     设置是否订阅合集(新版)
 

@@ -7,8 +7,8 @@ bilibili_api.topic
 from enum import Enum
 
 from .user import get_self_info
-from .utils.utils import get_api
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("topic")
 
@@ -99,9 +99,7 @@ class Topic:
         """
         api = API["info"]["info"]
         params = {"topic_id": self.get_topic_id()}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_cards(
         self,
@@ -133,9 +131,7 @@ class Topic:
         }
         if offset:
             params.update({"offset": offset})
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def like(self, status: bool = True) -> dict:
         """

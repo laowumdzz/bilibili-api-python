@@ -4,14 +4,14 @@ bilibili_api.video_zone
 分区相关操作，与频道不互通。
 """
 
-import os
 import copy
 import enum
 import json
+import os
 
-from .utils.utils import get_api
 from .exceptions import ArgsException
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("video_zone")
 
@@ -26,9 +26,7 @@ def get_zone_info_by_tid(tid: int) -> tuple[dict | None, dict | None]:
     Returns:
         Tuple[dict | None, dict | None]: 第一个是主分区，第二个是子分区，没有时返回 None。
     """
-    with open(
-        os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8"
-    ) as f:
+    with open(os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8") as f:
         channel = json.loads(f.read())
 
     for main_ch in channel:
@@ -58,9 +56,7 @@ def get_zone_info_by_name(name: str) -> tuple[dict | None, dict | None]:
     Returns:
         Tuple[dict | None, dict | None]: 第一个是主分区，第二个是子分区，没有时返回 None。
     """
-    with open(
-        os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8"
-    ) as f:
+    with open(os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8") as f:
         channel = json.loads(f.read())
 
     for main_ch in channel:
@@ -74,9 +70,7 @@ def get_zone_info_by_name(name: str) -> tuple[dict | None, dict | None]:
         return None, None
 
 
-async def get_zone_top10(
-    tid: int, day: int = 7, credential: Credential | None = None
-) -> dict:
+async def get_zone_top10(tid: int, day: int = 7, credential: Credential | None = None) -> dict:
     """
     获取分区前十排行榜。
 
@@ -107,9 +101,7 @@ def get_zone_list() -> list[dict]:
     Returns:
         List[dict]: 所有分区的数据
     """
-    with open(
-        os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8"
-    ) as f:
+    with open(os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8") as f:
         channel = json.loads(f.read())
     channel_list = []
     for channel_big in channel:
@@ -132,16 +124,12 @@ def get_zone_list_sub() -> dict:
     Returns:
         dict: 所有分区的数据
     """
-    with open(
-        os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8"
-    ) as f:
+    with open(os.path.join(os.path.dirname(__file__), "data/video_zone.json"), encoding="utf8") as f:
         channel = json.loads(f.read())
     return channel
 
 
-async def get_zone_videos_count_today(
-    credential: Credential | None = None
-) -> dict:
+async def get_zone_videos_count_today(credential: Credential | None = None) -> dict:
     """
     获取每个分区当日最新投稿数量
 

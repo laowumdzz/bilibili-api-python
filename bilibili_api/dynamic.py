@@ -4,23 +4,22 @@ bilibili_api.dynamic
 动态相关
 """
 
+from datetime import datetime
+from enum import Enum
+import json
 import re
 import sys
-import json
-from enum import Enum
-from datetime import datetime
 from typing import Any
 
 import yaml
 
-from .utils import utils
-from .utils.picture import Picture
 from . import user, vote
-from .utils.network import Api, Credential
-from .exceptions import ArgsException
 from .article import Article
+from .exceptions import ArgsException
 from .opus import Opus
-from .utils import cache_pool
+from .utils import cache_pool, utils
+from .utils.network import Api, Credential
+from .utils.picture import Picture
 
 API = utils.get_api("dynamic")
 API_opus = utils.get_api("opus")
@@ -90,9 +89,7 @@ async def _name2uid(uname: str, credential: Credential) -> int:
 async def _uid2name(uid: int, credential: Credential) -> str:
     global uid2uname
     if uid2uname.get(uid) is None:
-        uid2uname[uid] = (await user.User(uid, credential=credential).get_user_info())[
-            "name"
-        ]
+        uid2uname[uid] = (await user.User(uid, credential=credential).get_user_info())["name"]
     return uid2uname[uid]
 
 
@@ -126,9 +123,7 @@ async def _parse_at(text: str, credential: Credential) -> tuple[str, str, str]:
         index = text.index(f"@{name}", last_index)
         last_index = index + 1
         length = 2 + len(name)
-        ctrl.append(
-            {"location": index, "type": 1, "length": length, "data": int(uid_list[i])}
-        )
+        ctrl.append({"location": index, "type": 1, "length": length, "data": int(uid_list[i])})
 
     return text, at_uids, json.dumps(ctrl, ensure_ascii=False)
 
@@ -157,9 +152,7 @@ async def _get_text_data(text: str, credential: Credential) -> dict:
     return data
 
 
-async def upload_image(
-    image: Picture, credential: Credential, data: dict = None
-) -> dict:
+async def upload_image(image: Picture, credential: Credential, data: dict | None = None) -> dict:
     """
     上传动态图片
 
@@ -181,12 +174,7 @@ async def upload_image(
         data = {"biz": "new_dyn", "category": "daily"}
 
     files = {"file_up": image._to_biliapifile()}
-    return_info = (
-        await Api(**api, credential=credential)
-        .update_data(**data)
-        .update_files(**files)
-        .result
-    )
+    return_info = await Api(**api, credential=credential).update_data(**data).update_files(**files).result
     return return_info
 
 
@@ -259,7 +247,7 @@ class BuildDynamic:
             dyn.add_vote(vote.Vote(vote_id=vote_id))
         if live_reserve_id != -1:
             dyn.set_attach_card(live_reserve_id)
-        if send_time != None:
+        if send_time is not None:
             dyn.set_send_time(send_time)
         return dyn
 
@@ -270,9 +258,7 @@ class BuildDynamic:
         Args:
             text (str): 文本内容
         """
-        self.contents.append(
-            {"biz_id": "", "type": DynamicContentType.TEXT.value, "raw_text": text}
-        )
+        self.contents.append({"biz_id": "", "type": DynamicContentType.TEXT.value, "raw_text": text})
         return self
 
     def add_at(self, uid: int = 0, uname: str = "") -> "BuildDynamic":
@@ -402,17 +388,9 @@ class BuildDynamic:
                 texts += [
                     last_piece_of_text[: next_at_or_emoji["location"] - last_length],
                     next_at_or_emoji,
-                    last_piece_of_text[
-                        next_at_or_emoji["location"]
-                        + next_at_or_emoji["length"]
-                        - last_length :
-                    ],
+                    last_piece_of_text[next_at_or_emoji["location"] + next_at_or_emoji["length"] - last_length :],
                 ]
-                last_length += (
-                    next_at_or_emoji["length"]
-                    + next_at_or_emoji["location"]
-                    - last_length
-                )
+                last_length += next_at_or_emoji["length"] + next_at_or_emoji["location"] - last_length
                 return base_split(texts, at_and_emoji, last_length)
 
             old_recursion_limit = sys.getrecursionlimit()
@@ -470,9 +448,7 @@ class BuildDynamic:
         self.topic = {"id": topic_id}
         return self
 
-    def set_options(
-        self, up_choose_comment: bool = False, close_comment: bool = False
-    ) -> "BuildDynamic":
+    def set_options(self, up_choose_comment: bool = False, close_comment: bool = False) -> "BuildDynamic":
         """
         设置选项
 
@@ -539,13 +515,9 @@ class BuildDynamic:
                     else:
                         contents[idx]["biz_id"] = str(uid)
                 elif content["raw_text"] == "@":
-                    contents[idx]["raw_text"] = "@" + await _uid2name(
-                        content["biz_id"], credential=credential
-                    )
+                    contents[idx]["raw_text"] = "@" + await _uid2name(content["biz_id"], credential=credential)
             if content["type"] == DynamicContentType.VOTE.value:
-                contents[idx]["raw_text"] = (
-                    await vote.Vote(vote_id=content["biz_id"]).get_info()
-                )["info"]["title"]
+                contents[idx]["raw_text"] = (await vote.Vote(vote_id=content["biz_id"]).get_info())["info"]["title"]
         for idx, content in enumerate(contents):
             contents[idx]["biz_id"] = str(contents[idx]["biz_id"])
         return contents
@@ -604,16 +576,12 @@ async def send_dynamic(info: BuildDynamic, credential: Credential):
     pic_data = []
     for image in info.pics:
         await image.upload(credential)
-        pic_data.append(
-            {"img_src": image.url, "img_width": image.width, "img_height": image.height}
-        )
+        pic_data.append({"img_src": image.url, "img_width": image.width, "img_height": image.height})
 
     api = API["send"]["instant"]
     data = {
         "dyn_req": {
-            "content": {
-                "contents": await info.get_contents(credential=credential)
-            },  # 必要参数
+            "content": {"contents": await info.get_contents(credential=credential)},  # 必要参数
             "scene": info.get_dynamic_type().value,  # 必要参数
             "meta": {
                 "app_meta": {"from": "create.dynamic.web", "mobi_app": "web"},
@@ -636,10 +604,7 @@ async def send_dynamic(info: BuildDynamic, credential: Credential):
     params = {"csrf": credential.bili_jct}
 
     send_result = (
-        await Api(**api, credential=credential, json_body=True)
-        .update_data(**data)
-        .update_params(**params)
-        .result
+        await Api(**api, credential=credential, json_body=True).update_data(**data).update_params(**params).result
     )
     return send_result
 
@@ -709,9 +674,7 @@ class Dynamic:
         credential (Credential): 凭据类
     """
 
-    def __init__(
-        self, dynamic_id: int, credential: Credential | None = None
-    ) -> None:
+    def __init__(self, dynamic_id: int, credential: Credential | None = None) -> None:
         """
         Args:
             dynamic_id (int)                        : 动态 ID
@@ -719,9 +682,7 @@ class Dynamic:
         """
         self.__dynamic_id = dynamic_id
         self.__detail = None
-        self.credential: Credential = (
-            credential if credential is not None else Credential()
-        )
+        self.credential: Credential = credential if credential is not None else Credential()
 
     def get_dynamic_id(self) -> None:
         """
@@ -751,28 +712,16 @@ class Dynamic:
                 "x-bili-device-req-json": '{"platform":"web","device":"pc"}',
                 "x-bili-web-req-json": '{"spm_id":"333.1368"}',
             }
-            self.__detail = (
-                await Api(**api, credential=self.credential)
-                .update_params(**params)
-                .result
-            )
-            cache_pool.dynamic_is_article[self.__dynamic_id] = (
-                self.__detail["item"]["basic"]["comment_type"] == 12
-            )
+            self.__detail = await Api(**api, credential=self.credential).update_params(**params).result
+            cache_pool.dynamic_is_article[self.__dynamic_id] = self.__detail["item"]["basic"]["comment_type"] == 12
             if cache_pool.dynamic_is_article[self.__dynamic_id]:
-                cache_pool.dynamic2article[self.__dynamic_id] = int(
-                    self.__detail["item"]["basic"]["rid_str"]
-                )
-                cache_pool.article2dynamic[
-                    cache_pool.dynamic2article[self.__dynamic_id]
-                ] = self.__dynamic_id
+                cache_pool.dynamic2article[self.__dynamic_id] = int(self.__detail["item"]["basic"]["rid_str"])
+                cache_pool.article2dynamic[cache_pool.dynamic2article[self.__dynamic_id]] = self.__dynamic_id
             module_dynamic = self.__detail["item"]["modules"]["module_dynamic"]
             if module_dynamic.get("major") is None:
                 cache_pool.dynamic_is_opus[self.__dynamic_id] = False
             else:
-                cache_pool.dynamic_is_opus[self.__dynamic_id] = (
-                    module_dynamic["major"]["type"] == "MAJOR_TYPE_OPUS"
-                )
+                cache_pool.dynamic_is_opus[self.__dynamic_id] = module_dynamic["major"]["type"] == "MAJOR_TYPE_OPUS"
         return self.__detail
 
     async def is_article(self) -> bool:
@@ -862,9 +811,7 @@ class Dynamic:
                         ):
                             cover = module["major"][key].get("cover")
                             if jump_url.startswith("//"):
-                                jump_url = "https:" + module["major"][key].get(
-                                    "jump_url"
-                                )
+                                jump_url = "https:" + module["major"][key].get("jump_url")
                             title = module["major"][key].get("title")
                             return f"# {title}\n\n![]({cover})\n\n<{jump_url}>\n"
             ret = "" if title is None else "# " + title + "\n\n"
@@ -903,8 +850,8 @@ class Dynamic:
                     ret += f"{text} "
             ret += "\n\n"
             for pic in pics:
-                width = pic["width"]
-                height = pic["height"]
+                pic["width"]
+                pic["height"]
                 url = pic["url"]
                 if url.startswith("//"):
                     url = f"https:{url}"
@@ -914,9 +861,7 @@ class Dynamic:
         content = parse_module_dynamic(info["item"]["modules"]["module_dynamic"])
         content += "\n\n"
         if info["item"].get("orig"):
-            orig_content = parse_module_dynamic(
-                info["item"]["orig"]["modules"]["module_dynamic"]
-            )
+            orig_content = parse_module_dynamic(info["item"]["orig"]["modules"]["module_dynamic"])
             for line in orig_content.split("\n"):
                 content += f"> {line}\n"
         meta_yaml = yaml.safe_dump(info["item"], allow_unicode=True)
@@ -936,9 +881,7 @@ class Dynamic:
 
         api = API["info"]["reaction"]
         params = {"web_location": "333.1369", "offset": offset, "id": self.__dynamic_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_reposts(self, offset: str = "0") -> dict:
         """
@@ -954,9 +897,7 @@ class Dynamic:
         params: dict[str, Any] = {"dynamic_id": self.__dynamic_id}
         if offset != "0":
             params["offset"] = offset
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_rid(self) -> int:
         """
@@ -981,9 +922,7 @@ class Dynamic:
         """
         api = API["info"]["likes"]
         params = {"dynamic_id": self.__dynamic_id, "pn": pn, "ps": ps}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def set_like(self, status: bool = True) -> dict:
         """
@@ -1071,12 +1010,7 @@ class Dynamic:
             },
             "action": 3 if status else 4,
         }
-        return (
-            await Api(**api, credential=self.credential)
-            .update_params(**params)
-            .update_data(**data)
-            .result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result
 
     async def get_lottery_info(self) -> dict:
         """
@@ -1095,9 +1029,7 @@ class Dynamic:
             "csrf": self.credential.bili_jct,
             "web_location": "333.1330",
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def set_top(self) -> dict:
         """
@@ -1114,12 +1046,7 @@ class Dynamic:
             "csrf": self.credential.bili_jct,
         }
         data = {"dyn_str": str(self.get_dynamic_id())}
-        return (
-            await Api(**api, credential=self.credential)
-            .update_params(**params)
-            .update_data(**data)
-            .result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result
 
     async def remove_top(self) -> dict:
         """
@@ -1136,12 +1063,7 @@ class Dynamic:
             "csrf": self.credential.bili_jct,
         }
         data = {"dyn_str": str(self.get_dynamic_id())}
-        return (
-            await Api(**api, credential=self.credential)
-            .update_params(**params)
-            .update_data(**data)
-            .result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result
 
 
 async def get_new_dynamic_users(credential: Credential | None = None) -> dict:
@@ -1160,9 +1082,7 @@ async def get_new_dynamic_users(credential: Credential | None = None) -> dict:
     return await Api(**api, credential=credential).result
 
 
-async def get_live_users(
-    size: int = 10, credential: Credential | None = None
-) -> dict:
+async def get_live_users(size: int = 10, credential: Credential | None = None) -> dict:
     """
     获取正在直播的关注者
 
@@ -1294,10 +1214,5 @@ async def get_dynamic_page_list(
     elif not host_mid:
         api["params"].pop("host_mid")
 
-    dynmaic_data = (
-        await Api(**api, credential=credential).update_params(**params).result
-    )
-    return [
-        Dynamic(dynamic_id=int(dynamic["id_str"]), credential=credential)
-        for dynamic in dynmaic_data["items"]
-    ]
+    dynmaic_data = await Api(**api, credential=credential).update_params(**params).result
+    return [Dynamic(dynamic_id=int(dynamic["id_str"]), credential=credential) for dynamic in dynmaic_data["items"]]

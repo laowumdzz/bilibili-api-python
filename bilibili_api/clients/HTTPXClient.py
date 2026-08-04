@@ -4,15 +4,17 @@ bilibili_api.clients.httpx
 HTTPXClient 实现
 """
 
+from collections.abc import AsyncGenerator
+
+import httpx  # pylint: disable=E0401
+
+from ..exceptions import ApiException
 from ..utils.network import (
     BiliAPIClient,
     BiliAPIFile,
     BiliAPIResponse,
     request_log,
 )
-from ..exceptions import ApiException
-import httpx  # pylint: disable=E0401
-from collections.abc import AsyncGenerator
 
 
 class HTTPXClient(BiliAPIClient):
@@ -194,12 +196,8 @@ class HTTPXClient(BiliAPIClient):
             },
         )
         req = self.__session.build_request(method="GET", url=url, headers=headers)
-        self.__downloads[self.__download_cnt] = await self.__session.send(
-            req, stream=True, follow_redirects=True
-        )
-        self.__download_iter[self.__download_cnt] = self.__downloads[
-            self.__download_cnt
-        ].aiter_bytes(4096)
+        self.__downloads[self.__download_cnt] = await self.__session.send(req, stream=True, follow_redirects=True)
+        self.__download_iter[self.__download_cnt] = self.__downloads[self.__download_cnt].aiter_bytes(4096)
         return self.__download_cnt
 
     async def download_chunk(self, cnt: int) -> bytes:
@@ -231,33 +229,25 @@ class HTTPXClient(BiliAPIClient):
         """
         httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>
         """
-        raise ApiException(
-            "httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>"
-        )
+        raise ApiException("httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>")
 
     async def ws_send(self, *args, **kwargs) -> None:
         """
         httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>
         """
-        raise ApiException(
-            "httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>"
-        )
+        raise ApiException("httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>")
 
     async def ws_recv(self, *args, **kwargs) -> None:
         """
         httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>
         """
-        raise ApiException(
-            "httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>"
-        )
+        raise ApiException("httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>")
 
     async def ws_close(self, *args, **kwargs) -> None:
         """
         httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>
         """
-        raise ApiException(
-            "httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>"
-        )
+        raise ApiException("httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>")
 
     async def close(self) -> None:
         await self.__session.aclose()

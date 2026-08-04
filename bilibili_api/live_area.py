@@ -6,11 +6,11 @@ bilibili_api.live_area
 
 import copy
 
-from .utils.utils import get_api
-from .utils.network import Api, Credential
-from .live import get_area_info
 from .exceptions import ApiException
+from .live import get_area_info
+from .utils.network import Api, Credential
 from .utils.user_render_data import get_webid
+from .utils.utils import get_api
 
 API = get_api("live-area")
 
@@ -151,7 +151,7 @@ async def get_list_by_area(
     credential = credential if credential else Credential()
     api = API["info"]["list"]
     parent_area_id = get_area_info_by_id(area_id)[0]["id"]
-    area_id = 0 if (get_area_info_by_id(area_id)[1] == None) else area_id
+    area_id = 0 if (get_area_info_by_id(area_id)[1] is None) else area_id
     params = {
         "platform": "web",
         "parent_area_id": parent_area_id,

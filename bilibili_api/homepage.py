@@ -4,9 +4,8 @@ bilibili_api.homepage
 主页相关操作。
 """
 
-
-from .utils.utils import get_api
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("homepage")
 
@@ -101,9 +100,5 @@ async def get_favorite_list_content(media_id: int, credential: Credential | None
         dict: 调用 API 返回的结果
     """
     api = API["list"]["resource"]
-    params = {
-        "web_location": "333.1007",
-        "platform": "web",
-        "media_id": media_id
-    }
+    params = {"web_location": "333.1007", "platform": "web", "media_id": media_id}
     return await Api(**api, credential=credential).update_params(**params).result

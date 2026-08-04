@@ -5,11 +5,11 @@ bilibili_api.search
 """
 
 from enum import Enum
-from .utils.utils import to_timestamps
-from .utils.utils import get_api
-from .video_zone import VideoZoneTypes
-from .utils.network import Api, Credential
+
 from .exceptions import ArgsException
+from .utils.network import Api, Credential
+from .utils.utils import get_api, to_timestamps
+from .video_zone import VideoZoneTypes
 
 API = get_api("search")
 
@@ -208,10 +208,7 @@ async def search_by_type(
         raise ArgsException("缺少 search_type")
         # params["search_type"] = SearchObjectType.VIDEO.value
     # category_id
-    if (
-        search_type.value == SearchObjectType.ARTICLE.value
-        or search_type.value == SearchObjectType.PHOTO.value
-    ):
+    if search_type.value == SearchObjectType.ARTICLE.value or search_type.value == SearchObjectType.PHOTO.value:
         if category_id:
             if isinstance(category_id, int):
                 params["category_id"] = category_id
@@ -309,9 +306,7 @@ async def search_games(keyword: str) -> dict:
     return await Api(**api).update_params(**params).result
 
 
-async def search_manga(
-    keyword: str, page_num: int = 1, page_size: int = 9, credential: Credential = None
-):
+async def search_manga(keyword: str, page_num: int = 1, page_size: int = 9, credential: Credential = None):
     """
     搜索漫画特用函数
 
@@ -330,9 +325,7 @@ async def search_manga(
     credential = credential if credential else Credential()
     api = API["search"]["manga"]
     data = {"key_word": keyword, "page_num": page_num, "page_size": page_size}
-    return (
-        await Api(**api, credential=credential, no_csrf=True).update_data(**data).result
-    )
+    return await Api(**api, credential=credential, no_csrf=True).update_data(**data).result
 
 
 async def search_cheese(

@@ -4,30 +4,30 @@ bilibili_api.live
 直播相关
 """
 
-import json
-import time
-import base64
-import struct
 import asyncio
-import logging
+import base64
 from enum import Enum
+import json
+import logging
+import struct
+import time
 from typing import Any
 
 import brotli
 
-from .utils.utils import get_api, raise_for_statement
+from .exceptions import LiveException
+from .utils.AsyncEvent import AsyncEvent
+from .utils.BytesReader import BytesReader
 from .utils.danmaku import Danmaku
 from .utils.network import (
-    Credential,
-    Api,
     HEADERS,
-    get_client,
+    Api,
     BiliWsMsgType,
+    Credential,
     get_buvid,
+    get_client,
 )
-from .utils.AsyncEvent import AsyncEvent
-from .exceptions import LiveException
-from .utils.BytesReader import BytesReader
+from .utils.utils import get_api, raise_for_statement
 
 API = get_api("live")
 
@@ -112,9 +112,7 @@ class LiveRoom:
         room_display_id (int)       : 房间展示 id
     """
 
-    def __init__(
-        self, room_display_id: int, credential: Credential | None = None
-    ):
+    def __init__(self, room_display_id: int, credential: Credential | None = None):
         """
         Args:
             room_display_id (int)                 : 房间展示 ID（即 URL 中的 ID）
@@ -178,9 +176,7 @@ class LiveRoom:
         params = {
             "room_id": self.room_display_id,
         }
-        resp = (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        resp = await Api(**api, credential=self.credential).update_params(**params).result
 
         # 缓存真实房间 ID
         self.__ruid = resp["uid"]
@@ -199,9 +195,7 @@ class LiveRoom:
             "platform": "pc",
             "room_id": self.room_display_id,
         }
-        resp = (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        resp = await Api(**api, credential=self.credential).update_params(**params).result
         return resp
 
     async def get_room_id(self) -> int:
@@ -243,9 +237,7 @@ class LiveRoom:
         """
         api = API["info"]["danmu_info"]
         params = {"id": await self.get_room_id(), "type": 0, "web_location": "444.8"}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_room_info(self) -> dict:
         """
@@ -256,9 +248,7 @@ class LiveRoom:
         """
         api = API["info"]["room_info"]
         params = {"room_id": self.room_display_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_fan_model(
         self,
@@ -294,9 +284,7 @@ class LiveRoom:
             params["roomId"] = roomId
         if target_id:
             params["target_id"] = target_id
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_user_info_in_room(self) -> dict:
         """
@@ -309,9 +297,7 @@ class LiveRoom:
 
         api = API["info"]["user_info_in_room"]
         params = {"room_id": self.room_display_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_popular_ticket_num(self) -> dict:
         """
@@ -327,9 +313,7 @@ class LiveRoom:
             "ruid": await self.__get_ruid(),
             "surce": 0,
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def send_popular_ticket(self) -> dict:
         """
@@ -346,9 +330,7 @@ class LiveRoom:
             "ruid": await self.__get_ruid(),
             "visit_id": "",
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_dahanghai(self, page: int = 1) -> dict:
         """
@@ -367,9 +349,7 @@ class LiveRoom:
             "page_size": 30,
             "page": page,
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_gaonengbang(self, page: int = 1) -> dict:
         """
@@ -388,9 +368,7 @@ class LiveRoom:
             "pageSize": 50,
             "page": page,
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_seven_rank(self) -> dict:
         """
@@ -404,9 +382,7 @@ class LiveRoom:
             "roomid": self.room_display_id,
             "ruid": await self.__get_ruid(),
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_fans_medal_rank(self) -> dict:
         """
@@ -417,9 +393,7 @@ class LiveRoom:
         """
         api = API["info"]["fans_medal_rank"]
         params = {"roomid": self.room_display_id, "ruid": await self.__get_ruid()}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_black_list(self, page: int = 1) -> dict:
         """
@@ -431,13 +405,9 @@ class LiveRoom:
         api = API["info"]["black_list"]
         params = {"room_id": self.room_display_id, "ps": page}
 
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
-    async def get_room_play_url(
-        self, screen_resolution: ScreenResolution = ScreenResolution.ORIGINAL
-    ) -> dict:
+    async def get_room_play_url(self, screen_resolution: ScreenResolution = ScreenResolution.ORIGINAL) -> dict:
         """
         获取房间直播流列表
 
@@ -455,9 +425,7 @@ class LiveRoom:
             "https_url_req": "1",
             "ptype": "16",
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_room_play_info_v2(
         self,
@@ -491,9 +459,7 @@ class LiveRoom:
             "codec": live_codec.value,
             "qn": live_qn.value,
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def ban_user(self, uid: int, hour: int = -1) -> dict:
         """
@@ -538,9 +504,7 @@ class LiveRoom:
         }
         return await Api(**api, credential=self.credential).update_data(**data).result
 
-    async def send_danmaku(
-        self, danmaku: Danmaku, room_id: int = None, reply_mid: int = None
-    ) -> dict:
+    async def send_danmaku(self, danmaku: Danmaku, room_id: int | None = None, reply_mid: int | None = None) -> dict:
         """
         直播间发送弹幕
 
@@ -571,7 +535,7 @@ class LiveRoom:
             data["reply_mid"] = reply_mid
         return await Api(**api, credential=self.credential).update_data(**data).result
 
-    async def send_emoticon(self, emoticon: Danmaku, room_id: int = None) -> dict:
+    async def send_emoticon(self, emoticon: Danmaku, room_id: int | None = None) -> dict:
         """
         直播间发送表情包
 
@@ -704,9 +668,7 @@ class LiveRoom:
             "roomId": self.room_display_id,
             "uid": await self.__get_ruid(),
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def update_news(self, content: str) -> dict:
         """
@@ -726,9 +688,7 @@ class LiveRoom:
             "roomId": self.room_display_id,
             "uid": await self.__get_ruid(),
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_gift_common(self) -> dict:
         """
@@ -741,11 +701,7 @@ class LiveRoom:
         params_room_info = {
             "room_id": self.room_display_id,
         }
-        res_room_info = (
-            await Api(**api_room_info, credential=self.credential)
-            .update_params(**params_room_info)
-            .result
-        )
+        res_room_info = await Api(**api_room_info, credential=self.credential).update_params(**params_room_info).result
         area_id, area_parent_id = (
             res_room_info["room_info"]["area_id"],
             res_room_info["room_info"]["parent_area_id"],
@@ -759,9 +715,7 @@ class LiveRoom:
             "platform": "pc",
             "source": "live",
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_gift_special(self, tab_id: int) -> dict:
         """
@@ -779,11 +733,7 @@ class LiveRoom:
         params_room_info = {
             "room_id": self.room_display_id,
         }
-        res_room_info = (
-            await Api(**api_room_info, credential=self.credential)
-            .update_params(**params_room_info)
-            .result
-        )
+        res_room_info = await Api(**api_room_info, credential=self.credential).update_params(**params_room_info).result
         area_id, area_parent_id = (
             res_room_info["room_info"]["area_id"],
             res_room_info["room_info"]["parent_area_id"],
@@ -800,13 +750,9 @@ class LiveRoom:
             "platform": "pc",
             "build": 1,
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
-    async def send_gift_gold(
-        self, uid: int, gift_id: int, gift_num: int, price: int, storm_beat_id: int = 0
-    ) -> dict:
+    async def send_gift_gold(self, uid: int, gift_id: int, gift_num: int, price: int, storm_beat_id: int = 0) -> dict:
         """
         赠送金瓜子礼物
 
@@ -1223,6 +1169,7 @@ def parse_online_rank_v3(bt: bytes) -> dict:
             elif t == 8:
                 item["user_info"] = parse_user_info(reader.bytes_string())
         return item
+
     ret = {}
     br = BytesReader(stream=bt)
     while not br.has_end():
@@ -1372,9 +1319,7 @@ class LiveDanmaku(AsyncEvent):
         """
         super().__init__()
 
-        self.credential: Credential = (
-            credential if credential is not None else Credential()
-        )
+        self.credential: Credential = credential if credential is not None else Credential()
         self.room_display_id: int = room_display_id
         self.max_retry: int = max_retry
         self.retry_after: float = retry_after
@@ -1395,11 +1340,7 @@ class LiveDanmaku(AsyncEvent):
         if not self.logger.handlers:
             handler = logging.StreamHandler()
             handler.setFormatter(
-                logging.Formatter(
-                    "["
-                    + str(room_display_id)
-                    + "][%(asctime)s][%(levelname)s] %(message)s"
-                )
+                logging.Formatter("[" + str(room_display_id) + "][%(asctime)s][%(levelname)s] %(message)s")
             )
             self.logger.addHandler(handler)
 
@@ -1461,9 +1402,7 @@ class LiveDanmaku(AsyncEvent):
         """
         self.__status = self.STATUS_CONNECTING
 
-        self.room = LiveRoom(
-            room_display_id=self.room_display_id, credential=self.credential
-        )
+        self.room = LiveRoom(room_display_id=self.room_display_id, credential=self.credential)
 
         self.logger.info(f"准备连接直播间 {self.room_display_id}")
         # 获取真实房间号
@@ -1543,9 +1482,7 @@ class LiveDanmaku(AsyncEvent):
                 # 正常断开情况下跳出循环
                 if self.__status != self.STATUS_CLOSED or self.err_reason:
                     # 非用户手动调用关闭，触发重连
-                    self.logger.warning(
-                        "非正常关闭连接" if not self.err_reason else self.err_reason
-                    )
+                    self.logger.warning("非正常关闭连接" if not self.err_reason else self.err_reason)
                 else:
                     break
 
@@ -1578,10 +1515,7 @@ class LiveDanmaku(AsyncEvent):
                 "room_real_id": self.__room_real_id,
             }
             # 依次处理并调用用户指定函数
-            if (
-                info["datapack_type"]
-                == LiveDanmaku.DATAPACK_TYPE_VERIFY_SUCCESS_RESPONSE
-            ):
+            if info["datapack_type"] == LiveDanmaku.DATAPACK_TYPE_VERIFY_SUCCESS_RESPONSE:
                 # 认证反馈
                 if info["data"]["code"] == 0:
                     # 认证成功反馈
@@ -1602,17 +1536,14 @@ class LiveDanmaku(AsyncEvent):
                 self.dispatch("VIEW", callback_info)
                 self.dispatch("ALL", callback_info)
 
-            elif (
-                info["datapack_type"] == LiveDanmaku.DATAPACK_TYPE_NOTICE
-                and "cmd" in info["data"]
-            ):
+            elif info["datapack_type"] == LiveDanmaku.DATAPACK_TYPE_NOTICE and "cmd" in info["data"]:
                 # https://github.com/Nemo2011/bilibili-api/issues/913#issuecomment-2789372339
                 # 直播间弹幕、礼物等信息
                 callback_info["type"] = info["data"]["cmd"]
 
                 # DANMU_MSG 事件名特殊：DANMU_MSG:4:0:2:2:2:0，需取出事件名，暂不知格式
                 if callback_info["type"].find("RECALL_DANMU_MSG") > -1:
-                    callback_info["type"]="RECALL_DANMU_MSG"
+                    callback_info["type"] = "RECALL_DANMU_MSG"
                     info["data"]["cmd"] = "RECALL_DANMU_MSG"
                 elif callback_info["type"].find("DANMU_MSG") > -1:
                     callback_info["type"] = "DANMU_MSG"
@@ -1627,7 +1558,7 @@ class LiveDanmaku(AsyncEvent):
                     pb_decode_status = ""
                     try:
                         pb_decoded = parse_interact_word_v2(pb_unbase64)
-                    except:
+                    except Exception:
                         pb_decode_status = "error"
                     else:
                         pb_decode_status = "success"
@@ -1644,7 +1575,7 @@ class LiveDanmaku(AsyncEvent):
                     pb_decode_status = ""
                     try:
                         pb_decoded = parse_online_rank_v3(pb_unbase64)
-                    except:
+                    except Exception:
                         pb_decode_status = "error"
                     else:
                         pb_decode_status = "success"
@@ -1697,9 +1628,7 @@ class LiveDanmaku(AsyncEvent):
         if not self.credential.has_buvid3():
             verifyData["buvid"] = (await get_buvid())[0]
         data = json.dumps(verifyData, separators=(",", ":")).encode()
-        await self.__send(
-            data, self.PROTOCOL_VERSION_HEARTBEAT, self.DATAPACK_TYPE_VERIFY
-        )
+        await self.__send(data, self.PROTOCOL_VERSION_HEARTBEAT, self.DATAPACK_TYPE_VERIFY)
 
     async def __heartbeat_web(self) -> None:
         """
@@ -1712,15 +1641,11 @@ class LiveDanmaku(AsyncEvent):
                 params = {
                     "pf": "web",
                     "hb": str(
-                        base64.b64encode(
-                            f"60|{self.__room_real_id}|1|0".encode()
-                        ),
+                        base64.b64encode(f"60|{self.__room_real_id}|1|0".encode()),
                         "utf-8",
                     ),
                 }
-                await Api(**api, credential=self.credential).update_params(
-                    **params
-                ).result
+                await Api(**api, credential=self.credential).update_params(**params).result
                 self.__heartbeat_timer_web = 60
             await asyncio.sleep(1.0)
             self.__heartbeat_timer_web -= 1
@@ -1765,13 +1690,9 @@ class LiveDanmaku(AsyncEvent):
         """
         sendData = bytearray()
         sendData += struct.pack(">H", 16)
-        raise_for_statement(
-            0 <= protocol_version <= 2, LiveException("数据包协议版本错误，范围 0~2")
-        )
+        raise_for_statement(0 <= protocol_version <= 2, LiveException("数据包协议版本错误，范围 0~2"))
         sendData += struct.pack(">H", protocol_version)
-        raise_for_statement(
-            datapack_type in [2, 7], LiveException("数据包类型错误，可用类型：2, 7")
-        )
+        raise_for_statement(datapack_type in [2, 7], LiveException("数据包类型错误，可用类型：2, 7"))
         sendData += struct.pack(">I", datapack_type)
         sendData += struct.pack(">I", 1)
         sendData += data
@@ -1855,9 +1776,7 @@ async def get_self_live_info(credential: Credential) -> dict:
     return await Api(**api, credential=credential).result
 
 
-async def get_self_dahanghai_info(
-    page: int = 1, page_size: int = 10, credential: Credential | None = None
-) -> dict:
+async def get_self_dahanghai_info(page: int = 1, page_size: int = 10, credential: Credential | None = None) -> dict:
     """
     获取自己开通的大航海信息
 
@@ -1944,9 +1863,7 @@ async def get_area_info() -> dict:
     return await Api(**api).result
 
 
-async def get_live_followers_info(
-    need_recommend: bool = True, credential: Credential | None = None
-) -> dict:
+async def get_live_followers_info(need_recommend: bool = True, credential: Credential | None = None) -> dict:
     """
     获取关注列表中正在直播的直播间信息，包括房间直播热度，房间名称及标题，清晰度，是否官方认证等信息。
 
@@ -1966,9 +1883,7 @@ async def get_live_followers_info(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_unlive_followers_info(
-    page: int = 1, page_size: int = 30, credential: Credential | None = None
-) -> dict:
+async def get_unlive_followers_info(page: int = 1, page_size: int = 30, credential: Credential | None = None) -> dict:
     """
     获取关注列表中未在直播的直播间信息，包括上次开播时间，上次开播的类别，直播间公告，是否有录播等。
 
@@ -1993,9 +1908,7 @@ async def get_unlive_followers_info(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def create_live_reserve(
-    title: str, start_time: int, credential: Credential
-) -> dict:
+async def create_live_reserve(title: str, start_time: int, credential: Credential) -> dict:
     """
     创建直播预约
 
@@ -2020,9 +1933,7 @@ async def create_live_reserve(
     return await Api(**api, credential=credential).update_data(**data).result
 
 
-async def get_self_live_watching_history(
-    credential: Credential
-) -> dict:
+async def get_self_live_watching_history(credential: Credential) -> dict:
     """
     获取用户直播观看记录
 

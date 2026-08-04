@@ -2,30 +2,25 @@
 bilibili_api.utils._api — API 请求核心。
 """
 
+from dataclasses import dataclass, field
 import json
 import re
-from dataclasses import dataclass, field
 
 from ..exceptions import (
+    NetworkException,
     ResponseCodeException,
     WbiRetryTimesExceedException,
-    NetworkException,
 )
-
-from ._types import BiliAPIFile, BiliAPIResponse, request_settings
-from ._session import BiliAPIClient
-from ._session import get_client
-from ._types import HEADERS
 from ._anti_spider import (
     _enc_dm,
     _enc_sign,
     _enc_wbi,
+    anti_spider_cache,
 )
 from ._credential import Credential
 from ._log import request_log
-
-
-from ._anti_spider import anti_spider_cache
+from ._session import BiliAPIClient, get_client
+from ._types import HEADERS, BiliAPIFile, BiliAPIResponse, request_settings
 
 
 def refresh_buvid() -> None:
@@ -136,10 +131,10 @@ class Api:
         self.method = self.method.upper()
         self.original_data = self.data.copy()
         self.original_params = self.params.copy()
-        self.data = {k: "" for k in self.data.keys()}
-        self.params = {k: "" for k in self.params.keys()}
-        self.files = {k: "" for k in self.files.keys()}
-        self.headers = {k: "" for k in self.headers.keys()}
+        self.data = dict.fromkeys(self.data.keys(), "")
+        self.params = dict.fromkeys(self.params.keys(), "")
+        self.files = dict.fromkeys(self.files.keys(), "")
+        self.headers = dict.fromkeys(self.headers.keys(), "")
         self.credential = self.credential if self.credential else Credential()
 
     def update_data(self, **kwargs) -> "Api":
@@ -188,12 +183,12 @@ class Api:
         for key, value in self.params.items():
             if isinstance(value, bool):
                 new_params[key] = int(value)
-            elif value != None:
+            elif value is not None:
                 new_params[key] = value
         for key, value in self.data.items():
             if isinstance(value, bool):
                 new_params[key] = int(value)
-            elif value != None:
+            elif value is not None:
                 new_data[key] = value
         self.params, self.data = new_params, new_data
         # 如果接口需要 Credential 且未传入 sessdata 鉴权则报错
@@ -211,15 +206,11 @@ class Api:
             self.params = _enc_dm(self.params)
         # 普遍存在的 wbi 鉴权
         if self.wbi:
-            self.params = _enc_wbi(
-                self.params, await get_wbi_mixin_key(self.credential)
-            )
+            self.params = _enc_wbi(self.params, await get_wbi_mixin_key(self.credential))
         # 自动添加 csrf
-        if (
-            not self.no_csrf
-            and self.verify
-            and self.method in ["POST", "DELETE", "PATCH"]
-        ) and isinstance(self.data, dict):
+        if (not self.no_csrf and self.verify and self.method in ["POST", "DELETE", "PATCH"]) and isinstance(
+            self.data, dict
+        ):
             self.data["csrf"] = self.credential.bili_jct
             self.data["csrf_token"] = self.credential.bili_jct
         # 处理 cookies
@@ -255,9 +246,7 @@ class Api:
 
         return config
 
-    def _process_response(
-        self, resp: BiliAPIResponse, raw: bool = False
-    ) -> int | str | dict | None:
+    def _process_response(self, resp: BiliAPIResponse, raw: bool = False) -> int | str | dict | None:
         # 检查状态码
         if resp.code != 200:
             raise NetworkException(resp.code, resp.utf8_text())
@@ -269,9 +258,7 @@ class Api:
         resp_text = resp.utf8_text()
         if "callback" in self.params:
             # JSONP 请求
-            resp_data: dict = json.loads(
-                re.match("^.*?({.*}).*$", resp_text, re.S).group(1)
-            )
+            resp_data: dict = json.loads(re.match("^.*?({.*}).*$", resp_text, re.S).group(1))
         else:
             # JSON
             resp_data: dict = json.loads(resp_text)
@@ -283,9 +270,7 @@ class Api:
             if OK is None:
                 code = resp_data.get("code")
                 if code is None:
-                    raise ResponseCodeException(
-                        -1, "API 返回数据未含 code 字段", resp_data
-                    )
+                    raise ResponseCodeException(-1, "API 返回数据未含 code 字段", resp_data)
                 if code != 0:
                     msg = resp_data.get("msg")
                     if msg is None:
@@ -303,9 +288,7 @@ class Api:
                 real_data = resp_data.get("result")
         return real_data
 
-    async def _request(
-        self, raw: bool = False, byte: bool = False
-    ) -> int | str | dict | bytes | None:
+    async def _request(self, raw: bool = False, byte: bool = False) -> int | str | dict | bytes | None:
         request_log.dispatch(
             "API_REQUEST",
             "Api 发起请求",
@@ -332,9 +315,7 @@ class Api:
             request_settings.set_proxy(legacy_proxy)
         return ret
 
-    async def request(
-        self, raw: bool = False, byte: bool = False
-    ) -> int | str | dict | bytes | None:
+    async def request(self, raw: bool = False, byte: bool = False) -> int | str | dict | bytes | None:
         """
         向接口发送请求。
 
@@ -364,8 +345,7 @@ class Api:
                     continue
                 # 不是 -403 错误直接报错
                 raise e
-            except BaseException:
-                raise WbiRetryTimesExceedException()
+        raise WbiRetryTimesExceedException()
 
     @property
     async def result(self) -> int | str | dict | bytes | None:
@@ -394,11 +374,9 @@ async def bili_simple_download(url: str, out: str, intro: str):
     with open(out, "wb") as file:
         while True:
             bts += file.write(await get_client().download_chunk(dwn_id))
-            print(f"{intro} - {out} [{bts} / {tot}]", end="\r")
             if bts == tot:
                 break
     await get_client().download_close(cnt=dwn_id)
-    print()
 
 
 ################################################## END Api ##################################################

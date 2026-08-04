@@ -7,12 +7,12 @@ bilibili_api.ass
 import json
 from tempfile import gettempdir
 
-from .video import Video
 from .bangumi import Episode
 from .cheese import CheeseVideo
+from .exceptions import ArgsException
 from .utils.danmaku2ass import Danmaku2ASS
 from .utils.network import Api, Credential
-from .exceptions import ArgsException
+from .video import Video
 
 
 class AssSubtitleObject:
@@ -71,17 +71,12 @@ class AssSubtitleObject:
                 self.__lan_set = None
 
         for subtitle in self.__json_lan_list:
-            if (
-                subtitle["lan"] == self.__lan_set
-                or subtitle["lan_doc"] == self.__lan_set
-            ):
+            if subtitle["lan"] == self.__lan_set or subtitle["lan_doc"] == self.__lan_set:
                 url = subtitle["subtitle_url"]
                 if isinstance(self.__obj, Episode) or "https:" not in url:
                     url = "https:" + url
 
-                self.__json_subtitle_data = await Api(url=url, method="GET").request(
-                    raw=True
-                )  # type: ignore
+                self.__json_subtitle_data = await Api(url=url, method="GET").request(raw=True)  # type: ignore
                 return self.__json_subtitle_data["body"]  # type: ignore
 
         raise ArgsException("没有找到指定字幕")
@@ -100,9 +95,7 @@ class AssSubtitleObject:
             if self.__json_subtitle_data:
                 self.__data_string = json.dumps(self.__json_subtitle_data)
             else:
-                self.__data_string = json.dumps(
-                    await self.request_ass_data_json(lan_set=lan_set)
-                )
+                self.__data_string = json.dumps(await self.request_ass_data_json(lan_set=lan_set))
 
         return self.__data_string
 
@@ -123,17 +116,11 @@ class AssSubtitleObject:
                 str(int(comment["from"]) // 3600).zfill(2),
                 str(int(comment["from"]) // 60 % 60).zfill(2),
                 str(int(comment["from"]) % 60).zfill(2),
-                str(int(round(comment["from"] - int(comment["from"]), 2) * 100)).zfill(
-                    2
-                ),
+                str(int(round(comment["from"] - int(comment["from"]), 2) * 100)).zfill(2),
                 str(int(comment["to"] - 0.01) // 3600).zfill(2),
                 str(int(comment["to"] - 0.01) // 60 % 60).zfill(2),
                 str(int(comment["to"] - 0.01) % 60).zfill(2),
-                str(
-                    int(
-                        round(comment["to"] - 0.01 - int(comment["to"] - 0.01), 2) * 100
-                    )
-                ).zfill(2),
+                str(int(round(comment["to"] - 0.01 - int(comment["to"] - 0.01), 2) * 100)).zfill(2),
                 comment["content"],
             )
 
@@ -174,17 +161,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 str(int(comment["from"]) // 3600).zfill(2),
                 str(int(comment["from"]) // 60 % 60).zfill(2),
                 str(int(comment["from"]) % 60).zfill(2),
-                str(int(round(comment["from"] - int(comment["from"]), 2) * 100)).zfill(
-                    2
-                ),
+                str(int(round(comment["from"] - int(comment["from"]), 2) * 100)).zfill(2),
                 str(int(comment["to"] - 0.01) // 3600).zfill(2),
                 str(int(comment["to"] - 0.01) // 60 % 60).zfill(2),
                 str(int(comment["to"] - 0.01) % 60).zfill(2),
-                str(
-                    int(
-                        round(comment["to"] - 0.01 - int(comment["to"] - 0.01), 2) * 100
-                    )
-                ).zfill(2),
+                str(int(round(comment["to"] - 0.01 - int(comment["to"] - 0.01), 2) * 100)).zfill(2),
                 comment["content"],
             )
         return ret
@@ -317,9 +298,7 @@ async def request_subtitle(
     Returns:
         AssSubtitleObject: 字幕对象
     """
-    subtitle_data_obj = await request_subtitle_languages(
-        obj=obj, page_index=page_index, cid=cid, credential=credential
-    )
+    subtitle_data_obj = await request_subtitle_languages(obj=obj, page_index=page_index, cid=cid, credential=credential)
 
     try:
         await subtitle_data_obj.request_ass_data_json(lan_set=lan_code)

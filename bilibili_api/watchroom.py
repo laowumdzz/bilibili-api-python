@@ -6,8 +6,8 @@ bilibili_api.watchroom
 注意，此类操作务必传入 `Credential` 并且要求传入 `buvid3` 否则可能无法鉴权
 """
 
-import time
 from enum import Enum
+import time
 from typing import Union
 
 from .utils.network import Api, Credential
@@ -127,11 +127,7 @@ class WatchRoom:
 
     async def __fetch_meta(self) -> None:
         params = {"room_id": self.get_room_id(), "platform": "web"}
-        info: dict = await (
-            Api(credential=self.credential, **API["info"]["info"])
-            .update_params(**params)
-            .result
-        )
+        info: dict = await Api(credential=self.credential, **API["info"]["info"]).update_params(**params).result
         self.set_season_id(info["status"]["season_id"])
         self.set_episode_id(info["status"]["episode_id"])
 
@@ -193,9 +189,7 @@ class WatchRoom:
         """
         api = API["info"]["info"]
         params = {"room_id": self.get_room_id(), "platform": "web"}
-        return (
-            await Api(credential=self.credential, **api).update_params(**params).result
-        )
+        return await Api(credential=self.credential, **api).update_params(**params).result
 
     async def open(self) -> None:
         """
@@ -208,11 +202,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def close(self) -> None:
         """
@@ -225,13 +215,9 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
-    async def progress(self, progress: int = None, status: int = 1) -> None:
+    async def progress(self, progress: int | None = None, status: int = 1) -> None:
         """
         设置播放状态，包括暂停与进度条
 
@@ -249,11 +235,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def join(self, token: str = "") -> dict:
         """
@@ -273,11 +255,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        res = (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )
+        res = await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
         self.set_season_id(res["season_id"])
         self.set_episode_id(res["episode_id"])
         return res
@@ -296,17 +274,13 @@ class WatchRoom:
         data = {
             "room_id": self.get_room_id(),
             "content_type": 0,
-            "content": '{"text":"%s"}' % msg,
+            "content": f'{{"text":"{msg}"}}',
             "req_id": int(time.time()) * 1000,
             "platform": "web",
             "csrf": self.credential.bili_jct,
         }
         api = API["operate"]["send"]
-        return (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def kickout(self, uid: int) -> dict:
         """
@@ -326,11 +300,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def share(self) -> str:
         """
@@ -347,11 +317,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        res = (
-            await Api(credential=self.credential, no_csrf=True, **api)
-            .update_params(**params)
-            .result
-        )
+        res = await Api(credential=self.credential, no_csrf=True, **api).update_params(**params).result
         return res["room_info"]["share_url"].split("&token=")[-1]
 
 
@@ -390,9 +356,7 @@ async def create(
         "csrf": credential.bili_jct,
         "platform": "web",
     }
-    room_id = (
-        await Api(credential=credential, no_csrf=True, **api).update_data(**data).result
-    )["room_id"]
+    room_id = (await Api(credential=credential, no_csrf=True, **api).update_data(**data).result)["room_id"]
     watch_room_bangumi_cache[room_id] = [season_id, episode_id]
     return WatchRoom(room_id=room_id, credential=credential)
 
@@ -425,10 +389,6 @@ async def match(
         "platform": "web",
     }
     return WatchRoom(
-        (
-            await Api(credential=credential, no_csrf=True, **api)
-            .update_data(**data)
-            .result
-        )["room_id"],
+        (await Api(credential=credential, no_csrf=True, **api).update_data(**data).result)["room_id"],
         credential=credential,
     )

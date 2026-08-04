@@ -8,8 +8,8 @@ bilibili_api.music
 
 from enum import Enum
 
-from .utils.utils import get_api
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API_audio = get_api("audio")
 API = get_api("music")

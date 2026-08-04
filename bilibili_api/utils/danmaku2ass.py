@@ -14,22 +14,19 @@
 # pylint: skip-file
 # type: ignore
 
-import io
-import os
-import re
-import sys
-import json
-import math
-import time
-import random
-import gettext
-import logging
 import argparse
 import calendar
+import gettext
+import io
+import json
+import logging
+import math
+import os
+import random
+import re
+import sys
+import time
 import xml.dom.minidom
-
-if sys.version_info < (3,):
-    raise RuntimeError("at least Python 3.0 is required")
 
 gettext.install(
     "danmaku2ass",
@@ -356,35 +353,19 @@ def ReadCommentsTudou2(f, fontsize):
 
 
 def ReadCommentsMioMio(f, fontsize):
-    NiconicoColorMap = {
-        "red": 0xFF0000,
-        "pink": 0xFF8080,
-        "orange": 0xFFC000,
-        "yellow": 0xFFFF00,
-        "green": 0x00FF00,
-        "cyan": 0x00FFFF,
-        "blue": 0x0000FF,
-        "purple": 0xC000FF,
-        "black": 0x000000,
-    }
     dom = xml.dom.minidom.parse(f)
     comment_element = dom.getElementsByTagName("data")
     for i, comment in enumerate(comment_element):
         try:
             message = comment.getElementsByTagName("message")[0]
             c = str(message.childNodes[0].wholeText)
-            pos = 0
             size = int(message.getAttribute("fontsize")) * fontsize / 25.0
             yield (
-                float(
-                    comment.getElementsByTagName("playTime")[0].childNodes[0].wholeText
-                ),
+                float(comment.getElementsByTagName("playTime")[0].childNodes[0].wholeText),
                 int(
                     calendar.timegm(
                         time.strptime(
-                            comment.getElementsByTagName("times")[0]
-                            .childNodes[0]
-                            .wholeText,
+                            comment.getElementsByTagName("times")[0].childNodes[0].wholeText,
                             "%Y-%m-%d %H:%M:%S",
                         )
                     )
@@ -428,10 +409,7 @@ def WriteCommentBilibiliPositioned(f, c, width, height, styleid):
             if InputPos > 1:
                 return ZoomFactor[0] * InputPos + ZoomFactor[isHeight + 1]
             else:
-                return (
-                    BiliPlayerSize[isHeight] * ZoomFactor[0] * InputPos
-                    + ZoomFactor[isHeight + 1]
-                )
+                return BiliPlayerSize[isHeight] * ZoomFactor[0] * InputPos + ZoomFactor[isHeight + 1]
         else:
             try:
                 InputPos = int(InputPos)
@@ -462,36 +440,30 @@ def WriteCommentBilibiliPositioned(f, c, width, height, styleid):
         delay = int(comment_args.get(10, 0))
         fontface = comment_args.get(12)
         isborder = comment_args.get(11, "true")
-        from_rotarg = ConvertFlashRotation(
-            rotate_y, rotate_z, from_x, from_y, width, height
-        )
+        from_rotarg = ConvertFlashRotation(rotate_y, rotate_z, from_x, from_y, width, height)
         to_rotarg = ConvertFlashRotation(rotate_y, rotate_z, to_x, to_y, width, height)
         styles = ["\\org(%d, %d)" % (width / 2, height / 2)]
         if from_rotarg[0:2] == to_rotarg[0:2]:
-            styles.append("\\pos(%.0f, %.0f)" % (from_rotarg[0:2]))
+            styles.append("\\pos({:.0f}, {:.0f})".format(*from_rotarg[0:2]))
         else:
             styles.append(
                 "\\move(%.0f, %.0f, %.0f, %.0f, %.0f, %.0f)"
                 % (from_rotarg[0:2] + to_rotarg[0:2] + (delay, delay + duration))
             )
-        styles.append(
-            "\\frx%.0f\\fry%.0f\\frz%.0f\\fscx%.0f\\fscy%.0f" % (from_rotarg[2:7])
-        )
+        styles.append("\\frx{:.0f}\\fry{:.0f}\\frz{:.0f}\\fscx{:.0f}\\fscy{:.0f}".format(*from_rotarg[2:7]))
         if (from_x, from_y) != (to_x, to_y):
             styles.append("\\t(%d, %d, " % (delay, delay + duration))
-            styles.append(
-                "\\frx%.0f\\fry%.0f\\frz%.0f\\fscx%.0f\\fscy%.0f" % (to_rotarg[2:7])
-            )
+            styles.append("\\frx{:.0f}\\fry{:.0f}\\frz{:.0f}\\fscx{:.0f}\\fscy{:.0f}".format(*to_rotarg[2:7]))
             styles.append(")")
         if fontface:
-            styles.append("\\fn%s" % ASSEscape(fontface))
+            styles.append(f"\\fn{ASSEscape(fontface)}")
         styles.append("\\fs%.0f" % (c[6] * ZoomFactor[0]))
         if c[5] != 0xFFFFFF:
-            styles.append("\\c&H%s&" % ConvertColor(c[5]))
+            styles.append(f"\\c&H{ConvertColor(c[5])}&")
             if c[5] == 0x000000:
                 styles.append("\\3c&HFFFFFF&")
         if from_alpha == to_alpha:
-            styles.append("\\alpha&H%02X" % from_alpha)
+            styles.append(f"\\alpha&H{from_alpha:02X}")
         elif (from_alpha, to_alpha) == (255, 0):
             styles.append("\\fad(%.0f,0)" % (lifetime * 1000))
         elif (from_alpha, to_alpha) == (0, 255):
@@ -508,14 +480,13 @@ def WriteCommentBilibiliPositioned(f, c, width, height, styleid):
         if isborder == "false":
             styles.append("\\bord0")
         f.write(
-            "Dialogue: -1,%(start)s,%(end)s,%(styleid)s,,0,0,0,,{%(styles)s}%(text)s\n"
-            % {
-                "start": ConvertTimestamp(c[0]),
-                "end": ConvertTimestamp(c[0] + lifetime),
-                "styles": "".join(styles),
-                "text": text,
-                "styleid": styleid,
-            }
+            "Dialogue: -1,{start},{end},{styleid},,0,0,0,,{{{styles}}}{text}\n".format(
+                start=ConvertTimestamp(c[0]),
+                end=ConvertTimestamp(c[0] + lifetime),
+                styles="".join(styles),
+                text=text,
+                styleid=styleid,
+            )
         )
     except (IndexError, ValueError):
         try:
@@ -530,10 +501,7 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
 
     def GetPosition(InputPos, isHeight):
         isHeight = int(isHeight)  # True -> 1
-        return (
-            AcfunPlayerSize[isHeight] * ZoomFactor[0] * InputPos * 0.001
-            + ZoomFactor[isHeight + 1]
-        )
+        return AcfunPlayerSize[isHeight] * ZoomFactor[0] * InputPos * 0.001 + ZoomFactor[isHeight + 1]
 
     def GetTransformStyles(
         x=None,
@@ -557,8 +525,9 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
             if scale_y is None:
                 scale_y = 1
             styles.append(
-                "\\frx%.0f\\fry%.0f\\frz%.0f\\fscx%.0f\\fscy%.0f"
-                % (rotarg[2:5] + (rotarg[5] * scale_x, rotarg[6] * scale_y))
+                "\\frx{:.0f}\\fry{:.0f}\\frz{:.0f}\\fscx{:.0f}\\fscy{:.0f}".format(
+                    *rotarg[2:5], rotarg[5] * scale_x, rotarg[6] * scale_y
+                )
             )
         else:
             if scale_x is not None:
@@ -566,42 +535,39 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
             if scale_y is not None:
                 styles.append("\\fscy%.0f" % (scale_y * 100))
         if color is not None:
-            styles.append("\\c&H%s&" % ConvertColor(color))
+            styles.append(f"\\c&H{ConvertColor(color)}&")
             if color == 0x000000:
                 styles.append("\\3c&HFFFFFF&")
         if alpha is not None:
             alpha = 255 - round(alpha * 255)
-            styles.append("\\alpha&H%02X" % alpha)
+            styles.append(f"\\alpha&H{alpha:02X}")
         return out_x, out_y, styles
 
     def FlushCommentLine(f, text, styles, start_time, end_time, styleid):
         if end_time > start_time:
             f.write(
-                "Dialogue: -1,%(start)s,%(end)s,%(styleid)s,,0,0,0,,{%(styles)s}%(text)s\n"
-                % {
-                    "start": ConvertTimestamp(start_time),
-                    "end": ConvertTimestamp(end_time),
-                    "styles": "".join(styles),
-                    "text": text,
-                    "styleid": styleid,
-                }
+                "Dialogue: -1,{start},{end},{styleid},,0,0,0,,{{{styles}}}{text}\n".format(
+                    start=ConvertTimestamp(start_time),
+                    end=ConvertTimestamp(end_time),
+                    styles="".join(styles),
+                    text=text,
+                    styleid=styleid,
+                )
             )
 
     try:
         comment_args = c[3]
         text = ASSEscape(str(comment_args["n"]).replace("\r", "\n"))
         common_styles = ["\\org(%d, %d)" % (width / 2, height / 2)]
-        anchor = {0: 7, 1: 8, 2: 9, 3: 4, 4: 5, 5: 6, 6: 1, 7: 2, 8: 3}.get(
-            comment_args.get("c", 0), 7
-        )
+        anchor = {0: 7, 1: 8, 2: 9, 3: 4, 4: 5, 5: 6, 6: 1, 7: 2, 8: 3}.get(comment_args.get("c", 0), 7)
         if anchor != 7:
-            common_styles.append("\\an%s" % anchor)
+            common_styles.append(f"\\an{anchor}")
         font = comment_args.get("w")
         if font:
             font = dict(font)
             fontface = font.get("f")
             if fontface:
-                common_styles.append("\\fn%s" % ASSEscape(str(fontface)))
+                common_styles.append(f"\\fn{ASSEscape(str(fontface))}")
             fontbold = bool(font.get("b"))
             if fontbold:
                 common_styles.append("\\b1")
@@ -634,9 +600,7 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
         FlushCommentLine(
             f,
             text,
-            common_styles
-            + ["\\pos(%.0f, %.0f)" % (to_out_x, to_out_y)]
-            + transform_styles,
+            [*common_styles, f"\\pos({to_out_x:.0f}, {to_out_y:.0f})", *transform_styles],
             c[0] + from_time,
             c[0] + from_time + action_time,
             styleid,
@@ -644,10 +608,10 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
         action_styles = transform_styles
         for action in actions:
             action = dict(action)
-            from_x, from_y = to_x, to_y
+            _from_x, _from_y = to_x, to_y
             from_out_x, from_out_y = to_out_x, to_out_y
             from_scale_x, from_scale_y = to_scale_x, to_scale_y
-            from_rotate_z, from_rotate_y = to_rotate_z, to_rotate_y
+            _from_rotate_z, _from_rotate_y = to_rotate_z, to_rotate_y
             from_color, from_alpha = to_color, to_alpha
             transform_styles, action_styles = action_styles, []
             from_time += action_time
@@ -679,18 +643,13 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
                 from_alpha,
             )
             if (from_out_x, from_out_y) == (to_out_x, to_out_y):
-                pos_style = "\\pos(%.0f, %.0f)" % (to_out_x, to_out_y)
+                pos_style = f"\\pos({to_out_x:.0f}, {to_out_y:.0f})"
             else:
-                pos_style = "\\move(%.0f, %.0f, %.0f, %.0f)" % (
-                    from_out_x,
-                    from_out_y,
-                    to_out_x,
-                    to_out_y,
-                )
+                pos_style = f"\\move({from_out_x:.0f}, {from_out_y:.0f}, {to_out_x:.0f}, {to_out_y:.0f})"
             styles = common_styles + transform_styles
             styles.append(pos_style)
             if action_styles:
-                styles.append("\\t(%s)" % ("".join(action_styles)))
+                styles.append("\\t({})".format("".join(action_styles)))
             FlushCommentLine(
                 f,
                 text,
@@ -759,30 +718,21 @@ def ConvertFlashRotation(rotY, rotZ, X, Y, width, height):
     else:
         rotY *= math.pi / 180.0
         rotZ *= math.pi / 180.0
-        outY = (
-            math.atan2(-math.sin(rotY) * math.cos(rotZ), math.cos(rotY)) * 180 / math.pi
-        )
-        outZ = (
-            math.atan2(-math.cos(rotY) * math.sin(rotZ), math.cos(rotZ)) * 180 / math.pi
-        )
+        outY = math.atan2(-math.sin(rotY) * math.cos(rotZ), math.cos(rotY)) * 180 / math.pi
+        outZ = math.atan2(-math.cos(rotY) * math.sin(rotZ), math.cos(rotZ)) * 180 / math.pi
         outX = math.asin(math.sin(rotY) * math.sin(rotZ)) * 180 / math.pi
     trX = (
         (X * math.cos(rotZ) + Y * math.sin(rotZ)) / math.cos(rotY)
         + (1 - math.cos(rotZ) / math.cos(rotY)) * width / 2
         - math.sin(rotZ) / math.cos(rotY) * height / 2
     )
-    trY = (
-        Y * math.cos(rotZ)
-        - X * math.sin(rotZ)
-        + math.sin(rotZ) * width / 2
-        + (1 - math.cos(rotZ)) * height / 2
-    )
+    trY = Y * math.cos(rotZ) - X * math.sin(rotZ) + math.sin(rotZ) * width / 2 + (1 - math.cos(rotZ)) * height / 2
     trZ = (trX - width / 2) * math.sin(rotY)
     FOV = width * math.tan(2 * math.pi / 9.0) / 2
     try:
         scaleXY = FOV / (FOV + trZ)
     except ZeroDivisionError:
-        logging.error("Rotation makes object behind the camera: trZ == %.0f" % trZ)
+        logging.error(f"Rotation makes object behind the camera: trZ == {trZ:.0f}")
         scaleXY = 1
     trX = (trX - width / 2) * scaleXY + width / 2
     trY = (trY - height / 2) * scaleXY + height / 2
@@ -790,9 +740,7 @@ def ConvertFlashRotation(rotY, rotZ, X, Y, width, height):
         scaleXY = -scaleXY
         outX += 180
         outY += 180
-        logging.error(
-            "Rotation makes object behind the camera: trZ == %.0f < %.0f" % (trZ, FOV)
-        )
+        logging.error(f"Rotation makes object behind the camera: trZ == {trZ:.0f} < {FOV:.0f}")
     return (
         trX,
         trY,
@@ -819,7 +767,7 @@ def ProcessComments(
     reduced,
     progress_callback,
 ):
-    styleid = "Danmaku2ASS_%04x" % random.randint(0, 0xFFFF)
+    styleid = f"Danmaku2ASS_{random.randint(0, 0xFFFF):04x}"
     WriteASSHead(f, width, height, fontface, fontsize, alpha, styleid)
     rows = [[None] * (height - bottomReserved + 1) for i in range(4)]
     for idx, i in enumerate(comments):
@@ -889,9 +837,7 @@ def ProcessComments(
         progress_callback(len(comments), len(comments))
 
 
-def TestFreeRows(
-    rows, c, row, width, height, bottomReserved, duration_marquee, duration_still
-):
+def TestFreeRows(rows, c, row, width, height, bottomReserved, duration_marquee, duration_still):
     res = 0
     rowmax = height - bottomReserved
     targetRow = None
@@ -914,9 +860,7 @@ def TestFreeRows(
                 try:
                     if targetRow and (
                         targetRow[0] > thresholdTime
-                        or targetRow[0]
-                        + targetRow[8] * duration_marquee / (targetRow[8] + width)
-                        > c[0]
+                        or targetRow[0] + targetRow[8] * duration_marquee / (targetRow[8] + width) > c[0]
                     ):
                         break
                 except ZeroDivisionError:
@@ -991,9 +935,7 @@ def WriteComment(
     text = ASSEscape(c[3])
     styles = []
     if c[4] == 1:
-        styles.append(
-            "\\an8\\pos(%(halfwidth)d, %(row)d)" % {"halfwidth": width / 2, "row": row}
-        )
+        styles.append("\\an8\\pos(%(halfwidth)d, %(row)d)" % {"halfwidth": width / 2, "row": row})
         duration = duration_still
     elif c[4] == 2:
         styles.append(
@@ -1003,31 +945,28 @@ def WriteComment(
         duration = duration_still
     elif c[4] == 3:
         styles.append(
-            "\\move(%(neglen)d, %(row)d, %(width)d, %(row)d)"
-            % {"width": width, "row": row, "neglen": -math.ceil(c[8])}
+            "\\move(%(neglen)d, %(row)d, %(width)d, %(row)d)" % {"width": width, "row": row, "neglen": -math.ceil(c[8])}
         )
         duration = duration_marquee
     else:
         styles.append(
-            "\\move(%(width)d, %(row)d, %(neglen)d, %(row)d)"
-            % {"width": width, "row": row, "neglen": -math.ceil(c[8])}
+            "\\move(%(width)d, %(row)d, %(neglen)d, %(row)d)" % {"width": width, "row": row, "neglen": -math.ceil(c[8])}
         )
         duration = duration_marquee
     if not (-1 < c[6] - fontsize < 1):
-        styles.append("\\fs%.0f" % c[6])
+        styles.append(f"\\fs{c[6]:.0f}")
     if c[5] != 0xFFFFFF:
-        styles.append("\\c&H%s&" % ConvertColor(c[5]))
+        styles.append(f"\\c&H{ConvertColor(c[5])}&")
         if c[5] == 0x000000:
             styles.append("\\3c&HFFFFFF&")
     f.write(
-        "Dialogue: 2,%(start)s,%(end)s,%(styleid)s,,0000,0000,0000,,{%(styles)s}%(text)s\n"
-        % {
-            "start": ConvertTimestamp(c[0]),
-            "end": ConvertTimestamp(c[0] + duration),
-            "styles": "".join(styles),
-            "text": text,
-            "styleid": styleid,
-        }
+        "Dialogue: 2,{start},{end},{styleid},,0000,0000,0000,,{{{styles}}}{text}\n".format(
+            start=ConvertTimestamp(c[0]),
+            end=ConvertTimestamp(c[0] + duration),
+            styles="".join(styles),
+            text=text,
+            styleid=styleid,
+        )
     )
 
 
@@ -1043,14 +982,8 @@ def ASSEscape(s):
             return "".join(("\u2007" * llen, sstrip, "\u2007" * rlen))
 
     return "\\N".join(
-
-            ReplaceLeadingSpace(i) or " "
-            for i in str(s)
-            .replace("\\", "\\\\")
-            .replace("{", "\\{")
-            .replace("}", "\\}")
-            .split("\n")
-
+        ReplaceLeadingSpace(i) or " "
+        for i in str(s).replace("\\", "\\\\").replace("{", "\\{").replace("}", "\\}").split("\n")
     )
 
 
@@ -1075,26 +1008,13 @@ def ConvertColor(RGB, width=1280, height=576):
     G = (RGB >> 8) & 0xFF
     B = RGB & 0xFF
     if width < 1280 and height < 576:
-        return "%02X%02X%02X" % (B, G, R)
+        return f"{B:02X}{G:02X}{R:02X}"
     else:  # VobSub always uses BT.601 colorspace, convert to BT.709
-        ClipByte = lambda x: 255 if x > 255 else 0 if x < 0 else round(x)
-        return "%02X%02X%02X" % (
-            ClipByte(
-                R * 0.00956384088080656
-                + G * 0.03217254540203729
-                + B * 0.95826361371715607
-            ),
-            ClipByte(
-                R * -0.10493933142075390
-                + G * 1.17231478191855154
-                + B * -0.06737545049779757
-            ),
-            ClipByte(
-                R * 0.91348912373987645
-                + G * 0.07858536372532510
-                + B * 0.00792551253479842
-            ),
-        )
+
+        def ClipByte(x):
+            return 255 if x > 255 else 0 if x < 0 else round(x)
+
+        return f"{ClipByte(R * 0.00956384088080656 + G * 0.03217254540203729 + B * 0.95826361371715607):02X}{ClipByte(R * -0.10493933142075390 + G * 1.17231478191855154 + B * -0.06737545049779757):02X}{ClipByte(R * 0.91348912373987645 + G * 0.07858536372532510 + B * 0.00792551253479842):02X}"
 
 
 def ConvertType2(row, height, bottomReserved):
@@ -1167,9 +1087,7 @@ def Danmaku2ASS(
     comments = ReadComments(input_files, input_format, font_size)
     try:
         if output_file:
-            fo = ConvertToFile(
-                output_file, "w", encoding="utf-8-sig", errors="replace", newline="\r\n"
-            )
+            fo = ConvertToFile(output_file, "w", encoding="utf-8-sig", errors="replace", newline="\r\n")
         else:
             fo = sys.stdout
         ProcessComments(
@@ -1214,9 +1132,7 @@ def ReadComments(input_files, input_format, font_size=25.0, progress_callback=No
             else:
                 CommentProcessor = CommentFormatMap.get(input_format)
                 if not CommentProcessor:
-                    raise ValueError(
-                        _("Unknown comment file format: %s") % input_format
-                    )
+                    raise ValueError(_("Unknown comment file format: %s") % input_format)
             comments.extend(CommentProcessor(FilterBadChars(str_io), font_size))
     if progress_callback:
         progress_callback(len(input_files), len(input_files))
@@ -1238,8 +1154,7 @@ def main():
         "-f",
         "--format",
         metavar=_("FORMAT"),
-        help=_("Format of input file (autodetect|%s) [default: autodetect]")
-        % "|".join(i for i in CommentFormatMap),
+        help=_("Format of input file (autodetect|%s) [default: autodetect]") % "|".join(i for i in CommentFormatMap),
         default="autodetect",
     )
     parser.add_argument("-o", "--output", metavar=_("OUTPUT"), help=_("Output file"))
@@ -1289,9 +1204,7 @@ def main():
         type=float,
         default=5.0,
     )
-    parser.add_argument(
-        "-fl", "--filter", help=_("Regular expression to filter comments")
-    )
+    parser.add_argument("-fl", "--filter", help=_("Regular expression to filter comments"))
     parser.add_argument(
         "-flf",
         "--filter-file",
@@ -1311,9 +1224,7 @@ def main():
         action="store_true",
         help=_("Reduce the amount of comments if stage is full"),
     )
-    parser.add_argument(
-        "file", metavar=_("FILE"), nargs="+", help=_("Comment file to be processed")
-    )
+    parser.add_argument("file", metavar=_("FILE"), nargs="+", help=_("Comment file to be processed"))
     args = parser.parse_args()
     try:
         width, height = str(args.size).split("x", 1)

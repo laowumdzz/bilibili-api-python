@@ -1,19 +1,20 @@
 """bilibili_api._video_monitor — 视频在线监控。"""
 
 import asyncio
+from enum import Enum
 import json
 import logging
 import struct
-from typing import Optional
 
-from .utils.AsyncEvent import AsyncEvent
-from .utils.network import BiliWsMsgType, Credential, get_client, Api
-from .utils.danmaku import Danmaku
-from .utils.aid_bvid_transformer import bvid2aid
-from .utils.utils import get_api
-from .utils._types import API
 from .exceptions import ArgsException
-from enum import Enum
+from .utils.aid_bvid_transformer import bvid2aid
+from .utils.AsyncEvent import AsyncEvent
+from .utils.danmaku import Danmaku
+from .utils.network import Api, BiliWsMsgType, Credential, get_client
+from .utils.utils import get_api
+
+API = get_api("video")
+
 
 class VideoOnlineMonitor(AsyncEvent):
     """
@@ -93,6 +94,9 @@ class VideoOnlineMonitor(AsyncEvent):
         """
         super().__init__()
         self.credential: Credential = credential if credential else Credential()
+        # 懒导入避免与 video 模块循环引用
+        from .video import Video
+
         self.__video = Video(bvid, aid, credential=credential)
 
         # 智能选择在 log 中展示的 ID。
@@ -106,16 +110,12 @@ class VideoOnlineMonitor(AsyncEvent):
         self.logger = logging.getLogger(f"VideoOnlineMonitor-{id_showed}")
         if not self.logger.handlers:
             handler = logging.StreamHandler()
-            handler.setFormatter(
-                logging.Formatter(
-                    "[" + str(id_showed) + "][%(asctime)s][%(levelname)s] %(message)s"
-                )
-            )
+            handler.setFormatter(logging.Formatter("[" + str(id_showed) + "][%(asctime)s][%(levelname)s] %(message)s"))
             self.logger.addHandler(handler)
             self.logger.setLevel(logging.INFO if not debug else logging.DEBUG)
 
-            self.__page_index = page_index
-            self.__tasks = []
+        self.__page_index = page_index
+        self.__tasks = []
 
     async def connect(self):
         """
@@ -144,7 +144,7 @@ class VideoOnlineMonitor(AsyncEvent):
 
         # 获取服务器信息
         bvid = self.__video.get_bvid()
-        self.__bvid = await bvid if iscoroutine(bvid) else bvid
+        self.__bvid = await bvid if asyncio.iscoroutine(bvid) else bvid
         self.logger.debug(f"准备连接：{self.__bvid}")
         self.logger.debug("获取服务器信息中...")
 
@@ -170,19 +170,18 @@ class VideoOnlineMonitor(AsyncEvent):
         verify_info = json.dumps(verify_info, separators=(",", ":"))
         await self.__client.ws_send(
             self.__ws,
-            self.__pack(
-                VideoOnlineMonitor.Datapack.CLIENT_VERIFY, 1, verify_info.encode()
-            ),
+            self.__pack(VideoOnlineMonitor.Datapack.CLIENT_VERIFY, 1, verify_info.encode()),
         )
 
         # 循环接收消息
         while True:
             try:
                 data, flag = await self.__client.ws_recv(self.__ws)
-            except:
+            except Exception:
                 self.logger.warning("连接被异常断开")
                 await self.__cancel_all_tasks()
                 self.dispatch("ERROR", "")
+                break
             if flag == BiliWsMsgType.BINARY:
                 data = self.__unpack(data)
                 self.logger.debug(f"收到消息：{data}")
@@ -209,8 +208,8 @@ class VideoOnlineMonitor(AsyncEvent):
 
             elif d["type"] == VideoOnlineMonitor.Datapack.SERVER_HEARTBEAT.value:
                 # 心跳包反馈，同时包含在线人数。
-                self.logger.debug(f'收到服务器心跳包反馈，编号：{d["number"]}')
-                self.logger.info(f'实时观看人数：{d["data"]["data"]["room"]["online"]}')
+                self.logger.debug(f"收到服务器心跳包反馈，编号：{d['number']}")
+                self.logger.info(f"实时观看人数：{d['data']['data']['room']['online']}")
                 self.dispatch("ONLINE", d["data"])
 
             elif d["type"] == VideoOnlineMonitor.Datapack.DANMAKU.value:
@@ -325,11 +324,8 @@ class VideoOnlineMonitor(AsyncEvent):
                 {
                     "type": region_header[2],
                     "number": region_header[3],
-                    "data": json.loads(
-                        region_data[offset + 18 : offset + 18 + (region_header[0] - 16)]
-                    ),
+                    "data": json.loads(region_data[offset + 18 : offset + 18 + (region_header[0] - 16)]),
                 }
             )
             offset += region_header[0]
         return tuple(real_data)
-

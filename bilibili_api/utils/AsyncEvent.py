@@ -5,8 +5,8 @@ bilibili_api.utils.AsyncEvent
 """
 
 import asyncio
-import logging
 from collections.abc import Callable, Coroutine
+import logging
 
 
 class AsyncEvent:
@@ -96,7 +96,8 @@ class AsyncEvent:
         """
         self.__tasks.discard(task)
 
-        if task.cancelled(): return
+        if task.cancelled():
+            return
 
         logger: logging.Logger | None = getattr(self, "logger", None)
         event_name = getattr(task, "event_name", None)
@@ -132,9 +133,9 @@ class AsyncEvent:
                 obj = callableorcoroutine(*args, **kwargs)
                 if isinstance(obj, Coroutine):
                     task = asyncio.create_task(obj)
-                    task.event_name = name # 通过检查event_name避免异常被循环dispatch
+                    task.event_name = name  # 通过检查event_name避免异常被循环dispatch
                     task.add_done_callback(self.__on_task_done)
-                    self.__tasks.add(task) # 保持对task的引用状态
+                    self.__tasks.add(task)  # 保持对task的引用状态
 
         # __ALL__事件应排除__TASK_EXCEPTION__以保证不破坏旧代码行为
         if name != "__ALL__" and name != "__TASK_EXCEPTION__":

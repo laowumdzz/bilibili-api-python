@@ -2,6 +2,9 @@
 bilibili_api.utils._anti_spider — 反爬虫相关逻辑。
 """
 
+################################################## BEGIN Anti-Spider ##################################################
+import asyncio
+from functools import reduce
 import hashlib
 import hmac
 import io
@@ -10,21 +13,14 @@ import random
 import struct
 import time
 import urllib.parse
-from functools import reduce
 
 from ..exceptions import (
     ExClimbWuzhiException,
 )
-
-from ._session import get_client
 from ._credential import Credential
 from ._log import request_log
-from ._types import APPKEY, APPSEC, HEADERS, API
-
-################################################## BEGIN Anti-Spider ##################################################
-
-
-import asyncio
+from ._session import get_client
+from ._types import API, APPKEY, APPSEC, HEADERS
 
 
 class AntiSpiderCache:
@@ -36,11 +32,14 @@ class AntiSpiderCache:
         self._bili_ticket: str = ""
         self._bili_ticket_expires: int = 0
         self._wbi_mixin_key: str = ""
-        self._lock = asyncio.Lock()
+        # 惰性创建，避免 sync() 包装器跨事件循环复用时 RuntimeError
+        self._lock: asyncio.Lock | None = None
 
     async def get_buvid(self):
         """获取 buvid3/buvid4，过期时自动刷新"""
         if self._buvid3 == "" or self._buvid4 == "":
+            if self._lock is None:
+                self._lock = asyncio.Lock()
             async with self._lock:
                 if self._buvid3 == "" or self._buvid4 == "":
                     spi = await _get_spi_buvid()
@@ -187,10 +186,13 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
 
     def gen_uuid_infoc() -> str:
         t = get_time_milli() % 100000
-        mp = list("123456789ABCDEF") + ["10"]
+        mp = [*list("123456789ABCDEF"), "10"]
         pck = [8, 4, 4, 4, 12]
-        gen_part = lambda x: "".join([random.choice(mp) for _ in range(x)])
-        return "-".join([gen_part(l) for l in pck]) + str(t).ljust(5, "0") + "infoc"
+
+        def gen_part(x):
+            return "".join([random.choice(mp) for _ in range(x)])
+
+        return "-".join([gen_part(size) for size in pck]) + str(t).ljust(5, "0") + "infoc"
 
     def gen_b_lsid() -> str:
         ret = ""

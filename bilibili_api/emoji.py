@@ -4,17 +4,13 @@ bilibili_api.emoji
 表情包相关
 """
 
-from .utils.utils import get_api
 from .utils.network import Api, Credential
-
-
+from .utils.utils import get_api
 
 API = get_api("emoji")
 
 
-async def get_emoji_list(
-    business: str = "reply", credential: Credential = None
-) -> dict:
+async def get_emoji_list(business: str = "reply", credential: Credential = None) -> dict:
     """
     获取表情包列表
 
@@ -67,6 +63,7 @@ async def get_all_emoji(business: str = "reply", credential: Credential = None) 
     params = {"business": business}
     return await Api(**api, credential=credential).update_params(**params).result
 
+
 async def add_emoji(package_id: int, credential: Credential = None) -> dict:
     """
     添加表情包
@@ -82,8 +79,8 @@ async def add_emoji(package_id: int, credential: Credential = None) -> dict:
     credential.raise_for_no_sessdata()
     api = API["add"]
     params = {
-        'package_id': package_id,
-        'business': 'reply',
-        'csrf': credential.bili_jct,
+        "package_id": package_id,
+        "business": "reply",
+        "csrf": credential.bili_jct,
     }
     return await Api(**api, credential=credential).update_params(**params).result

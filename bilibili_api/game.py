@@ -4,10 +4,10 @@ bilibili_api.game
 游戏相关
 """
 
-import re
 from enum import Enum
-from .exceptions import ApiException
+import re
 
+from .exceptions import ApiException
 from .utils.network import Api, Credential
 from .utils.utils import get_api
 
@@ -22,7 +22,7 @@ class Game:
         credential (Credential): 凭据类
     """
 
-    def __init__(self, game_id: int, credential: None | Credential = None):
+    def __init__(self, game_id: int, credential: Credential | None = None):
         """
         Args:
             game_id    (int)       : 游戏 id
@@ -50,9 +50,7 @@ class Game:
         """
         api = API["info"]["info"]
         params = {"game_base_id": self.__game_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_up_info(self) -> dict:
         """
@@ -63,9 +61,7 @@ class Game:
         """
         api = API["info"]["UP"]
         params = {"game_base_id": self.__game_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_detail(self) -> dict:
         """
@@ -76,9 +72,7 @@ class Game:
         """
         api = API["info"]["detail"]
         params = {"game_base_id": self.__game_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_wiki(self) -> dict:
         """
@@ -89,9 +83,7 @@ class Game:
         """
         api = API["info"]["wiki"]
         params = {"game_base_id": self.__game_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_videos(self) -> dict:
         """
@@ -102,9 +94,7 @@ class Game:
         """
         api = API["info"]["videos"]
         params = {"game_base_id": self.__game_id}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     # async def get_score(self) -> dict:
     #     """
@@ -155,9 +145,7 @@ class GameRankType(Enum):
     CLIENT = 11
 
 
-async def get_game_rank(
-    rank_type: GameRankType, page_num: int = 1, page_size: int = 20
-) -> dict:
+async def get_game_rank(rank_type: GameRankType, page_num: int = 1, page_size: int = 20) -> dict:
     """
     获取游戏排行榜
 
@@ -237,9 +225,7 @@ async def game_name2id(game_name: str) -> str:
     if match is None:
         raise ApiException("获取游戏编码失败")
     wiki_page_template_content = match.group(1)
-    wiki_page_template_content = wiki_page_template_content.encode("ascii").decode(
-        "unicode-escape"
-    )
+    wiki_page_template_content = wiki_page_template_content.encode("ascii").decode("unicode-escape")
     for prop in wiki_page_template_content.split("|"):
         if prop.startswith("WIKI域名="):
             return prop.lstrip("WIKI域名=").rstrip()

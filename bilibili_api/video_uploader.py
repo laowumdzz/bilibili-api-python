@@ -4,28 +4,26 @@ bilibili_api.video_uploader
 视频上传
 """
 
-import os
-import json
-import time
-import base64
-import re
 import asyncio
-from enum import Enum
-from copy import copy, deepcopy
-from asyncio.tasks import Task, create_task
 from asyncio.exceptions import CancelledError
+from asyncio.tasks import Task, create_task
+import base64
+from copy import copy, deepcopy
 from datetime import datetime
+from enum import Enum
+import json
+import os
+import re
+import time
 
-from .video import Video
+from .exceptions import ApiException, NetworkException, ResponseCodeException
 from .topic import Topic
-from .utils.utils import get_api
-from .utils.picture import Picture
-from .utils.AsyncEvent import AsyncEvent
 from .utils.aid_bvid_transformer import bvid2aid
-from .exceptions import ApiException
-from .utils.network import Api, get_client, Credential, request_settings
-from .exceptions import NetworkException
-from .exceptions import ResponseCodeException
+from .utils.AsyncEvent import AsyncEvent
+from .utils.network import Api, Credential, get_client, request_settings
+from .utils.picture import Picture
+from .utils.utils import get_api
+from .video import Video
 
 _API = get_api("video_uploader")
 
@@ -41,9 +39,7 @@ async def upload_cover(cover: Picture, credential: Credential) -> str:
     api = _API["cover_up"]
     pic = cover if isinstance(cover, Picture) else Picture().from_file(cover)
     cover = pic.convert_format("png")
-    data = {
-        "cover": f'data:image/png;base64,{base64.b64encode(pic.content).decode("utf-8")}'
-    }
+    data = {"cover": f"data:image/png;base64,{base64.b64encode(pic.content).decode('utf-8')}"}
     return (await Api(**api, credential=credential).update_data(**data).result)["url"]
 
 
@@ -82,7 +78,7 @@ async def _probe() -> dict:
     # info = await Api(**api).update_params(r="probe").result # 不实时获取线路直接用 LINES_INFO
     min_cost, fastest_line = 30, None
     legacy_timeout = request_settings.get_timeout()
-    request_settings.set_timeout(30) # 测试时设置为 30
+    request_settings.set_timeout(30)  # 测试时设置为 30
     for line in LINES_INFO.values():
         start = time.perf_counter()
         data = bytes(int(1024 * 0.1 * 1024))  # post 0.1MB
@@ -90,7 +86,7 @@ async def _probe() -> dict:
         try:
             await client.request(
                 method="POST",
-                url=f'https:{line["probe_url"]}',
+                url=f"https:{line['probe_url']}",
                 data=data,
             )
             cost_time = time.perf_counter() - start
@@ -217,12 +213,10 @@ async def get_available_topics(tid: int, credential: Credential) -> list[dict]:
     credential.raise_for_no_sessdata()
     api = _API["available_topics"]
     params = {"type_id": tid, "pn": 0, "ps": 200}  # 一次性获取完
-    return (await Api(**api, credential=credential).update_params(**params).result)[
-        "topics"
-    ]
+    return (await Api(**api, credential=credential).update_params(**params).result)["topics"]
 
 
-class VideoPorderType:
+class VideoPorderType(Enum):
     """
     视频商业类型
 
@@ -331,9 +325,7 @@ class VideoPorderMeta:
         if porden_type == VideoPorderType.OTHER:
             self.__info["industry"] = industry_type.value
             self.__info["brand_name"] = brand_name
-            self.__info["show_types"] = ",".join(
-                [show_type.value for show_type in show_types]
-            )
+            self.__info["show_types"] = ",".join([str(show_type.value) for show_type in show_types])
 
     def __dict__(self) -> dict:
         return self.__info
@@ -395,7 +387,7 @@ class VideoMeta:
         neutral_mark: str | None = None,  # 可选，中性化标签。
         delay_time: int | datetime | None = None,  # 可选，定时发布时间戳（秒）。
         porder: VideoPorderMeta | None = None,  # 可选，商业相关参数。
-        watermark: bool | None = False, # 可选，水印
+        watermark: bool | None = False,  # 可选，水印
     ) -> None:
         """
         基本视频上传参数
@@ -495,23 +487,13 @@ class VideoMeta:
         self.recreate = recreate if isinstance(recreate, bool) else False
         self.no_reprint = no_reprint if isinstance(no_reprint, bool) else False
         self.open_elec = open_elec if isinstance(open_elec, bool) else False
-        self.up_selection_reply = (
-            up_selection_reply if isinstance(up_selection_reply, bool) else False
-        )
-        self.up_close_danmu = (
-            up_close_danmu if isinstance(up_close_danmu, bool) else False
-        )
-        self.up_close_reply = (
-            up_close_reply if isinstance(up_close_reply, bool) else False
-        )
-        self.lossless_music = (
-            lossless_music if isinstance(lossless_music, bool) else False
-        )
+        self.up_selection_reply = up_selection_reply if isinstance(up_selection_reply, bool) else False
+        self.up_close_danmu = up_close_danmu if isinstance(up_close_danmu, bool) else False
+        self.up_close_reply = up_close_reply if isinstance(up_close_reply, bool) else False
+        self.lossless_music = lossless_music if isinstance(lossless_music, bool) else False
         self.dolby = dolby if isinstance(dolby, bool) else False
         self.subtitle = subtitle if isinstance(subtitle, dict) else None
-        self.dynamic = (
-            dynamic if isinstance(dynamic, str) and len(dynamic) <= 233 else None
-        )
+        self.dynamic = dynamic if isinstance(dynamic, str) and len(dynamic) <= 233 else None
         self.neutral_mark = neutral_mark if isinstance(neutral_mark, str) else None
         if isinstance(delay_time, int):
             self.delay_time = delay_time
@@ -581,9 +563,7 @@ class VideoMeta:
         检查 tid 是否合法
         """
         with open(
-            os.path.join(
-                os.path.dirname(__file__), "data/video_uploader_meta_pre.json"
-            ),
+            os.path.join(os.path.dirname(__file__), "data/video_uploader_meta_pre.json"),
             encoding="utf8",
         ) as f:
             self.__pre_info = json.load(f)
@@ -612,30 +592,20 @@ class VideoMeta:
         需要登录
         """
         api = _API["check_tag_name"]
-        return (
-            await Api(**api, credential=credential, ignore_code=True)
-            .update_params(t=name)
-            .result
-        )["code"] == 0
+        return (await Api(**api, credential=credential, ignore_code=True).update_params(t=name).result)["code"] == 0
 
     async def _check_tags(self) -> list[str]:
         """
         检查所有 tag 是否合法
         """
-        return [
-            tag
-            for tag in self.tags
-            if await self._check_tag_name(tag, self.__credential)
-        ]
+        return [tag for tag in self.tags if await self._check_tag_name(tag, self.__credential)]
 
     async def _check_topic_to_mission(self) -> int | bool:
         """
         检查 topic -> mission 是否存在
         """
         # 只知道能从这里获取...不确定其他地方的 topic -> mission 能否传入
-        all_topic_info = await get_available_topics(
-            tid=self.tid, credential=self.__credential
-        )
+        all_topic_info = await get_available_topics(tid=self.tid, credential=self.__credential)
         for topic in all_topic_info:
             if topic["topic_id"] == self.topic_id:
                 return topic["mission_id"]
@@ -656,7 +626,7 @@ class VideoMeta:
         # await self._pre() # 缓存于 bilibili_api\data\video_uploader_meta_pre.json
         error_tags = await self._check_tags()
         if len(error_tags) != 0:
-            raise ValueError(f'以下 tags 不合法: {",".join(error_tags)}')
+            raise ValueError(f"以下 tags 不合法: {','.join(error_tags)}")
 
         if not self._check_tid():
             raise ValueError(f"tid {self.tid} 不合法")
@@ -665,9 +635,7 @@ class VideoMeta:
         if isinstance(topic_to_mission, int):
             self.mission_id = topic_to_mission
         elif not topic_to_mission:
-            raise ValueError(
-                f"topic -> mission 不存在: {self.topic_id} -> {self.mission_id}"
-            )
+            raise ValueError(f"topic -> mission 不存在: {self.topic_id} -> {self.mission_id}")
 
         if not await self._check_cover():
             raise ValueError(f"封面不合法 {self.cover.__repr__()}")
@@ -753,7 +721,9 @@ class VideoUploader(AsyncEvent):
         self.cover = (
             self.meta.cover
             if isinstance(self.meta, VideoMeta)
-            else cover if isinstance(cover, Picture) else Picture().from_file(cover)
+            else cover
+            if isinstance(cover, Picture)
+            else Picture().from_file(cover)
         )
         self.line = line
         self.__task: Task | None = None
@@ -1041,9 +1011,7 @@ class VideoUploader(AsyncEvent):
         for offset in chunk_offset_list:
             chunks_pending.insert(
                 0,
-                self._upload_chunk(
-                    page, offset, chunk_number, total_chunk_count, preupload
-                ),
+                self._upload_chunk(page, offset, chunk_number, total_chunk_count, preupload),
             )
             chunk_number += 1
 
@@ -1075,20 +1043,16 @@ class VideoUploader(AsyncEvent):
         return data
 
     @staticmethod
-    def _switch_upload_endpoint(preupload: dict, line: dict = None) -> dict:
+    def _switch_upload_endpoint(preupload: dict, line: dict | None = None) -> dict:
         # 替换线路 endpoint
-        if line is not None and re.match(
-            r"//upos-(sz|cs)-upcdn(bda2|ws|qn)\.bilivideo\.com", preupload["endpoint"]
-        ):
-            preupload["endpoint"] = re.sub(
-                r"upcdn(bda2|qn|ws)", f'upcdn{line["upcdn"]}', preupload["endpoint"]
-            )
+        if line is not None and re.match(r"//upos-(sz|cs)-upcdn(bda2|ws|qn)\.bilivideo\.com", preupload["endpoint"]):
+            preupload["endpoint"] = re.sub(r"upcdn(bda2|qn|ws)", f"upcdn{line['upcdn']}", preupload["endpoint"])
         return preupload  # tbh not needed since it is ref type
 
     @staticmethod
     def _get_upload_url(preupload: dict) -> str:
         # 上传目标 URL
-        return f'https:{preupload["endpoint"]}/{preupload["upos_uri"].removeprefix("upos://")}'
+        return f"https:{preupload['endpoint']}/{preupload['upos_uri'].removeprefix('upos://')}"
 
     async def _upload_chunk(
         self,
@@ -1184,17 +1148,13 @@ class VideoUploader(AsyncEvent):
 
         except (NetworkException, ResponseCodeException) as e:
             chunk_event_callback_data["info"] = str(e)
-            self.dispatch(
-                VideoUploaderEvents.CHUNK_FAILED.value, chunk_event_callback_data
-            )
+            self.dispatch(VideoUploaderEvents.CHUNK_FAILED.value, chunk_event_callback_data)
             return err_return
 
         self.dispatch(VideoUploaderEvents.AFTER_CHUNK.value, chunk_event_callback_data)
         return ok_return
 
-    async def _complete_page(
-        self, page: VideoUploaderPage, chunks: int, preupload: dict, upload_id: str
-    ) -> dict:
+    async def _complete_page(self, page: VideoUploaderPage, chunks: int, preupload: dict, upload_id: str) -> dict:
         """
         提交分 P 上传
 
@@ -1212,11 +1172,7 @@ class VideoUploader(AsyncEvent):
         """
         self.dispatch(VideoUploaderEvents.PRE_PAGE_SUBMIT.value, {"page": page})
 
-        data = {
-            "parts": list(
-                map(lambda x: {"partNumber": x, "eTag": "etag"}, range(1, chunks + 1))
-            )
-        }
+        data = {"parts": [{"partNumber": x, "eTag": "etag"} for x in range(1, chunks + 1)]}
 
         params = {
             "output": "json",
@@ -1252,7 +1208,7 @@ class VideoUploader(AsyncEvent):
         data = resp.json()
 
         if data["OK"] != 1:
-            err = ResponseCodeException(-1, f'提交分 P 失败，原因: {data["message"]}')
+            err = ResponseCodeException(-1, f"提交分 P 失败，原因: {data['message']}")
             self.dispatch(
                 VideoUploaderEvents.PAGE_SUBMIT_FAILED.value,
                 {"page": page, "err": err},
@@ -1278,9 +1234,7 @@ class VideoUploader(AsyncEvent):
         Returns:
             dict: 含 bvid 和 aid 的字典
         """
-        meta = copy(
-            self.meta.__dict__() if isinstance(self.meta, VideoMeta) else self.meta
-        )
+        meta = copy(self.meta.__dict__() if isinstance(self.meta, VideoMeta) else self.meta)
         meta["cover"] = cover_url
         meta["videos"] = videos
 
@@ -1294,9 +1248,7 @@ class VideoUploader(AsyncEvent):
             # headers = {"content-type": "application/json"}
             # 已有 json_body，似乎不需要单独设置 content-type
             resp = (
-                await Api(
-                    **api, credential=self.credential, no_csrf=True, json_body=True
-                )
+                await Api(**api, credential=self.credential, no_csrf=True, json_body=True)
                 .update_params(**params)
                 .update_data(**meta)
                 # .update_headers(**headers)
@@ -1319,9 +1271,7 @@ class VideoUploader(AsyncEvent):
         self.dispatch(VideoUploaderEvents.ABORTED.value, None)
 
 
-async def get_missions(
-    tid: int = 0, credential: Credential | None = None
-) -> dict:
+async def get_missions(tid: int = 0, credential: Credential | None = None) -> dict:
     """
     获取活动信息
 
@@ -1447,17 +1397,11 @@ class VideoEditor(AsyncEvent):
         try:
             api = _API["upload_args"]
             params = {"bvid": self.bvid}
-            self.__old_configs = (
-                await Api(**api, credential=self.credential)
-                .update_params(**params)
-                .result
-            )
+            self.__old_configs = await Api(**api, credential=self.credential).update_params(**params).result
         except (NetworkException, ResponseCodeException) as e:
             self.dispatch(VideoEditorEvents.PRELOAD_FAILED.value, {"err", e})
             raise e
-        self.dispatch(
-            VideoEditorEvents.AFTER_PRELOAD.value, {"data": self.__old_configs}
-        )
+        self.dispatch(VideoEditorEvents.AFTER_PRELOAD.value, {"data": self.__old_configs})
 
     async def _change_cover(self) -> None:
         """
@@ -1470,11 +1414,7 @@ class VideoEditor(AsyncEvent):
             return
         self.dispatch(VideoEditorEvents.PRE_COVER.value, None)
         try:
-            pic = (
-                self.cover_path
-                if isinstance(self.cover_path, Picture)
-                else Picture().from_file(self.cover_path)
-            )
+            pic = self.cover_path if isinstance(self.cover_path, Picture) else Picture().from_file(self.cover_path)
             resp = await upload_cover(pic, self.credential)
             self.dispatch(VideoEditorEvents.AFTER_COVER.value, {"url": resp["url"]})
             # not sure if this key changed to "url" as well
@@ -1496,9 +1436,7 @@ class VideoEditor(AsyncEvent):
                 "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
             }
             resp = (
-                await Api(
-                    **api, credential=self.credential, no_csrf=True, json_body=True
-                )
+                await Api(**api, credential=self.credential, no_csrf=True, json_body=True)
                 .update_params(**params)
                 .update_data(**data)
                 .update_headers(**headers)
@@ -1514,9 +1452,7 @@ class VideoEditor(AsyncEvent):
         self.meta["videos"] = []
         cnt = 0
         for v in self.__old_configs["videos"]:
-            self.meta["videos"].append(
-                {"title": v["title"], "desc": v["desc"], "filename": v["filename"]}
-            )
+            self.meta["videos"].append({"title": v["title"], "desc": v["desc"], "filename": v["filename"]})
             self.meta["videos"][-1]["cid"] = await Video(self.bvid).get_cid(cnt)
             cnt += 1
         self.meta["cover"] = self.__old_configs["archive"]["cover"]

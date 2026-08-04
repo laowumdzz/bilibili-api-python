@@ -4,29 +4,32 @@ bilibili_api.session
 消息相关
 """
 
-import json
-import time
 import asyncio
-import logging
 import datetime
 from enum import Enum
+import json
+import logging
+import time
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from bilibili_api.exceptions import ApiException
 
-from .video import Video
 from .user import get_self_info
-from .utils.utils import get_api, raise_for_statement
-from .utils.picture import Picture
 from .utils.AsyncEvent import AsyncEvent
 from .utils.network import Api, Credential
+from .utils.picture import Picture
+from .utils.utils import get_api, raise_for_statement
+from .video import Video
 
 API = get_api("session")
 
 
 async def fetch_session_msgs(
-    talker_id: int, credential: Credential, session_type: int = 1, begin_seqno: int = 0,
+    talker_id: int,
+    credential: Credential,
+    session_type: int = 1,
+    begin_seqno: int = 0,
 ) -> dict:
     """
     获取指定用户的近三十条消息
@@ -56,9 +59,7 @@ async def fetch_session_msgs(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def new_sessions(
-    credential: Credential, begin_ts: int = int(time.time() * 1000000)
-) -> dict:
+async def new_sessions(credential: Credential, begin_ts: int = int(time.time() * 1000000)) -> dict:
     """
     获取新消息
 
@@ -105,9 +106,7 @@ async def get_sessions(credential: Credential, session_type: int = 4) -> dict:
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_session_detail(
-    credential: Credential, talker_id: int, session_type: int = 1
-) -> dict:
+async def get_session_detail(credential: Credential, talker_id: int, session_type: int = 1) -> dict:
     """
     获取会话详情
 
@@ -152,9 +151,7 @@ async def get_replies(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_likes(
-    credential: Credential, last_id: int = None, like_time: int = None
-) -> dict:
+async def get_likes(credential: Credential, last_id: int | None = None, like_time: int | None = None) -> dict:
     """
     获取收到的赞
 
@@ -174,7 +171,7 @@ async def get_likes(
 
 
 async def get_at(
-    credential: Credential, last_uid: int = None, at_time: int = None, last_id: int = None
+    credential: Credential, last_uid: int | None = None, at_time: int | None = None, last_id: int | None = None
 ) -> dict:
     """
     获取收到的 AT
@@ -429,12 +426,7 @@ async def send_msg(
         "w_receiver_id": receiver_id,
     }
 
-    return (
-        await Api(**api, credential=credential)
-        .update_params(**query)
-        .update_data(**data)
-        .result
-    )
+    return await Api(**api, credential=credential).update_params(**query).update_data(**data).result
 
 
 class Session(AsyncEvent):
@@ -451,7 +443,7 @@ class Session(AsyncEvent):
         self.maxTs = int(time.time() * 1000000)
 
         # 会话UID为键 会话中最大Seqno为值
-        self.maxSeqno = dict()
+        self.maxSeqno = {}
 
         # 凭证
         self.credential: Credential = credential
@@ -460,18 +452,14 @@ class Session(AsyncEvent):
         self.sched = AsyncIOScheduler(timezone="Asia/Shanghai")
 
         # 已接收的所有事件 用于撤回时找回
-        self.events = dict()
+        self.events = {}
 
         # logging
         self.logger = logging.getLogger("Session")
         self.logger.setLevel(logging.DEBUG if debug else logging.INFO)
         if not self.logger.handlers:
             handler = logging.StreamHandler()
-            handler.setFormatter(
-                logging.Formatter(
-                    "[%(asctime)s][%(levelname)s]: %(message)s", "%Y-%m-%d %H:%M:%S"
-                )
-            )
+            handler.setFormatter(logging.Formatter("[%(asctime)s][%(levelname)s]: %(message)s", "%Y-%m-%d %H:%M:%S"))
             self.logger.addHandler(handler)
 
     def on(self, event_type: EventType):
@@ -506,10 +494,7 @@ class Session(AsyncEvent):
 
         # 初始化 只接收开始运行后的新消息
         js = await get_sessions(self.credential)
-        self.maxSeqno = {
-            _session["talker_id"]: _session["max_seqno"]
-            for _session in js.get("session_list", [])
-        }
+        self.maxSeqno = {_session["talker_id"]: _session["max_seqno"] for _session in js.get("session_list", [])}
 
         # 间隔 6 秒轮询消息列表 之前设置 3 秒询一次 跑了一小时给我账号冻结了
         @self.sched.scheduled_job(
@@ -549,11 +534,7 @@ class Session(AsyncEvent):
                         event = Event(message, self.uid)
                         if event.msg_type == EventType.WITHDRAW.value:
                             self.logger.info(
-                                str(
-                                    self.events.get(
-                                        event.content, f"key={event.content}"
-                                    )
-                                )
+                                str(self.events.get(event.content, f"key={event.content}"))
                                 + f" 被撤回({event.timestamp})"
                             )
                         else:
@@ -602,9 +583,7 @@ class Session(AsyncEvent):
         if self.uid == event.sender_uid:
             self.logger.error("不能给自己发送消息哦~")
         else:
-            msg_type = (
-                EventType.PICTURE if isinstance(content, Picture) else EventType.TEXT
-            )
+            msg_type = EventType.PICTURE if isinstance(content, Picture) else EventType.TEXT
             return await send_msg(self.credential, event.sender_uid, msg_type, content)
 
     def close(self) -> None:

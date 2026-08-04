@@ -4,6 +4,10 @@ bilibili_api.clients.aiohttp
 AioHTTPClient 实现
 """
 
+import asyncio
+
+import aiohttp  # pylint: disable=E0401
+
 from ..utils.network import (
     BiliAPIClient,
     BiliAPIFile,
@@ -11,8 +15,6 @@ from ..utils.network import (
     BiliWsMsgType,
     request_log,
 )
-import aiohttp # pylint: disable=E0401
-import asyncio
 
 
 class AioHTTPClient(BiliAPIClient):
@@ -193,9 +195,7 @@ class AioHTTPClient(BiliAPIClient):
                 "headers": headers,
             },
         )
-        self.__downloads[self.__download_cnt] = await self.__session.get(
-            url=url, headers=headers
-        )
+        self.__downloads[self.__download_cnt] = await self.__session.get(url=url, headers=headers)
         return self.__download_cnt
 
     async def download_chunk(self, cnt: int) -> bytes:
@@ -223,9 +223,7 @@ class AioHTTPClient(BiliAPIClient):
             {"id": cnt},
         )
 
-    async def ws_create(
-        self, url: str = "", params: dict = {}, headers: dict = {}
-    ) -> int:
+    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
         if self.__need_update_session:
             await self.__session.close()
             self.__session = aiohttp.ClientSession(
@@ -245,9 +243,7 @@ class AioHTTPClient(BiliAPIClient):
                 "headers": headers,
             },
         )
-        self.__wss[self.__ws_cnt] = await self.__session.ws_connect(
-            url=url, params=params, headers=headers
-        )
+        self.__wss[self.__ws_cnt] = await self.__session.ws_connect(url=url, params=params, headers=headers)
         return self.__ws_cnt
 
     async def ws_recv(self, cnt: int) -> tuple[bytes, BiliWsMsgType]:

@@ -6,8 +6,8 @@ bilibili_api.app
 
 import time
 
-from .utils.utils import get_api
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("app")
 

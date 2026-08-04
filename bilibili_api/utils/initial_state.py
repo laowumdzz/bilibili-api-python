@@ -4,11 +4,15 @@ bilibili_api.utils.initial_state
 用于获取页码的初始化信息
 """
 
-import json
 from enum import Enum
+import json
 from urllib.parse import unquote
 
-from ..exceptions import InitialStateException
+from ..exceptions import (
+    InitialStateException,
+    NetworkException,
+    ResponseCodeException,
+)
 from .network import Api, Credential
 
 
@@ -70,9 +74,7 @@ async def get_initial_state(
         strict (bool): 无结果时报错。Defaults to True.
     """
     try:
-        resp = await Api(
-            url=url, method="GET", credential=credential, comment="[获取初始化信息]"
-        ).request(byte=True)
+        resp = await Api(url=url, method="GET", credential=credential, comment="[获取初始化信息]").request(byte=True)
     except (NetworkException, ResponseCodeException) as e:
         raise e
     else:
@@ -84,8 +86,8 @@ async def get_initial_state(
             return None, None
         try:
             detected_content = content[pos:].strip().strip("\n").strip("\r")
-            if detected_content.startswith("{\\\""): # 暂时都是字典
-                detected_content = detected_content.replace("\\\"", "\"") # 存在转义且不在正文内
+            if detected_content.startswith('{\\"'):  # 暂时都是字典
+                detected_content = detected_content.replace('\\"', '"')  # 存在转义且不在正文内
             content = _parse_detected_content(detected_content)
         except json.JSONDecodeError as e:
             raise InitialStateException("信息解析错误") from e

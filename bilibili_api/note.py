@@ -4,22 +4,21 @@ bilibili_api.note
 笔记相关
 """
 
-import json
 from enum import Enum
 from html import unescape
+import json
 from typing import overload
 
 import yaml
 from yarl import URL
 
-from .utils.initial_state import get_initial_state
-
-from .utils.utils import get_api, raise_for_statement, img_auto_scheme
-from .utils.picture import Picture
-from .exceptions import ApiException, ArgsException
-from .utils.network import Api, Credential
-from .utils import cache_pool
 from . import article
+from .exceptions import ApiException, ArgsException
+from .utils import cache_pool
+from .utils.initial_state import get_initial_state
+from .utils.network import Api, Credential
+from .utils.picture import Picture
+from .utils.utils import get_api, img_auto_scheme, raise_for_statement
 
 API = get_api("note")
 API_ARTICLE = get_api("article")
@@ -181,9 +180,7 @@ class Note:
         api = API["private"]["detail"]
         # oid 为 0 时指 avid
         params = {"oid": self.get_aid(), "note_id": self.get_note_id(), "oid_type": 0}
-        resp = (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        resp = await Api(**api, credential=self.credential).update_params(**params).result
         # 存入 self.__info 中以备后续调用
         self.__info = resp
         return resp
@@ -200,9 +197,7 @@ class Note:
 
         api = API["public"]["detail"]
         params = {"cvid": self.get_cvid()}
-        resp = (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        resp = await Api(**api, credential=self.credential).update_params(**params).result
         # 存入 self.__info 中以备后续调用
         self.__info = resp
         cache_pool.article_is_note[self.__cvid] = True
@@ -219,7 +214,7 @@ class Note:
         result = []
         content = (await self.__get_info_cached())["content"]
         for line in content:
-            if type(line["insert"]) == dict:
+            if isinstance(line["insert"], dict):
                 if "imageUpload" in line["insert"]:
                     img_info = line["insert"]["imageUpload"]
                     result.append(img_info)
@@ -287,11 +282,7 @@ class Note:
 
         self.credential.raise_for_no_sessdata()
 
-        api = (
-            API_ARTICLE["operate"]["add_favorite"]
-            if status
-            else API_ARTICLE["operate"]["del_favorite"]
-        )
+        api = API_ARTICLE["operate"]["add_favorite"] if status else API_ARTICLE["operate"]["del_favorite"]
 
         data = {"id": self.__cvid}
         return await Api(**api, credential=self.credential).update_data(**data).result
@@ -335,27 +326,27 @@ class Note:
                 else:
                     node = TextNode(field["insert"])
                     if "attributes" in field.keys():
-                        if field["attributes"].get("bold") == True:
+                        if field["attributes"].get("bold"):
                             bold = BoldNode()
                             bold.children = [node]
                             node = bold
-                        if field["attributes"].get("strike") == True:
+                        if field["attributes"].get("strike"):
                             delete = DelNode()
                             delete.children = [node]
                             node = delete
-                        if field["attributes"].get("underline") == True:
+                        if field["attributes"].get("underline"):
                             underline = UnderlineNode()
                             underline.children = [node]
                             node = underline
-                        if field["attributes"].get("background") == True:
+                        if field["attributes"].get("background"):
                             # FIXME: 暂不支持背景颜色
                             pass
-                        if field["attributes"].get("color") != None:
+                        if field["attributes"].get("color") is not None:
                             color = ColorNode()
                             color.color = field["attributes"]["color"].replace("#", "")
                             color.children = [node]
                             node = color
-                        if field["attributes"].get("size") != None:
+                        if field["attributes"].get("size") is not None:
                             size = FontSizeNode()
                             size.size = field["attributes"]["size"]
                             size.children = [node]
@@ -413,7 +404,7 @@ class Note:
         return {
             "type": "Note",
             "meta": self.__meta,
-            "children": list(map(lambda x: x.json(), self.__children)),
+            "children": [x.json() for x in self.__children],
         }
 
     # TODO: 笔记上传/编辑/删除
@@ -445,7 +436,7 @@ class BoldNode(Node):
     def json(self):
         return {
             "type": "BoldNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -462,7 +453,7 @@ class DelNode(Node):
     def json(self):
         return {
             "type": "DelNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -489,7 +480,7 @@ class ColorNode(Node):
         return {
             "type": "ColorNode",
             "color": self.color,
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -505,7 +496,7 @@ class FontSizeNode(Node):
         return {
             "type": "FontSizeNode",
             "size": self.size,
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 

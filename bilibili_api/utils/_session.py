@@ -2,23 +2,20 @@
 bilibili_api.utils._session — 会话管理和客户端注册。
 """
 
+from abc import ABC, abstractmethod
 import asyncio
 import atexit
-from abc import ABC, abstractmethod
 from typing import Any
 
 from ..exceptions import ArgsException
-
 from ._types import (
+    DEFAULT_SETTINGS,
     BiliAPIFile,
     BiliAPIResponse,
     BiliWsMsgType,
-    DEFAULT_SETTINGS,
     request_settings,
 )
 from .utils import raise_for_statement
-
-
 
 sessions: dict[str, type["BiliAPIClient"]] = {}
 session_pool: dict[str, dict[asyncio.AbstractEventLoop, "BiliAPIClient"]] = {}
@@ -26,11 +23,11 @@ lazy_settings: dict[str, dict[asyncio.AbstractEventLoop, dict[str, Any]]] = {}
 client_settings: dict[str, list] = {}
 selected_client: str = ""
 
-class BiliAPIClient(ABC):
-    '''
-    请求客户端抽象类。通过对第三方模块请求客户端的封装令模块可对其进行调用。
-    '''
 
+class BiliAPIClient(ABC):
+    """
+    请求客户端抽象类。通过对第三方模块请求客户端的封装令模块可对其进行调用。
+    """
 
     @abstractmethod
     def __init__(
@@ -190,9 +187,7 @@ class BiliAPIClient(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def ws_create(
-        self, url: str = "", params: dict = {}, headers: dict = {}
-    ) -> int:
+    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
         """
         创建 WebSocket 连接
 
@@ -260,9 +255,7 @@ def register_client(name: str, cls: type, settings: dict = {}) -> None:
         settings (dict): 请求客户端在基础设置外的其他设置，键为设置名称，值为设置默认值。Defaults to {}.
     """
     global sessions, session_pool, lazy_settings
-    raise_for_statement(
-        issubclass(cls, BiliAPIClient), "传入的类型需要继承 BiliAPIClient"
-    )
+    raise_for_statement(issubclass(cls, BiliAPIClient), "传入的类型需要继承 BiliAPIClient")
     sessions[name] = cls
     session_pool[name] = {}
     select_client(name)
@@ -428,7 +421,7 @@ def __clean() -> None:
     if loop.is_closed():
         loop.run_until_complete(__clean_task())
     else:
-        loop.create_task(__clean_task())
+        loop.create_task(__clean_task())  # noqa: RUF006  TODO: __clean 整体逻辑待重构
 
 
 ################################################## END Session Management ##################################################

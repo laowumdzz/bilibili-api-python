@@ -9,7 +9,6 @@ import zipfile
 
 
 def extract_ivi(path: str, dest: str):
-    print("Extracting...")
     if not os.path.exists(dest):
         os.makedirs(dest)
     zipfile.ZipFile(path).extractall(dest)

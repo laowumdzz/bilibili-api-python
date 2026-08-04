@@ -4,13 +4,14 @@ bilibili_api.utils.utils
 通用工具库。
 """
 
+from datetime import datetime
 import json
 import os
 import random
 from typing import TypeVar
-from ..exceptions import StatementException
-from datetime import datetime
 from urllib.parse import quote
+
+from ..exceptions import StatementException
 
 
 def get_api(field: str, *args) -> dict:
@@ -23,11 +24,7 @@ def get_api(field: str, *args) -> dict:
     Returns:
         dict, 该 API 的内容。
     """
-    path = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), "..", "data", "api", f"{field.lower()}.json"
-        )
-    )
+    path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "api", f"{field.lower()}.json"))
     if os.path.exists(path):
         with open(path, encoding="utf8") as f:
             data = json.load(f)
@@ -69,7 +66,7 @@ def crack_uid(crc32: str):
     __create_table()
 
     def __crc32(input_):
-        if type(input_) != str:
+        if not isinstance(input_, str):
             input_ = str(input_)
         crcstart = 0xFFFFFFFF
         len_ = len(input_)
@@ -79,7 +76,7 @@ def crack_uid(crc32: str):
         return crcstart
 
     def __crc32lastindex(input_):
-        if type(input_) != str:
+        if not isinstance(input_, str):
             input_ = str(input_)
         crcstart = 0xFFFFFFFF
         len_ = len(input_)
@@ -150,7 +147,7 @@ def join(seperator: str, array: list):
     Returns:
         str: 连接结果
     """
-    return seperator.join(map(lambda x: str(x), array))
+    return seperator.join(str(x) for x in array)
 
 
 ChunkT = TypeVar("ChunkT", list, list)
@@ -217,7 +214,7 @@ def raise_for_statement(statement: bool, msg: str = "未满足条件") -> None:
 def to_form_urlencoded(data: dict) -> str:
     temp = []
     for [k, v] in data.items():
-        temp.append(f'{k}={quote(str(v)).replace("/", "%2F")}')
+        temp.append(f"{k}={quote(str(v)).replace('/', '%2F')}")
 
     return "&".join(temp)
 
@@ -242,9 +239,7 @@ def to_timestamps(time_start, time_end):
         return int(start_dt.timestamp()), int(end_dt.timestamp())
     except ValueError as e:
         # 捕获日期格式错误或自定义错误消息
-        raise ValueError(
-            f"输入错误: {e}. 请确保使用 'YYYY-MM-DD' 格式，并且起始时间早于结束时间。"
-        )
+        raise ValueError(f"输入错误: {e}. 请确保使用 'YYYY-MM-DD' 格式，并且起始时间早于结束时间。")
 
 
 def img_auto_scheme(url: str) -> str:

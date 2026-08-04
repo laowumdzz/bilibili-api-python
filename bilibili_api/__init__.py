@@ -6,47 +6,48 @@ bilibili_api
  (默认已导入所有子模块，例如 `bilibili_api.video`, `bilibili_api.user`)
 """
 
-from .utils.sync import sync
-from .utils.picture import Picture
-from .utils.short import get_real_url
-from .utils.parse_link import ResourceType, parse_link
+# 注意：本文件导入顺序经过精心设计以避免循环引用，禁止 isort 重排（I001 已在 pyproject 中豁免）
 from .utils.aid_bvid_transformer import aid2bvid, bvid2aid
-from .utils.danmaku import DmMode, Danmaku, DmFontSize, SpecialDanmaku
+from .utils.AsyncEvent import AsyncEvent
+from .utils.danmaku import Danmaku, DmFontSize, DmMode, SpecialDanmaku
+from .utils.geetest import Geetest, GeetestMeta, GeetestType
 from .utils.network import (
-    # settings
-    request_settings,
-    # log
-    request_log,
+    HEADERS,
+    # api
+    Api,
+    BiliAPIClient,
+    BiliAPIFile,
     # session
     BiliAPIResponse,
     BiliWsMsgType,
-    BiliAPIFile,
-    BiliAPIClient,
-    register_client,
-    unregister_client,
-    select_client,
-    get_selected_client,
-    get_available_settings,
-    get_registered_clients,
-    get_registered_available_settings,
-    get_client,
-    get_session,
-    set_session,
-    # anti spider
-    get_buvid,
-    get_bili_ticket,
-    recalculate_wbi,
-    refresh_buvid,
-    refresh_bili_ticket,
     # credential
     Credential,
-    # api
-    Api,
-    HEADERS,
     bili_simple_download,
+    get_available_settings,
+    get_bili_ticket,
+    # anti spider
+    get_buvid,
+    get_client,
+    get_registered_available_settings,
+    get_registered_clients,
+    get_selected_client,
+    get_session,
+    recalculate_wbi,
+    refresh_bili_ticket,
+    refresh_buvid,
+    register_client,
+    # log
+    request_log,
+    # settings
+    request_settings,
+    select_client,
+    set_session,
+    unregister_client,
 )
-from .utils.AsyncEvent import AsyncEvent
-from .utils.geetest import Geetest, GeetestMeta, GeetestType
+from .utils.parse_link import ResourceType, parse_link
+from .utils.picture import Picture
+from .utils.short import get_real_url
+from .utils.sync import sync
 from .exceptions import (
     ApiException,
     ArgsException,
@@ -73,11 +74,11 @@ from .exceptions import (
 from . import (
     activity,
     app,
-    article_category,
     article,
+    article_category,
     ass,
-    audio_uploader,
     audio,
+    audio_uploader,
     bangumi,
     black_room,
     channel_series,
@@ -94,8 +95,8 @@ from . import (
     homepage,
     hot,
     interactive_video,
-    live_area,
     live,
+    live_area,
     login_v2,
     manga,
     music,
@@ -107,30 +108,29 @@ from . import (
     show,
     topic,
     user,
+    video,
     video_tag,
     video_uploader,
     video_zone,
-    video,
     vote,
     watchroom,
 )
-
 
 BILIBILI_API_VERSION = "17.4.2"
 
 
 def __register_all_clients():
     import importlib
+
     from .clients import ALL_PROVIDED_CLIENTS
-    for module, client, settings in ALL_PROVIDED_CLIENTS[::-1]:
+
+    for module, client_name, settings in ALL_PROVIDED_CLIENTS[::-1]:
         try:
             importlib.import_module(module)
         except ModuleNotFoundError:
             continue
-        client_module = importlib.import_module(
-            name=f".clients.{client}", package="bilibili_api"
-        )
-        client_class = getattr(client_module, client)
+        client_module = importlib.import_module(name=f".clients.{client_name}", package="bilibili_api")
+        client_class = getattr(client_module, client_name)
         register_client(module, client_class, settings)
 
 
@@ -138,11 +138,12 @@ __register_all_clients()
 
 
 __all__ = [
+    "BILIBILI_API_VERSION",
+    "HEADERS",
     "Api",
     "ApiException",
-    "AsyncEvent",
     "ArgsException",
-    "BILIBILI_API_VERSION",
+    "AsyncEvent",
     "BiliAPIClient",
     "BiliAPIFile",
     "BiliAPIResponse",
@@ -165,7 +166,6 @@ __all__ = [
     "GeetestException",
     "GeetestMeta",
     "GeetestType",
-    "HEADERS",
     "LiveException",
     "LoginError",
     "NetworkException",
@@ -177,8 +177,8 @@ __all__ = [
     "StatementException",
     "VideoUploadException",
     "WbiRetryTimesExceedException",
-    "aid2bvid",
     "activity",
+    "aid2bvid",
     "app",
     "article",
     "article_category",

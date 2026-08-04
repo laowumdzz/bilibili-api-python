@@ -1,10 +1,9 @@
 """bilibili_api._video_download — 视频下载相关类型和解析。"""
-from dataclasses import dataclass, field
+
+from dataclasses import dataclass
 from enum import Enum
 from functools import cmp_to_key
-from typing import Optional
 
-from yarl import URL
 
 class VideoQuality(Enum):
     """
@@ -223,23 +222,17 @@ class VideoDownloadURLDataDetecter:
         video_min_quality: VideoQuality = VideoQuality._360P,
         audio_min_quality: AudioQuality = AudioQuality._64K,
         video_accepted_qualities: list[VideoQuality] = [
-            item
-            for _, item in VideoQuality.__dict__.items()
-            if isinstance(item, VideoQuality)
+            item for _, item in VideoQuality.__dict__.items() if isinstance(item, VideoQuality)
         ],
         audio_accepted_qualities: list[AudioQuality] = [
-            item
-            for _, item in AudioQuality.__dict__.items()
-            if isinstance(item, AudioQuality)
+            item for _, item in AudioQuality.__dict__.items() if isinstance(item, AudioQuality)
         ],
         codecs: list[VideoCodecs] = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN],
         no_dolby_video: bool = False,
         no_dolby_audio: bool = False,
         no_hdr: bool = False,
         no_hires: bool = False,
-    ) -> list[
-        VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL
-    ]:
+    ) -> list[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL]:
         """
         解析数据
 
@@ -329,7 +322,7 @@ class VideoDownloadURLDataDetecter:
                     sar=tuple([int(x) for x in video_data["sar"].split(":")] if ":" in video_data["sar"] else (1, 1)),
                     mime_type=video_data["mime_type"],
                     segment_base_initialization=video_data["segment_base"]["initialization"],
-                    segment_base_index_range=video_data["segment_base"]["index_range"]
+                    segment_base_index_range=video_data["segment_base"]["index_range"],
                 )
                 streams.append(video_stream)
             if audios_data:
@@ -350,7 +343,7 @@ class VideoDownloadURLDataDetecter:
                         codecs=audio_data["codecs"],
                         mime_type=audio_data["mime_type"],
                         segment_base_initialization=audio_data["segment_base"]["initialization"],
-                        segment_base_index_range=audio_data["segment_base"]["index_range"]
+                        segment_base_index_range=audio_data["segment_base"]["index_range"],
                     )
                     streams.append(audio_stream)
             if flac_data and (not no_hires):
@@ -365,7 +358,7 @@ class VideoDownloadURLDataDetecter:
                         codecs=flac_data["audio"]["codecs"],
                         mime_type=flac_data["audio"]["mime_type"],
                         segment_base_initialization=flac_data["audio"]["segment_base"]["initialization"],
-                        segment_base_index_range=flac_data["audio"]["segment_base"]["index_range"]
+                        segment_base_index_range=flac_data["audio"]["segment_base"]["index_range"],
                     )
                     streams.append(flac_stream)
             if dolby_data and (not no_dolby_audio):
@@ -381,7 +374,7 @@ class VideoDownloadURLDataDetecter:
                         codecs=dolby_stream_data["codecs"],
                         mime_type=dolby_stream_data["mime_type"],
                         segment_base_initialization=dolby_stream_data["segment_base"]["initialization"],
-                        segment_base_index_range=dolby_stream_data["segment_base"]["index_range"]
+                        segment_base_index_range=dolby_stream_data["segment_base"]["index_range"],
                     )
                     streams.append(dolby_stream)
             return streams
@@ -393,23 +386,17 @@ class VideoDownloadURLDataDetecter:
         video_min_quality: VideoQuality = VideoQuality._360P,
         audio_min_quality: AudioQuality = AudioQuality._64K,
         video_accepted_qualities: list[VideoQuality] = [
-            item
-            for _, item in VideoQuality.__dict__.items()
-            if isinstance(item, VideoQuality)
+            item for _, item in VideoQuality.__dict__.items() if isinstance(item, VideoQuality)
         ],
         audio_accepted_qualities: list[AudioQuality] = [
-            item
-            for _, item in AudioQuality.__dict__.items()
-            if isinstance(item, AudioQuality)
+            item for _, item in AudioQuality.__dict__.items() if isinstance(item, AudioQuality)
         ],
         codecs: list[VideoCodecs] = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN],
         no_dolby_video: bool = False,
         no_dolby_audio: bool = False,
         no_hdr: bool = False,
         no_hires: bool = False,
-    ) -> list[
-        VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL
-    ]:
+    ) -> list[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL]:
         """
         提取出分辨率、音质等信息最好的音视频流。
 
@@ -465,9 +452,7 @@ class VideoDownloadURLDataDetecter:
                 if isinstance(stream, AudioStreamDownloadURL):
                     audio_streams.append(stream)
 
-            def video_stream_cmp(
-                s1: VideoStreamDownloadURL, s2: VideoStreamDownloadURL
-            ):
+            def video_stream_cmp(s1: VideoStreamDownloadURL, s2: VideoStreamDownloadURL):
                 # 杜比/HDR 优先
                 if s1.video_quality == VideoQuality.DOLBY and (not no_dolby_video):
                     return 1
@@ -484,9 +469,7 @@ class VideoDownloadURLDataDetecter:
                     return codecs.index(s2.video_codecs) - codecs.index(s1.video_codecs)
                 return -1
 
-            def audio_stream_cmp(
-                s1: AudioStreamDownloadURL, s2: AudioStreamDownloadURL
-            ):
+            def audio_stream_cmp(s1: AudioStreamDownloadURL, s2: AudioStreamDownloadURL):
                 # 杜比/Hi-Res 优先
                 if s1.audio_quality == AudioQuality.DOLBY and (not no_dolby_audio):
                     return 1

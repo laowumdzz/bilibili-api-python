@@ -4,16 +4,16 @@ bilibili_api.opus
 图文相关
 """
 
-import yaml
-from . import article
-from . import dynamic
-from .utils.network import Api, Credential
-from .utils.utils import get_api, img_auto_scheme
-from .utils import cache_pool
-from .utils.picture import Picture
-from .exceptions import ArgsException
 import html
 
+import yaml
+
+from . import article, dynamic
+from .exceptions import ArgsException
+from .utils import cache_pool
+from .utils.network import Api, Credential
+from .utils.picture import Picture
+from .utils.utils import get_api, img_auto_scheme
 
 API = get_api("opus")
 
@@ -67,9 +67,7 @@ class Opus:
             await self.get_info()
             if not await self.is_article():
                 raise ArgsException("提供的动态无对应专栏")
-        return article.Article(
-            cvid=cache_pool.dynamic2article[self.__id], credential=self.credential
-        )
+        return article.Article(cvid=cache_pool.dynamic2article[self.__id], credential=self.credential)
 
     def turn_to_dynamic(self) -> "dynamic.Dynamic":
         """
@@ -96,23 +94,13 @@ class Opus:
                 "id": self.__id,
                 "features": "onlyfansVote,onlyfansAssetsV2,decorationCard,htmlNewStyle,ugcDelete,editable,opusPrivateVisible",
             }
-            self.__info = (
-                await Api(**api, credential=self.credential)
-                .update_params(**params)
-                .result
-            )
+            self.__info = await Api(**api, credential=self.credential).update_params(**params).result
         if self.__info.get("fallback"):
             raise ArgsException("传入的 opus_id 不正确")
-        cache_pool.dynamic_is_article[self.__id] = (
-            self.__info["item"]["basic"]["comment_type"] == 12
-        )
+        cache_pool.dynamic_is_article[self.__id] = self.__info["item"]["basic"]["comment_type"] == 12
         if cache_pool.dynamic_is_article[self.__id]:
-            cache_pool.dynamic2article[self.__id] = int(
-                self.__info["item"]["basic"]["rid_str"]
-            )
-            cache_pool.article2dynamic[cache_pool.dynamic2article[self.__id]] = (
-                self.__id
-            )
+            cache_pool.dynamic2article[self.__id] = int(self.__info["item"]["basic"]["rid_str"])
+            cache_pool.article2dynamic[cache_pool.dynamic2article[self.__id]] = self.__id
         cache_pool.dynamic_is_opus[self.__id] = True
         return self.__info
 
@@ -134,7 +122,7 @@ class Opus:
             if module.get("module_content"):
                 content = module
 
-        markdown = f'# {title["module_title"]["text"]}\n\n'
+        markdown = f"# {title['module_title']['text']}\n\n"
 
         for para in content["module_content"]["paragraphs"]:
             para_raw = ""
@@ -163,8 +151,8 @@ class Opus:
             elif para["para_type"] == 2:
                 for pic in para["pic"]["pics"]:
                     url = pic["url"]
-                    width = pic["width"]
-                    height = pic["height"]
+                    pic["width"]
+                    pic["height"]
                     para_raw += f"![]({url}) \n"
             elif para["para_type"] == 7:
                 lang = para["code"]["lang"].lstrip("language-")

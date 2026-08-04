@@ -1,15 +1,15 @@
-import os
-import sys
 import copy
 import enum
 import json
-import time
+import os
 import random
-import shutil
-import zipfile
 from random import random as rand
+import shutil
+import sys
+import time
+import zipfile
 
-from PyQt6 import QtGui, QtCore, QtWidgets, QtMultimedia, QtMultimediaWidgets
+from PyQt6 import QtCore, QtGui, QtMultimedia, QtMultimediaWidgets, QtWidgets
 
 
 class InteractiveVariable:
@@ -273,9 +273,7 @@ class MPlayer:
         # UI
         Form.setObjectName("Form")
         Form.resize(800, 600)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -401,14 +399,10 @@ class MPlayer:
                                     node["condition"],
                                     node["command"],
                                 )
-                                condition = InteractiveJumpingCondition(
-                                    self.variables, btn.condition
-                                )
+                                condition = InteractiveJumpingCondition(self.variables, btn.condition)
                                 if condition.get_result():
                                     # 可以跳转
-                                    native_command = InteractiveJumpingCommand(
-                                        self.variables, btn.command
-                                    )
+                                    native_command = InteractiveJumpingCommand(self.variables, btn.command)
                                     self.variables = native_command.run_command()
                                     btn_id = btn.node_id
                                     self.set_source(self.graph[str(btn_id)]["cid"])
@@ -433,7 +427,7 @@ class MPlayer:
                                     )
                                 )
                                 # 生成 ButtonLabel 对象
-                                if child["pos"][0] == None:
+                                if child["pos"][0] is None:
                                     if idx != 0:
                                         previous_info = children[idx - 1]
                                         curtext, previoustext = (
@@ -497,16 +491,12 @@ class MPlayer:
                 self.slider.setValue(100)
                 self.label.setText("--:--/--:--")
                 return
-            if (
-                abs(self.mediaplayer.duration() - self.mediaplayer.position()) <= 500
-            ) and (not self.has_end):
+            if (abs(self.mediaplayer.duration() - self.mediaplayer.position()) <= 500) and (not self.has_end):
                 self.has_end = True
                 self.mediaplayer.pause()
                 self.videoplayer.pause()
                 self.final_position = self.mediaplayer.position()
-                self.mediaplayer.setAudioOutput(
-                    QtMultimedia.QAudioOutput().setVolume(0)
-                )
+                self.mediaplayer.setAudioOutput(QtMultimedia.QAudioOutput().setVolume(0))
                 self.slider.setValue(100)
                 duration = self.mediaplayer.duration() // 1000
                 duration_sec = duration % 60
@@ -515,9 +505,7 @@ class MPlayer:
                     duration_sec = "0" + str(duration_sec)
                 if duration_min < 10:
                     duration_min = "0" + str(duration_min)
-                self.label.setText(
-                    f"{duration_min}:{duration_sec}/{duration_min}:{duration_sec}"
-                )
+                self.label.setText(f"{duration_min}:{duration_sec}/{duration_min}:{duration_sec}")
                 self.player.lower()
                 for lbl in self.choice_labels:
                     lbl.raise_()
@@ -526,9 +514,7 @@ class MPlayer:
                 self.has_end = True
                 self.slider.setValue(100)
                 self.mediaplayer.setPosition(self.final_position)
-                self.mediaplayer.setAudioOutput(
-                    QtMultimedia.QAudioOutput().setVolume(0)
-                )
+                self.mediaplayer.setAudioOutput(QtMultimedia.QAudioOutput().setVolume(0))
                 self.videoplayer.setPosition(self.final_position)
                 duration = self.mediaplayer.duration() // 1000
                 duration_sec = duration % 60
@@ -537,9 +523,7 @@ class MPlayer:
                     duration_sec = "0" + str(duration_sec)
                 if duration_min < 10:
                     duration_min = "0" + str(duration_min)
-                self.label.setText(
-                    f"{duration_min}:{duration_sec}/{duration_min}:{duration_sec}"
-                )
+                self.label.setText(f"{duration_min}:{duration_sec}/{duration_min}:{duration_sec}")
                 self.player.lower()
                 for lbl in self.choice_labels:
                     lbl.raise_()
@@ -551,9 +535,7 @@ class MPlayer:
                     lbl.hide()
                 self.choice_labels = []
             self.last_position = self.mediaplayer.position()
-            self.slider.setValue(
-                int(self.mediaplayer.position() / self.mediaplayer.duration() * 100)
-            )
+            self.slider.setValue(int(self.mediaplayer.position() / self.mediaplayer.duration() * 100))
             duration = self.mediaplayer.duration() // 1000
             position = self.mediaplayer.position() // 1000
             duration_sec = duration % 60
@@ -568,9 +550,7 @@ class MPlayer:
                 position_sec = "0" + str(position_sec)
             if position_min < 10:
                 position_min = "0" + str(position_min)
-            self.label.setText(
-                f"{position_min}:{position_sec}/{duration_min}:{duration_sec}"
-            )
+            self.label.setText(f"{position_min}:{position_sec}/{duration_min}:{duration_sec}")
             # 将选择的按钮置于最上层
             for lbl in self.choice_labels:
                 lbl.raise_()
@@ -591,14 +571,10 @@ class MPlayer:
                     and (pos[1] - btn.pos[1] <= 50)
                     and (pos[1] - btn.pos[1] >= 0)
                 ):
-                    condition = InteractiveJumpingCondition(
-                        self.variables, btn.condition
-                    )
+                    condition = InteractiveJumpingCondition(self.variables, btn.condition)
                     if condition.get_result():
                         # 可以跳转
-                        native_command = InteractiveJumpingCommand(
-                            self.variables, btn.command
-                        )
+                        native_command = InteractiveJumpingCommand(self.variables, btn.command)
                         self.variables = native_command.run_command()
                         btn_id = btn.node_id
                         self.set_source(self.graph[str(btn_id)]["cid"])
@@ -649,9 +625,7 @@ class MPlayer:
         self.win.setWindowTitle(wintitle)
         self.state_log.append({"cid": cid, "vars": copy.deepcopy(self.variables)})
         self.has_end = False
-        self.mediaplayer.setAudioOutput(
-            QtMultimedia.QAudioOutput().setVolume(self.horizontalSlider.value() / 100)
-        )
+        self.mediaplayer.setAudioOutput(QtMultimedia.QAudioOutput().setVolume(self.horizontalSlider.value() / 100))
         self.stop_playing()
         self.pp.setText("Pause")
         dest = self.temp_dir + str(cid) + ".audio.mp4"
@@ -679,28 +653,18 @@ class MPlayer:
         bilivideo_parser = json.JSONDecoder()
         self.node.setText("(当前节点: 视频主节点)")
         self.info.setText(
-            bilivideo_parser.decode(
-                open(self.temp_dir + "bilivideo.json", encoding="utf-8").read()
-            )["title"]
+            bilivideo_parser.decode(open(self.temp_dir + "bilivideo.json", encoding="utf-8").read())["title"]
             + "("
-            + bilivideo_parser.decode(
-                open(self.temp_dir + "bilivideo.json", encoding="utf-8").read()
-            )["bvid"]
+            + bilivideo_parser.decode(open(self.temp_dir + "bilivideo.json", encoding="utf-8").read())["bvid"]
             + ")"
         )
-        self.graph = json.load(
-            open(self.temp_dir + "ivideo.json", encoding="utf-8")
-        )
-        self.current_node = bilivideo_parser.decode(
-            open(self.temp_dir + "bilivideo.json", encoding="utf-8").read()
-        )["root_id"]
+        self.graph = json.load(open(self.temp_dir + "ivideo.json", encoding="utf-8"))
+        self.current_node = bilivideo_parser.decode(open(self.temp_dir + "bilivideo.json", encoding="utf-8").read())[
+            "root_id"
+        ]
         variables = self.graph[str(self.current_node)]["vars"]
         for var in variables:
-            self.variables.append(
-                InteractiveVariable(
-                    var["name"], var["id"], var["value"], var["show"], var["random"]
-                )
-            )
+            self.variables.append(InteractiveVariable(var["name"], var["id"], var["value"], var["show"], var["random"]))
         self.set_source(self.graph[str(self.current_node)]["cid"])
         self.volume_change_event()
 
@@ -721,7 +685,7 @@ class MPlayer:
         self.stop_playing()
         self.pp.setText("Pause")
         self.has_end = False
-        if self.horizontalSlider.value() != 0: # I don't know why but without it the application will be blocked
+        if self.horizontalSlider.value() != 0:  # I don't know why but without it the application will be blocked
             self.mediaplayer = QtMultimedia.QMediaPlayer()  # Clear the multimedia source
             self.mediaplayer.setAudioOutput(QtMultimedia.QAudioOutput())
         self.videoplayer = QtMultimedia.QMediaPlayer()
@@ -845,8 +809,7 @@ class MPlayer:
                 self.win,
                 "WARNING",
                 "IVI file is playing. Are you sure want to exit? ",
-                QtWidgets.QMessageBox.StandardButton.Yes
-                | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
                 QtWidgets.QMessageBox.StandardButton.No,
             )
             if reply == QtWidgets.QMessageBox.StandardButton.Yes:

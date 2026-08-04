@@ -4,8 +4,8 @@ bilibili_api.utils.short
 一个很简单的处理短链接的模块，主要是读取跳转链接。
 """
 
-
-from .network import get_client, Credential
+from ..exceptions import NetworkException, ResponseCodeException
+from .network import Credential, get_client
 
 
 async def get_real_url(short_url: str, credential: Credential | None = None) -> str:

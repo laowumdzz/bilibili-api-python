@@ -1,12 +1,12 @@
+from dataclasses import dataclass
 import os
 import tempfile
 from typing import Any
-from dataclasses import dataclass
 
-from yarl import URL
 from PIL import Image
+from yarl import URL
 
-from .network import Credential, get_client, BiliAPIFile
+from .network import BiliAPIFile, Credential, get_client
 
 
 @dataclass
@@ -82,9 +82,7 @@ class Picture:
         )
         obj.content = resp.raw
         obj.url = url
-        obj.__set_picture_meta_from_bytes(
-            url.split("/")[-1].split(".")[-1].split("?")[0]
-        )
+        obj.__set_picture_meta_from_bytes(url.split("/")[-1].split(".")[-1].split("?")[0])
         return obj
 
     @staticmethod

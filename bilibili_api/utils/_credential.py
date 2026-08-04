@@ -21,18 +21,22 @@ from ..exceptions import (
     CredentialNoDedeUserIDException,
     CredentialNoSessdataException,
 )
-
 from ._session import get_client
-from ._types import HEADERS, API
+from ._types import API, HEADERS
+
 
 # Lazy imports to avoid circular dependency with _api
 def _get_get_buvid():
     from ._api import get_buvid
+
     return get_buvid
+
 
 def _get_Api():
     from ._api import Api
+
     return Api
+
 
 class Credential:
     """
@@ -48,7 +52,7 @@ class Credential:
         dedeuserid: str | None = None,
         ac_time_value: str | None = None,
         proxy: str | None = None,
-        **kwargs
+        **kwargs,
     ) -> None:
         """
         各字段获取方式查看：https://nemo2011.github.io/bilibili-api/#/get-credential.md
@@ -69,11 +73,7 @@ class Credential:
             proxy (str | None, optional): 凭据类可选择携带的代理. Defaults to None.
         """
         self.sessdata = (
-            None
-            if sessdata is None
-            else (
-                sessdata if sessdata.find("%") != -1 else urllib.parse.quote(sessdata)
-            )
+            None if sessdata is None else (sessdata if sessdata.find("%") != -1 else urllib.parse.quote(sessdata))
         )
         self.bili_jct = bili_jct
         self.buvid3 = buvid3
@@ -378,9 +378,7 @@ async def _refresh_cookies(credential: Credential) -> Credential:
     return new_credential
 
 
-async def _confirm_refresh(
-    old_credential: Credential, new_credential: Credential
-) -> None:
+async def _confirm_refresh(old_credential: Credential, new_credential: Credential) -> None:
     api = API["operate"]["confirm_refresh"]
     data = {
         "csrf": new_credential.bili_jct,

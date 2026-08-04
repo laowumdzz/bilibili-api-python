@@ -6,8 +6,8 @@ bilibili_api.rank
 
 from enum import Enum
 
-from .utils.utils import get_api
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("rank")
 
@@ -170,9 +170,7 @@ class LiveEnergyRankType(Enum):
     PRE_MONTH = "pre_month"
 
 
-async def get_rank(
-    type_: RankType = RankType.All, day: RankDayType = RankDayType.THREE_DAY
-) -> dict:
+async def get_rank(type_: RankType = RankType.All, day: RankDayType = RankDayType.THREE_DAY) -> dict:
     """
     获取视频排行榜
 
@@ -257,9 +255,7 @@ async def get_vip_rank(type_: VIPRankType = VIPRankType.VIP) -> dict:
     return await Api(**api).update_params(**params).result
 
 
-async def get_manga_rank(
-    type_: MangeRankType = MangeRankType.NEW, credential: Credential = None
-) -> dict:
+async def get_manga_rank(type_: MangeRankType = MangeRankType.NEW, credential: Credential = None) -> dict:
     """
     获取漫画专属排行榜
 
@@ -275,12 +271,7 @@ async def get_manga_rank(
     api = API["info"]["manga_rank"]
     params = {"device": "pc", "platform": "web"}
     data = {"id": type_.value}
-    return (
-        await Api(**api, no_csrf=True, credential=credential)
-        .update_data(**data)
-        .update_params(**params)
-        .result
-    )
+    return await Api(**api, no_csrf=True, credential=credential).update_data(**data).update_params(**params).result
 
 
 async def get_live_hot_rank() -> dict:
@@ -326,9 +317,7 @@ async def get_live_energy_user_rank(
     return await Api(**api).update_params(**params).result
 
 
-async def get_live_rank(
-    _type: LiveRankType = LiveRankType.SAIL_BOAT_VALUE, pn: int = 1, ps: int = 20
-) -> dict:
+async def get_live_rank(_type: LiveRankType = LiveRankType.SAIL_BOAT_VALUE, pn: int = 1, ps: int = 20) -> dict:
     """
     获取直播通用榜单
 
@@ -370,9 +359,7 @@ async def get_live_user_medal_rank(pn: int = 1, ps: int = 20) -> dict:
     return await Api(**api).update_params(**params).result
 
 
-async def subscribe_music_rank(
-    status: bool = True, credential: Credential | None = None
-) -> dict:
+async def subscribe_music_rank(status: bool = True, credential: Credential | None = None) -> dict:
     """
     设置关注全站音乐榜
 

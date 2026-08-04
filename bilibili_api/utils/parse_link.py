@@ -9,25 +9,26 @@ from typing import Literal
 
 from yarl import URL
 
+# 注意：以下导入顺序为避免循环引用精心设计，禁止 isort 重排（I001 已在 pyproject 中豁免）
 from ..game import Game
 from ..manga import Manga
 from ..topic import Topic
 from ..video import Video
-from ..exceptions import *
+from ..exceptions import NetworkException, ResponseCodeException
 from .utils import get_api
 from ..live import LiveRoom
 from ..dynamic import Dynamic
 from .short import get_real_url
 from ..note import Note, NoteType
 from ..black_room import BlackRoom
-from .network import Credential, Api
+from .network import Api, Credential
 from ..audio import Audio, AudioList
 from ..bangumi import Bangumi, Episode
 from ..article import Article, ArticleList
 from ..cheese import CheeseList, CheeseVideo
 from ..interactive_video import InteractiveVideo
 from ..favorite_list import FavoriteList, FavoriteListType
-from ..user import User, ChannelSeries, ChannelSeriesType, get_self_info
+from ..user import ChannelSeries, ChannelSeriesType, User, get_self_info
 from ..opus import Opus
 from ..garb import DLC
 
@@ -84,7 +85,30 @@ class ResourceType(Enum):
     FAILED = "failed"
 
 
-async def parse_link(url: str, credential: Credential | None = None) -> tuple[Video, Literal[ResourceType.VIDEO]] | tuple[InteractiveVideo, Literal[ResourceType.INTERACTIVE_VIDEO]] | tuple[Bangumi, Literal[ResourceType.BANGUMI]] | tuple[Episode, Literal[ResourceType.EPISODE]] | tuple[FavoriteList, Literal[ResourceType.FAVORITE_LIST]] | tuple[CheeseVideo, Literal[ResourceType.CHEESE_VIDEO]] | tuple[Audio, Literal[ResourceType.AUDIO]] | tuple[AudioList, Literal[ResourceType.AUDIO_LIST]] | tuple[Article, Literal[ResourceType.ARTICLE]] | tuple[User, Literal[ResourceType.USER]] | tuple[LiveRoom, Literal[ResourceType.LIVE]] | tuple[ChannelSeries, Literal[ResourceType.CHANNEL_SERIES]] | tuple[ArticleList, Literal[ResourceType.ARTICLE_LIST]] | tuple[Dynamic, Literal[ResourceType.DYNAMIC]] | tuple[BlackRoom, Literal[ResourceType.BLACK_ROOM]] | tuple[Game, Literal[ResourceType.GAME]] | tuple[Topic, Literal[ResourceType.TOPIC]] | tuple[Manga, Literal[ResourceType.MANGA]] | tuple[Note, Literal[ResourceType.NOTE]] | tuple[Literal[-1], Literal[ResourceType.FAILED]]:
+async def parse_link(
+    url: str, credential: Credential | None = None
+) -> (
+    tuple[Video, Literal[ResourceType.VIDEO]]
+    | tuple[InteractiveVideo, Literal[ResourceType.INTERACTIVE_VIDEO]]
+    | tuple[Bangumi, Literal[ResourceType.BANGUMI]]
+    | tuple[Episode, Literal[ResourceType.EPISODE]]
+    | tuple[FavoriteList, Literal[ResourceType.FAVORITE_LIST]]
+    | tuple[CheeseVideo, Literal[ResourceType.CHEESE_VIDEO]]
+    | tuple[Audio, Literal[ResourceType.AUDIO]]
+    | tuple[AudioList, Literal[ResourceType.AUDIO_LIST]]
+    | tuple[Article, Literal[ResourceType.ARTICLE]]
+    | tuple[User, Literal[ResourceType.USER]]
+    | tuple[LiveRoom, Literal[ResourceType.LIVE]]
+    | tuple[ChannelSeries, Literal[ResourceType.CHANNEL_SERIES]]
+    | tuple[ArticleList, Literal[ResourceType.ARTICLE_LIST]]
+    | tuple[Dynamic, Literal[ResourceType.DYNAMIC]]
+    | tuple[BlackRoom, Literal[ResourceType.BLACK_ROOM]]
+    | tuple[Game, Literal[ResourceType.GAME]]
+    | tuple[Topic, Literal[ResourceType.TOPIC]]
+    | tuple[Manga, Literal[ResourceType.MANGA]]
+    | tuple[Note, Literal[ResourceType.NOTE]]
+    | tuple[Literal[-1], Literal[ResourceType.FAILED]]
+):
     """
     调用 yarl 解析 bilibili url 的函数。
 
@@ -123,7 +147,7 @@ async def parse_link(url: str, credential: Credential | None = None) -> tuple[Vi
             return obj  # type: ignore
 
         # 过滤 https://space.bilibili.com/
-        if url.host == "space.bilibili.com" and url.path == "/" or url.path == "":  # type: ignore
+        if (url.host == "space.bilibili.com" and url.path == "/") or url.path == "":  # type: ignore
             try:
                 info = await get_self_info(credential)
             except (NetworkException, ResponseCodeException):
@@ -132,7 +156,8 @@ async def parse_link(url: str, credential: Credential | None = None) -> tuple[Vi
                 return (User(info["mid"], credential=credential), ResourceType.USER)
 
         channel = parse_season_series(
-            url, credential  # type: ignore
+            url,
+            credential,  # type: ignore
         )  # 不需要 real_url，提前处理
         if channel != -1:
             return (channel, ResourceType.CHANNEL_SERIES)  # type: ignore
@@ -206,7 +231,7 @@ async def parse_link(url: str, credential: Credential | None = None) -> tuple[Vi
         if not garb == -1:
             obj = (garb, ResourceType.DLC)
 
-        if obj == None or obj[0] == None:
+        if obj is None or obj[0] is None:
             return (-1, ResourceType.FAILED)
         else:
             obj[0].credential = credential  # type: ignore
@@ -229,16 +254,27 @@ async def auto_convert_video(
 
     # check episode
     if "redirect_url" in video_info:
-        reparse_link = await parse_link(
-            await get_real_url(video_info["redirect_url"]), credential=credential
-        )  # type: ignore
+        reparse_link = await parse_link(await get_real_url(video_info["redirect_url"]), credential=credential)  # type: ignore
         return reparse_link  # type: ignore
 
     # return video
     return (video, ResourceType.VIDEO)
 
 
-async def check_short_name(name: str, credential: Credential) -> tuple[Video, Literal[ResourceType.VIDEO]] | tuple[Episode, Literal[ResourceType.EPISODE]] | tuple[CheeseVideo, Literal[ResourceType.CHEESE_VIDEO]] | tuple[FavoriteList, Literal[ResourceType.FAVORITE_LIST]] | tuple[User, Literal[ResourceType.USER]] | tuple[Article, Literal[ResourceType.ARTICLE]] | tuple[Audio, Literal[ResourceType.AUDIO]] | tuple[AudioList, Literal[ResourceType.AUDIO_LIST]] | tuple[ArticleList, Literal[ResourceType.ARTICLE_LIST]] | Literal[-1]:
+async def check_short_name(
+    name: str, credential: Credential
+) -> (
+    tuple[Video, Literal[ResourceType.VIDEO]]
+    | tuple[Episode, Literal[ResourceType.EPISODE]]
+    | tuple[CheeseVideo, Literal[ResourceType.CHEESE_VIDEO]]
+    | tuple[FavoriteList, Literal[ResourceType.FAVORITE_LIST]]
+    | tuple[User, Literal[ResourceType.USER]]
+    | tuple[Article, Literal[ResourceType.ARTICLE]]
+    | tuple[Audio, Literal[ResourceType.AUDIO]]
+    | tuple[AudioList, Literal[ResourceType.AUDIO_LIST]]
+    | tuple[ArticleList, Literal[ResourceType.ARTICLE_LIST]]
+    | Literal[-1]
+):
     """
     解析:
       - mlxxxxxxxxxx
@@ -339,9 +375,7 @@ def parse_favorite_list(url: URL, credential: Credential) -> FavoriteList | int:
     return -1
 
 
-async def parse_cheese_video(
-    url: URL, credential: Credential
-) -> CheeseVideo | int:
+async def parse_cheese_video(url: URL, credential: Credential) -> CheeseVideo | int:
     """
     解析课程视频,如果不是返回 -1，否则返回对应类
     """
@@ -414,7 +448,7 @@ def parse_season_series(url: URL, credential: Credential) -> ChannelSeries | int
         if len(url.parts) >= 2:  # path 存在 uid
             try:
                 uid = int(url.parts[1])
-            except:
+            except Exception:
                 pass  # uid 无效
             else:
                 if len(url.parts) >= 4:  # path 存在 collectiondetail 或者 seriesdetail
@@ -445,18 +479,14 @@ def parse_season_series(url: URL, credential: Credential) -> ChannelSeries | int
                 uid = int(url.parts[2])
                 if "sid" in url.query:
                     sid = int(url.query["sid"])
-                    return ChannelSeries(
-                        uid, ChannelSeriesType.SERIES, id_=sid, credential=credential
-                    )
+                    return ChannelSeries(uid, ChannelSeriesType.SERIES, id_=sid, credential=credential)
         # https://www.bilibili.com/medialist/play/660303135?business=space 新版合集
         elif url.parts[1] == "medialist" and url.parts[2] == "play":
             if len(url.parts) >= 4:
                 uid = int(url.parts[3])
                 if "business_id" in url.query:
                     sid = int(url.query["business_id"])
-                    return ChannelSeries(
-                        uid, ChannelSeriesType.SERIES, id_=sid, credential=credential
-                    )
+                    return ChannelSeries(uid, ChannelSeriesType.SERIES, id_=sid, credential=credential)
     return -1
 
 
@@ -467,23 +497,17 @@ async def parse_space_favorite_list(
         uid = url.parts[1]  # 获取 uid
         if len(url.parts) >= 3:  # path 存在 favlist
             if url.parts[2] == "favlist":
-                if (
-                    len(url.parts) == 3 and url.query.get("fid") == None
-                ):  # query 中不存在 fid 则返回默认收藏夹
+                if len(url.parts) == 3 and url.query.get("fid") is None:  # query 中不存在 fid 则返回默认收藏夹
                     api = get_api("favorite-list")["info"]["list_list"]
                     params = {"up_mid": uid, "type": 2}
-                    favorite_lists = await (
-                        Api(**api, credential=credential).update_params(**params).result
-                    )
+                    favorite_lists = await Api(**api, credential=credential).update_params(**params).result
 
-                    if favorite_lists == None:
+                    if favorite_lists is None:
                         return -1
                     else:
                         default_favorite_id = int(favorite_lists["list"][0]["id"])
                         return (
-                            FavoriteList(
-                                media_id=default_favorite_id, credential=credential
-                            ),
+                            FavoriteList(media_id=default_favorite_id, credential=credential),
                             ResourceType.FAVORITE_LIST,
                         )
 
@@ -493,7 +517,7 @@ async def parse_space_favorite_list(
                     try:  # 尝试转换为 int 类型并设置 fid_is_int
                         fid = int(fid)  # type: ignore
                         fid_is_int = True
-                    except:
+                    except Exception:
                         fid_is_int = False
                     if ctype is None and fid_is_int:
                         # 我的视频收藏夹
@@ -518,20 +542,16 @@ async def parse_space_favorite_list(
                                 ),
                                 ResourceType.CHANNEL_SERIES,
                             )
-                    elif fid_is_int == False:
+                    elif not fid_is_int:
                         # ctype 不存在且 fid 非 int 类型
                         if fid == FavoriteListType.ARTICLE.value:
                             return (
-                                FavoriteList(
-                                    FavoriteListType.ARTICLE, credential=credential
-                                ),
+                                FavoriteList(FavoriteListType.ARTICLE, credential=credential),
                                 ResourceType.FAVORITE_LIST,
                             )
                         elif fid == FavoriteListType.CHEESE.value:
                             return (
-                                FavoriteList(
-                                    FavoriteListType.CHEESE, credential=credential
-                                ),
+                                FavoriteList(FavoriteListType.CHEESE, credential=credential),
                                 ResourceType.FAVORITE_LIST,
                             )
     return -1
@@ -562,21 +582,14 @@ def parse_black_room(url: URL, credential: Credential) -> BlackRoom | int:
 
 
 def parse_game(url: URL, credential: Credential) -> Game | int:
-    if (
-        url.host == "www.biligame.com"
-        and url.parts[1] == "detail"
-        and url.query.get("id") is not None
-    ):
+    if url.host == "www.biligame.com" and url.parts[1] == "detail" and url.query.get("id") is not None:
         return Game(int(url.query["id"]), credential=credential)
     return -1
 
 
 def parse_topic(url: URL, credential: Credential) -> Topic | int:
     if url.host == "www.bilibili.com" and len(url.parts) >= 4:
-        if (
-            url.parts[:4] == ("/", "v", "topic", "detail")
-            and url.query.get("topic_id") is not None
-        ):
+        if url.parts[:4] == ("/", "v", "topic", "detail") and url.query.get("topic_id") is not None:
             return Topic(int(url.query["topic_id"]), credential=credential)
     return -1
 
@@ -592,22 +605,16 @@ async def parse_festival(url: URL, credential: Credential) -> Video | int:
     if bvid is not None:  # get bvid if provided
         return Video(bvid, credential=credential)
 
-    if (
-        url.host == "www.bilibili.com" and url.parts[1] == "festival"
-    ):  # use __initial_state__ to fetch
-        content, content_type = await get_initial_state(
-            url=str(url), credential=credential
-        )
-        return Video(
-            content["videoSections"][0]["episodes"][0]["bvid"], credential=credential
-        )  # 返回当前第一个视频
+    if url.host == "www.bilibili.com" and url.parts[1] == "festival":  # use __initial_state__ to fetch
+        content, _content_type = await get_initial_state(url=str(url), credential=credential)
+        return Video(content["videoSections"][0]["episodes"][0]["bvid"], credential=credential)  # 返回当前第一个视频
     return -1
 
 
 def parse_note(url: URL, credential: Credential) -> Note | int:
     # https://www.bilibili.com/h5/note-app/view?cvid=21385583
     if url.host == "www.bilibili.com" and url.parts[1:4] == ("h5", "note-app", "view"):
-        if url.query.get("cvid") == None:
+        if url.query.get("cvid") is None:
             return -1
         return Note(cvid=int(url.query.get("cvid")), note_type=NoteType.PUBLIC, credential=credential)  # type: ignore
     return -1

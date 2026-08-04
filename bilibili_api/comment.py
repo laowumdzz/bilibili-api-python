@@ -16,16 +16,15 @@ bilibili_api.comment
 + 活动: {16279} `await get_activity_aid()`
 """
 
-import json
 from enum import Enum
+import json
 
 from bilibili_api import Picture
 
 from .dynamic import upload_image
-
-from .utils.utils import get_api
-from .utils.network import Api, Credential
 from .exceptions import ArgsException
+from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("common")
 
@@ -203,11 +202,7 @@ class Comment:
         self.credential.raise_for_no_bili_jct()
 
         api = API["comment"]["like"]
-        return (
-            await Api(**api, credential=self.credential)
-            .update_data(**self.__get_data(status))
-            .result
-        )
+        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result
 
     async def hate(self, status: bool = True) -> dict:
         """
@@ -224,11 +219,7 @@ class Comment:
         self.credential.raise_for_no_bili_jct()
 
         api = API["comment"]["hate"]
-        return (
-            await Api(**api, credential=self.credential)
-            .update_data(**self.__get_data(status))
-            .result
-        )
+        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result
 
     async def pin(self, status: bool = True) -> dict:
         """
@@ -244,11 +235,7 @@ class Comment:
         self.credential.raise_for_no_bili_jct()
 
         api = API["comment"]["pin"]
-        return (
-            await Api(**api, credential=self.credential)
-            .update_data(**self.__get_data(status))
-            .result
-        )
+        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result
 
     async def delete(self) -> dict:
         """
@@ -288,13 +275,9 @@ class Comment:
             "root": self.__rpid,
         }
 
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
-    async def report(
-        self, report_reason: ReportReason, content: str | None = None
-    ) -> dict:
+    async def report(self, report_reason: ReportReason, content: str | None = None) -> dict:
         """
         举报评论
 
@@ -328,9 +311,7 @@ class Comment:
 
         api = API["comment"]["report"]
         if content is not None and report_reason != ReportReason.OTHER:
-            raise ArgsException(
-                "content 只能在 report_reason=ReportReason.OTHER 时使用"
-            )
+            raise ArgsException("content 只能在 report_reason=ReportReason.OTHER 时使用")
         elif content is None and report_reason == ReportReason.OTHER:
             raise ArgsException("report_reason=ReportReason.OTHER 时 content 不能为空")
         data = {
@@ -349,7 +330,7 @@ async def send_comment(
     type_: CommentResourceType,
     root: int | None = None,
     parent: int | None = None,
-    credential: None | Credential = None,
+    credential: Credential | None = None,
     pic: Picture | list[Picture] | None = None,
 ) -> dict:
     """

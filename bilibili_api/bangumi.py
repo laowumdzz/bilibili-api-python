@@ -13,16 +13,16 @@ bilibili_api.bangumi
 import datetime
 from enum import Enum
 
-from .video import Video
+from .exceptions import ApiException, ArgsException
 from .utils.aid_bvid_transformer import aid2bvid, bvid2aid
 from .utils.danmaku import Danmaku
-from .utils.utils import get_api
-from .utils.network import Api, Credential
 from .utils.initial_state import (
-    get_initial_state,
     InitialDataType,
+    get_initial_state,
 )
-from .exceptions import ApiException, ArgsException
+from .utils.network import Api, Credential
+from .utils.utils import get_api
+from .video import Video
 
 API = get_api("bangumi")
 API_video = get_api("video")
@@ -199,12 +199,12 @@ class IndexFilter:
         start_str = ""
         end_str = ""
 
-        if start != None:
+        if start is not None:
             if isinstance(start, datetime.datetime):
                 start_str = start.strftime("%Y-%m-%d %H:%M:%S")
             else:
                 start_str = start
-        if end != None:
+        if end is not None:
             if isinstance(end, datetime.datetime):
                 end_str = end.strftime("%Y-%m-%d %H:%M:%S")
             else:
@@ -974,13 +974,8 @@ async def get_index_info(
                 params[key] = value
 
     if order in params:
-        if (
-            order == IndexFilter.Order.SCORE.value
-            and sort == IndexFilter.Sort.ASC.value
-        ):
-            raise ValueError(
-                "order 为 Index_Filter.ORDER.SCORE 时，sort 不能为 Index_Filter.SORT.ASC"
-            )
+        if order == IndexFilter.Order.SCORE.value and sort == IndexFilter.Sort.ASC.value:
+            raise ValueError("order 为 Index_Filter.ORDER.SCORE 时，sort 不能为 Index_Filter.SORT.ASC")
 
     # 必要参数 season_type、type
     # 常规参数
@@ -1041,17 +1036,9 @@ class Bangumi:
         if self.__media_id != -1 and self.__ssid != -1:
             bangumi_md_to_ss[self.__media_id] = self.__ssid
             bangumi_ss_to_md[self.__ssid] = self.__media_id
-        if (
-            self.__media_id != -1
-            and self.__ssid == -1
-            and self.__media_id in bangumi_md_to_ss.keys()
-        ):
+        if self.__media_id != -1 and self.__ssid == -1 and self.__media_id in bangumi_md_to_ss.keys():
             self.__ssid = bangumi_md_to_ss[self.__media_id]
-        if (
-            self.__media_id == -1
-            and self.__ssid != -1
-            and self.__ssid in bangumi_ss_to_md.keys()
-        ):
+        if self.__media_id == -1 and self.__ssid != -1 and self.__ssid in bangumi_ss_to_md.keys():
             self.__media_id = bangumi_ss_to_md[self.__ssid]
 
     async def __fetch_raw(self) -> None:
@@ -1061,11 +1048,7 @@ class Bangumi:
         if self.__ssid == -1 and self.__epid == -1:
             api = API["info"]["meta"]
             params = {"media_id": self.__media_id}
-            meta = (
-                await Api(**api, credential=self.credential)
-                .update_params(**params)
-                .result
-            )
+            meta = await Api(**api, credential=self.credential).update_params(**params).result
             self.__ssid = meta["media"]["season_id"]
             params["media_id"] = self.__media_id
         # 处理正常情况
@@ -1077,9 +1060,7 @@ class Bangumi:
             api = API["info"]["collective_info_oversea"]
         else:
             api = API["info"]["collective_info"]
-        resp = (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        resp = await Api(**api, credential=self.credential).update_params(**params).result
         self.__raw = resp
         # 确认有结果后，取出数据
         self.__ssid = resp["season_id"]
@@ -1233,13 +1214,9 @@ class Bangumi:
             # 出海 Api 和国内的字段有些不同
             if self.ep_list:
                 if self.oversea:
-                    self.ep_item = [
-                        item for item in self.ep_list if item["ep_id"] == self.__epid
-                    ]
+                    self.ep_item = [item for item in self.ep_list if item["ep_id"] == self.__epid]
                 else:
-                    self.ep_item = [
-                        item for item in self.ep_list if item["id"] == self.__epid
-                    ]
+                    self.ep_item = [item for item in self.ep_list if item["id"] == self.__epid]
         if self.oversea:
             # 转换 ep_id->id ，index_title->longtitle ，index->title
             fix_ep_list = []
@@ -1250,14 +1227,10 @@ class Bangumi:
                 fix_ep_list.append(item)
             return {"main_section": {"episodes": fix_ep_list}}
         else:
-            credential = (
-                self.credential if self.credential is not None else Credential()
-            )
+            credential = self.credential if self.credential is not None else Credential()
             api = API["info"]["episodes_list"]
             params = {"season_id": await self.get_season_id()}
-            return (
-                await Api(**api, credential=credential).update_params(**params).result
-            )
+            return await Api(**api, credential=credential).update_params(**params).result
 
     async def get_episodes(self) -> list["Episode"]:
         """
@@ -1306,9 +1279,7 @@ class Bangumi:
         return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def set_follow(
-    bangumi: Bangumi, status: bool = True, credential: Credential | None = None
-) -> dict:
+async def set_follow(bangumi: Bangumi, status: bool = True, credential: Credential | None = None) -> dict:
     """
     追番状态设置
 
@@ -1330,9 +1301,7 @@ async def set_follow(
     return await Api(**api, credential=credential).update_data(**data).result
 
 
-async def update_follow_status(
-    bangumi: Bangumi, status: int, credential: Credential | None = None
-) -> dict:
+async def update_follow_status(bangumi: Bangumi, status: int, credential: Credential | None = None) -> dict:
     """
     更新追番状态
 
@@ -1459,9 +1428,7 @@ class Episode(Video):
         Returns:
             int: cid
         """
-        return (await self.get_download_url())["play_view_business_info"][
-            "episode_info"
-        ]["cid"]
+        return (await self.get_download_url())["play_view_business_info"]["episode_info"]["cid"]
 
     async def get_bangumi(self) -> "Bangumi":
         """
@@ -1507,9 +1474,7 @@ class Episode(Video):
             await self.__fetch_bangumi()
         return self.bangumi
 
-    async def set_favorite(
-        self, add_media_ids: list[int] = [], del_media_ids: list[int] = []
-    ) -> dict:
+    async def set_favorite(self, add_media_ids: list[int] = [], del_media_ids: list[int] = []) -> dict:
         """
         设置视频收藏状况。
 
@@ -1522,9 +1487,7 @@ class Episode(Video):
             dict: 调用 API 返回结果。
         """
         if len(add_media_ids) + len(del_media_ids) == 0:
-            raise ArgsException(
-                "对收藏夹无修改。请至少提供 add_media_ids 和 del_media_ids 中的其中一个。"
-            )
+            raise ArgsException("对收藏夹无修改。请至少提供 add_media_ids 和 del_media_ids 中的其中一个。")
 
         self.credential.raise_for_no_sessdata()
         self.credential.raise_for_no_bili_jct()
@@ -1533,8 +1496,8 @@ class Episode(Video):
         data = {
             "rid": await self.get_aid(),
             "type": 42,
-            "add_media_ids": ",".join(map(lambda x: str(x), add_media_ids)),
-            "del_media_ids": ",".join(map(lambda x: str(x), del_media_ids)),
+            "add_media_ids": ",".join(str(x) for x in add_media_ids),
+            "del_media_ids": ",".join(str(x) for x in del_media_ids),
         }
         return await Api(**api, credential=self.credential).update_data(**data).result
 
@@ -1560,11 +1523,7 @@ class Episode(Video):
                 "isGaiaAvoided": "true",
                 "web_location": 1315873,
             }
-            self.__playurl = (
-                await Api(**api, credential=self.credential)
-                .update_params(**params)
-                .result
-            )
+            self.__playurl = await Api(**api, credential=self.credential).update_params(**params).result
         return self.__playurl
 
     async def get_danmaku_xml(self) -> str:
@@ -1608,9 +1567,7 @@ class Episode(Video):
         """
         return await super().get_danmakus(0, date, from_seg=from_seg, to_seg=to_seg)
 
-    async def get_history_danmaku_index(
-        self, date: datetime.date | None = None
-    ) -> None | list[str]:
+    async def get_history_danmaku_index(self, date: datetime.date | None = None) -> list[str] | None:
         """
         获取特定月份存在历史弹幕的日期。
 
@@ -1711,7 +1668,7 @@ class Episode(Video):
         """
         return await super().get_pbp(0)
 
-    async def get_ai_conclusion(self, up_mid: int = None):
+    async def get_ai_conclusion(self, up_mid: int | None = None):
         """
         获取稿件 AI 总结结果。
 

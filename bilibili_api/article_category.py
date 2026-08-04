@@ -4,13 +4,13 @@ bilibili_api.article_category
 专栏分类相关
 """
 
-import os
 import copy
-import json
 from enum import Enum
+import json
+import os
 
-from .utils.utils import get_api
 from .utils.network import Api
+from .utils.utils import get_api
 
 API = get_api("article-category")
 

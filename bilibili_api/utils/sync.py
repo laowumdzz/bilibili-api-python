@@ -5,10 +5,11 @@ bilibili_api.utils.sync
 """
 
 import asyncio
-from typing import Any, TypeVar
-from collections.abc import Coroutine
 from asyncio.futures import Future as AsyncioFuture
-from concurrent.futures import Future as ConcurrentFuture, ThreadPoolExecutor
+from collections.abc import Coroutine
+from concurrent.futures import Future as ConcurrentFuture
+from concurrent.futures import ThreadPoolExecutor
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -16,14 +17,12 @@ T = TypeVar("T")
 def __ensure_event_loop() -> None:
     try:
         asyncio.get_event_loop()
-    except:
+    except Exception:
         asyncio.set_event_loop(asyncio.new_event_loop())
     return asyncio.get_event_loop()
 
 
-def sync(
-    coroutine: Coroutine[Any, Any, T] | AsyncioFuture | ConcurrentFuture
-) -> T:
+def sync(coroutine: Coroutine[Any, Any, T] | AsyncioFuture | ConcurrentFuture) -> T:
     """
     同步执行异步函数，使用可参考 [同步执行异步代码](https://nemo2011.github.io/bilibili-api/#/sync-executor)
 
@@ -39,6 +38,4 @@ def sync(
         return __ensure_event_loop().run_until_complete(coroutine)
     else:
         with ThreadPoolExecutor() as executor:
-            return executor.submit(
-                lambda x: __ensure_event_loop().run_until_complete(x), coroutine
-            ).result()
+            return executor.submit(lambda x: __ensure_event_loop().run_until_complete(x), coroutine).result()

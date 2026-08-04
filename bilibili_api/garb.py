@@ -4,9 +4,10 @@ bilibili_api.garb
 装扮/收藏集相关
 """
 
-from .utils.network import Credential, Api
-from .utils.utils import get_api
 from enum import Enum
+
+from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 dlc_lottery_id = {}
 
@@ -42,9 +43,7 @@ class GarbSortType(Enum):
     LATEST = 2
 
 
-async def search_garb_dlc_raw(
-    keyword: str, pn: int = 1, ps: int = 20, credential: Credential | None = None
-) -> dict:
+async def search_garb_dlc_raw(keyword: str, pn: int = 1, ps: int = 20, credential: Credential | None = None) -> dict:
     """
     搜索装扮/收藏集
 
@@ -120,11 +119,7 @@ class DLC:
                 "act_id": self.__act_id,
                 "csrf": self.credential.get_cookies()["bili_jct"],
             }
-            self.__basic_info = (
-                await Api(**api, credential=self.credential)
-                .update_params(**params)
-                .result
-            )
+            self.__basic_info = await Api(**api, credential=self.credential).update_params(**params).result
             self.__lottery_id = self.__basic_info["lottery_list"][0]["lottery_id"]
         return self.__basic_info
 
@@ -152,9 +147,7 @@ class DLC:
             "lottery_id": await self.get_lottery_id(),
             "csrf": self.credential.get_cookies()["bili_jct"],
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
 
 class Garb:
@@ -165,9 +158,7 @@ class Garb:
         credential (Credential): 凭据类。
     """
 
-    def __init__(
-        self, item_id: int, credential: Credential | None = None
-    ) -> None:
+    def __init__(self, item_id: int, credential: Credential | None = None) -> None:
         """
         Args:
             act_id (int): 装扮的 item_id。(可通过 garb.search_garb_dlc_raw 获取)
@@ -206,9 +197,7 @@ class Garb:
             "item_id": self.__item_id,
             "csrf": self.credential.get_cookies()["bili_jct"],
         }
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
 
 async def search_garb_dlc_obj(
@@ -228,9 +217,7 @@ async def search_garb_dlc_obj(
     """
     global dlc_properties
     credential = credential if credential else Credential()
-    res = await search_garb_dlc_raw(
-        keyword=keyword, pn=pn, ps=ps, credential=credential
-    )
+    res = await search_garb_dlc_raw(keyword=keyword, pn=pn, ps=ps, credential=credential)
     ret = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
@@ -259,9 +246,7 @@ async def search_garb_dlc(
     """
     global dlc_properties
     credential = credential if credential else Credential()
-    res = await search_garb_dlc_raw(
-        keyword=keyword, pn=pn, ps=ps, credential=credential
-    )
+    res = await search_garb_dlc_raw(keyword=keyword, pn=pn, ps=ps, credential=credential)
     ret = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
@@ -327,9 +312,7 @@ async def get_garb_dlc_items_obj(
     """
     global dlc_properties
     credential = credential if credential else Credential()
-    res = await get_garb_dlc_items_raw(
-        type_=type_, sort=sort, pn=pn, ps=ps, credential=credential
-    )
+    res = await get_garb_dlc_items_raw(type_=type_, sort=sort, pn=pn, ps=ps, credential=credential)
     ret = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
@@ -363,9 +346,7 @@ async def get_garb_dlc_items(
     """
     global dlc_properties
     credential = credential if credential else Credential()
-    res = await get_garb_dlc_items_raw(
-        type_=type_, sort=sort, pn=pn, ps=ps, credential=credential
-    )
+    res = await get_garb_dlc_items_raw(type_=type_, sort=sort, pn=pn, ps=ps, credential=credential)
     ret = []
     for obj in res["list"]:
         if obj["item_id"] == 0:

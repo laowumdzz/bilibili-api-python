@@ -4,8 +4,8 @@ bilibili_api.utils.Danmaku
 弹幕类。
 """
 
-import time
 from enum import Enum
+import time
 
 from .utils import crack_uid as _crack_uid
 
@@ -123,16 +123,14 @@ class Danmaku:
         self.id_str = id_str
         self.action = action
         self.mode = mode.value if isinstance(mode, DmMode) else mode
-        self.font_size = (
-            font_size.value if isinstance(font_size, DmFontSize) else font_size
-        )
+        self.font_size = font_size.value if isinstance(font_size, DmFontSize) else font_size
         self.is_sub = is_sub
         self.pool = pool
         self.attr = attr
         self.uid = uid
 
     def __str__(self):
-        ret = "%s, %s, %s" % (self.send_time, self.dm_time, self.text)
+        ret = f"{self.send_time}, {self.dm_time}, {self.text}"
         return ret
 
     def __len__(self):

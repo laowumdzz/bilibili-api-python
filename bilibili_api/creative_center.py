@@ -6,13 +6,13 @@ bilibili_api.creative_center
 务必携带 Credential 信息，否则无法获取到数据。
 """
 
-from enum import Enum
 from datetime import datetime
+from enum import Enum
 
-from .video_zone import VideoZoneTypes
-from .video import Video
-from .utils.utils import get_api
 from .utils.network import Api, Credential
+from .utils.utils import get_api
+from .video import Video
+from .video_zone import VideoZoneTypes
 
 API = get_api("creative_center")
 
@@ -338,9 +338,7 @@ async def get_graph(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_overview(
-    credential: Credential, period: GraphPeriod = GraphPeriod.WEEK
-) -> dict:
+async def get_overview(credential: Credential, period: GraphPeriod = GraphPeriod.WEEK) -> dict:
     """
     获取概览数据。
 
@@ -373,9 +371,7 @@ async def get_video_survey(credential: Credential) -> dict:
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_video_playanalysis(
-    credential: Credential, copyright: Copyright = Copyright.ALL
-) -> dict:
+async def get_video_playanalysis(credential: Credential, copyright: Copyright = Copyright.ALL) -> dict:
     """
     获取稿件播放完成率对比。
 
@@ -407,9 +403,7 @@ async def get_video_source(credential: Credential) -> dict:
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_fan_overview(
-    credential: Credential, period: FanGraphPeriod = FanGraphPeriod.WEEK
-) -> dict:
+async def get_fan_overview(credential: Credential, period: FanGraphPeriod = FanGraphPeriod.WEEK) -> dict:
     """
     获取粉丝概览数据。
 
@@ -463,9 +457,7 @@ async def get_article_overview(credential: Credential) -> dict:
     return await Api(**api, credential=credential).result
 
 
-async def get_article_graph(
-    credential: Credential, graph_type: ArticleInfoType = ArticleInfoType.READ
-) -> dict:
+async def get_article_graph(credential: Credential, graph_type: ArticleInfoType = ArticleInfoType.READ) -> dict:
     """
     获取文章图表数据。
 
@@ -483,9 +475,7 @@ async def get_article_graph(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_article_rank(
-    credential: Credential, rank_type: ArticleInfoType = ArticleInfoType.READ
-) -> dict:
+async def get_article_rank(credential: Credential, rank_type: ArticleInfoType = ArticleInfoType.READ) -> dict:
     """
     获取文章排行数据。
 
@@ -546,7 +536,7 @@ async def get_video_upload_manager_info(
     pn: int = 1,
     ps: int = 10,
     order: UploadManagerOrder = UploadManagerOrder.CLICK,
-    tid: VideoZoneTypes | None | int = None,
+    tid: VideoZoneTypes | int | None = None,
     status: UploadManagerStatus = UploadManagerStatus.ALL,
 ) -> dict:
     """
@@ -726,9 +716,7 @@ https://member.bilibili.com/platform/inter-active/danmu
 """
 
 
-async def get_recently_danmakus(
-    credential: Credential, pn: int = 1, ps: int = 50
-) -> dict:
+async def get_recently_danmakus(credential: Credential, pn: int = 1, ps: int = 50) -> dict:
     """
     最近弹幕
 
@@ -820,27 +808,15 @@ async def get_danmakus(
         "keyword": keyword,
         "progress_from": progress_from,
         "progress_to": progress_to,
-        "ctime_from": (
-            ctime_from.strftime("%d-%m-%Y %H:%M:%S") if ctime_from is not None else None
-        ),
-        "ctime_to": (
-            ctime_to.strftime("%d-%m-%Y %H:%M:%S") if ctime_to is not None else None
-        ),
+        "ctime_from": (ctime_from.strftime("%d-%m-%Y %H:%M:%S") if ctime_from is not None else None),
+        "ctime_to": (ctime_to.strftime("%d-%m-%Y %H:%M:%S") if ctime_to is not None else None),
         "modes": (
-            (
-                ",".join([mode.value for mode in modes])
-                if isinstance(modes, list)
-                else modes.value
-            )
+            (",".join([mode.value for mode in modes]) if isinstance(modes, list) else modes.value)
             if modes is not None
             else None
         ),
         "pool": (
-            (
-                ",".join([pool.value for pool in pools])
-                if isinstance(pools, list)
-                else pools.value
-            )
+            (",".join([pool.value for pool in pools]) if isinstance(pools, list) else pools.value)
             if pools is not None
             else None
         ),
@@ -856,9 +832,7 @@ async def get_danmakus(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def del_danmaku(
-    credential: Credential, oid: int, dmids: int | list[int]
-) -> dict:
+async def del_danmaku(credential: Credential, oid: int, dmids: int | list[int]) -> dict:
     """
     删除弹幕
 
@@ -868,9 +842,7 @@ async def del_danmaku(
         dmids (list[int], int): 弹幕 id，可以传入列表和 int
     """
 
-    return await edit_danmaku_state(
-        credential=credential, oid=oid, dmids=dmids, state=1
-    )
+    return await edit_danmaku_state(credential=credential, oid=oid, dmids=dmids, state=1)
 
 
 async def edit_danmaku_state(

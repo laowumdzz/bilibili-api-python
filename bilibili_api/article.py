@@ -4,26 +4,23 @@ bilibili_api.article
 专栏相关
 """
 
-import re
 from copy import copy
 from enum import Enum
-from urllib.parse import unquote
+import html
+import re
 from typing import TypeVar, overload
+from urllib.parse import unquote
 
+from bs4 import BeautifulSoup, element
 import yaml
 from yarl import URL
-from bs4 import BeautifulSoup, element
 
-from .utils.utils import get_api
-from .utils.network import Api, Credential
+from . import dynamic, opus
 from .exceptions import ApiException
-from .utils import cache_pool
-
-from . import dynamic
-from . import opus
 from .note import Note, NoteType
-
-import html
+from .utils import cache_pool
+from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("article")
 
@@ -153,9 +150,7 @@ class Article:
             credential (Credential | None, optional): 凭据. Defaults to None.
         """
         self.__children: list[Node] = []
-        self.credential: Credential = (
-            credential if credential is not None else Credential()
-        )
+        self.credential: Credential = credential if credential is not None else Credential()
         self.__meta = None
         self.__cvid = cvid
         self.__has_parsed: bool = False
@@ -215,9 +210,7 @@ class Article:
         Returns:
             Note: 笔记实例
         """
-        return Note(
-            cvid=self.get_cvid(), note_type=NoteType.PUBLIC, credential=self.credential
-        )
+        return Note(cvid=self.get_cvid(), note_type=NoteType.PUBLIC, credential=self.credential)
 
     def get_cvid(self) -> int:
         """
@@ -245,7 +238,7 @@ class Article:
         for node in self.__children:
             try:
                 markdown_text = node.markdown()
-            except:
+            except Exception:
                 continue
             else:
                 content += markdown_text
@@ -269,7 +262,7 @@ class Article:
         return {
             "type": "Article",
             "meta": self.__meta,
-            "children": list(map(lambda x: x.json(), self.__children)),
+            "children": [x.json() for x in self.__children],
         }
 
     async def fetch_content(self) -> None:
@@ -287,7 +280,7 @@ class Article:
             node_list = []
 
             for e in el.contents:  # type: ignore
-                if type(e) == element.NavigableString:
+                if type(e) is element.NavigableString:
                     # 文本节点
                     node = TextNode(e)  # type: ignore
                     node_list.append(node)
@@ -376,7 +369,7 @@ class Article:
 
                         if "img-box" in className:
                             img_el: BeautifulSoup = e.find("img")  # type: ignore
-                            if img_el == None:
+                            if img_el is None:
                                 pass
                             elif "class" in img_el.attrs:
                                 className = img_el.attrs["class"]
@@ -530,7 +523,7 @@ class Article:
                         node.text = e.contents[0]  # type: ignore
 
                 elif e.name == "img":
-                    className = e.attrs.get("class")
+                    className = e.attrs.get("class") or []
 
                     if "latex" in className:
                         # 公式
@@ -565,9 +558,7 @@ class Article:
 
         api = API["info"]["view"]
         params = {"id": self.__cvid}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_detail(self) -> dict:
         """
@@ -579,9 +570,7 @@ class Article:
 
         api = API["info"]["detail"]
         params = {"id": self.__cvid}
-        return (
-            await Api(**api, credential=self.credential).update_params(**params).result
-        )
+        return await Api(**api, credential=self.credential).update_params(**params).result
 
     async def get_all(self) -> dict:
         """
@@ -592,19 +581,11 @@ class Article:
         """
         if not self.__get_all_data:
             self.__get_all_data = {"readInfo": await self.get_detail()}
-            cache_pool.article2dynamic[self.__cvid] = self.__get_all_data["readInfo"][
-                "dyn_id_str"
-            ]
-            cache_pool.dynamic2article[cache_pool.article2dynamic[self.__cvid]] = (
-                self.__cvid
-            )
-            cache_pool.dynamic_is_article[cache_pool.article2dynamic[self.__cvid]] = (
-                True
-            )
+            cache_pool.article2dynamic[self.__cvid] = self.__get_all_data["readInfo"]["dyn_id_str"]
+            cache_pool.dynamic2article[cache_pool.article2dynamic[self.__cvid]] = self.__cvid
+            cache_pool.dynamic_is_article[cache_pool.article2dynamic[self.__cvid]] = True
             cache_pool.dynamic_is_opus[cache_pool.article2dynamic[self.__cvid]] = True
-            cache_pool.article_is_note[self.get_cvid()] = self.__get_all_data[
-                "readInfo"
-            ]["category"]["id"] in [41, 42]
+            cache_pool.article_is_note[self.get_cvid()] = self.__get_all_data["readInfo"]["category"]["id"] in [41, 42]
         return self.__get_all_data
 
     async def set_like(self, status: bool = True) -> dict:
@@ -635,9 +616,7 @@ class Article:
         """
         self.credential.raise_for_no_sessdata()
 
-        api = (
-            API["operate"]["add_favorite"] if status else API["operate"]["del_favorite"]
-        )
+        api = API["operate"]["add_favorite"] if status else API["operate"]["del_favorite"]
 
         data = {"id": self.__cvid}
         return await Api(**api, credential=self.credential).update_data(**data).result
@@ -684,7 +663,7 @@ class ParagraphNode(Node):
     def json(self):
         return {
             "type": "ParagraphNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -701,7 +680,7 @@ class HeadingNode(Node):
     def json(self):
         return {
             "type": "HeadingNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -719,7 +698,7 @@ class BlockquoteNode(Node):
     def json(self):
         return {
             "type": "BlockquoteNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -736,7 +715,7 @@ class ItalicNode(Node):
     def json(self):
         return {
             "type": "ItalicNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -753,7 +732,7 @@ class BoldNode(Node):
     def json(self):
         return {
             "type": "BoldNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -770,7 +749,7 @@ class DelNode(Node):
     def json(self):
         return {
             "type": "DelNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -787,7 +766,7 @@ class UnderlineNode(Node):
     def json(self):
         return {
             "type": "UnderlineNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -801,7 +780,7 @@ class UlNode(Node):
     def json(self):
         return {
             "type": "UlNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -818,7 +797,7 @@ class OlNode(Node):
     def json(self):
         return {
             "type": "OlNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -832,7 +811,7 @@ class LiNode(Node):
     def json(self):
         return {
             "type": "LiNode",
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -848,7 +827,7 @@ class ColorNode(Node):
         return {
             "type": "ColorNode",
             "color": self.color,
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 
@@ -864,7 +843,7 @@ class FontSizeNode(Node):
         return {
             "type": "FontSizeNode",
             "size": self.size,
-            "children": list(map(lambda x: x.json(), self.children)),
+            "children": [x.json() for x in self.children],
         }
 
 

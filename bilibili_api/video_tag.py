@@ -4,10 +4,9 @@ bilibili_api.video_tag
 视频标签相关，部分的标签的 id 与同名的频道的 id 一模一样。
 """
 
-
-from .exceptions import *
-from .utils.utils import get_api
+from .exceptions import ArgsException
 from .utils.network import Api, Credential
+from .utils.utils import get_api
 
 API = get_api("video_tag")
 API_video = get_api("video")

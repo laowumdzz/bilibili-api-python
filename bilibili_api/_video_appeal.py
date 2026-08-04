@@ -1,5 +1,7 @@
 """bilibili_api._video_appeal — 视频投诉相关类型。"""
+
 from enum import Enum
+
 
 class DanmakuOperatorType(Enum):
     """
@@ -9,6 +11,11 @@ class DanmakuOperatorType(Enum):
     + PROTECT - 保护弹幕
     + UNPROTECT - 取消保护弹幕
     """
+
+    DELETE = 1
+    PROTECT = 2
+    UNPROTECT = 3
+
 
 class VideoAppealReasonType:
     """
@@ -43,29 +50,74 @@ class VideoAppealReasonType:
     - ILLEGAL_URL(): 违法信息外链
     """
 
-    ILLEGAL = lambda: 2
-    PRON = lambda: 3
-    VULGAR = lambda: 4
-    GAMBLED_SCAMS = lambda: 5
-    VIOLENT = lambda: 6
-    PERSONAL_ATTACK = lambda: 7
-    BAD_FOR_YOUNGS = lambda: 10000
-    CLICKBAIT = lambda: 10013
-    POLITICAL_RUMORS = lambda: 10014
-    SOCIAL_RUMORS = lambda: 10015
-    UNREAL_EVENT = lambda: 10017
-    OTHER = lambda: 1
-    LEAD_WAR = lambda: 9
-    CANNOT_CHARGE = lambda: 10
-    ILLEGAL_POPULARIZE = lambda: 10018
-    ILLEGAL_OTHER = lambda: 10019
-    DANGEROUS = lambda: 10020
-    OTHER_NEW = lambda: 10022
-    COOPERATE_INFRINGEMENT = lambda: 10023
-    INFRINGEMENT = lambda: 10024
-    VIDEO_INFRINGEMENT = lambda: 10026
-    DISCOMFORT = lambda: 10021
-    ILLEGAL_URL = lambda: 10025
+    def ILLEGAL():
+        return 2
+
+    def PRON():
+        return 3
+
+    def VULGAR():
+        return 4
+
+    def GAMBLED_SCAMS():
+        return 5
+
+    def VIOLENT():
+        return 6
+
+    def PERSONAL_ATTACK():
+        return 7
+
+    def BAD_FOR_YOUNGS():
+        return 10000
+
+    def CLICKBAIT():
+        return 10013
+
+    def POLITICAL_RUMORS():
+        return 10014
+
+    def SOCIAL_RUMORS():
+        return 10015
+
+    def UNREAL_EVENT():
+        return 10017
+
+    def OTHER():
+        return 1
+
+    def LEAD_WAR():
+        return 9
+
+    def CANNOT_CHARGE():
+        return 10
+
+    def ILLEGAL_POPULARIZE():
+        return 10018
+
+    def ILLEGAL_OTHER():
+        return 10019
+
+    def DANGEROUS():
+        return 10020
+
+    def OTHER_NEW():
+        return 10022
+
+    def COOPERATE_INFRINGEMENT():
+        return 10023
+
+    def INFRINGEMENT():
+        return 10024
+
+    def VIDEO_INFRINGEMENT():
+        return 10026
+
+    def DISCOMFORT():
+        return 10021
+
+    def ILLEGAL_URL():
+        return 10025
 
     @staticmethod
     def PLAGIARISM(bvid: str):
@@ -86,4 +138,3 @@ class VideoAppealReasonType:
             source (str): 原创视频出处
         """
         return {"tid": 52, "出处": source}
-

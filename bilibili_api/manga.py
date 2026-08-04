@@ -7,9 +7,8 @@ bilibili_api.manga
 import datetime
 from enum import Enum
 
-from bilibili_api.utils.utils import get_api
 from bilibili_api.utils.network import Api, Credential
-
+from bilibili_api.utils.utils import get_api
 
 API = get_api("manga")
 
@@ -23,6 +22,7 @@ class MangaOrderType(Enum):
     - READING: 最近阅读
     - FREE: 等免
     """
+
     FOLLOW = {"order": 1, "wait_free": 0}
     UPDATE = {"order": 2, "wait_free": 0}
     READING = {"order": 3, "wait_free": 0}
@@ -367,9 +367,7 @@ class Manga:
 #     return await Picture.async_load_url(url)
 
 
-async def set_follow_manga(
-    manga: Manga, status: bool = True, credential: Credential | None = None
-) -> dict:
+async def set_follow_manga(manga: Manga, status: bool = True, credential: Credential | None = None) -> dict:
     """
     设置追漫
 
@@ -380,26 +378,21 @@ async def set_follow_manga(
 
         credential (Credential): 凭据类。
     """
-    if credential == None:
+    if credential is None:
         if manga.credential.has_sessdata() and manga.credential.has_bili_jct():
             credential = manga.credential
         else:
             credential = Credential()
     credential.raise_for_no_sessdata()
     credential.raise_for_no_bili_jct()
-    if status == True:
+    if status:
         api = API["operate"]["add_favorite"]
     else:
         api = API["operate"]["del_favorite"]
 
     params = {"device": "pc", "platform": "web", "nov": 25}
     data = {"comic_ids": str(manga.get_manga_id())}
-    return (
-        await Api(**api, credential=credential)
-        .update_params(**params)
-        .update_data(**data)
-        .result
-    )
+    return await Api(**api, credential=credential).update_params(**params).update_data(**data).result
 
 
 async def get_followed_manga(
@@ -423,12 +416,7 @@ async def get_followed_manga(
     params = {"device": "pc", "platform": "web", "nov": 25}
     data = {"page_num": pn, "page_size": ps}
     data.update(order.value)
-    return (
-        await Api(**api, credential=credential, no_csrf=True)
-        .update_data(**data)
-        .update_params(**params)
-        .result
-    )
+    return await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result
 
 
 # async def get_raw_manga_index(
@@ -554,17 +542,12 @@ async def get_manga_update(
         date = date.strftime("%Y-%m-%d")
     data = {"date": date, "page_num": pn, "page_size": ps}
     manga_data = (
-        await Api(**api, credential=credential, no_csrf=True)
-        .update_data(**data)
-        .update_params(**params)
-        .result
+        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result
     )
     return [Manga(manga["comic_id"]) for manga in manga_data["list"]]
 
 
-async def get_manga_home_recommend(
-    pn: int = 1, seed: str | None = "0", credential: Credential = None
-) -> list[Manga]:
+async def get_manga_home_recommend(pn: int = 1, seed: str | None = "0", credential: Credential = None) -> list[Manga]:
     """
     获取首页推荐的漫画
 
@@ -583,9 +566,6 @@ async def get_manga_home_recommend(
     params = {"device": "pc", "platform": "web", "nov": 25}
     data = {"page_num": pn, "seed": seed}
     manga_data = (
-        await Api(**api, credential=credential, no_csrf=True)
-        .update_data(**data)
-        .update_params(**params)
-        .result
+        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result
     )
     return [Manga(manga["comic_id"]) for manga in manga_data["list"]]

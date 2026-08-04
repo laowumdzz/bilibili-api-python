@@ -2,10 +2,10 @@
 bilibili_api.utils._types — 数据类和请求设置。
 """
 
-import json
-from typing import Any
 from dataclasses import dataclass
 from enum import Enum
+import json
+from typing import Any
 
 from .utils import get_api
 

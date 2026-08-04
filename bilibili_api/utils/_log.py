@@ -6,6 +6,7 @@ import logging
 
 from .AsyncEvent import AsyncEvent
 
+
 class RequestLog(AsyncEvent):
     def __init__(self) -> None:
         super().__init__()
@@ -13,11 +14,7 @@ class RequestLog(AsyncEvent):
         self.logger.setLevel(logging.INFO)
         if not self.logger.handlers:
             handler = logging.StreamHandler()
-            handler.setFormatter(
-                logging.Formatter(
-                    "[BILIBILI_API][%(asctime)s][%(levelname)s] %(message)s"
-                )
-            )
+            handler.setFormatter(logging.Formatter("[BILIBILI_API][%(asctime)s][%(levelname)s] %(message)s"))
             self.logger.addHandler(handler)
         self.__on = False
         self.__on_events: list[str] = [
@@ -89,11 +86,7 @@ class RequestLog(AsyncEvent):
     def __handle_events(self, data: dict) -> None:
         evt = data["name"]
         desc, real_data = data["data"]
-        if (
-            self.__on
-            and evt in self.get_on_events()
-            and evt not in self.get_ignore_events()
-        ):
+        if self.__on and evt in self.get_on_events() and evt not in self.get_ignore_events():
             if evt.startswith("WS_"):
                 ws_id = real_data.pop("id")
                 self.logger.info(f"WS #{ws_id} {desc}: {real_data}")
@@ -188,5 +181,3 @@ async def handle(desc: str, data: dict) -> None:
 
 
 ################################################## END Logger ##################################################
-
-

@@ -8,9 +8,9 @@ bilibili_api.vote
 
 from enum import Enum
 
-from .utils.utils import get_api
-from .utils.picture import Picture
 from .utils.network import Api, Credential
+from .utils.picture import Picture
+from .utils.utils import get_api
 
 API = get_api("vote")
 
@@ -35,9 +35,7 @@ class VoteChoices:
     def __init__(self) -> None:
         self.choices = []
 
-    def add_choice(
-        self, desc: str, image: str | Picture | None = None
-    ) -> "VoteChoices":
+    def add_choice(self, desc: str, image: str | Picture | None = None) -> "VoteChoices":
         """
         往 VoteChoices 添加选项
 
@@ -219,7 +217,5 @@ async def create_vote(
     data.update(choices.get_choices())
     if choice_cnt > len(choices.choices):
         raise ValueError("choice_cnt 大于 choices 选项数")
-    vote_id = (await Api(**api, credential=credential).update_data(**data).result)[
-        "vote_id"
-    ]
+    vote_id = (await Api(**api, credential=credential).update_data(**data).result)["vote_id"]
     return Vote(vote_id=vote_id, credential=credential)

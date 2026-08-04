@@ -14,26 +14,14 @@ __license__ = "GPLv3+"
 import sys
 import warnings
 
-from colorama import Fore
-
-from .touch import touch_ivi
-from .extract import extract_ivi
 from .download import download_interactive_video
+from .extract import extract_ivi
+from .touch import touch_ivi
 
 
 def run_args(command: str, args: list[str]):
     if command == "help":
-        print(
-            "IVITools - A Simple IVI file manager & toolbox. \n\
-\n\
-Commands: download, extract, help, play, scan, touch\n\
-\n\
-ivitools download [BVID] [OUT]\n\
-ivitools extract [IVI] [DIR]\n\
-ivitools help\n\
-ivitools play [IVI] (PyQT6 require)\n\
-ivitools touch [IVI]"
-        )
+        pass
     elif command == "extract":
         extract_ivi(args[0], args[1])
     elif command == "touch":
@@ -60,14 +48,12 @@ ivitools touch [IVI]"
 
 def main():
     if len(sys.argv) == 1:
-        print(Fore.YELLOW + "[WRN]: No arguments. " + Fore.RESET)
-        print(Fore.YELLOW + "[WRN]: Use `ivitools help` for helps. " + Fore.RESET)
         return
     try:
         args = sys.argv
         run_args(args[1], args[2:])
-    except Exception as e:
-        print(Fore.RED + "[ERR]: " + str(e) + Fore.RESET)
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":

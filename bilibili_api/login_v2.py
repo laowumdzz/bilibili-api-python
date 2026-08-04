@@ -4,41 +4,35 @@ bilibili_api.login_v2
 登录
 """
 
-import json
-import tempfile
-import time
 import base64
 import enum
-
+import json
 import os
+import tempfile
+import time
+from typing import Union
+
+from Cryptodome.Cipher import PKCS1_v1_5
+from Cryptodome.PublicKey import RSA
 import qrcode
 import qrcode_terminal
 import yarl
-from typing import Union
 
-from .utils.utils import get_api, raise_for_statement, to_form_urlencoded
-from .exceptions import LoginError, GeetestException
-from .utils.network import Api, Credential, get_client, get_buvid
+from .exceptions import GeetestException, LoginError
 from .utils.geetest import Geetest, GeetestType
+from .utils.network import Api, Credential, get_buvid, get_client
 from .utils.picture import Picture
-
-from Cryptodome.PublicKey import RSA
-from Cryptodome.Cipher import PKCS1_v1_5
-
+from .utils.utils import get_api, raise_for_statement, to_form_urlencoded
 
 API = get_api("login")
 
 
 def encrypt(_hash, key, password) -> str:
     encryptor = PKCS1_v1_5.new(RSA.importKey(bytes(key, "utf-8")))
-    return str(
-        base64.b64encode(encryptor.encrypt(bytes(_hash + password, "utf-8"))), "utf-8"
-    )
+    return str(base64.b64encode(encryptor.encrypt(bytes(_hash + password, "utf-8"))), "utf-8")
 
 
-async def login_with_password(
-    username: str, password: str, geetest: Geetest
-) -> Union[Credential, "LoginCheck"]:
+async def login_with_password(username: str, password: str, geetest: Geetest) -> Union[Credential, "LoginCheck"]:
     """
     密码登录。
 
@@ -295,9 +289,7 @@ async def send_sms(phonenumber: PhoneNumber, geetest: Geetest) -> str:
         raise LoginError(return_data["message"])
 
 
-async def login_with_sms(
-    phonenumber: PhoneNumber, code: str, captcha_id: str
-) -> Union[Credential, "LoginCheck"]:
+async def login_with_sms(phonenumber: PhoneNumber, code: str, captcha_id: str) -> Union[Credential, "LoginCheck"]:
     """
     验证码登录
 
@@ -458,11 +450,7 @@ class QrCodeLogin:
         if self.__platform == QrCodeLoginChannel.TV:
             api = API["qrcode"]["tv"]["get_qrcode_and_auth_code"]
             data = {"local_id": 0, "ts": int(time.time())}
-            resp = (
-                await Api(credential=Credential(), no_csrf=True, **api)
-                .update_data(**data)
-                .result
-            )
+            resp = await Api(credential=Credential(), no_csrf=True, **api).update_data(**data).result
             self.__qr_link = resp["url"]
             self.__qr_key = resp["auth_code"]
         else:
@@ -488,9 +476,7 @@ class QrCodeLogin:
         if self.__platform == QrCodeLoginChannel.WEB:
             api = API["qrcode"]["web"]["get_events"]
             params = {"qrcode_key": self.__qr_key}
-            events = (
-                await Api(credential=Credential(), **api).update_params(**params).result
-            )
+            events = await Api(credential=Credential(), **api).update_params(**params).result
             code = events["code"]
             if code == 86101:
                 return QrCodeLoginEvents.SCAN
@@ -522,11 +508,7 @@ class QrCodeLogin:
         else:
             api = API["qrcode"]["tv"]["get_events"]
             data = {"auth_code": self.__qr_key, "ts": int(time.time()), "local_id": 0}
-            events = (
-                await Api(credential=Credential(), no_csrf=True, **api)
-                .update_data(**data)
-                .request(raw=True)
-            )
+            events = await Api(credential=Credential(), no_csrf=True, **api).update_data(**data).request(raw=True)
             code = events["code"]
             if code == 86039:
                 return QrCodeLoginEvents.SCAN
@@ -624,9 +606,7 @@ class LoginCheck:
                 "captcha_key": self.__captcha_key,
                 "code": code,
             }
-        exchange_code = (
-            await Api(**api, no_csrf=True, headers=headers).update_data(**data).result
-        )["code"]
+        exchange_code = (await Api(**api, no_csrf=True, headers=headers).update_data(**data).result)["code"]
         exchange_url = API["safecenter"]["get_cookies"]["url"]
         exchange_data = {"code": exchange_code}
         if self.__id is None:
