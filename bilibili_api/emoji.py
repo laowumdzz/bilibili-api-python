@@ -7,10 +7,7 @@ bilibili_api.emoji
 from .utils.utils import get_api
 from .utils.network import Api, Credential
 
-from typing import Union, List
 
-import os
-import json
 
 API = get_api("emoji")
 
@@ -34,7 +31,7 @@ async def get_emoji_list(
     return await Api(**api, credential=credential).update_params(**params).result
 
 
-async def get_emoji_detail(id: Union[int, List[int]], business: str = "reply") -> dict:
+async def get_emoji_detail(id: int | list[int], business: str = "reply") -> dict:
     """
     获取表情包详情
 

@@ -5,9 +5,7 @@ bilibili_api.topic
 """
 
 from enum import Enum
-from typing import Union, Optional
 
-from . import dynamic
 from .user import get_self_info
 from .utils.utils import get_api
 from .utils.network import Api, Credential
@@ -73,7 +71,7 @@ class Topic:
         credential (Credential): 凭据类
     """
 
-    def __init__(self, topic_id: int, credential: Union[Credential, None] = None):
+    def __init__(self, topic_id: int, credential: Credential | None = None):
         """
         Args:
             topic_id   (int)       : 话题 id
@@ -108,7 +106,7 @@ class Topic:
     async def get_cards(
         self,
         ps: int = 100,
-        offset: Optional[str] = None,
+        offset: str | None = None,
         sort_by: TopicCardsSortBy = TopicCardsSortBy.HOT,
     ) -> dict:
         """

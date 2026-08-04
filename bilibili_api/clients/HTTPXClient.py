@@ -12,7 +12,7 @@ from ..utils.network import (
 )
 from ..exceptions import ApiException
 import httpx  # pylint: disable=E0401
-from typing import AsyncGenerator, Optional, Dict, Union
+from collections.abc import AsyncGenerator
 
 
 class HTTPXClient(BiliAPIClient):
@@ -27,7 +27,7 @@ class HTTPXClient(BiliAPIClient):
         verify_ssl: bool = True,
         trust_env: bool = True,
         http2: bool = False,
-        session: Optional[httpx.AsyncClient] = None,
+        session: httpx.AsyncClient | None = None,
     ) -> None:
         """
         Args:
@@ -55,8 +55,8 @@ class HTTPXClient(BiliAPIClient):
                 trust_env=self.__trust_env,
                 http2=self.__http2,
             )
-        self.__downloads: Dict[int, httpx.Response] = {}
-        self.__download_iter: Dict[int, AsyncGenerator] = {}
+        self.__downloads: dict[int, httpx.Response] = {}
+        self.__download_iter: dict[int, AsyncGenerator] = {}
         self.__download_cnt: int = 0
 
     def get_wrapped_session(self) -> httpx.AsyncClient:
@@ -111,8 +111,8 @@ class HTTPXClient(BiliAPIClient):
         method: str = "",
         url: str = "",
         params: dict = {},
-        data: Union[dict, str, bytes] = {},
-        files: Dict[str, BiliAPIFile] = {},
+        data: dict | str | bytes = {},
+        files: dict[str, BiliAPIFile] = {},
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,

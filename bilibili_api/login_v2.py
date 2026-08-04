@@ -14,7 +14,7 @@ import os
 import qrcode
 import qrcode_terminal
 import yarl
-from typing import Union, List, Dict
+from typing import Union
 
 from .utils.utils import get_api, raise_for_statement, to_form_urlencoded
 from .exceptions import LoginError, GeetestException
@@ -103,7 +103,7 @@ async def login_with_password(
 captcha_id = None
 
 
-def get_countries_list() -> List[Dict]:
+def get_countries_list() -> list[dict]:
     """
     获取国际地区代码列表
 
@@ -124,7 +124,7 @@ def get_countries_list() -> List[Dict]:
     return countries
 
 
-def search_countries(keyword: str) -> List[Dict]:
+def search_countries(keyword: str) -> list[dict]:
     """
     搜索一个地区及其国际地区代码
 
@@ -159,7 +159,7 @@ def have_country(keyword: str) -> bool:
     return False
 
 
-def have_code(code: Union[str, int]) -> bool:
+def have_code(code: str | int) -> bool:
     """
     是否存在地区代码
 
@@ -225,7 +225,7 @@ class PhoneNumber:
     手机号类
     """
 
-    def __init__(self, number: str, country: Union[str, int] = "+86"):
+    def __init__(self, number: str, country: str | int = "+86"):
         """
         Args:
             number(str): 手机号

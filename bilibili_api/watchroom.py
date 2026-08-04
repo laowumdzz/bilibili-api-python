@@ -8,7 +8,7 @@ bilibili_api.watchroom
 
 import time
 from enum import Enum
-from typing import Dict, List, Union
+from typing import Union
 
 from .utils.network import Api, Credential
 from .utils.utils import get_api
@@ -16,7 +16,7 @@ from .utils.utils import get_api
 API = get_api("watchroom")
 
 
-watch_room_bangumi_cache: Dict[int, List[int]] = {}
+watch_room_bangumi_cache: dict[int, list[int]] = {}
 
 
 class SeasonType(Enum):
@@ -76,8 +76,8 @@ class Message:
     消息集合
     """
 
-    def __init__(self, *messages: Union[MessageSegment, str]):
-        self.msg_list: List[MessageSegment] = []
+    def __init__(self, *messages: MessageSegment | str):
+        self.msg_list: list[MessageSegment] = []
         for msg in messages:
             if isinstance(msg, str):
                 self.msg_list.append(MessageSegment(msg))

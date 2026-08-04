@@ -14,12 +14,12 @@ bilibili_api.cheese
 
 import json
 import datetime
-from typing import Any, List, Union
+from typing import Any
 
 from .utils.utils import get_api
 from .utils.danmaku import Danmaku
 from .utils.BytesReader import BytesReader
-from .exceptions.ArgsException import ArgsException
+from .exceptions import ArgsException
 from .utils.network import Api, Credential
 from .exceptions import NetworkException, ResponseException, DanmakuClosedException
 
@@ -42,7 +42,7 @@ class CheeseList:
         self,
         season_id: int = -1,
         ep_id: int = -1,
-        credential: Union[Credential, None] = None,
+        credential: Credential | None = None,
     ):
         """
         Args:
@@ -126,7 +126,7 @@ class CheeseList:
             await Api(**api, credential=self.credential).update_params(**params).result
         )
 
-    async def get_list(self) -> List["CheeseVideo"]:
+    async def get_list(self) -> list["CheeseVideo"]:
         """
         获取教程所有视频
 
@@ -158,7 +158,7 @@ class CheeseVideo:
         cheese     (CheeseList): 所属的课程
     """
 
-    def __init__(self, epid, credential: Union[Credential, None] = None):
+    def __init__(self, epid, credential: Credential | None = None):
         """
         Args:
             epid      (int)       : 单集 ep_id
@@ -498,10 +498,10 @@ class CheeseVideo:
 
     async def get_danmakus(
         self,
-        date: Union[datetime.date, None] = None,
-        from_seg: Union[int, None] = None,
-        to_seg: Union[int, None] = None,
-    ) -> List[Danmaku]:
+        date: datetime.date | None = None,
+        from_seg: int | None = None,
+        to_seg: int | None = None,
+    ) -> list[Danmaku]:
         """
         获取弹幕。
 
@@ -650,7 +650,7 @@ class CheeseVideo:
             .request(raw=True)
         )
 
-    async def send_danmaku(self, danmaku: Union[Danmaku, None] = None):
+    async def send_danmaku(self, danmaku: Danmaku | None = None):
         """
         发送弹幕。
 
@@ -776,7 +776,7 @@ class CheeseVideo:
         return await Api(**api, credential=self.credential).update_data(**data).result
 
     async def set_favorite(
-        self, add_media_ids: List[int] = [], del_media_ids: List[int] = []
+        self, add_media_ids: list[int] = [], del_media_ids: list[int] = []
     ):
         """
         设置视频收藏状况。

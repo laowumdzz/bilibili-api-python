@@ -6,7 +6,7 @@ bilibili_api.utils.AsyncEvent
 
 import asyncio
 import logging
-from typing import Callable, Coroutine, Union
+from collections.abc import Callable, Coroutine
 
 
 class AsyncEvent:
@@ -21,7 +21,7 @@ class AsyncEvent:
         self.__ignore_events = []
         self.__tasks = set()
 
-    def add_event_listener(self, name: str, handler: Union[Callable, Coroutine]) -> None:
+    def add_event_listener(self, name: str, handler: Callable | Coroutine) -> None:
         """
         注册事件监听器。
 
@@ -42,7 +42,7 @@ class AsyncEvent:
             event_name (str): 事件名。
         """
 
-        def decorator(func: Union[Callable, Coroutine]):
+        def decorator(func: Callable | Coroutine):
             self.add_event_listener(event_name, func)
             return func
 
@@ -54,7 +54,7 @@ class AsyncEvent:
         """
         self.__handlers = {}
 
-    def remove_event_listener(self, name: str, handler: Union[Callable, Coroutine]) -> bool:
+    def remove_event_listener(self, name: str, handler: Callable | Coroutine) -> bool:
         """
         移除事件监听函数。
 
@@ -132,7 +132,7 @@ class AsyncEvent:
                 obj = callableorcoroutine(*args, **kwargs)
                 if isinstance(obj, Coroutine):
                     task = asyncio.create_task(obj)
-                    setattr(task, "event_name", name) # 通过检查event_name避免异常被循环dispatch
+                    task.event_name = name # 通过检查event_name避免异常被循环dispatch
                     task.add_done_callback(self.__on_task_done)
                     self.__tasks.add(task) # 保持对task的引用状态
 

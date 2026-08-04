@@ -12,12 +12,11 @@ bilibili_api.bangumi
 
 import datetime
 from enum import Enum
-from typing import Any, List, Tuple, Union, Optional, Type
 
 from .video import Video
 from .utils.aid_bvid_transformer import aid2bvid, bvid2aid
 from .utils.danmaku import Danmaku
-from .utils.utils import get_api, raise_for_statement
+from .utils.utils import get_api
 from .utils.network import Api, Credential
 from .utils.initial_state import (
     get_initial_state,
@@ -171,8 +170,8 @@ class IndexFilter:
 
     @staticmethod
     def make_time_filter(
-        start: Optional[Union[datetime.datetime, str, int]] = None,
-        end: Optional[Union[datetime.datetime, str, int]] = None,
+        start: datetime.datetime | str | int | None = None,
+        end: datetime.datetime | str | int | None = None,
         include_start: bool = True,
         include_end: bool = False,
     ) -> str:
@@ -1011,7 +1010,7 @@ class Bangumi:
         ssid: int = -1,
         epid: int = -1,
         oversea: bool = False,
-        credential: Union[Credential, None] = None,
+        credential: Credential | None = None,
     ) -> None:
         """
         Args:
@@ -1125,7 +1124,7 @@ class Bangumi:
             await self.__fetch_raw()
         return self.__up_info
 
-    async def get_raw(self) -> Tuple[dict, bool]:
+    async def get_raw(self) -> tuple[dict, bool]:
         """
         原始初始化数据
 
@@ -1172,7 +1171,7 @@ class Bangumi:
     async def get_short_comment_list(
         self,
         order: BangumiCommentOrder = BangumiCommentOrder.DEFAULT,
-        next: Union[str, None] = None,
+        next: str | None = None,
     ) -> dict:
         """
         获取短评列表
@@ -1197,7 +1196,7 @@ class Bangumi:
     async def get_long_comment_list(
         self,
         order: BangumiCommentOrder = BangumiCommentOrder.DEFAULT,
-        next: Union[str, None] = None,
+        next: str | None = None,
     ) -> dict:
         """
         获取长评列表
@@ -1260,7 +1259,7 @@ class Bangumi:
                 await Api(**api, credential=credential).update_params(**params).result
             )
 
-    async def get_episodes(self) -> List["Episode"]:
+    async def get_episodes(self) -> list["Episode"]:
         """
         获取番剧所有的剧集，自动生成类。
         """
@@ -1308,7 +1307,7 @@ class Bangumi:
 
 
 async def set_follow(
-    bangumi: Bangumi, status: bool = True, credential: Union[Credential, None] = None
+    bangumi: Bangumi, status: bool = True, credential: Credential | None = None
 ) -> dict:
     """
     追番状态设置
@@ -1332,7 +1331,7 @@ async def set_follow(
 
 
 async def update_follow_status(
-    bangumi: Bangumi, status: int, credential: Union[Credential, None] = None
+    bangumi: Bangumi, status: int, credential: Credential | None = None
 ) -> dict:
     """
     更新追番状态
@@ -1369,7 +1368,7 @@ class Episode(Video):
     def __init__(
         self,
         epid: int,
-        credential: Union[Credential, None] = None,
+        credential: Credential | None = None,
     ):
         """
         Args:
@@ -1483,7 +1482,7 @@ class Episode(Video):
         self.__init__(epid, self.credential)
         await self.__fetch_bangumi()
 
-    async def get_episode_info(self) -> Tuple[dict, InitialDataType]:
+    async def get_episode_info(self) -> tuple[dict, InitialDataType]:
         """
         获取番剧单集信息
 
@@ -1509,7 +1508,7 @@ class Episode(Video):
         return self.bangumi
 
     async def set_favorite(
-        self, add_media_ids: List[int] = [], del_media_ids: List[int] = []
+        self, add_media_ids: list[int] = [], del_media_ids: list[int] = []
     ) -> dict:
         """
         设置视频收藏状况。
@@ -1590,10 +1589,10 @@ class Episode(Video):
 
     async def get_danmakus(
         self,
-        date: Union[datetime.date, None] = None,
-        from_seg: Union[int, None] = None,
-        to_seg: Union[int, None] = None,
-    ) -> List["Danmaku"]:
+        date: datetime.date | None = None,
+        from_seg: int | None = None,
+        to_seg: int | None = None,
+    ) -> list["Danmaku"]:
         """
         获取弹幕
 
@@ -1610,8 +1609,8 @@ class Episode(Video):
         return await super().get_danmakus(0, date, from_seg=from_seg, to_seg=to_seg)
 
     async def get_history_danmaku_index(
-        self, date: Union[datetime.date, None] = None
-    ) -> Union[None, List[str]]:
+        self, date: datetime.date | None = None
+    ) -> None | list[str]:
         """
         获取特定月份存在历史弹幕的日期。
 

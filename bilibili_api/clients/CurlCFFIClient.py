@@ -14,7 +14,6 @@ from ..utils.network import (
 )
 from curl_cffi import requests  # pylint: disable=E0401
 import curl_cffi  # pylint: disable=E0401
-from typing import Optional, Dict, Union, Tuple, AsyncGenerator
 import asyncio
 
 
@@ -31,7 +30,7 @@ class CurlCFFIClient(BiliAPIClient):
         trust_env: bool = True,
         impersonate: str = "",
         http2: bool = False,
-        session: Optional[requests.AsyncSession] = None,
+        session: requests.AsyncSession | None = None,
     ) -> None:
         """
         Args:
@@ -58,11 +57,11 @@ class CurlCFFIClient(BiliAPIClient):
                 impersonate=impersonate,
                 http_version=(curl_cffi.CurlHttpVersion.V2_0 if http2 else None),
             )
-        self.__ws: Dict[int, requests.AsyncWebSocket] = {}
+        self.__ws: dict[int, requests.AsyncWebSocket] = {}
         self.__ws_cnt: int = 0
-        self.__ws_need_close: Dict[int, bool] = {}
-        self.__ws_is_closed: Dict[int, bool] = {}
-        self.__downloads: Dict[int, requests.Response] = {}
+        self.__ws_need_close: dict[int, bool] = {}
+        self.__ws_is_closed: dict[int, bool] = {}
+        self.__downloads: dict[int, requests.Response] = {}
         self.__download_cnt: int = 0
 
     def get_wrapped_session(self) -> requests.AsyncSession:
@@ -103,8 +102,8 @@ class CurlCFFIClient(BiliAPIClient):
         method: str = "",
         url: str = "",
         params: dict = {},
-        data: Union[dict, str, bytes] = {},
-        files: Dict[str, BiliAPIFile] = {},
+        data: dict | str | bytes = {},
+        files: dict[str, BiliAPIFile] = {},
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,
@@ -263,7 +262,7 @@ class CurlCFFIClient(BiliAPIClient):
         ws = self.__ws[cnt]
         await ws.send_binary(data)
 
-    async def ws_recv(self, cnt: int) -> Tuple[bytes, BiliWsMsgType]:
+    async def ws_recv(self, cnt: int) -> tuple[bytes, BiliWsMsgType]:
         ws = self.__ws[cnt]
         chunks = []
         flags = 0

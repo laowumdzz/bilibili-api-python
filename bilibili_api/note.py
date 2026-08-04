@@ -7,7 +7,7 @@ bilibili_api.note
 import json
 from enum import Enum
 from html import unescape
-from typing import List, Union, overload
+from typing import overload
 
 import yaml
 from yarl import URL
@@ -59,11 +59,11 @@ class Note:
 
     def __init__(
         self,
-        cvid: Union[int, None] = None,
-        aid: Union[int, None] = None,
-        note_id: Union[int, None] = None,
+        cvid: int | None = None,
+        aid: int | None = None,
+        note_id: int | None = None,
         note_type: NoteType = NoteType.PUBLIC,
-        credential: Union[Credential, None] = None,
+        credential: Credential | None = None,
     ):
         """
         Args:
@@ -100,10 +100,10 @@ class Note:
         self.credential: Credential = Credential() if credential is None else credential
 
         # 用于存储视频信息，避免接口依赖视频信息时重复调用
-        self.__info: Union[dict, None] = None
+        self.__info: dict | None = None
 
         # 用于存储正文的节点
-        self.__children: List[Node] = []
+        self.__children: list[Node] = []
         # 用于存储是否解析
         self.__has_parsed: bool = False
         # 用于存储转换为 markdown 和 json 时使用的信息
@@ -208,7 +208,7 @@ class Note:
         cache_pool.article_is_note[self.__cvid] = True
         return resp
 
-    async def get_images_raw_info(self) -> List["dict"]:
+    async def get_images_raw_info(self) -> list["dict"]:
         """
         获取笔记所有图片原始信息
 
@@ -225,7 +225,7 @@ class Note:
                     result.append(img_info)
         return result
 
-    async def get_images(self) -> List["Picture"]:
+    async def get_images(self) -> list["Picture"]:
         """
         获取笔记所有图片并转为 Picture 类
 
@@ -321,7 +321,7 @@ class Note:
         该返回不会返回任何值，调用该方法后请再调用 `self.markdown()` 或 `self.json()` 来获取你需要的值。
         """
 
-        async def parse_note(data: List[dict]):
+        async def parse_note(data: list[dict]):
             for field in data:
                 if not isinstance(field["insert"], str):
                     if "imageUpload" in field["insert"].keys():
@@ -389,7 +389,7 @@ class Note:
         for node in self.__children:
             try:
                 markdown_text = node.markdown()
-            except Exception as e:
+            except Exception:
                 pass
             else:
                 content += markdown_text

@@ -1,3 +1,4 @@
+"""bilibili_api.video — 视频相关接口。"""
 """
 bilibili_api.video
 
@@ -17,7 +18,7 @@ from enum import Enum
 from inspect import iscoroutine, isfunction
 from functools import cmp_to_key
 from dataclasses import dataclass
-from typing import Any, List, Union, Optional, Type
+from typing import Any
 
 from yarl import URL
 
@@ -50,98 +51,19 @@ async def get_cid_info(cid: int):
     return await Api(**api).update_params(**params).result
 
 
-class DanmakuOperatorType(Enum):
-    """
-    弹幕操作枚举
 
-    + DELETE - 删除弹幕
-    + PROTECT - 保护弹幕
-    + UNPROTECT - 取消保护弹幕
-    """
-
-    DELETE = 1
-    PROTECT = 2
-    UNPROTECT = 3
-
-
-class VideoAppealReasonType:
-    """
-    视频投诉原因枚举
-
-    注意: 每一项均为函数，部分项有参数，没有参数的函数无需调用函数，直接传入即可，有参数的函数请调用结果之后传入。
-
-    - ILLEGAL(): 违法违禁
-    - PRON(): 色情
-    - VULGAR(): 低俗
-    - GAMBLED_SCAMS(): 赌博诈骗
-    - VIOLENT(): 血腥暴力
-    - PERSONAL_ATTACK(): 人身攻击
-    - PLAGIARISM(bvid: str): 与站内其他视频撞车
-    - BAD_FOR_YOUNGS(): 青少年不良信息
-    - CLICKBAIT(): 不良封面/标题
-    - POLITICAL_RUMORS(): 涉政谣言
-    - SOCIAL_RUMORS(): 涉社会事件谣言
-    - UNREAL_EVENT(): 虚假不实消息
-    - OTHER(): 有其他问题
-    - LEAD_WAR(): 引战
-    - CANNOT_CHARGE(): 不能参加充电
-    - UNREAL_COPYRIGHT(source: str): 转载/自制类型错误
-    - ILLEGAL_POPULARIZE(): 违规推广
-    - ILLEGAL_OTHER(): 其他不规范行为
-    - DANGEROUS(): 危险行为
-    - OTHER_NEW(): 其他
-    - COOPERATE_INFRINGEMENT(): 企业商誉侵权
-    - INFRINGEMENT(): 侵权申诉
-    - VIDEO_INFRINGEMENT(): 盗搬稿件-路人举报
-    - DISCOMFORT(): 观感不适
-    - ILLEGAL_URL(): 违法信息外链
-    """
-
-    ILLEGAL = lambda: 2
-    PRON = lambda: 3
-    VULGAR = lambda: 4
-    GAMBLED_SCAMS = lambda: 5
-    VIOLENT = lambda: 6
-    PERSONAL_ATTACK = lambda: 7
-    BAD_FOR_YOUNGS = lambda: 10000
-    CLICKBAIT = lambda: 10013
-    POLITICAL_RUMORS = lambda: 10014
-    SOCIAL_RUMORS = lambda: 10015
-    UNREAL_EVENT = lambda: 10017
-    OTHER = lambda: 1
-    LEAD_WAR = lambda: 9
-    CANNOT_CHARGE = lambda: 10
-    ILLEGAL_POPULARIZE = lambda: 10018
-    ILLEGAL_OTHER = lambda: 10019
-    DANGEROUS = lambda: 10020
-    OTHER_NEW = lambda: 10022
-    COOPERATE_INFRINGEMENT = lambda: 10023
-    INFRINGEMENT = lambda: 10024
-    VIDEO_INFRINGEMENT = lambda: 10026
-    DISCOMFORT = lambda: 10021
-    ILLEGAL_URL = lambda: 10025
-
-    @staticmethod
-    def PLAGIARISM(bvid: str):
-        """
-        与站内其他视频撞车
-
-        Args:
-            bvid (str): 撞车对象
-        """
-        return {"tid": 8, "撞车对象": bvid}
-
-    @staticmethod
-    def UNREAL_COPYRIGHT(source: str):
-        """
-        转载/自制类型错误
-
-        Args:
-            source (str): 原创视频出处
-        """
-        return {"tid": 52, "出处": source}
-
-
+from ._video_appeal import DanmakuOperatorType, VideoAppealReasonType
+from ._video_monitor import VideoOnlineMonitor
+from ._video_download import (
+    VideoQuality,
+    VideoCodecs,
+    AudioQuality,
+    VideoStreamDownloadURL,
+    AudioStreamDownloadURL,
+    FLVStreamDownloadURL,
+    MP4StreamDownloadURL,
+    VideoDownloadURLDataDetecter,
+)
 class Video:
     """
     视频类，各种对视频的操作均在里面。
@@ -149,9 +71,9 @@ class Video:
 
     def __init__(
         self,
-        bvid: Union[None, str] = None,
-        aid: Union[None, int] = None,
-        credential: Union[None, Credential] = None,
+        bvid: None | str = None,
+        aid: None | int = None,
+        credential: None | Credential = None,
     ):
         """
         Args:
@@ -174,7 +96,7 @@ class Video:
         self.credential: Credential = Credential() if credential is None else credential
 
         # 用于存储视频信息，避免接口依赖视频信息时重复调用
-        self.__info: Union[dict, None] = None
+        self.__info: dict | None = None
 
     def set_bvid(self, bvid: str) -> None:
         """
@@ -334,8 +256,8 @@ class Video:
         return info["owner"]["mid"]
 
     async def get_tags(
-        self, page_index: Union[int, None] = 0, cid: Union[int, None] = None
-    ) -> List[dict]:
+        self, page_index: int | None = 0, cid: int | None = None
+    ) -> list[dict]:
         """
         获取视频标签。
 
@@ -381,7 +303,7 @@ class Video:
             await Api(**api, credential=self.credential).update_params(**params).result
         )
 
-    async def get_pages(self) -> List[dict]:
+    async def get_pages(self) -> list[dict]:
         """
         获取分 P 信息。
 
@@ -419,7 +341,7 @@ class Video:
 
     async def get_video_snapshot(
         self,
-        cid: Union[int, None] = None,
+        cid: int | None = None,
         json_index: bool = False,
         pvideo: bool = True,
     ) -> dict:
@@ -464,8 +386,8 @@ class Video:
 
     async def get_download_url(
         self,
-        page_index: Union[int, None] = None,
-        cid: Union[int, None] = None,
+        page_index: int | None = None,
+        cid: int | None = None,
         html5: bool = False,
     ) -> dict:
         """
@@ -635,9 +557,9 @@ class Video:
 
     async def get_ai_conclusion(
         self,
-        cid: Optional[int] = None,
-        page_index: Optional[int] = None,
-        up_mid: Optional[int] = None,
+        cid: int | None = None,
+        page_index: int | None = None,
+        up_mid: int | None = None,
     ) -> dict:
         """
         获取稿件 AI 总结结果。
@@ -673,7 +595,7 @@ class Video:
         )
 
     async def get_danmaku_view(
-        self, page_index: Union[int, None] = None, cid: Union[int, None] = None
+        self, page_index: int | None = None, cid: int | None = None
     ) -> dict:
         """
         获取弹幕设置、特殊弹幕、弹幕数量、弹幕分段等信息。
@@ -701,7 +623,7 @@ class Video:
                 .update_params(**params)
                 .request(byte=True)
             )
-        except Exception as e:
+        except (NetworkException, ResponseCodeException) as e:
             raise NetworkException(-1, str(e))
 
         json_data = {}
@@ -882,7 +804,7 @@ class Video:
             elif type_ == 12:
                 json_data["image_dms"] = read_image_danmakus(reader.bytes_string())
 
-            #以下为更改部分 
+            #以下为更改部分
             # 这里如果没有这个的话，在登录状态下(Credential)请求像 BV1HLz9BJEgi 这种有花式弹幕的视频会报解析错误：
             #File "C:\Users\xx\AppData\Roaming\Python\Python38\site-packages\bilibili_api\video.py", line 787, in read_image_danmakus
                 #raise ResponseException("解析响应数据错误")
@@ -897,11 +819,11 @@ class Video:
     async def get_danmakus(
         self,
         page_index: int = 0,
-        date: Union[datetime.date, None] = None,
-        cid: Union[int, None] = None,
-        from_seg: Union[int, None] = None,
-        to_seg: Union[int, None] = None,
-    ) -> List[Danmaku]:
+        date: datetime.date | None = None,
+        cid: int | None = None,
+        from_seg: int | None = None,
+        to_seg: int | None = None,
+    ) -> list[Danmaku]:
         """
         获取弹幕。
 
@@ -963,7 +885,7 @@ class Video:
                     .update_params(**params)
                     .request(byte=True)
                 )
-            except Exception as e:
+            except (NetworkException, ResponseCodeException) as e:
                 raise NetworkException(-1, str(e))
 
             if data == b"\x10\x01":
@@ -1047,8 +969,8 @@ class Video:
         return danmakus
 
     async def get_special_dms(
-        self, page_index: int = 0, cid: Union[int, None] = None
-    ) -> List[SpecialDanmaku]:
+        self, page_index: int = 0, cid: int | None = None
+    ) -> list[SpecialDanmaku]:
         """
         获取特殊弹幕
 
@@ -1069,7 +991,7 @@ class Video:
         view = await self.get_danmaku_view(cid=cid)
         if not view.get("special_dms"):
             return []
-        dms: List[SpecialDanmaku] = []
+        dms: list[SpecialDanmaku] = []
         for special_dms in view["special_dms"]:
             dm_content = await Api(
                 url=special_dms, method="GET", credential=self.credential
@@ -1109,10 +1031,10 @@ class Video:
 
     async def get_history_danmaku_index(
         self,
-        page_index: Union[int, None] = None,
-        date: Union[datetime.date, None] = None,
-        cid: Union[int, None] = None,
-    ) -> Union[None, List[str]]:
+        page_index: int | None = None,
+        date: datetime.date | None = None,
+        cid: int | None = None,
+    ) -> None | list[str]:
         """
         获取特定月份存在历史弹幕的日期。
 
@@ -1145,9 +1067,9 @@ class Video:
 
     async def has_liked_danmakus(
         self,
-        page_index: Union[int, None] = None,
-        ids: Union[List[int], None] = None,
-        cid: Union[int, None] = None,
+        page_index: int | None = None,
+        ids: list[int] | None = None,
+        cid: int | None = None,
     ) -> dict:
         """
         是否已点赞弹幕。
@@ -1181,9 +1103,9 @@ class Video:
 
     async def send_danmaku(
         self,
-        page_index: Union[int, None] = None,
-        danmaku: Union[Danmaku, None] = None,
-        cid: Union[int, None] = None,
+        page_index: int | None = None,
+        danmaku: Danmaku | None = None,
+        cid: int | None = None,
     ) -> dict:
         """
         发送弹幕。
@@ -1233,7 +1155,7 @@ class Video:
         return await Api(**api, credential=self.credential).update_data(**data).result
 
     async def get_danmaku_xml(
-        self, page_index: Union[int, None] = None, cid: Union[int, None] = None
+        self, page_index: int | None = None, cid: int | None = None
     ) -> str:
         """
         获取所有弹幕的 xml 源文件（非装填）
@@ -1256,10 +1178,10 @@ class Video:
 
     async def like_danmaku(
         self,
-        page_index: Union[int, None] = None,
-        dmid: Union[int, None] = None,
-        status: Union[bool, None] = True,
-        cid: Union[int, None] = None,
+        page_index: int | None = None,
+        dmid: int | None = None,
+        status: bool | None = True,
+        cid: int | None = None,
     ) -> dict:
         """
         点赞弹幕。
@@ -1299,7 +1221,7 @@ class Video:
         return await Api(**api, credential=self.credential).update_data(**data).result
 
     async def get_online(
-        self, cid: Optional[int] = None, page_index: Optional[int] = 0
+        self, cid: int | None = None, page_index: int | None = 0
     ) -> dict:
         """
         获取实时在线人数
@@ -1321,10 +1243,10 @@ class Video:
 
     async def operate_danmaku(
         self,
-        page_index: Union[int, None] = None,
-        dmids: Union[List[int], None] = None,
-        cid: Union[int, None] = None,
-        type_: Union[DanmakuOperatorType, None] = None,
+        page_index: int | None = None,
+        dmids: list[int] | None = None,
+        cid: int | None = None,
+        type_: DanmakuOperatorType | None = None,
     ) -> dict:
         """
         操作弹幕
@@ -1504,7 +1426,7 @@ class Video:
         return await Api(**api, credential=self.credential).update_data(**data).result
 
     async def set_favorite(
-        self, add_media_ids: List[int] = [], del_media_ids: List[int] = []
+        self, add_media_ids: list[int] = [], del_media_ids: list[int] = []
     ) -> dict:
         """
         设置视频收藏状况。
@@ -1538,7 +1460,7 @@ class Video:
 
     async def get_subtitle(
         self,
-        cid: Union[int, None] = None,
+        cid: int | None = None,
     ) -> dict:
         """
         获取字幕信息
@@ -1556,8 +1478,8 @@ class Video:
 
     async def get_player_info(
         self,
-        cid: Union[int, None] = None,
-        epid: Union[int, None] = None,
+        cid: int | None = None,
+        epid: int | None = None,
     ) -> dict:
         """
         获取视频上一次播放的记录，字幕和地区信息。需要分集的 cid, 返回数据中含有json字幕的链接
@@ -1594,8 +1516,8 @@ class Video:
         data: dict,
         submit: bool,
         sign: bool,
-        page_index: Union[int, None] = None,
-        cid: Union[int, None] = None,
+        page_index: int | None = None,
+        cid: int | None = None,
     ) -> dict:
         """
         上传字幕
@@ -1693,9 +1615,9 @@ class Video:
 
     async def recall_danmaku(
         self,
-        page_index: Union[int, None] = None,
+        page_index: int | None = None,
         dmid: int = 0,
-        cid: Union[int, None] = None,
+        cid: int | None = None,
     ) -> dict:
         """
         撤回弹幕
@@ -1724,7 +1646,7 @@ class Video:
         return await Api(**api, credential=self.credential).update_data(**data).result
 
     async def get_pbp(
-        self, page_index: Union[int, None] = None, cid: Union[int, None] = None
+        self, page_index: int | None = None, cid: int | None = None
     ) -> dict:
         """
         获取高能进度条
@@ -1782,8 +1704,8 @@ class Video:
     async def report_watch_history(
             self,
             progress: int = 0,
-            page_index: Union[int, None] = 0,
-            cid: Union[int, None] = None
+            page_index: int | None = 0,
+            cid: int | None = None
     ) -> dict:
         """
         上报观看历史
@@ -1811,7 +1733,7 @@ class Video:
         }
         return await Api(**api, credential=self.credential).update_data(**data).request(raw=True)
 
-    async def report_start_watching(self, page_index: Union[int, None] = 0) -> dict:
+    async def report_start_watching(self, page_index: int | None = 0) -> dict:
         """
         上报开始观看
         该接口亦被用于计算播放量, 播放量更新不是实时的
@@ -1842,831 +1764,3 @@ class Video:
 from .bangumi import Episode
 
 
-class VideoOnlineMonitor(AsyncEvent):
-    """
-    视频在线人数实时监测。
-
-    示例代码：
-
-    ```python
-    import asyncio
-    from bilibili_api import video
-
-    # 实例化
-    r = video.VideoOnlineMonitor("BV1Bf4y1Q7QP")
-
-    # 装饰器方法注册事件监听器
-    @r.on("ONLINE")
-    async def handler(data):
-        print(data)
-
-    # 函数方法注册事件监听器
-    async def handler2(data):
-        print(data)
-
-    r.add_event_listener("ONLINE", handler2)
-
-    asyncio.get_event_loop().run_until_complete(r.connect())
-    ```
-
-    Extends: AsyncEvent
-
-    Logger: VideoOnlineMonitor().logger
-
-    Events:
-        ONLINE：        在线人数更新。  CallbackData: dict。
-        DANMAKU：       收到实时弹幕。  CallbackData: Danmaku。
-        DISCONNECTED：  正常断开连接。  CallbackData: None。
-        ERROR:          发生错误。     CallbackData: None。
-        CONNECTED:      成功连接。     CallbackData: None。
-    """
-
-    class Datapack(Enum):
-        """
-        数据包类型枚举。
-
-        + CLIENT_VERIFY   : 客户端发送验证信息。
-        + SERVER_VERIFY   : 服务端响应验证信息。
-        + CLIENT_HEARTBEAT: 客户端发送心跳包。
-        + SERVER_HEARTBEAT: 服务端响应心跳包。
-        + DANMAKU         : 实时弹幕更新。
-        """
-
-        CLIENT_VERIFY = 0x7
-        SERVER_VERIFY = 0x8
-        CLIENT_HEARTBEAT = 0x2
-        SERVER_HEARTBEAT = 0x3
-        DANMAKU = 0x3E8
-
-    def __init__(
-        self,
-        bvid: Union[str, None] = None,
-        aid: Union[int, None] = None,
-        page_index: int = 0,
-        credential: Union[Credential, None] = None,
-        debug: bool = False,
-    ):
-        """
-        Args:
-            bvid       (str | None, optional)       : BVID. Defaults to None.
-
-            aid        (int | None, optional)       : AID. Defaults to None.
-
-            page_index (int, optional)              : 分 P 序号. Defaults to 0.
-
-            credential (Credential | None, optional): Credential 类. Defaults to None.
-
-            debug      (bool, optional)             : 调试模式，将输出更详细信息. Defaults to False.
-        """
-        super().__init__()
-        self.credential: Credential = credential if credential else Credential()
-        self.__video = Video(bvid, aid, credential=credential)
-
-        # 智能选择在 log 中展示的 ID。
-        id_showed = None
-        if bvid is not None:
-            id_showed = bvid
-        else:
-            id_showed = aid
-
-        # logger 初始化
-        self.logger = logging.getLogger(f"VideoOnlineMonitor-{id_showed}")
-        if not self.logger.handlers:
-            handler = logging.StreamHandler()
-            handler.setFormatter(
-                logging.Formatter(
-                    "[" + str(id_showed) + "][%(asctime)s][%(levelname)s] %(message)s"
-                )
-            )
-            self.logger.addHandler(handler)
-            self.logger.setLevel(logging.INFO if not debug else logging.DEBUG)
-
-            self.__page_index = page_index
-            self.__tasks = []
-
-    async def connect(self):
-        """
-        连接服务器
-        """
-        await self.__main()
-
-    async def disconnect(self):
-        """
-        断开服务器
-        """
-        self.logger.info("主动断开连接。")
-        self.dispatch("DISCONNECTED")
-        await self.__cancel_all_tasks()
-        await self.__client.ws_close(self.__ws)
-
-    async def __main(self):
-        """
-        入口。
-        """
-        # 获取分 P id
-        pages = await self.__video.get_pages()
-        if self.__page_index >= len(pages):
-            raise ArgsException("不存在该分 P。")
-        cid = pages[self.__page_index]["cid"]
-
-        # 获取服务器信息
-        bvid = self.__video.get_bvid()
-        self.__bvid = await bvid if iscoroutine(bvid) else bvid
-        self.logger.debug(f"准备连接：{self.__bvid}")
-        self.logger.debug(f"获取服务器信息中...")
-
-        api = API["info"]["video_online_broadcast_servers"]
-        resp = await Api(**api, credential=self.credential).result
-
-        uri = f"wss://{resp['domain']}:{resp['wss_port']}/sub"
-        self.__heartbeat_interval = resp["heartbeat"]
-        self.logger.debug(f"服务器信息获取成功，URI：{uri}")
-
-        # 连接服务器
-        self.logger.debug("准备连接服务器...")
-        self.__client = get_client()
-        self.__ws = await self.__client.ws_create(uri)
-
-        # 发送认证信息
-        self.logger.debug("服务器连接成功，准备发送认证信息...")
-        verify_info = {
-            "room_id": f"video://{bvid2aid(self.__bvid)}/{cid}",
-            "platform": "web",
-            "accepts": [1000, 1015],
-        }
-        verify_info = json.dumps(verify_info, separators=(",", ":"))
-        await self.__client.ws_send(
-            self.__ws,
-            self.__pack(
-                VideoOnlineMonitor.Datapack.CLIENT_VERIFY, 1, verify_info.encode()
-            ),
-        )
-
-        # 循环接收消息
-        while True:
-            try:
-                data, flag = await self.__client.ws_recv(self.__ws)
-            except:
-                self.logger.warning("连接被异常断开")
-                await self.__cancel_all_tasks()
-                self.dispatch("ERROR", "")
-            if flag == BiliWsMsgType.BINARY:
-                data = self.__unpack(data)
-                self.logger.debug(f"收到消息：{data}")
-                await self.__handle_data(data)  # type: ignore
-            elif flag == BiliWsMsgType.CLOSED:
-                break
-
-    async def __handle_data(self, data: List[dict]):
-        """
-        处理数据。
-
-        Args:
-            data (List[dict]): 收到的数据（已解析好）。
-        """
-        for d in data:
-            if d["type"] == VideoOnlineMonitor.Datapack.SERVER_VERIFY.value:
-                # 服务器认证反馈。
-                if d["data"]["code"] == 0:
-                    # 创建心跳 Task
-                    heartbeat = asyncio.create_task(self.__heartbeat_task())
-                    self.__tasks.append(heartbeat)
-
-                    self.logger.info("连接服务器并验证成功")
-
-            elif d["type"] == VideoOnlineMonitor.Datapack.SERVER_HEARTBEAT.value:
-                # 心跳包反馈，同时包含在线人数。
-                self.logger.debug(f'收到服务器心跳包反馈，编号：{d["number"]}')
-                self.logger.info(f'实时观看人数：{d["data"]["data"]["room"]["online"]}')
-                self.dispatch("ONLINE", d["data"])
-
-            elif d["type"] == VideoOnlineMonitor.Datapack.DANMAKU.value:
-                # 实时弹幕。
-                info = d["data"][0].split(",")
-                text = d["data"][1]
-                if info[5] == "0":
-                    is_sub = False
-                else:
-                    is_sub = True
-                dm = Danmaku(
-                    dm_time=float(info[0]),
-                    send_time=int(info[4]),
-                    crc32_id=info[6],
-                    color=info[3],
-                    mode=info[1],
-                    font_size=info[2],
-                    is_sub=is_sub,
-                    text=text,
-                )
-                self.logger.info(f"收到实时弹幕：{dm.text}")
-                self.dispatch("DANMAKU", dm)
-
-            else:
-                # 未知类型数据包
-                self.logger.warning("收到未知的数据包类型，无法解析：" + json.dumps(d))
-
-    async def __heartbeat_task(self):
-        """
-        心跳 Task。
-        """
-        index = 2
-        while True:
-            self.logger.debug(f"发送心跳包，编号：{index}")
-            await self.__client.ws_send(
-                self.__ws,
-                self.__pack(
-                    VideoOnlineMonitor.Datapack.CLIENT_HEARTBEAT,
-                    index,
-                    b"[object Object]",
-                ),
-            )
-            index += 1
-            await asyncio.sleep(self.__heartbeat_interval)
-
-    async def __cancel_all_tasks(self):
-        """
-        取消所有 Task。
-        """
-        for task in self.__tasks:
-            task.cancel()
-
-    @staticmethod
-    def __pack(data_type: Datapack, number: int, data: bytes):
-        """
-        打包数据。
-
-        # 数据包格式：
-
-        16B 头部:
-
-        | offset(bytes) | length(bytes) | type | description         |
-        | ------------- | ------------- | ---- | ------------------- |
-        | 0             | 4             | I    | 数据包长度           |
-        | 4             | 4             | I    | 固定 0x00120001      |
-        | 8             | 4             | I    | 数据包类型           |
-        | 12            | 4             | I    | 递增数据包编号        |
-        | 16            | 2             | H    | 固定 0x0000           |
-
-        之后是有效载荷。
-
-        # 数据包类型表：
-
-        + 0x7    客户端发送认证信息
-        + 0x8    服务端回应认证结果
-        + 0x2    客户端发送心跳包，有效载荷：'[object Object]'
-        + 0x3    服务端回应心跳包，会带上在线人数等信息，返回 JSON
-        + 0x3e8  实时弹幕更新，返回列表，[0]弹幕信息，[1]弹幕文本
-
-        Args:
-            data_type (VideoOnlineMonitor.DataType):  数据包类型枚举。
-
-        Returns:
-            bytes: 打包好的数据。
-        """
-        packed_data = bytearray()
-        packed_data += struct.pack(">I", 0x00120001)
-        packed_data += struct.pack(">I", data_type.value)
-        packed_data += struct.pack(">I", number)
-        packed_data += struct.pack(">H", 0)
-        packed_data += data
-        packed_data = struct.pack(">I", len(packed_data) + 4) + packed_data
-        return bytes(packed_data)
-
-    @staticmethod
-    def __unpack(data: bytes):
-        """
-        解包数据。
-
-        Args:
-            data (bytes):  原始数据。
-
-        Returns:
-            tuple(dict): 解包后的数据。
-        """
-        offset = 0
-        real_data = []
-        while offset < len(data):
-            region_header = struct.unpack(">IIII", data[:16])
-            region_data = data[offset : offset + region_header[0]]
-            real_data.append(
-                {
-                    "type": region_header[2],
-                    "number": region_header[3],
-                    "data": json.loads(
-                        region_data[offset + 18 : offset + 18 + (region_header[0] - 16)]
-                    ),
-                }
-            )
-            offset += region_header[0]
-        return tuple(real_data)
-
-
-class VideoQuality(Enum):
-    """
-    视频的视频流分辨率枚举
-
-    - _360P: 流畅 360P
-    - _480P: 清晰 480P
-    - _720P: 高清 720P60
-    - _1080P: 高清 1080P
-    - AI_REPAIR: 智能修复（人工智能修复画质）
-    - _1080P_PLUS: 高清 1080P 高码率
-    - _1080P_60: 高清 1080P 60 帧码率
-    - _4K: 超清 4K
-    - HDR: 真彩 HDR
-    - DOLBY: 杜比视界
-    - _8K: 超高清 8K
-    """
-
-    _360P = 16
-    _480P = 32
-    _720P = 64
-    _1080P = 80
-    AI_REPAIR = 100
-    _1080P_PLUS = 112
-    _1080P_60 = 116
-    _4K = 120
-    HDR = 125
-    DOLBY = 126
-    _8K = 127
-
-
-class VideoCodecs(Enum):
-    """
-    视频的视频流编码枚举
-
-    - HEV: HEVC(H.265)
-    - AVC: AVC(H.264)
-    - AV1: AV1
-    - UNKNOWN: 未知
-    """
-
-    HEV = ("hev", "hvc")
-    AVC = ("avc",)
-    AV1 = ("av01", "av1")
-    UNKNOWN = ()
-
-
-class AudioQuality(Enum):
-    """
-    视频的音频流清晰度枚举
-
-    - _64K: 64K
-    - _132K: 132K
-    - _192K: 192K
-    - HI_RES: Hi-Res 无损
-    - DOLBY: 杜比全景声
-    """
-
-    _64K = 30216
-    _132K = 30232
-    DOLBY = 30250
-    HI_RES = 30251
-    _192K = 30280
-
-
-@dataclass
-class VideoStreamDownloadURL:
-    """
-    (@dataclass)
-
-    视频流 URL 类
-
-    Attributes:
-        url (str): 视频流 url
-        video_quality (VideoQuality): 视频流清晰度
-        video_codecs (VideoCodecs) : 视频流编码
-        backup_url (list[str]): 备用链接
-        bandwidth (int): 码率
-        codecs (str): 视频流详细编码
-        frame_rate (float): 帧率
-        scale (tuple[int, int]): 画面尺寸
-        sar (tuple[int, int]): 采样纵横比
-        mime_type (str): MIME 类型
-        segment_base_initialization (str): SegmentBase.Initialization
-        segment_base_index_range (str): SegmentBase.indexRange
-    """
-
-    url: str
-    video_quality: VideoQuality
-    video_codecs: VideoCodecs
-    backup_url: list[str]
-    bandwidth: int
-    codecs: str
-    frame_rate: float
-    scale: tuple[int, int]
-    sar: tuple[int, int]
-    mime_type: str
-    segment_base_initialization: str
-    segment_base_index_range: str
-
-
-@dataclass
-class AudioStreamDownloadURL:
-    """
-    (@dataclass)
-
-    音频流 URL 类
-
-    Attributes:
-        url (str): 音频流 url
-        audio_quality (AudioQuality): 音频流清晰度
-        backup_url (list[str]): 备用链接
-        bandwidth (int): 码率
-        codecs (str): 视频流详细编码
-        mime_type (str): MIME 类型
-        segment_base_initialization (str): SegmentBase.Initialization
-        segment_base_index_range (str): SegmentBase.indexRange
-    """
-
-    url: str
-    audio_quality: AudioQuality
-    backup_url: list[str]
-    bandwidth: int
-    codecs: str
-    mime_type: str
-    segment_base_initialization: str
-    segment_base_index_range: str
-
-
-@dataclass
-class FLVStreamDownloadURL:
-    """
-    (@dataclass)
-
-    FLV 视频流
-
-    Attributes:
-        url           (str): FLV 流 url
-    """
-
-    url: str
-
-
-@dataclass
-class MP4StreamDownloadURL:
-    """
-    (@dataclass)
-
-    MP4 视频流
-
-    Attributes:
-        url           (str): HTML5 mp4 视频流
-    """
-
-    url: str
-
-
-class VideoDownloadURLDataDetecter:
-    """
-    `Video.get_download_url` 返回结果解析类。
-
-    在调用 `Video.get_download_url` 之后可以将代入 `VideoDownloadURLDataDetecter`，此类将一键解析。
-
-    目前支持:
-      - 视频清晰度: 360P, 480P, 720P, 1080P, 1080P 高码率, 1080P 60 帧, 4K, HDR, 杜比视界, 8K
-      - 视频编码: HEVC(H.265), AVC(H.264), AV1
-      - 音频清晰度: 64K, 132K, Hi-Res 无损音效, 杜比全景声, 192K
-      - FLV 视频流
-      - 番剧/课程试看视频流
-    """
-
-    def __init__(self, data: dict):
-        """
-        Args:
-            data (dict): `Video.get_download_url` 返回的结果
-        """
-        self.__data = data
-        if self.__data.get("video_info"):  # bangumi
-            self.__data = self.__data["video_info"]
-
-    def check_video_and_audio_stream(self) -> bool:
-        """
-        判断是否为 DASH （音视频分离）
-
-        Returns:
-            bool: 是否为 DASH
-        """
-        if "dash" in self.__data.keys():
-            return True
-        return False
-
-    def check_flv_mp4_stream(self) -> bool:
-        """
-        判断是否为 FLV / MP4 流
-
-        Returns:
-            bool: 是否为 FLV / MP4 流
-        """
-        if "durl" in self.__data.keys():
-            return True
-        return False
-
-    def detect_all(self):
-        """
-        解析并返回所有数据
-
-        Returns:
-            List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]: 所有的视频/音频流
-        """
-        return self.detect()
-
-    def detect(
-        self,
-        video_max_quality: VideoQuality = VideoQuality._8K,
-        audio_max_quality: AudioQuality = AudioQuality._192K,
-        video_min_quality: VideoQuality = VideoQuality._360P,
-        audio_min_quality: AudioQuality = AudioQuality._64K,
-        video_accepted_qualities: List[VideoQuality] = [
-            item
-            for _, item in VideoQuality.__dict__.items()
-            if isinstance(item, VideoQuality)
-        ],
-        audio_accepted_qualities: List[AudioQuality] = [
-            item
-            for _, item in AudioQuality.__dict__.items()
-            if isinstance(item, AudioQuality)
-        ],
-        codecs: List[VideoCodecs] = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN],
-        no_dolby_video: bool = False,
-        no_dolby_audio: bool = False,
-        no_hdr: bool = False,
-        no_hires: bool = False,
-    ) -> List[
-        Union[
-            VideoStreamDownloadURL,
-            AudioStreamDownloadURL,
-            FLVStreamDownloadURL,
-            MP4StreamDownloadURL,
-        ]
-    ]:
-        """
-        解析数据
-
-        Args:
-            video_max_quality       (VideoQuality, optional)      : 设置提取的视频流清晰度最大值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._8K.
-
-            audio_max_quality       (AudioQuality, optional)      : 设置提取的音频流清晰度最大值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._192K.
-
-            video_min_quality       (VideoQuality, optional)      : 设置提取的视频流清晰度最小值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._360P.
-
-            audio_min_quality       (AudioQuality, optional)      : 设置提取的音频流清晰度最小值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._64K.
-
-            video_accepted_qualities(List[VideoQuality], optional): 设置允许的所有视频流清晰度. Defaults to ALL.
-
-            audio_accepted_qualities(List[AudioQuality], optional): 设置允许的所有音频清晰度. Defaults to ALL.
-
-            codecs                  (List[VideoCodecs], optional) : 设置所有允许提取出来的视频编码. 此项不会忽略 HDR/杜比. Defaults to ALL codecs.
-
-            no_dolby_video          (bool, optional)              : 是否禁止提取杜比视界视频流. Defaults to False.
-
-            no_dolby_audio          (bool, optional)              : 是否禁止提取杜比全景声音频流. Defaults to False.
-
-            no_hdr                  (bool, optional)              : 是否禁止提取 HDR 视频流. Defaults to False.
-
-            no_hires                (bool, optional)              : 是否禁止提取 Hi-Res 音频流. Defaults to False.
-
-        Returns:
-            List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]: 提取出来的视频/音频流
-
-        **参数仅能在音视频流分离的情况下产生作用，flv / mp4 流下以下参数均没有作用**
-        """
-        if "durl" in self.__data.keys():
-            if self.__data["format"].startswith("flv"):
-                # FLV 视频流
-                return [FLVStreamDownloadURL(url=self.__data["durl"][0]["url"])]
-            else:
-                # MP4 视频流
-                return [MP4StreamDownloadURL(url=self.__data["durl"][0]["url"])]
-        else:
-            # 正常情况
-            streams = []
-            videos_data = self.__data["dash"]["video"]
-            audios_data = self.__data["dash"].get("audio")
-            flac_data = self.__data["dash"].get("flac")
-            dolby_data = self.__data["dash"].get("dolby")
-            for video_data in videos_data:
-                video_stream_url = video_data["base_url"]
-                video_stream_quality = VideoQuality(video_data["id"])
-                if video_stream_quality == VideoQuality.HDR and no_hdr:
-                    continue
-                if video_stream_quality == VideoQuality.DOLBY and no_dolby_video:
-                    continue
-                if (
-                    video_stream_quality != VideoQuality.DOLBY
-                    and video_stream_quality != VideoQuality.HDR
-                    and video_stream_quality.value > video_max_quality.value
-                ):
-                    continue
-                if (
-                    video_stream_quality != VideoQuality.DOLBY
-                    and video_stream_quality != VideoQuality.HDR
-                    and video_stream_quality.value < video_min_quality.value
-                ):
-                    continue
-                if (
-                    video_stream_quality != VideoQuality.DOLBY
-                    and video_stream_quality != VideoQuality.HDR
-                    and (not video_stream_quality in video_accepted_qualities)
-                ):
-                    continue
-                video_stream_codecs = VideoCodecs.UNKNOWN
-                for val in codecs:
-                    for key in val.value:
-                        if key in video_data["codecs"]:
-                            video_stream_codecs = val
-                if VideoCodecs.UNKNOWN not in codecs and video_stream_codecs == VideoCodecs.UNKNOWN:
-                    continue
-                video_stream = VideoStreamDownloadURL(
-                    url=video_stream_url,
-                    video_quality=video_stream_quality,
-                    video_codecs=video_stream_codecs,
-                    backup_url=video_data["backup_url"],
-                    bandwidth=video_data["bandwidth"],
-                    codecs=video_data["codecs"],
-                    frame_rate=float(video_data["frame_rate"]),
-                    scale=(video_data["width"], video_data["height"]),
-                    sar=tuple([int(x) for x in video_data["sar"].split(":")] if ":" in video_data["sar"] else (1, 1)),
-                    mime_type=video_data["mime_type"],
-                    segment_base_initialization=video_data["segment_base"]["initialization"],
-                    segment_base_index_range=video_data["segment_base"]["index_range"]
-                )
-                streams.append(video_stream)
-            if audios_data:
-                for audio_data in audios_data:
-                    audio_stream_url = audio_data["base_url"]
-                    audio_stream_quality = AudioQuality(audio_data["id"])
-                    if audio_stream_quality.value > audio_max_quality.value:
-                        continue
-                    if audio_stream_quality.value < audio_min_quality.value:
-                        continue
-                    if not audio_stream_quality in audio_accepted_qualities:
-                        continue
-                    audio_stream = AudioStreamDownloadURL(
-                        url=audio_stream_url,
-                        audio_quality=audio_stream_quality,
-                        backup_url=audio_data["backup_url"],
-                        bandwidth=audio_data["bandwidth"],
-                        codecs=audio_data["codecs"],
-                        mime_type=audio_data["mime_type"],
-                        segment_base_initialization=audio_data["segment_base"]["initialization"],
-                        segment_base_index_range=audio_data["segment_base"]["index_range"]
-                    )
-                    streams.append(audio_stream)
-            if flac_data and (not no_hires):
-                if flac_data["audio"]:
-                    flac_stream_url = flac_data["audio"]["base_url"]
-                    flac_stream_quality = AudioQuality(flac_data["audio"]["id"])
-                    flac_stream = AudioStreamDownloadURL(
-                        url=flac_stream_url,
-                        audio_quality=flac_stream_quality,
-                        backup_url=flac_data["audio"]["backup_url"],
-                        bandwidth=flac_data["audio"]["bandwidth"],
-                        codecs=flac_data["audio"]["codecs"],
-                        mime_type=flac_data["audio"]["mime_type"],
-                        segment_base_initialization=flac_data["audio"]["segment_base"]["initialization"],
-                        segment_base_index_range=flac_data["audio"]["segment_base"]["index_range"]
-                    )
-                    streams.append(flac_stream)
-            if dolby_data and (not no_dolby_audio):
-                if dolby_data["audio"]:
-                    dolby_stream_data = dolby_data["audio"][0]
-                    dolby_stream_url = dolby_stream_data["base_url"]
-                    dolby_stream_quality = AudioQuality(dolby_stream_data["id"])
-                    dolby_stream = AudioStreamDownloadURL(
-                        url=dolby_stream_url,
-                        audio_quality=dolby_stream_quality,
-                        backup_url=dolby_stream_data["backup_url"],
-                        bandwidth=dolby_stream_data["bandwidth"],
-                        codecs=dolby_stream_data["codecs"],
-                        mime_type=dolby_stream_data["mime_type"],
-                        segment_base_initialization=dolby_stream_data["segment_base"]["initialization"],
-                        segment_base_index_range=dolby_stream_data["segment_base"]["index_range"]
-                    )
-                    streams.append(dolby_stream)
-            return streams
-
-    def detect_best_streams(
-        self,
-        video_max_quality: VideoQuality = VideoQuality._8K,
-        audio_max_quality: AudioQuality = AudioQuality._192K,
-        video_min_quality: VideoQuality = VideoQuality._360P,
-        audio_min_quality: AudioQuality = AudioQuality._64K,
-        video_accepted_qualities: List[VideoQuality] = [
-            item
-            for _, item in VideoQuality.__dict__.items()
-            if isinstance(item, VideoQuality)
-        ],
-        audio_accepted_qualities: List[AudioQuality] = [
-            item
-            for _, item in AudioQuality.__dict__.items()
-            if isinstance(item, AudioQuality)
-        ],
-        codecs: List[VideoCodecs] = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN],
-        no_dolby_video: bool = False,
-        no_dolby_audio: bool = False,
-        no_hdr: bool = False,
-        no_hires: bool = False,
-    ) -> List[
-        Union[
-            VideoStreamDownloadURL,
-            AudioStreamDownloadURL,
-            FLVStreamDownloadURL,
-            MP4StreamDownloadURL,
-        ]
-    ]:
-        """
-        提取出分辨率、音质等信息最好的音视频流。
-
-        Args:
-            video_max_quality       (VideoQuality)                : 设置提取的视频流清晰度最大值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._8K.
-
-            audio_max_quality       (AudioQuality)                : 设置提取的音频流清晰度最大值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._192K.
-
-            video_min_quality       (VideoQuality, optional)      : 设置提取的视频流清晰度最小值，设置此参数绝对不会禁止 HDR/杜比. Defaults to VideoQuality._360P.
-
-            audio_min_quality       (AudioQuality, optional)      : 设置提取的音频流清晰度最小值. 设置此参数绝对不会禁止 Hi-Res/杜比. Defaults to AudioQuality._64K.
-
-            video_accepted_qualities(List[VideoQuality], optional): 设置允许的所有视频流清晰度. Defaults to ALL.
-
-            audio_accepted_qualities(List[AudioQuality], optional): 设置允许的所有音频清晰度. Defaults to ALL.
-
-            codecs                  (List[VideoCodecs])           : 设置所有允许提取出来的视频编码. 在数组中越靠前的编码选择优先级越高. 此项不会忽略 HDR/杜比. Defaults to [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV].
-
-            no_dolby_video          (bool)                        : 是否禁止提取杜比视界视频流. Defaults to False.
-
-            no_dolby_audio          (bool)                        : 是否禁止提取杜比全景声音频流. Defaults to False.
-
-            no_hdr                  (bool)                        : 是否禁止提取 HDR 视频流. Defaults to False.
-
-            no_hires                (bool)                        : 是否禁止提取 Hi-Res 音频流. Defaults to False.
-
-        Returns:
-            List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | None]: FLV 视频流 / HTML5 MP4 视频流 / 番剧或课程试看 MP4 视频流返回 `[FLVStreamDownloadURL | HTML5MP4StreamDownloadURL | EpisodeTryMP4DownloadURL]`, 否则为 `[VideoStreamDownloadURL, AudioStreamDownloadURL]`, 如果未匹配上任何合适的流则对应的位置位 `None`
-
-        **以上参数仅能在音视频流分离的情况下产生作用，flv / mp4 试看流 / html5 mp4 流下以下参数均没有作用**
-        """
-        if self.check_flv_mp4_stream():
-            return self.detect_all()
-        else:
-            data = self.detect(
-                video_max_quality=video_max_quality,
-                audio_max_quality=audio_max_quality,
-                video_min_quality=video_min_quality,
-                audio_min_quality=audio_min_quality,
-                video_accepted_qualities=video_accepted_qualities,
-                audio_accepted_qualities=audio_accepted_qualities,
-                codecs=codecs,
-                no_dolby_video=no_dolby_video,
-                no_dolby_audio=no_dolby_audio,
-                no_hires=no_hires,
-                no_hdr=no_hdr,
-            )
-            video_streams = []
-            audio_streams = []
-            for stream in data:
-                if isinstance(stream, VideoStreamDownloadURL):
-                    video_streams.append(stream)
-                if isinstance(stream, AudioStreamDownloadURL):
-                    audio_streams.append(stream)
-
-            def video_stream_cmp(
-                s1: VideoStreamDownloadURL, s2: VideoStreamDownloadURL
-            ):
-                # 杜比/HDR 优先
-                if s1.video_quality == VideoQuality.DOLBY and (not no_dolby_video):
-                    return 1
-                elif s2.video_quality == VideoQuality.DOLBY and (not no_dolby_video):
-                    return -1
-                elif s1.video_quality == VideoQuality.HDR and (not no_hdr):
-                    return 1
-                elif s2.video_quality == VideoQuality.HDR and (not no_hdr):
-                    return -1
-                if s1.video_quality.value != s2.video_quality.value:
-                    return s1.video_quality.value - s2.video_quality.value
-                    # Detect the high quality stream to the end.
-                elif s1.video_codecs.value != s2.video_codecs.value:
-                    return codecs.index(s2.video_codecs) - codecs.index(s1.video_codecs)
-                return -1
-
-            def audio_stream_cmp(
-                s1: AudioStreamDownloadURL, s2: AudioStreamDownloadURL
-            ):
-                # 杜比/Hi-Res 优先
-                if s1.audio_quality == AudioQuality.DOLBY and (not no_dolby_audio):
-                    return 1
-                if s2.audio_quality == AudioQuality.DOLBY and (not no_dolby_audio):
-                    return -1
-                if s1.audio_quality == AudioQuality.HI_RES and (not no_hires):
-                    return 1
-                if s2.audio_quality == AudioQuality.HI_RES and (not no_hires):
-                    return -1
-                return s1.audio_quality.value - s2.audio_quality.value
-
-            video_streams.sort(key=cmp_to_key(video_stream_cmp), reverse=True)
-            audio_streams.sort(key=cmp_to_key(audio_stream_cmp), reverse=True)
-            if len(video_streams) == 0:
-                video_streams = [None]
-            if len(audio_streams) == 0:
-                audio_streams = [None]
-            return [video_streams[0], audio_streams[0]]

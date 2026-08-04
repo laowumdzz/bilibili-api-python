@@ -6,7 +6,6 @@ bilibili_api.utils.initial_state
 
 import json
 from enum import Enum
-from typing import Tuple
 from urllib.parse import unquote
 
 from ..exceptions import InitialStateException
@@ -59,7 +58,7 @@ def _parse_detected_content(detected_content: str) -> dict:
 
 async def get_initial_state(
     url: str, credential: Credential = Credential(), strict: bool = True
-) -> Tuple[dict, InitialDataType]:
+) -> tuple[dict, InitialDataType]:
     """
     异步获取初始化信息
 
@@ -74,7 +73,7 @@ async def get_initial_state(
         resp = await Api(
             url=url, method="GET", credential=credential, comment="[获取初始化信息]"
         ).request(byte=True)
-    except Exception as e:
+    except (NetworkException, ResponseCodeException) as e:
         raise e
     else:
         content = resp.decode("utf-8")

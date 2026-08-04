@@ -6,7 +6,6 @@ bilibili_api.garb
 
 from .utils.network import Credential, Api
 from .utils.utils import get_api
-from typing import Union, List, Tuple
 from enum import Enum
 
 dlc_lottery_id = {}
@@ -44,7 +43,7 @@ class GarbSortType(Enum):
 
 
 async def search_garb_dlc_raw(
-    keyword: str, pn: int = 1, ps: int = 20, credential: Union[Credential, None] = None
+    keyword: str, pn: int = 1, ps: int = 20, credential: Credential | None = None
 ) -> dict:
     """
     搜索装扮/收藏集
@@ -77,7 +76,7 @@ class DLC:
         credential (Credential): 凭据类。
     """
 
-    def __init__(self, act_id: int, credential: Union[Credential, None] = None) -> None:
+    def __init__(self, act_id: int, credential: Credential | None = None) -> None:
         """
         Args:
             act_id (int): 收藏集的 act_id。 (链接中 blackboard/activity-Mz9T5bO5Q3.html?id={act_id}... 即为 act_id)
@@ -167,7 +166,7 @@ class Garb:
     """
 
     def __init__(
-        self, item_id: int, credential: Union[Credential, None] = None
+        self, item_id: int, credential: Credential | None = None
     ) -> None:
         """
         Args:
@@ -213,8 +212,8 @@ class Garb:
 
 
 async def search_garb_dlc_obj(
-    keyword: str, pn: int = 1, ps: int = 20, credential: Union[Credential, None] = None
-) -> List[Union[DLC, Garb]]:
+    keyword: str, pn: int = 1, ps: int = 20, credential: Credential | None = None
+) -> list[DLC | Garb]:
     """
     搜索装扮/收藏集
 
@@ -244,8 +243,8 @@ async def search_garb_dlc_obj(
 
 
 async def search_garb_dlc(
-    keyword: str, pn: int = 1, ps: int = 20, credential: Union[Credential, None] = None
-) -> List[Tuple[dict, Union[DLC, Garb]]]:
+    keyword: str, pn: int = 1, ps: int = 20, credential: Credential | None = None
+) -> list[tuple[dict, DLC | Garb]]:
     """
     搜索装扮/收藏集
 
@@ -279,7 +278,7 @@ async def get_garb_dlc_items_raw(
     sort: GarbSortType = GarbSortType.DEFAULT,
     pn: int = 1,
     ps: int = 20,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     装扮/收藏集列表
@@ -311,7 +310,7 @@ async def get_garb_dlc_items_obj(
     sort: GarbSortType = GarbSortType.DEFAULT,
     pn: int = 1,
     ps: int = 20,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     装扮/收藏集列表
@@ -347,7 +346,7 @@ async def get_garb_dlc_items(
     sort: GarbSortType = GarbSortType.DEFAULT,
     pn: int = 1,
     ps: int = 20,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     装扮/收藏集列表

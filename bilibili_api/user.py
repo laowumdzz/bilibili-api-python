@@ -5,18 +5,14 @@ bilibili_api.user
 """
 
 import json
-import random
-import time
 from datetime import datetime
 from enum import Enum
-from typing import List, Union, Tuple
 
-import jwt
 
 from .utils.utils import get_api, join, raise_for_statement
 from .utils.user_render_data import get_user_dynamic_render_data
 from .exceptions import ResponseCodeException
-from .utils.network import Api, HEADERS, Credential
+from .utils.network import Api, Credential
 from .channel_series import ChannelOrder, ChannelSeries, ChannelSeriesType
 
 API = get_api("user")
@@ -214,7 +210,7 @@ class OpusType(Enum):
     DYNAMIC = "dynamic"
 
 
-async def name2uid(names: Union[str, List[str]], credential: Credential = None):
+async def name2uid(names: str | list[str], credential: Credential = None):
     """
     将用户名转为 uid
 
@@ -244,7 +240,7 @@ class User:
     用户相关
     """
 
-    def __init__(self, uid: int, credential: Union[Credential, None] = None):
+    def __init__(self, uid: int, credential: Credential | None = None):
         """
         Args:
             uid        (int)                        : 用户 UID
@@ -469,7 +465,7 @@ class User:
 
     async def get_media_list(
         self,
-        oid: Union[int, None] = None,
+        oid: int | None = None,
         ps: int = 20,
         direction: bool = False,
         desc: bool = True,
@@ -982,7 +978,7 @@ class User:
             .result
         )
 
-    async def get_channels(self) -> List["ChannelSeries"]:
+    async def get_channels(self) -> list["ChannelSeries"]:
         """
         获取用户所有合集
 
@@ -1224,7 +1220,7 @@ async def rename_subscribe_group(
 
 
 async def set_subscribe_group(
-    uids: List[int], group_ids: List[int], credential: Credential
+    uids: list[int], group_ids: list[int], credential: Credential
 ) -> dict:
     """
     设置用户关注分组
@@ -1251,7 +1247,7 @@ async def set_subscribe_group(
 async def get_self_history(
     page_num: int = 1,
     per_page_item: int = 100,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     获取用户浏览历史记录（旧版）
@@ -1450,7 +1446,7 @@ async def delete_viewed_videos_from_toview(credential: Credential):
     return await Api(**api, credential=credential).update_data(**datas).result
 
 
-async def check_nickname(nick_name: str) -> Tuple[bool, str]:
+async def check_nickname(nick_name: str) -> tuple[bool, str]:
     """
     检验昵称是否可用
 

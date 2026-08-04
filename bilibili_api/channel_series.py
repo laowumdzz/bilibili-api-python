@@ -4,12 +4,10 @@ bilibili_api.channel_series
 用户合集与列表相关
 """
 
-import json
 from enum import Enum
-from typing import List, Union, Optional
 
 from .utils.utils import get_api, raise_for_statement
-from .utils.network import Api, HEADERS, Credential
+from .utils.network import Api, Credential
 
 from . import user
 
@@ -61,7 +59,7 @@ class ChannelSeries:
         uid: int = -1,
         type_: ChannelSeriesType = ChannelSeriesType.SERIES,
         id_: int = -1,
-        credential: Union[Credential, None] = None,
+        credential: Credential | None = None,
     ):
         """
         Args:
@@ -172,10 +170,10 @@ class ChannelSeries:
 
 async def create_channel_series(
     name: str,
-    aids: List[int] = [],
-    keywords: List[str] = [],
+    aids: list[int] = [],
+    keywords: list[str] = [],
     description: str = "",
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     新建一个视频列表 (旧版合集)
@@ -249,7 +247,7 @@ async def del_channel_series(series_id: int, credential: Credential) -> dict:
 
 
 async def add_aids_to_series(
-    series_id: int, aids: List[int], credential: Credential
+    series_id: int, aids: list[int], credential: Credential
 ) -> dict:
     """
     添加视频至视频列表(旧版合集)
@@ -279,7 +277,7 @@ async def add_aids_to_series(
 
 
 async def del_aids_from_series(
-    series_id: int, aids: List[int], credential: Credential
+    series_id: int, aids: list[int], credential: Credential
 ) -> dict:
     """
     从视频列表(旧版合集)删除视频
@@ -309,7 +307,7 @@ async def del_aids_from_series(
 
 
 async def set_follow_channel_season(
-    season_id: int, status: bool = True, credential: Optional[Credential] = None
+    season_id: int, status: bool = True, credential: Credential | None = None
 ) -> dict:
     """
     设置是否订阅合集(新版)

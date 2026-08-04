@@ -7,7 +7,7 @@ bilibili_api.utils.utils
 import json
 import os
 import random
-from typing import List, TypeVar
+from typing import TypeVar
 from ..exceptions import StatementException
 from datetime import datetime
 from urllib.parse import quote
@@ -153,10 +153,10 @@ def join(seperator: str, array: list):
     return seperator.join(map(lambda x: str(x), array))
 
 
-ChunkT = TypeVar("ChunkT", List, List)
+ChunkT = TypeVar("ChunkT", list, list)
 
 
-def chunk(arr: ChunkT, size: int) -> List[ChunkT]:
+def chunk(arr: ChunkT, size: int) -> list[ChunkT]:
     if size <= 0:
         raise Exception('Parameter "size" must greater than 0')
 

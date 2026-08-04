@@ -130,7 +130,7 @@ def __register_all_clients():
         client_module = importlib.import_module(
             name=f".clients.{client}", package="bilibili_api"
         )
-        client_class = eval(f"client_module.{client}")
+        client_class = getattr(client_module, client)
         register_client(module, client_class, settings)
 
 

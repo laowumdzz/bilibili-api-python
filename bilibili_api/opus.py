@@ -4,9 +4,7 @@ bilibili_api.opus
 图文相关
 """
 
-import asyncio
 import yaml
-from typing import Dict, List, Optional
 from . import article
 from . import dynamic
 from .utils.network import Api, Credential
@@ -28,7 +26,7 @@ class Opus:
         credential (Credential): 凭据类
     """
 
-    def __init__(self, opus_id: int, credential: Optional[Credential] = None):
+    def __init__(self, opus_id: int, credential: Credential | None = None):
         self.__id = opus_id
         self.__info = None
         self.credential: Credential = credential if credential else Credential()
@@ -181,7 +179,7 @@ class Opus:
         content = f"---\n{meta_yaml}\n---\n\n{markdown}"
         return content
 
-    async def get_images_raw_info(self) -> List[Dict]:
+    async def get_images_raw_info(self) -> list[dict]:
         """
         获取图文所有图片原始信息
 
@@ -204,7 +202,7 @@ class Opus:
 
         return result
 
-    async def get_images(self) -> List["Picture"]:
+    async def get_images(self) -> list["Picture"]:
         """
         获取图文所有图片并转为 Picture 类
 

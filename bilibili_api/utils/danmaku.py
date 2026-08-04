@@ -6,7 +6,6 @@ bilibili_api.utils.Danmaku
 
 import time
 from enum import Enum
-from typing import Union
 
 from .utils import crack_uid as _crack_uid
 
@@ -71,8 +70,8 @@ class Danmaku:
         id_: int = -1,
         id_str: str = "",
         action: str = "",
-        mode: Union[DmMode, int] = DmMode.FLY,
-        font_size: Union[DmFontSize, int] = DmFontSize.NORMAL,
+        mode: DmMode | int = DmMode.FLY,
+        font_size: DmFontSize | int = DmFontSize.NORMAL,
         is_sub: bool = False,
         pool: int = 0,
         attr: int = -1,
@@ -174,7 +173,7 @@ class SpecialDanmaku:
         content: str,
         id_: int = -1,
         id_str: str = "",
-        mode: Union[DmMode, int] = DmMode.SPECIAL,
+        mode: DmMode | int = DmMode.SPECIAL,
         pool: int = 2,
     ):
         """

@@ -5,13 +5,12 @@ bilibili_api.favorite_list
 """
 
 from enum import Enum
-from typing import List, Union, Optional
 
 from . import user
 from .video import Video
 from .utils.utils import join, get_api, raise_for_statement
 from .utils.network import Api, Credential
-from .exceptions.ArgsException import ArgsException
+from .exceptions import ArgsException
 
 API = get_api("favorite-list")
 
@@ -67,8 +66,8 @@ class FavoriteList:
     def __init__(
         self,
         type_: FavoriteListType = FavoriteListType.VIDEO,
-        media_id: Union[int, None] = None,
-        credential: Union[Credential, None] = None,
+        media_id: int | None = None,
+        credential: Credential | None = None,
     ) -> None:
         """
         Args:
@@ -91,7 +90,7 @@ class FavoriteList:
         """
         return self.__type == FavoriteListType.VIDEO
 
-    def get_media_id(self) -> Union[int, None]:
+    def get_media_id(self) -> int | None:
         """
         获取收藏夹 media_id，仅视频收藏夹存在此属性
 
@@ -128,7 +127,7 @@ class FavoriteList:
     async def get_content_video(
         self,
         page: int = 1,
-        keyword: Union[str, None] = None,
+        keyword: str | None = None,
         order: FavoriteListContentOrder = FavoriteListContentOrder.MTIME,
         mode: SearchFavoriteListMode = SearchFavoriteListMode.ONLY,
         tid=0,
@@ -211,8 +210,8 @@ class FavoriteList:
 
 async def get_video_favorite_list(
     uid: int,
-    video: Union[Video, None] = None,
-    credential: Union[Credential, None] = None,
+    video: Video | None = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     获取视频收藏夹列表。
@@ -239,11 +238,11 @@ async def get_video_favorite_list(
 async def get_video_favorite_list_content(
     media_id: int,
     page: int = 1,
-    keyword: Union[str, None] = None,
+    keyword: str | None = None,
     order: FavoriteListContentOrder = FavoriteListContentOrder.MTIME,
     tid: int = 0,
     mode: SearchFavoriteListMode = SearchFavoriteListMode.ONLY,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     获取视频收藏夹列表内容，也可用于搜索收藏夹内容。
@@ -287,7 +286,7 @@ async def get_video_favorite_list_content(
 
 
 async def get_topic_favorite_list(
-    page: int = 1, credential: Union[None, Credential] = None
+    page: int = 1, credential: None | Credential = None
 ) -> dict:
     """
     获取自己的话题收藏夹内容。
@@ -312,7 +311,7 @@ async def get_topic_favorite_list(
 
 
 async def get_article_favorite_list(
-    page: int = 1, credential: Union[None, Credential] = None
+    page: int = 1, credential: None | Credential = None
 ) -> dict:
     """
     获取自己的专栏收藏夹内容。
@@ -337,7 +336,7 @@ async def get_article_favorite_list(
 
 
 async def get_course_favorite_list(
-    page: int = 1, credential: Union[None, Credential] = None
+    page: int = 1, credential: None | Credential = None
 ) -> dict:
     """
     获取自己的课程收藏夹内容。
@@ -363,7 +362,7 @@ async def get_course_favorite_list(
 
 
 async def get_note_favorite_list(
-    page: int = 1, credential: Union[None, Credential] = None
+    page: int = 1, credential: None | Credential = None
 ) -> dict:
     """
     获取自己的笔记收藏夹内容。
@@ -391,7 +390,7 @@ async def create_video_favorite_list(
     title: str,
     introduction: str = "",
     private: bool = False,
-    credential: Union[None, Credential] = None,
+    credential: None | Credential = None,
 ) -> dict:
     """
     新建视频收藏夹列表。
@@ -430,7 +429,7 @@ async def modify_video_favorite_list(
     title: str,
     introduction: str = "",
     private: bool = False,
-    credential: Union[None, Credential] = None,
+    credential: None | Credential = None,
 ) -> dict:
     """
     修改视频收藏夹信息。
@@ -469,7 +468,7 @@ async def modify_video_favorite_list(
 
 
 async def delete_video_favorite_list(
-    media_ids: List[int], credential: Credential
+    media_ids: list[int], credential: Credential
 ) -> dict:
     """
     删除视频收藏夹，可批量删除。
@@ -493,7 +492,7 @@ async def delete_video_favorite_list(
 
 
 async def copy_video_favorite_list_content(
-    media_id_from: int, media_id_to: int, aids: List[int], credential: Credential
+    media_id_from: int, media_id_to: int, aids: list[int], credential: Credential
 ) -> dict:
     """
     复制视频收藏夹内容
@@ -527,7 +526,7 @@ async def copy_video_favorite_list_content(
 
 
 async def move_video_favorite_list_content(
-    media_id_from: int, media_id_to: int, aids: List[int], credential: Credential
+    media_id_from: int, media_id_to: int, aids: list[int], credential: Credential
 ) -> dict:
     """
     移动视频收藏夹内容
@@ -558,7 +557,7 @@ async def move_video_favorite_list_content(
 
 
 async def delete_video_favorite_list_content(
-    media_id: int, aids: List[int], credential: Credential
+    media_id: int, aids: list[int], credential: Credential
 ) -> dict:
     """
     删除视频收藏夹内容
@@ -612,7 +611,7 @@ async def get_favorite_collected(
     uid: int,
     pn: int = 1,
     ps: int = 20,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     获取收藏合集列表

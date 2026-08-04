@@ -517,7 +517,7 @@ def WriteCommentBilibiliPositioned(f, c, width, height, styleid):
                 "styleid": styleid,
             }
         )
-    except (IndexError, ValueError) as e:
+    except (IndexError, ValueError):
         try:
             logging.warning(_("Invalid comment: %r") % c[3])
         except IndexError:
@@ -699,7 +699,7 @@ def WriteCommentAcfunPositioned(f, c, width, height, styleid):
                 c[0] + from_time + action_time,
                 styleid,
             )
-    except (IndexError, ValueError) as e:
+    except (IndexError, ValueError):
         logging.warning(_("Invalid comment: %r") % c[3])
 
 
@@ -1043,14 +1043,14 @@ def ASSEscape(s):
             return "".join(("\u2007" * llen, sstrip, "\u2007" * rlen))
 
     return "\\N".join(
-        (
+
             ReplaceLeadingSpace(i) or " "
             for i in str(s)
             .replace("\\", "\\\\")
             .replace("{", "\\{")
             .replace("}", "\\}")
             .split("\n")
-        )
+
     )
 
 
@@ -1153,7 +1153,7 @@ def Danmaku2ASS(
 ):
     comment_filters = [comment_filter]
     if comment_filters_file:
-        with open(comment_filters_file, "r") as f:
+        with open(comment_filters_file) as f:
             d = f.readlines()
             comment_filters.extend([i.strip() for i in d])
     filters_regex = []

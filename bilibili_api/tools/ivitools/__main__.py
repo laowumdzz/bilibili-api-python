@@ -13,7 +13,6 @@ __license__ = "GPLv3+"
 
 import sys
 import warnings
-from typing import List
 
 from colorama import Fore
 
@@ -22,7 +21,7 @@ from .extract import extract_ivi
 from .download import download_interactive_video
 
 
-def run_args(command: str, args: List[str]):
+def run_args(command: str, args: list[str]):
     if command == "help":
         print(
             "IVITools - A Simple IVI file manager & toolbox. \n\

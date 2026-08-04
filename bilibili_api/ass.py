@@ -6,22 +6,21 @@ bilibili_api.ass
 
 import json
 from tempfile import gettempdir
-from typing import List, Tuple, Union, Optional
 
 from .video import Video
 from .bangumi import Episode
 from .cheese import CheeseVideo
 from .utils.danmaku2ass import Danmaku2ASS
 from .utils.network import Api, Credential
-from .exceptions.ArgsException import ArgsException
+from .exceptions import ArgsException
 
 
 class AssSubtitleObject:
     def __init__(
         self,
-        json_lan_list: List[dict],
-        obj: Union[Video, Episode],
-        lan_set: Optional[str] = None,
+        json_lan_list: list[dict],
+        obj: Video | Episode,
+        lan_set: str | None = None,
     ):
         """
         获取远程字幕
@@ -32,12 +31,12 @@ class AssSubtitleObject:
             lan_set (str | None): 设置默认字幕语言,如果为None,则自动获取可获取语言
         """
         self.__json_lan_list = json_lan_list
-        self.__json_subtitle_data: Optional[dict] = None
+        self.__json_subtitle_data: dict | None = None
         self.__obj = obj
         self.__lan_set = lan_set
         self.__data_string = None
 
-    def get_lan_list(self) -> Tuple[List[str], List[Optional[str]]]:
+    def get_lan_list(self) -> tuple[list[str], list[str | None]]:
         """
         获取字幕语言列表
 
@@ -52,7 +51,7 @@ class AssSubtitleObject:
                 ret_lan_doc.append(lan.get("lan_doc"))
         return ret_lan_code, ret_lan_doc
 
-    async def request_ass_data_json(self, lan_set: Optional[str] = None) -> List[dict]:
+    async def request_ass_data_json(self, lan_set: str | None = None) -> list[dict]:
         """
         获取对应语言的字幕
 
@@ -215,7 +214,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
         return self.__data_string
 
-    def to_simple_json(self) -> List[dict]:
+    def to_simple_json(self) -> list[dict]:
         """
         获取简化后的JSON数据
 
@@ -259,10 +258,10 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 
 async def request_subtitle_languages(
-    obj: Union[Video, Episode],
-    page_index: Optional[int] = 0,
-    cid: Optional[int] = None,
-    credential: Optional[Credential] = None,
+    obj: Video | Episode,
+    page_index: int | None = 0,
+    cid: int | None = None,
+    credential: Credential | None = None,
 ) -> AssSubtitleObject:
     """
     获取远程字幕语言列表
@@ -297,12 +296,12 @@ async def request_subtitle_languages(
 
 
 async def request_subtitle(
-    obj: Union[Video, Episode],
-    page_index: Optional[int] = 0,
-    cid: Optional[int] = None,
-    lan_name: Optional[str] = None,
-    lan_code: Optional[str] = None,
-    credential: Optional[Credential] = None,
+    obj: Video | Episode,
+    page_index: int | None = 0,
+    cid: int | None = None,
+    lan_name: str | None = None,
+    lan_code: str | None = None,
+    credential: Credential | None = None,
 ) -> AssSubtitleObject:
     """
     获取远程字幕
@@ -331,15 +330,15 @@ async def request_subtitle(
 
 
 async def make_ass_file_subtitle(
-    obj: Union[Video, Episode],
-    page_index: Optional[int] = 0,
-    cid: Optional[int] = None,
+    obj: Video | Episode,
+    page_index: int | None = 0,
+    cid: int | None = None,
     out: str = "test.ass",
     lan_name: str = "中文（自动生成）",
     lan_code: str = "ai-zh",
     font: str = "Simsun",
     font_size: float = 65.0,
-    credential: Optional[Credential] = None,
+    credential: Credential | None = None,
 ) -> None:
     """
     生成ass格式视频字幕文件
@@ -374,13 +373,13 @@ async def make_ass_file_subtitle(
 
 
 async def make_srt_file_subtitle(
-    obj: Union[Video, Episode],
-    page_index: Optional[int] = 0,
-    cid: Optional[int] = None,
+    obj: Video | Episode,
+    page_index: int | None = 0,
+    cid: int | None = None,
     out: str = "test.srt",
     lan_name: str = "中文（自动生成）",
     lan_code: str = "ai-zh",
-    credential: Optional[Credential] = None,
+    credential: Credential | None = None,
 ) -> None:
     """
     生成srt格式视频字幕文件
@@ -413,13 +412,13 @@ async def make_srt_file_subtitle(
 
 
 async def make_lrc_file_subtitle(
-    obj: Union[Video, Episode],
-    page_index: Optional[int] = 0,
-    cid: Optional[int] = None,
+    obj: Video | Episode,
+    page_index: int | None = 0,
+    cid: int | None = None,
     out: str = "test.lrc",
     lan_name: str = "中文（自动生成）",
     lan_code: str = "ai-zh",
-    credential: Optional[Credential] = None,
+    credential: Credential | None = None,
 ) -> None:
     """
     生成lrc格式视频字幕文件
@@ -452,13 +451,13 @@ async def make_lrc_file_subtitle(
 
 
 async def make_simple_json_file_subtitle(
-    obj: Union[Video, Episode],
-    page_index: Optional[int] = 0,
-    cid: Optional[int] = None,
+    obj: Video | Episode,
+    page_index: int | None = 0,
+    cid: int | None = None,
     out: str = "test.json",
     lan_name: str = "中文（自动生成）",
     lan_code: str = "ai-zh",
-    credential: Optional[Credential] = None,
+    credential: Credential | None = None,
 ) -> None:
     """
     生成简化后的json格式视频字幕文件
@@ -534,10 +533,10 @@ def _export_ass_from_xml(
 
 
 async def make_ass_file_danmakus_protobuf(
-    obj: Union[Video, Episode, CheeseVideo],
+    obj: Video | Episode | CheeseVideo,
     page: int = 0,
     out="test.ass",
-    cid: Union[int, None] = None,
+    cid: int | None = None,
     date=None,
     font_name="Simsun",
     font_size=25.0,
@@ -612,10 +611,10 @@ async def make_ass_file_danmakus_protobuf(
 
 
 async def make_ass_file_danmakus_xml(
-    obj: Union[Video, Episode, CheeseVideo],
+    obj: Video | Episode | CheeseVideo,
     page: int = 0,
     out="test.ass",
-    cid: Union[int, None] = None,
+    cid: int | None = None,
     font_name="Simsun",
     font_size=25.0,
     alpha=1,

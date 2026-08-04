@@ -183,7 +183,7 @@ class UposFileUploader:
                 chunk_event_callback_data["info"] = "分块上传失败"
                 return err_return
 
-        except Exception as e:
+        except NetworkException as e:
             chunk_event_callback_data["info"] = str(e)
             return err_return
 

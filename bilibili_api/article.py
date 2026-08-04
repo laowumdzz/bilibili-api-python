@@ -5,22 +5,18 @@ bilibili_api.article
 """
 
 import re
-import json
 from copy import copy
 from enum import Enum
-from html import unescape
-from datetime import datetime
 from urllib.parse import unquote
-from typing import List, Union, TypeVar, overload
+from typing import TypeVar, overload
 
 import yaml
 from yarl import URL
 from bs4 import BeautifulSoup, element
 
-from .utils.initial_state import get_initial_state
-from .utils.utils import get_api, raise_for_statement
+from .utils.utils import get_api
 from .utils.network import Api, Credential
-from .exceptions.NetworkException import ApiException, NetworkException
+from .exceptions import ApiException
 from .utils import cache_pool
 
 from . import dynamic
@@ -108,7 +104,7 @@ class ArticleList:
         credential (Credential): 凭据类
     """
 
-    def __init__(self, rlid: int, credential: Union[Credential, None] = None):
+    def __init__(self, rlid: int, credential: Credential | None = None):
         """
         Args:
             rlid       (int)                        : 文集 id
@@ -149,14 +145,14 @@ class Article:
         credential (Credential): 凭据类
     """
 
-    def __init__(self, cvid: int, credential: Union[Credential, None] = None):
+    def __init__(self, cvid: int, credential: Credential | None = None):
         """
         Args:
             cvid       (int)                        : cv 号
 
             credential (Credential | None, optional): 凭据. Defaults to None.
         """
-        self.__children: List[Node] = []
+        self.__children: list[Node] = []
         self.credential: Credential = (
             credential if credential is not None else Credential()
         )

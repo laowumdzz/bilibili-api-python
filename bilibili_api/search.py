@@ -4,9 +4,7 @@ bilibili_api.search
 搜索
 """
 
-import json
 from enum import Enum
-from typing import List, Union, Callable
 from .utils.utils import to_timestamps
 from .utils.utils import get_api
 from .video_zone import VideoZoneTypes
@@ -171,14 +169,14 @@ async def search(keyword: str, page: int = 1) -> dict:
 
 async def search_by_type(
     keyword: str,
-    search_type: Union[SearchObjectType, None] = None,
-    order_type: Union[OrderUser, OrderLiveRoom, OrderArticle, OrderVideo, None] = None,
+    search_type: SearchObjectType | None = None,
+    order_type: OrderUser | OrderLiveRoom | OrderArticle | OrderVideo | None = None,
     time_range: int = -1,
-    video_zone_type: Union[int, VideoZoneTypes, None] = None,
-    order_sort: Union[int, None] = None,
-    category_id: Union[CategoryTypeArticle, CategoryTypePhoto, int, None] = None,
-    time_start: Union[str, None] = None,
-    time_end: Union[str, None] = None,
+    video_zone_type: int | VideoZoneTypes | None = None,
+    order_sort: int | None = None,
+    category_id: CategoryTypeArticle | CategoryTypePhoto | int | None = None,
+    time_start: str | None = None,
+    time_end: str | None = None,
     page: int = 1,
     page_size: int = 42,
 ) -> dict:
@@ -277,7 +275,7 @@ async def get_hot_search_keywords() -> dict:
     return await Api(**api).request(raw=True)
 
 
-async def get_suggest_keywords(keyword: str) -> List[str]:
+async def get_suggest_keywords(keyword: str) -> list[str]:
     """
     通过一些文字输入获取搜索建议。类似搜索词的联想。
 

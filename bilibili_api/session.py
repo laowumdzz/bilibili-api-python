@@ -10,7 +10,6 @@ import asyncio
 import logging
 import datetime
 from enum import Enum
-from typing import Union, Optional
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -132,8 +131,8 @@ async def get_session_detail(
 
 async def get_replies(
     credential: Credential,
-    last_reply_id: Optional[int] = None,
-    reply_time: Optional[int] = None,
+    last_reply_id: int | None = None,
+    reply_time: int | None = None,
 ) -> dict:
     """
     获取收到的回复
@@ -285,7 +284,7 @@ class Event:
     msg_type: int
     msg_key: int
     timestamp: int
-    content: Union[str, int, Picture, Video]
+    content: str | int | Picture | Video
 
     def __init__(self, data: dict, self_uid: int):
         """
@@ -361,7 +360,7 @@ async def send_msg(
     credential: Credential,
     receiver_id: int,
     msg_type: EventType,
-    content: Union[str, Picture],
+    content: str | Picture,
 ) -> dict:
     """
     给用户发送私聊信息。目前仅支持纯文本。
@@ -587,7 +586,7 @@ class Session(AsyncEvent):
         if self.get_status() == 2:
             self.__status = 3
 
-    async def reply(self, event: Event, content: Union[str, Picture]) -> dict:  # type: ignore
+    async def reply(self, event: Event, content: str | Picture) -> dict:  # type: ignore
         """
         快速回复消息
 

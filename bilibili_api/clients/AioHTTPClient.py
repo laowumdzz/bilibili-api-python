@@ -12,7 +12,6 @@ from ..utils.network import (
     request_log,
 )
 import aiohttp # pylint: disable=E0401
-from typing import Optional, Dict, Union, Tuple
 import asyncio
 
 
@@ -27,7 +26,7 @@ class AioHTTPClient(BiliAPIClient):
         timeout=0,
         verify_ssl=True,
         trust_env=True,
-        session: Optional[aiohttp.ClientSession] = None,
+        session: aiohttp.ClientSession | None = None,
     ):
         self.__args: dict = {
             "proxy": proxy,
@@ -47,9 +46,9 @@ class AioHTTPClient(BiliAPIClient):
                 trust_env=self.__args["trust_env"],
                 connector=aiohttp.TCPConnector(verify_ssl=self.__args["verify_ssl"]),
             )
-        self.__wss: Dict[int, aiohttp.ClientWebSocketResponse] = {}
+        self.__wss: dict[int, aiohttp.ClientWebSocketResponse] = {}
         self.__ws_cnt: int = 0
-        self.__downloads: Dict[int, aiohttp.ClientResponse] = {}
+        self.__downloads: dict[int, aiohttp.ClientResponse] = {}
         self.__download_cnt: int = 0
 
     def get_wrapped_session(self) -> aiohttp.ClientSession:
@@ -78,8 +77,8 @@ class AioHTTPClient(BiliAPIClient):
         method: str = "",
         url: str = "",
         params: dict = {},
-        data: Union[dict, str, bytes] = {},
-        files: Dict[str, BiliAPIFile] = {},
+        data: dict | str | bytes = {},
+        files: dict[str, BiliAPIFile] = {},
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,
@@ -251,7 +250,7 @@ class AioHTTPClient(BiliAPIClient):
         )
         return self.__ws_cnt
 
-    async def ws_recv(self, cnt: int) -> Tuple[bytes, BiliWsMsgType]:
+    async def ws_recv(self, cnt: int) -> tuple[bytes, BiliWsMsgType]:
         msg = await self.__wss[cnt].receive()
         request_log.dispatch(
             "WS_RECV",

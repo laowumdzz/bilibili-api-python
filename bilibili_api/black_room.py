@@ -5,7 +5,6 @@ bilibili_api.black_room
 """
 
 from enum import Enum
-from typing import List, Union, Optional
 
 from .utils.utils import get_api
 from .utils.network import Api, Credential
@@ -159,7 +158,7 @@ async def get_blocked_list(
     from_: BlackFrom = BlackFrom.ALL,
     type_: BlackType = BlackType.ALL,
     pn: int = 1,
-    credential: Union[Credential, None] = None,
+    credential: Credential | None = None,
 ) -> dict:
     """
     获取小黑屋中的违规列表
@@ -189,7 +188,7 @@ class BlackRoom:
         credential (Credential): 凭据类
     """
 
-    def __init__(self, black_room_id: int, credential: Union[Credential, None] = None):
+    def __init__(self, black_room_id: int, credential: Credential | None = None):
         """
         Args:
             black_room_id (int)                        : 小黑屋 id
@@ -291,7 +290,7 @@ class JuryCase:
         opinion: JuryVoteOpinion,
         is_insider: bool,
         is_anonymous: bool,
-        reason: Optional[str] = None,
+        reason: str | None = None,
     ) -> dict:
         """
         进行仲裁投票
@@ -361,7 +360,7 @@ async def get_jury_case_raw(
 
 async def get_jury_case_list(
     credential: Credential, pn: int = 1, ps: int = 20
-) -> List[JuryCase]:
+) -> list[JuryCase]:
     """
     获取仲裁案件列表
 
