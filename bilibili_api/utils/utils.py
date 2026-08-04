@@ -250,5 +250,5 @@ def img_auto_scheme(url: str) -> str:
         str: 带有 scheme 的 url
     """
     if url.startswith("//"):
-        return "https://" + url
+        return "https:" + url
     return url
