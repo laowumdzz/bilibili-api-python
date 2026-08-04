@@ -163,6 +163,21 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 
 ## 测试
 
+测试分两条路径：
+
+### 离线快速路径（pytest，无需凭据）
+
+```bash
+# 运行全部离线单元/冒烟测试（不触碰网络与真实账号，无需 BILI_* 环境变量）
+uv run pytest
+```
+
+- pytest 仅收集 `tests/test_offline_*.py`（见 `pyproject.toml` 的 `[tool.pytest.ini_options]`），其余 `test_*.py` 集成测试不会被 pytest 收集
+- 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作
+- 新增离线用例请放入 `tests/test_offline_*.py`
+
+### 集成测试路径（tests/main.py，需要凭据）
+
 ```bash
 # 运行全部测试
 uv run python -m tests.main -a
@@ -178,7 +193,7 @@ BILI_DEDEUSERID=xxx      # DedeUserID cookie
 BILI_RATELIMIT=1.5       # 测试间隔秒数（可选）
 ```
 
-测试入口 `tests/main.py` 会自动发现 `test_*.py` 中以 `test` 开头的函数并依次执行。模块可定义 `before_all()` / `after_all()` 作为 setup/teardown。
+测试入口 `tests/main.py` 会自动发现 `test_*.py` 中以 `test` 开头的**异步函数**（同步函数由 pytest 离线路径负责）并依次执行。模块可定义 `before_all()` / `after_all()` 作为 setup/teardown。
 
 ## 常见陷阱
 

@@ -17,6 +17,7 @@ Environment:
     BILI_PASSWORD
     BILI_RATELIMIT
 """
+
 import os
 import sys
 import time
@@ -34,16 +35,16 @@ from bilibili_api import request_settings
 def collect_test_function(module):
     names = []
     for name in dir(module):
-        if name.startswith("test"):
+        # 仅收集异步用例；同步用例（如 test_offline_*.py 的 pytest 离线测试）交由 pytest 运行
+        if name.startswith("test") and asyncio.iscoroutinefunction(getattr(module, name)):
             names.append(f"{name}")
     return names
 
 
-RATELIMIT = (
-    float(os.getenv("BILI_RATELIMIT")) if os.getenv("BILI_RATELIMIT") is not None else 0
-)
+RATELIMIT = float(os.getenv("BILI_RATELIMIT")) if os.getenv("BILI_RATELIMIT") is not None else 0
 
 request_settings.set_timeout(100)
+
 
 async def test(module):
     print(Fore.YELLOW + f"::group::=========== 开始测试 {module.__name__} ===========")

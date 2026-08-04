@@ -70,6 +70,12 @@ dev = [
 [tool.uv]
 package = true
 
+# pytest 仅收集无凭据的离线测试（test_offline_*.py）；
+# 需要 BILI_* 凭据的集成测试由 tests/main.py 运行器负责（python -m tests.main）。
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_offline_*.py"]
+
 [tool.ruff]
 line-length = 120
 target-version = "py310"
@@ -115,6 +121,8 @@ ignore = [
 "bilibili_api/tools/**" = ["T201", "F401", "E722"]
 # install.py 为命令行安装脚本，允许 print
 "install.py" = ["T201"]
+# tests/main.py 为集成测试运行器（CLI），存量违规待逐步清理
+"tests/main.py" = ["T201", "I001", "F401", "E722", "RUF059", "F841", "RUF010"]
 # 上游有意在异步函数中使用阻塞 open/os.path（读取本地小文件），待后续引入 aiofiles 再改
 "bilibili_api/**" = ["ASYNC230", "ASYNC240"]
 
