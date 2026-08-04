@@ -10,8 +10,6 @@ from enum import Enum
 from .utils import get_api
 
 
-
-
 class RequestSettings:
     def __init__(self):
         self.__settings: dict = {
@@ -54,8 +52,9 @@ class RequestSettings:
         """
         if value == self.__settings.get(name):
             return
-        global lazy_settings
         self.__settings[name] = value
+        from ._session import lazy_settings
+
         for _, pool in lazy_settings.items():
             for _, client in pool.items():
                 client[name] = value
@@ -212,8 +211,8 @@ HEADERS = {
 }
 API = get_api("credential")
 
-@dataclass
 
+@dataclass
 class BiliAPIResponse:
     """
     响应对象类。

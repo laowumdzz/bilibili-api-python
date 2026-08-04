@@ -18,6 +18,7 @@ from ..exceptions import (
 
 from ._session import get_client
 from ._credential import Credential
+from ._log import request_log
 from ._types import APPKEY, APPSEC, HEADERS, API
 
 ################################################## BEGIN Anti-Spider ##################################################
@@ -25,8 +26,10 @@ from ._types import APPKEY, APPSEC, HEADERS, API
 
 import asyncio
 
+
 class AntiSpiderCache:
     """线程/协程安全的反爬虫参数缓存"""
+
     def __init__(self):
         self._buvid3: str = ""
         self._buvid4: str = ""
@@ -54,6 +57,7 @@ class AntiSpiderCache:
     async def get_bili_ticket(self, credential=None):
         """获取 bili_ticket，过期时自动刷新"""
         import time
+
         if time.time() > int(self._bili_ticket_expires):
             self.invalidate_bili_ticket()
         if self._bili_ticket == "":
@@ -163,9 +167,7 @@ OE = [
 async def _get_spi_buvid() -> dict:
     api = API["info"]["spi"]
     client = get_client()
-    return (
-        await client.request(method="GET", url=api["url"], headers=HEADERS.copy())
-    ).json()["data"]
+    return (await client.request(method="GET", url=api["url"], headers=HEADERS.copy())).json()["data"]
 
 
 """
@@ -532,9 +534,7 @@ def _enc_dm(params: dict) -> dict:
 def _enc_sign(paramsordata: dict) -> dict:
     paramsordata["appkey"] = APPKEY
     paramsordata = dict(sorted(paramsordata.items()))
-    paramsordata["sign"] = hashlib.md5(
-        (urllib.parse.urlencode(paramsordata) + APPSEC).encode("utf-8")
-    ).hexdigest()
+    paramsordata["sign"] = hashlib.md5((urllib.parse.urlencode(paramsordata) + APPSEC).encode("utf-8")).hexdigest()
     return paramsordata
 
 
