@@ -34,3 +34,4 @@ virtualenv/
 .mypy_cache/
 # sh
 env.sh
+.qoder/
