@@ -11,6 +11,8 @@ dist/
 *.srt
 *.lrc
 *.json
+# 库必需的静态数据文件不受上述 *.json 规则影响
+!bilibili_api/data/**/*.json
 # Interactive Videos
 *.ivi
 # Videos
