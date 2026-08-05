@@ -13,7 +13,7 @@ from inspect import iscoroutine, isfunction
 import json
 import os
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from yarl import URL
 
@@ -30,6 +30,10 @@ from .utils.BytesReader import BytesReader
 from .utils.danmaku import Danmaku, SpecialDanmaku
 from .utils.network import Api, Credential
 from .utils.utils import get_api, raise_for_statement
+
+if TYPE_CHECKING:
+    # 仅供类型检查：运行时 Episode 在 turn_to_episode 内导入（破解 video ↔ bangumi 循环依赖）
+    from .bangumi import Episode
 
 API = get_api("video")
 
@@ -1690,6 +1694,3 @@ class Video:
             "csrf": self.credential.bili_jct,
         }
         return await Api(**api, credential=self.credential).update_data(**data).request(raw=True)
-
-
-from .bangumi import Episode

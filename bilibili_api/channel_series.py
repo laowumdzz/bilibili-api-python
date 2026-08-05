@@ -5,10 +5,14 @@ bilibili_api.channel_series
 """
 
 from enum import Enum
+from typing import TYPE_CHECKING
 
-from . import user
 from .utils.network import Api, Credential
 from .utils.utils import get_api, raise_for_statement
+
+if TYPE_CHECKING:
+    # 仅供类型检查：顶层导入 user 会与其形成循环依赖，运行时均在函数内导入
+    from . import user
 
 API_USER = get_api("user")
 API = get_api("channel-series")

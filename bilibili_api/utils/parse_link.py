@@ -4,35 +4,113 @@ bilibili_api.utils.parse_link
 链接资源解析。
 """
 
+# 注解延迟求值：函数签名中的子模块类名（Video/Episode 等）不在导入期求值，
+# 配合 _ensure_submodules 的惰性导入破解包级循环依赖
+from __future__ import annotations
+
 from enum import Enum
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from yarl import URL
 
-# 注意：以下导入顺序为避免循环引用精心设计，禁止 isort 重排（I001 已在 pyproject 中豁免）
-from ..game import Game
-from ..manga import Manga
-from ..topic import Topic
-from ..video import Video
 from ..exceptions import NetworkException, ResponseCodeException
-from .utils import get_api
-from ..live import LiveRoom
-from ..dynamic import Dynamic
-from .short import get_real_url
-from ..note import Note, NoteType
-from ..black_room import BlackRoom
-from .network import Api, Credential
-from ..audio import Audio, AudioList
-from ..bangumi import Bangumi, Episode
-from ..article import Article, ArticleList
-from ..cheese import CheeseList, CheeseVideo
-from ..interactive_video import InteractiveVideo
-from ..favorite_list import FavoriteList, FavoriteListType
-from ..user import ChannelSeries, ChannelSeriesType, User, get_self_info
-from ..opus import Opus
-from ..garb import DLC
-
 from .initial_state import get_initial_state
+from .network import Api, Credential
+from .short import get_real_url
+from .utils import get_api
+
+if TYPE_CHECKING:
+    from ..article import Article, ArticleList
+    from ..audio import Audio, AudioList
+    from ..bangumi import Bangumi, Episode
+    from ..black_room import BlackRoom
+    from ..cheese import CheeseList, CheeseVideo
+    from ..dynamic import Dynamic
+    from ..favorite_list import FavoriteList, FavoriteListType
+    from ..game import Game
+    from ..garb import DLC
+    from ..interactive_video import InteractiveVideo
+    from ..live import LiveRoom
+    from ..manga import Manga
+    from ..note import Note, NoteType
+    from ..opus import Opus
+    from ..topic import Topic
+    from ..user import ChannelSeries, ChannelSeriesType, User
+    from ..user import get_self_info as get_self_info
+    from ..video import Video
+
+# 功能子模块惰性导入：本模块被包 __init__ 急切导入，若在顶层导入这些子模块会令
+# bilibili_api 的惰性导出失效并形成循环引用，故延迟到首次调用解析函数时加载。
+_SUBMODULES_IMPORTED = False
+
+
+def _ensure_submodules() -> None:
+    """
+    惰性导入解析所需的功能子模块并把类名填充到模块命名空间。
+
+    仅首次调用时执行实际导入，后续调用为标志位检查，开销可忽略。
+    """
+    global _SUBMODULES_IMPORTED
+    if _SUBMODULES_IMPORTED:
+        return
+    from ..article import Article as _Article
+    from ..article import ArticleList as _ArticleList
+    from ..audio import Audio as _Audio
+    from ..audio import AudioList as _AudioList
+    from ..bangumi import Bangumi as _Bangumi
+    from ..bangumi import Episode as _Episode
+    from ..black_room import BlackRoom as _BlackRoom
+    from ..cheese import CheeseList as _CheeseList
+    from ..cheese import CheeseVideo as _CheeseVideo
+    from ..dynamic import Dynamic as _Dynamic
+    from ..favorite_list import FavoriteList as _FavoriteList
+    from ..favorite_list import FavoriteListType as _FavoriteListType
+    from ..game import Game as _Game
+    from ..garb import DLC as _DLC
+    from ..interactive_video import InteractiveVideo as _InteractiveVideo
+    from ..live import LiveRoom as _LiveRoom
+    from ..manga import Manga as _Manga
+    from ..note import Note as _Note
+    from ..note import NoteType as _NoteType
+    from ..opus import Opus as _Opus
+    from ..topic import Topic as _Topic
+    from ..user import ChannelSeries as _ChannelSeries
+    from ..user import ChannelSeriesType as _ChannelSeriesType
+    from ..user import User as _User
+    from ..user import get_self_info as _get_self_info
+    from ..video import Video as _Video
+
+    globals().update(
+        {
+            "Article": _Article,
+            "ArticleList": _ArticleList,
+            "Audio": _Audio,
+            "AudioList": _AudioList,
+            "Bangumi": _Bangumi,
+            "Episode": _Episode,
+            "BlackRoom": _BlackRoom,
+            "CheeseList": _CheeseList,
+            "CheeseVideo": _CheeseVideo,
+            "Dynamic": _Dynamic,
+            "FavoriteList": _FavoriteList,
+            "FavoriteListType": _FavoriteListType,
+            "Game": _Game,
+            "DLC": _DLC,
+            "InteractiveVideo": _InteractiveVideo,
+            "LiveRoom": _LiveRoom,
+            "Manga": _Manga,
+            "Note": _Note,
+            "NoteType": _NoteType,
+            "Opus": _Opus,
+            "Topic": _Topic,
+            "ChannelSeries": _ChannelSeries,
+            "ChannelSeriesType": _ChannelSeriesType,
+            "User": _User,
+            "get_self_info": _get_self_info,
+            "Video": _Video,
+        }
+    )
+    _SUBMODULES_IMPORTED = True
 
 
 class ResourceType(Enum):
@@ -120,6 +198,7 @@ async def parse_link(
     Returns:
         Tuple[obj, ResourceType]: (对象，类型) 或 -1,-1 表示出错
     """
+    _ensure_submodules()
     credential = credential if credential else Credential()
     url = url.replace("\\", "/")  # 说多了都是泪
     try:
@@ -245,6 +324,7 @@ async def auto_convert_video(
     video: Video, credential: Credential | None = None
 ) -> tuple[Video | Episode | InteractiveVideo, ResourceType]:
     # check interactive video
+    _ensure_submodules()
     video_info = await video.get_info()
     if video_info["rights"]["is_stein_gate"] == 1:
         return (
@@ -284,6 +364,7 @@ async def check_short_name(
       - amxxxxxxxxxx
       - rlxxxxxxxxxx
     """
+    _ensure_submodules()
     if name[:2].upper() == "AV":
         v = Video(aid=int(name[2:]), credential=credential)
         return await auto_convert_video(v, credential=credential)  # type: ignore
@@ -321,6 +402,7 @@ async def parse_video(
     """
     解析视频,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[1] == "video":
         raw_video_id = url.parts[2]
         if raw_video_id[:2].upper() == "AV":
@@ -339,6 +421,7 @@ def parse_bangumi(url: URL, credential: Credential) -> Bangumi | int:
     """
     解析番剧,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 4:
         if url.parts[:3] == ("/", "bangumi", "media"):
             media_id = int(url.parts[3][2:])
@@ -350,6 +433,7 @@ async def parse_episode(url: URL, credential: Credential) -> Episode | int:
     """
     解析番剧剧集,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 3:
         if url.parts[1] == "bangumi" and url.parts[2] == "play":
             video_short_id = url.parts[3]
@@ -368,6 +452,7 @@ def parse_favorite_list(url: URL, credential: Credential) -> FavoriteList | int:
     """
     解析收藏夹,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 4:
         if url.parts[:3] == ("/", "medialist", "detail"):
             media_id = int(url.parts[3][2:])
@@ -379,6 +464,7 @@ async def parse_cheese_video(url: URL, credential: Credential) -> CheeseVideo | 
     """
     解析课程视频,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 4:
         if url.parts[1] == "cheese" and url.parts[2] == "play":
             if url.parts[3][:2].upper() == "EP":
@@ -398,6 +484,7 @@ def parse_audio(url: URL, credential: Credential) -> Audio | int:
     """
     解析音频,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[1] == "audio":
         if url.parts[2][:2].upper() == "AU":
             auid = int(url.parts[2][2:])
@@ -409,6 +496,7 @@ def parse_audio_list(url: URL, credential: Credential) -> AudioList | int:
     """
     解析歌单,如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[1] == "audio":
         if url.parts[2][:2].upper() == "AM":
             amid = int(url.parts[2][2:])
@@ -420,6 +508,7 @@ def parse_article(url: URL, credential: Credential) -> Article | int:
     """
     解析专栏，如果不是返回 -1，否则返回对应类
     """
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 3:
         if url.parts[1] == "read" and url.parts[2][:2].upper() == "CV":
             cvid = int(url.parts[2][2:])
@@ -428,6 +517,7 @@ def parse_article(url: URL, credential: Credential) -> Article | int:
 
 
 def parse_user(url: URL, credential: Credential) -> User | int:
+    _ensure_submodules()
     if url.host == "space.bilibili.com":
         if len(url.parts) >= 2:
             uid = url.parts[1]
@@ -436,6 +526,7 @@ def parse_user(url: URL, credential: Credential) -> User | int:
 
 
 def parse_live(url: URL, credential: Credential) -> LiveRoom | int:
+    _ensure_submodules()
     if url.host == "live.bilibili.com":
         if len(url.parts) >= 2:
             room_display_id = int(url.parts[1])
@@ -444,6 +535,7 @@ def parse_live(url: URL, credential: Credential) -> LiveRoom | int:
 
 
 def parse_season_series(url: URL, credential: Credential) -> ChannelSeries | int:
+    _ensure_submodules()
     if url.host == "space.bilibili.com":
         if len(url.parts) >= 2:  # path 存在 uid
             try:
@@ -493,6 +585,7 @@ def parse_season_series(url: URL, credential: Credential) -> ChannelSeries | int
 async def parse_space_favorite_list(
     url: URL, credential: Credential
 ) -> tuple[FavoriteList, ResourceType] | tuple[ChannelSeries, ResourceType] | Literal[-1]:
+    _ensure_submodules()
     if url.host == "space.bilibili.com":
         uid = url.parts[1]  # 获取 uid
         if len(url.parts) >= 3:  # path 存在 favlist
@@ -558,6 +651,7 @@ async def parse_space_favorite_list(
 
 
 def parse_article_list(url: URL, credential: Credential) -> ArticleList | int:
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 3:
         if url.parts[:3] == ("/", "read", "readlist"):
             rlid = int(url.parts[3][2:])
@@ -566,6 +660,7 @@ def parse_article_list(url: URL, credential: Credential) -> ArticleList | int:
 
 
 def parse_dynamic(url: URL, credential: Credential) -> Dynamic | int:
+    _ensure_submodules()
     if url.host == "t.bilibili.com":
         if len(url.parts) >= 2:
             dynamic_id = int(url.parts[1])
@@ -574,6 +669,7 @@ def parse_dynamic(url: URL, credential: Credential) -> Dynamic | int:
 
 
 def parse_black_room(url: URL, credential: Credential) -> BlackRoom | int:
+    _ensure_submodules()
     if len(url.parts) >= 3:
         if url.parts[:3] == ("/", "blackroom", "ban"):
             if len(url.parts) >= 4:  # 存在 id
@@ -582,12 +678,14 @@ def parse_black_room(url: URL, credential: Credential) -> BlackRoom | int:
 
 
 def parse_game(url: URL, credential: Credential) -> Game | int:
+    _ensure_submodules()
     if url.host == "www.biligame.com" and url.parts[1] == "detail" and url.query.get("id") is not None:
         return Game(int(url.query["id"]), credential=credential)
     return -1
 
 
 def parse_topic(url: URL, credential: Credential) -> Topic | int:
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and len(url.parts) >= 4:
         if url.parts[:4] == ("/", "v", "topic", "detail") and url.query.get("topic_id") is not None:
             return Topic(int(url.query["topic_id"]), credential=credential)
@@ -595,12 +693,14 @@ def parse_topic(url: URL, credential: Credential) -> Topic | int:
 
 
 def parse_manga(url: URL, credential: Credential) -> Manga | int:
+    _ensure_submodules()
     if url.host == "manga.bilibili.com" and url.parts[1] == "detail":
         return Manga(int(url.parts[2][2:]), credential=credential)
     return -1
 
 
 async def parse_festival(url: URL, credential: Credential) -> Video | int:
+    _ensure_submodules()
     bvid = url.query.get("bvid")
     if bvid is not None:  # get bvid if provided
         return Video(bvid, credential=credential)
@@ -613,6 +713,7 @@ async def parse_festival(url: URL, credential: Credential) -> Video | int:
 
 def parse_note(url: URL, credential: Credential) -> Note | int:
     # https://www.bilibili.com/h5/note-app/view?cvid=21385583
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[1:4] == ("h5", "note-app", "view"):
         if url.query.get("cvid") is None:
             return -1
@@ -622,12 +723,14 @@ def parse_note(url: URL, credential: Credential) -> Note | int:
 
 def parse_nianshizhiwang(url: URL) -> None:
     # https://www.bilibili.com/festival/nianshizhiwang?bvid=BV1yt4y1Q7SS&spm_id_from=trigger_reload
+    _ensure_submodules()
     pass
     # 貌似 parse_bnj 已经可以判断了
 
 
 def parse_opus_dynamic(url: URL, credential: Credential) -> Dynamic | int:
     # https://www.bilibili.com/opus/767674573455884292
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[:2] == ("/", "opus"):
         return Opus(opus_id=int(url.parts[-1]), credential=credential)
     return -1
@@ -635,6 +738,7 @@ def parse_opus_dynamic(url: URL, credential: Credential) -> Dynamic | int:
 
 def parse_garb(url: URL, credential: Credential) -> DLC | int:
     # https://www.bilibili.com/blackboard/activity-Mz9T5bO5Q3.html?id=154&type=dlc&f_source=ogv&from=video.task
+    _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[:3] == ("/", "blackboard", "activity-Mz9T5bO5Q3.html"):
         return DLC(act_id=int(url.query["id"]), credential=credential)
     return -1

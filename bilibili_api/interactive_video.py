@@ -841,7 +841,14 @@ class InteractiveVideoDownloader(AsyncEvent):
 
         with open(out, "wb") as f:
             while True:
-                bts += f.write(await get_client().download_chunk(dwn_id))
+                try:
+                    chunk = await get_client().download_chunk(dwn_id)
+                except StopAsyncIteration:
+                    # 流结束（content-length 缺失或不准确时的安全退出路径）
+                    break
+                if chunk == b"":
+                    break
+                bts += f.write(chunk)
                 self.dispatch(
                     "DOWNLOAD_PART",
                     {
@@ -850,7 +857,7 @@ class InteractiveVideoDownloader(AsyncEvent):
                         "time": int(time.perf_counter() - start_time),
                     },
                 )
-                if bts == tot:
+                if tot and bts >= tot:
                     break
 
         await get_client().download_close(cnt=dwn_id)

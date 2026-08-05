@@ -122,12 +122,15 @@ class AsyncEvent:
             name (str):       事件名。
             *args, **kwargs (Any):  要传递给函数的参数。
         """
+        # 快速路径：无任何监听器时直接返回，避免热路径上的参数构建与分发开销
+        if not self.__handlers:
+            return
+        name = name.upper()
+        if name in self.__ignore_events:
+            return
         if len(args) == 0 and len(kwargs.keys()) == 0:
             args = [{}]
-        if name.upper() in self.__ignore_events:
-            return
 
-        name = name.upper()
         if name in self.__handlers:
             for callableorcoroutine in self.__handlers[name]:
                 obj = callableorcoroutine(*args, **kwargs)

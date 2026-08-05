@@ -4,6 +4,10 @@ on:
   push:
     branches: [main, dev]
   pull_request:
+  workflow_dispatch:
+  schedule:
+    # 每周一 04:00 UTC 定时跑集成用例，跟进 B 站接口变更
+    - cron: "0 4 * * 1"
 
 jobs:
   lint:
@@ -42,5 +46,32 @@ jobs:
         run: uv sync
 
       - name: Run pytest
-        # 未配置 BILI_* 凭据：离线用例实际执行，集成用例自动 skip
-        run: uv run pytest
+        # 仅离线快速路径：不触碰网络与真实账号，无需 BILI_* 凭据
+        run: uv run pytest -m "not integration"
+
+  integration:
+    name: Test (pytest, integration)
+    runs-on: ubuntu-latest
+    # 集成用例需要真实凭据：仅手动触发或每周定时运行，不阻塞 PR
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run pytest
+        env:
+          BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
+          BILI_CSRF: ${{ secrets.BILI_CSRF }}
+          BILI_BUVID3: ${{ secrets.BILI_BUVID3 }}
+          BILI_DEDEUSERID: ${{ secrets.BILI_DEDEUSERID }}
+          BILI_RATELIMIT: "1.5"
+        run: uv run pytest -m integration

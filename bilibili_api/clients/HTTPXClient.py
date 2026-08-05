@@ -4,6 +4,7 @@ bilibili_api.clients.httpx
 HTTPXClient 实现
 """
 
+import asyncio
 from collections.abc import AsyncGenerator
 
 import httpx  # pylint: disable=E0401
@@ -29,6 +30,7 @@ class HTTPXClient(BiliAPIClient):
         verify_ssl: bool = True,
         trust_env: bool = True,
         http2: bool = False,
+        chunk_size: int = 262144,
         session: httpx.AsyncClient | None = None,
     ) -> None:
         """
@@ -38,6 +40,7 @@ class HTTPXClient(BiliAPIClient):
             verify_ssl (bool, optional): 是否验证 SSL. Defaults to True.
             trust_env (bool, optional): `trust_env`. Defaults to True.
             http2 (bool, optional): 是否使用 HTTP2. Defaults to False.
+            chunk_size (int, optional): 下载分块大小（字节）. Defaults to 262144.
             session (object, optional): 会话对象. Defaults to None.
 
         Note: 仅当用户只提供 `session` 参数且用户中途未调用 `set_xxx` 函数才使用用户提供的 `session`。
@@ -47,32 +50,50 @@ class HTTPXClient(BiliAPIClient):
         self.__verify_ssl = verify_ssl
         self.__trust_env = trust_env
         self.__http2 = http2
+        self.__chunk_size = chunk_size
         if session:
             self.__session = session
         else:
-            self.__session = httpx.AsyncClient(
-                timeout=self.__timeout,
-                proxy=self.__proxy if self.__proxy != "" else None,
-                verify=self.__verify_ssl,
-                trust_env=self.__trust_env,
-                http2=self.__http2,
-            )
+            self.__session = self.__create_session()
         self.__downloads: dict[int, httpx.Response] = {}
         self.__download_iter: dict[int, AsyncGenerator] = {}
         self.__download_cnt: int = 0
+
+    def __create_session(self) -> httpx.AsyncClient:
+        """
+        按当前配置创建新的 AsyncClient。
+
+        Returns:
+            httpx.AsyncClient: 新会话
+        """
+        return httpx.AsyncClient(
+            timeout=self.__timeout,
+            proxy=self.__proxy if self.__proxy != "" else None,
+            verify=self.__verify_ssl,
+            trust_env=self.__trust_env,
+            http2=self.__http2,
+            # 连接池参数：总连接数上限 100，保活连接上限 20（与 httpx 默认值一致，显式声明便于调优）
+            limits=httpx.Limits(max_connections=100, max_keepalive_connections=20),
+        )
+
+    def __recreate_session(self) -> None:
+        """
+        重建会话并异步关闭旧会话，避免连接泄漏。
+        """
+        old_session = self.__session
+        self.__session = self.__create_session()
+        try:
+            asyncio.get_running_loop().create_task(old_session.aclose())
+        except RuntimeError:
+            # 当前无运行中的事件循环时无法异步关闭，交由 GC 处理
+            pass
 
     def get_wrapped_session(self) -> httpx.AsyncClient:
         return self.__session
 
     def set_proxy(self, proxy: str = "") -> None:
         self.__proxy = proxy
-        self.__session = httpx.AsyncClient(
-            timeout=self.__timeout,
-            proxy=self.__proxy if self.__proxy != "" else None,
-            verify=self.__verify_ssl,
-            trust_env=self.__trust_env,
-            http2=self.__http2,
-        )
+        self.__recreate_session()
 
     def set_timeout(self, timeout: float = 0.0) -> None:
         self.__timeout = timeout
@@ -80,13 +101,7 @@ class HTTPXClient(BiliAPIClient):
 
     def set_verify_ssl(self, verify_ssl: bool = True) -> None:
         self.__verify_ssl = verify_ssl
-        self.__session = httpx.AsyncClient(
-            timeout=self.__timeout,
-            proxy=self.__proxy if self.__proxy != "" else None,
-            verify=self.__verify_ssl,
-            trust_env=self.__trust_env,
-            http2=self.__http2,
-        )
+        self.__recreate_session()
 
     def set_trust_env(self, trust_env: bool = True) -> None:
         self.__trust_env = trust_env
@@ -97,16 +112,13 @@ class HTTPXClient(BiliAPIClient):
         设置是否使用 http2.
 
         Args:
-            impersonate (str, optional): 是否使用 http2. Defaults to False.
+            http2 (bool, optional): 是否使用 http2. Defaults to False.
         """
         self.__http2 = http2
-        self.__session = httpx.AsyncClient(
-            timeout=self.__timeout,
-            proxy=self.__proxy if self.__proxy != "" else None,
-            verify=self.__verify_ssl,
-            trust_env=self.__trust_env,
-            http2=self.__http2,
-        )
+        self.__recreate_session()
+
+    def set_chunk_size(self, chunk_size: int = 262144) -> None:
+        self.__chunk_size = chunk_size
 
     async def request(
         self,
@@ -133,26 +145,33 @@ class HTTPXClient(BiliAPIClient):
                 "allow_redirects": allow_redirects,
             },
         )
+        opened_files = []
         if files != {}:
             requests_like_files = {}
             for key, item in files.items():
-                with open(item.path, "rb") as f:
-                    requests_like_files[key] = (
-                        item.path,
-                        f.read(),
-                        item.mime_type,
-                    )
+                # 传文件句柄而非整体读入内存，请求完成后统一关闭
+                f = open(item.path, "rb")
+                opened_files.append(f)
+                requests_like_files[key] = (
+                    item.path,
+                    f,
+                    item.mime_type,
+                )
             files = requests_like_files
-        resp: httpx.Response = await self.__session.request(
-            method=method,
-            url=url,
-            params=params,
-            data=data,
-            files=files,
-            headers=headers,
-            cookies=cookies,
-            follow_redirects=allow_redirects,
-        )
+        try:
+            resp: httpx.Response = await self.__session.request(
+                method=method,
+                url=url,
+                params=params,
+                data=data,
+                files=files,
+                headers=headers,
+                cookies=cookies,
+                follow_redirects=allow_redirects,
+            )
+        finally:
+            for f in opened_files:
+                f.close()
         resp_header_items = resp.headers.multi_items()
         resp_headers = {}
         for item in resp_header_items:
@@ -197,7 +216,7 @@ class HTTPXClient(BiliAPIClient):
         )
         req = self.__session.build_request(method="GET", url=url, headers=headers)
         self.__downloads[self.__download_cnt] = await self.__session.send(req, stream=True, follow_redirects=True)
-        self.__download_iter[self.__download_cnt] = self.__downloads[self.__download_cnt].aiter_bytes(4096)
+        self.__download_iter[self.__download_cnt] = self.__downloads[self.__download_cnt].aiter_bytes(self.__chunk_size)
         return self.__download_cnt
 
     async def download_chunk(self, cnt: int) -> bytes:
@@ -206,7 +225,7 @@ class HTTPXClient(BiliAPIClient):
         request_log.dispatch(
             "DWN_PART",
             "收到部分下载数据",
-            {"id": cnt, "data": data},
+            {"id": cnt, "length": len(data)},
         )
         return data
 

@@ -368,15 +368,32 @@ async def bili_simple_download(url: str, out: str, intro: str):
         out   (str): 输出地址
         intro (str): 下载简述
     """
-    dwn_id = await get_client().download_create(url, HEADERS)
+    client = get_client()
+    dwn_id = await client.download_create(url, HEADERS)
     bts = 0
-    tot = get_client().download_content_length(dwn_id)
+    tot = client.download_content_length(dwn_id)
+    # 缓冲写入：累积到 64KB 再落盘，减少系统调用次数
+    flush_size = 65536
     with open(out, "wb") as file:
+        buffer = bytearray()
         while True:
-            bts += file.write(await get_client().download_chunk(dwn_id))
-            if bts == tot:
+            try:
+                chunk = await client.download_chunk(cnt=dwn_id)
+            except StopAsyncIteration:
+                # 流结束（content-length 缺失或不准确时的安全退出路径）
                 break
-    await get_client().download_close(cnt=dwn_id)
+            if chunk == b"":
+                break
+            buffer.extend(chunk)
+            bts += len(chunk)
+            if len(buffer) >= flush_size:
+                file.write(buffer)
+                buffer.clear()
+            if tot and bts >= tot:
+                break
+        if buffer:
+            file.write(buffer)
+    await client.download_close(cnt=dwn_id)
 
 
 ################################################## END Api ##################################################

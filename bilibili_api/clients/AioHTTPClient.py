@@ -4,7 +4,7 @@ bilibili_api.clients.aiohttp
 AioHTTPClient 实现
 """
 
-import asyncio
+import os
 
 import aiohttp  # pylint: disable=E0401
 
@@ -28,6 +28,7 @@ class AioHTTPClient(BiliAPIClient):
         timeout=0,
         verify_ssl=True,
         trust_env=True,
+        chunk_size: int = 262144,
         session: aiohttp.ClientSession | None = None,
     ):
         self.__args: dict = {
@@ -38,22 +39,42 @@ class AioHTTPClient(BiliAPIClient):
         }
         self.__use_args: bool = True
         self.__need_update_session: bool = False
-        self.__session: aiohttp.ClientSession
+        self.__chunk_size: int = chunk_size
+        # session 惰性创建，确保绑定首次使用时的事件循环
+        self.__session: aiohttp.ClientSession | None = session
         if session:
             self.__use_args = False
-            self.__session = session
-        else:
-            self.__session = aiohttp.ClientSession(
-                loop=asyncio.get_event_loop(),
-                trust_env=self.__args["trust_env"],
-                connector=aiohttp.TCPConnector(verify_ssl=self.__args["verify_ssl"]),
-            )
         self.__wss: dict[int, aiohttp.ClientWebSocketResponse] = {}
         self.__ws_cnt: int = 0
         self.__downloads: dict[int, aiohttp.ClientResponse] = {}
         self.__download_cnt: int = 0
 
-    def get_wrapped_session(self) -> aiohttp.ClientSession:
+    async def __ensure_session(self) -> aiohttp.ClientSession:
+        """
+        获取当前可用的 ClientSession，必要时惰性创建/重建。
+
+        Returns:
+            aiohttp.ClientSession: 当前会话
+        """
+        if self.__need_update_session:
+            if self.__session is not None:
+                await self.__session.close()
+            self.__session = None
+            self.__need_update_session = False
+        if self.__session is None:
+            self.__session = aiohttp.ClientSession(
+                trust_env=self.__args["trust_env"],
+                connector=aiohttp.TCPConnector(
+                    verify_ssl=self.__args["verify_ssl"],
+                    # 连接池参数：总连接数上限 100，单主机不设上限（爬虫场景多为同一域名高并发），DNS 缓存 300 秒
+                    limit=100,
+                    limit_per_host=0,
+                    ttl_dns_cache=300,
+                ),
+            )
+        return self.__session
+
+    def get_wrapped_session(self) -> aiohttp.ClientSession | None:
         return self.__session
 
     def set_proxy(self, proxy: str = "") -> None:
@@ -73,6 +94,9 @@ class AioHTTPClient(BiliAPIClient):
         self.__use_args = True
         self.__args["trust_env"] = trust_env
         self.__need_update_session = True
+
+    def set_chunk_size(self, chunk_size: int = 262144) -> None:
+        self.__chunk_size = chunk_size
 
     async def request(
         self,
@@ -99,14 +123,10 @@ class AioHTTPClient(BiliAPIClient):
                 "allow_redirects": allow_redirects,
             },
         )
-        if self.__need_update_session:
-            await self.__session.close()
-            self.__session = aiohttp.ClientSession(
-                loop=asyncio.get_event_loop(),
-                trust_env=self.__args["trust_env"],
-                connector=aiohttp.TCPConnector(verify_ssl=self.__args["verify_ssl"]),
-            )
-            self.__need_update_session = False
+        if self.__need_update_session or self.__session is None:
+            session = await self.__ensure_session()
+        else:
+            session = self.__session
         if files:
             form = aiohttp.FormData()
             if isinstance(data, str):
@@ -114,15 +134,16 @@ class AioHTTPClient(BiliAPIClient):
             for key, value in data.items():
                 form.add_field(name=key, value=value)
             for key, value in files.items():
+                # 传文件句柄而非整体读入内存，由 aiohttp 流式发送并在完成后关闭
                 form.add_field(
                     name=key,
-                    value=open(value.path, "rb").read(),
+                    value=open(value.path, "rb"),
                     content_type=value.mime_type,
-                    filename=value.path.split("/")[-1],
+                    filename=os.path.basename(value.path),
                 )
             data = form
         if self.__use_args:
-            resp = await self.__session.request(
+            resp = await session.request(
                 method=method,
                 url=url,
                 params=params,
@@ -134,7 +155,7 @@ class AioHTTPClient(BiliAPIClient):
                 timeout=aiohttp.ClientTimeout(self.__args["timeout"]),
             )
         else:
-            resp = await self.__session.request(
+            resp = await session.request(
                 method=method,
                 url=url,
                 params=params,
@@ -177,14 +198,7 @@ class AioHTTPClient(BiliAPIClient):
         url: str = "",
         headers: dict = {},
     ) -> int:
-        if self.__need_update_session:
-            await self.__session.close()
-            self.__session = aiohttp.ClientSession(
-                loop=asyncio.get_event_loop(),
-                trust_env=self.__args["trust_env"],
-                connector=aiohttp.TCPConnector(verify_ssl=self.__args["verify_ssl"]),
-            )
-            self.__need_update_session = False
+        session = await self.__ensure_session()
         self.__download_cnt += 1
         request_log.dispatch(
             "DWN_CREATE",
@@ -195,16 +209,16 @@ class AioHTTPClient(BiliAPIClient):
                 "headers": headers,
             },
         )
-        self.__downloads[self.__download_cnt] = await self.__session.get(url=url, headers=headers)
+        self.__downloads[self.__download_cnt] = await session.get(url=url, headers=headers)
         return self.__download_cnt
 
     async def download_chunk(self, cnt: int) -> bytes:
         resp = self.__downloads[cnt]
-        data = await anext(resp.content.iter_chunked(4096))
+        data = await anext(resp.content.iter_chunked(self.__chunk_size))
         request_log.dispatch(
             "DWN_PART",
             "收到部分下载数据",
-            {"id": cnt, "data": data},
+            {"id": cnt, "length": len(data)},
         )
         return data
 
@@ -224,14 +238,7 @@ class AioHTTPClient(BiliAPIClient):
         )
 
     async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
-        if self.__need_update_session:
-            await self.__session.close()
-            self.__session = aiohttp.ClientSession(
-                loop=asyncio.get_event_loop(),
-                trust_env=self.__args["trust_env"],
-                connector=aiohttp.TCPConnector(verify_ssl=self.__args["verify_ssl"]),
-            )
-            self.__need_update_session = False
+        session = await self.__ensure_session()
         self.__ws_cnt += 1
         request_log.dispatch(
             "WS_CREATE",
@@ -243,7 +250,7 @@ class AioHTTPClient(BiliAPIClient):
                 "headers": headers,
             },
         )
-        self.__wss[self.__ws_cnt] = await self.__session.ws_connect(url=url, params=params, headers=headers)
+        self.__wss[self.__ws_cnt] = await session.ws_connect(url=url, params=params, headers=headers)
         return self.__ws_cnt
 
     async def ws_recv(self, cnt: int) -> tuple[bytes, BiliWsMsgType]:
@@ -272,7 +279,9 @@ class AioHTTPClient(BiliAPIClient):
         return await self.__wss[cnt].close()
 
     async def close(self):
-        await self.__session.close()
+        if self.__session is not None:
+            await self.__session.close()
+            self.__session = None
 
     __init__.__doc__ = BiliAPIClient.__init__.__doc__
     get_wrapped_session.__doc__ = BiliAPIClient.get_wrapped_session.__doc__

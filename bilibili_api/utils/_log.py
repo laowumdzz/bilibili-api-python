@@ -27,7 +27,8 @@ class RequestLog(AsyncEvent):
             "WS_CLOSE",
         ]
         self.__ignore_events: list[str] = []
-        self.add_event_listener("__ALL__", self.__handle_events)
+        # 内部日志监听器仅在日志开启（set_on(True)）时注册，
+        # 避免关闭状态下每次请求仍产生事件分发开销。
 
     def get_on_events(self) -> list[str]:
         """
@@ -81,6 +82,10 @@ class RequestLog(AsyncEvent):
         Args:
             status (bool): 是否启用
         """
+        if status and not self.__on:
+            self.add_event_listener("__ALL__", self.__handle_events)
+        elif not status and self.__on:
+            self.remove_event_listener("__ALL__", self.__handle_events)
         self.__on = status
 
     def __handle_events(self, data: dict) -> None:

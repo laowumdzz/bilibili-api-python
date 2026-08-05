@@ -26,21 +26,29 @@ from ._types import API, APPKEY, APPSEC, HEADERS
 class AntiSpiderCache:
     """线程/协程安全的反爬虫参数缓存"""
 
+    # wbi mixin key 缓存有效期（秒），过期后自动重新计算，减少对 -403 重试的依赖
+    WBI_MIXIN_KEY_TTL = 6 * 3600
+
     def __init__(self):
         self._buvid3: str = ""
         self._buvid4: str = ""
         self._bili_ticket: str = ""
         self._bili_ticket_expires: int = 0
         self._wbi_mixin_key: str = ""
+        self._wbi_mixin_key_ts: int = 0
         # 惰性创建，避免 sync() 包装器跨事件循环复用时 RuntimeError
         self._lock: asyncio.Lock | None = None
+
+    def _get_lock(self) -> asyncio.Lock:
+        """获取（必要时惰性创建）协程锁"""
+        if self._lock is None:
+            self._lock = asyncio.Lock()
+        return self._lock
 
     async def get_buvid(self):
         """获取 buvid3/buvid4，过期时自动刷新"""
         if self._buvid3 == "" or self._buvid4 == "":
-            if self._lock is None:
-                self._lock = asyncio.Lock()
-            async with self._lock:
+            async with self._get_lock():
                 if self._buvid3 == "" or self._buvid4 == "":
                     spi = await _get_spi_buvid()
                     self._buvid3 = spi["b_3"]
@@ -54,30 +62,35 @@ class AntiSpiderCache:
         return (self._buvid3, self._buvid4)
 
     async def get_bili_ticket(self, credential=None):
-        """获取 bili_ticket，过期时自动刷新"""
-        import time
-
+        """获取 bili_ticket，过期时自动刷新（双重检查锁避免并发重复获取）"""
         if time.time() > int(self._bili_ticket_expires):
             self.invalidate_bili_ticket()
         if self._bili_ticket == "":
-            self._bili_ticket = await _get_bili_ticket(credential)
-            self._bili_ticket_expires = str(int(time.time()) + 3 * 86400)
-            request_log.dispatch(
-                "ANTI_SPIDER",
-                "反爬虫",
-                {"msg": f"获取 bili_ticket 成功: [{self._bili_ticket}]"},
-            )
+            async with self._get_lock():
+                if time.time() > int(self._bili_ticket_expires):
+                    self.invalidate_bili_ticket()
+                if self._bili_ticket == "":
+                    self._bili_ticket = await _get_bili_ticket(credential)
+                    self._bili_ticket_expires = str(int(time.time()) + 3 * 86400)
+                    request_log.dispatch(
+                        "ANTI_SPIDER",
+                        "反爬虫",
+                        {"msg": f"获取 bili_ticket 成功: [{self._bili_ticket}]"},
+                    )
         return self._bili_ticket, self._bili_ticket_expires
 
     async def get_wbi_mixin_key(self, credential=None):
-        """获取 wbi mixin key，为空时自动计算"""
-        if self._wbi_mixin_key == "":
-            self._wbi_mixin_key = await _get_mixin_key(credential)
-            request_log.dispatch(
-                "ANTI_SPIDER",
-                "反爬虫",
-                {"msg": f"获取 wbi mixin key: [{self._wbi_mixin_key}]"},
-            )
+        """获取 wbi mixin key，为空或超过 TTL 时自动重新计算（双重检查锁避免并发重复获取）"""
+        if self._wbi_mixin_key == "" or time.time() - self._wbi_mixin_key_ts > self.WBI_MIXIN_KEY_TTL:
+            async with self._get_lock():
+                if self._wbi_mixin_key == "" or time.time() - self._wbi_mixin_key_ts > self.WBI_MIXIN_KEY_TTL:
+                    self._wbi_mixin_key = await _get_mixin_key(credential)
+                    self._wbi_mixin_key_ts = int(time.time())
+                    request_log.dispatch(
+                        "ANTI_SPIDER",
+                        "反爬虫",
+                        {"msg": f"获取 wbi mixin key: [{self._wbi_mixin_key}]"},
+                    )
         return self._wbi_mixin_key
 
     def invalidate_buvid(self) -> None:
@@ -90,6 +103,7 @@ class AntiSpiderCache:
 
     def invalidate_wbi(self) -> None:
         self._wbi_mixin_key = ""
+        self._wbi_mixin_key_ts = 0
 
 
 anti_spider_cache = AntiSpiderCache()

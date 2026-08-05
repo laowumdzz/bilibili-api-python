@@ -13,10 +13,18 @@ from urllib.parse import quote
 
 from ..exceptions import StatementException
 
+# get_api 的模块级缓存：field -> 已解析的 JSON 文件内容。
+# API 定义文件为静态只读数据，首次加载后复用，避免每次调用重复磁盘 I/O 与 JSON 解析。
+_api_cache: dict[str, dict] = {}
+
 
 def get_api(field: str, *args) -> dict:
     """
     获取 API。
+
+    首次调用时加载并缓存对应的 JSON 文件，后续调用直接命中缓存。
+    返回的叶子节点为浅拷贝，调用方对其顶层键的修改不会污染缓存，
+    但不应原地修改其嵌套结构。
 
     Args:
         field (str): API 所属分类，即 data/api 下的文件名（不含后缀名）
@@ -24,15 +32,40 @@ def get_api(field: str, *args) -> dict:
     Returns:
         dict, 该 API 的内容。
     """
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "api", f"{field.lower()}.json"))
-    if os.path.exists(path):
+    field_lower = field.lower()
+    data = _api_cache.get(field_lower)
+    if data is None:
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "api", f"{field_lower}.json"))
+        if not os.path.exists(path):
+            return {}
         with open(path, encoding="utf8") as f:
             data = json.load(f)
-            for arg in args:
-                data = data[arg]
-            return data
-    else:
-        return {}
+        _api_cache[field_lower] = data
+    for arg in args:
+        data = data[arg]
+    if isinstance(data, dict):
+        return data.copy()
+    return data
+
+
+# crack_uid 使用的 CRC32 查找表，提升为模块级常量避免每次调用重建。
+
+
+def _build_crc_table() -> list[int]:
+    """构建 crack_uid 所需的 256 项 CRC32 查找表。"""
+    crctable = [0] * 256
+    for i in range(256):
+        crcreg = i
+        for _ in range(8):
+            if (crcreg & 1) != 0:
+                crcreg = 0xEDB88320 ^ (crcreg >> 1)
+            else:
+                crcreg >>= 1
+        crctable[i] = crcreg
+    return crctable
+
+
+_CRC_TABLE = _build_crc_table()
 
 
 def crack_uid(crc32: str):
@@ -49,21 +82,8 @@ def crack_uid(crc32: str):
     Returns:
         int, 真实用户 UID，不一定准确。
     """
-    __CRCPOLYNOMIAL = 0xEDB88320
-    __crctable = [None] * 256
+    crctable = _CRC_TABLE
     __index = [None] * 4
-
-    def __create_table():
-        for i in range(256):
-            crcreg = i
-            for j in range(8):
-                if (crcreg & 1) != 0:
-                    crcreg = __CRCPOLYNOMIAL ^ (crcreg >> 1)
-                else:
-                    crcreg >>= 1
-            __crctable[i] = crcreg
-
-    __create_table()
 
     def __crc32(input_):
         if not isinstance(input_, str):
@@ -72,7 +92,7 @@ def crack_uid(crc32: str):
         len_ = len(input_)
         for i in range(len_):
             index = (crcstart ^ ord(input_[i])) & 0xFF
-            crcstart = (crcstart >> 8) ^ __crctable[index]
+            crcstart = (crcstart >> 8) ^ crctable[index]
         return crcstart
 
     def __crc32lastindex(input_):
@@ -83,12 +103,12 @@ def crack_uid(crc32: str):
         index = None
         for i in range(len_):
             index = (crcstart ^ ord(input_[i])) & 0xFF
-            crcstart = (crcstart >> 8) ^ __crctable[index]
+            crcstart = (crcstart >> 8) ^ crctable[index]
         return index
 
     def __getcrcindex(t):
         for i in range(256):
-            if __crctable[i] >> 24 == t:
+            if crctable[i] >> 24 == t:
                 return i
         return -1
 
@@ -100,19 +120,19 @@ def crack_uid(crc32: str):
         if not (57 >= tc >= 48):
             return [0]
         str_ += str(tc - 48)
-        hash_ = __crctable[index[2]] ^ (hash_ >> 8)
+        hash_ = crctable[index[2]] ^ (hash_ >> 8)
 
         tc = hash_ & 0xFF ^ index[1]
         if not (57 >= tc >= 48):
             return [0]
         str_ += str(tc - 48)
-        hash_ = __crctable[index[1]] ^ (hash_ >> 8)
+        hash_ = crctable[index[1]] ^ (hash_ >> 8)
 
         tc = hash_ & 0xFF ^ index[0]
         if not (57 >= tc >= 48):
             return [0]
         str_ += str(tc - 48)
-        hash_ = __crctable[index[0]] ^ (hash_ >> 8)
+        hash_ = crctable[index[0]] ^ (hash_ >> 8)
 
         return [1, str_]
 
@@ -121,7 +141,7 @@ def crack_uid(crc32: str):
     while i >= 0:
         __index[3 - i] = __getcrcindex(ht >> (i * 8))
         # pylint: disable=invalid-sequence-index
-        snum = __crctable[__index[3 - i]]
+        snum = crctable[__index[3 - i]]
         ht ^= snum >> ((3 - i) * 8)
         i -= 1
     for i in range(10000000):

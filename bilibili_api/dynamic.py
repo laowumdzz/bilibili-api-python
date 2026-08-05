@@ -9,17 +9,20 @@ from enum import Enum
 import json
 import re
 import sys
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
 from . import user, vote
-from .article import Article
 from .exceptions import ArgsException
-from .opus import Opus
 from .utils import cache_pool, utils
 from .utils.network import Api, Credential
 from .utils.picture import Picture
+
+if TYPE_CHECKING:
+    # 仅供类型检查：运行时 Article/Opus 在对应 turn_to_xxx 内导入（破解循环依赖）
+    from .article import Article
+    from .opus import Opus
 
 API = utils.get_api("dynamic")
 API_opus = utils.get_api("opus")
@@ -750,6 +753,9 @@ class Dynamic:
             await self.get_info()
             if not await self.is_article():
                 raise ArgsException("提供的动态无对应专栏")
+        # 函数内导入以破解 dynamic ↔ article 循环依赖
+        from .article import Article
+
         return Article(
             cvid=cache_pool.dynamic2article[self.get_dynamic_id()],
             credential=self.credential,
@@ -777,6 +783,9 @@ class Dynamic:
         Returns:
             Opus: 图文对象
         """
+        # 函数内导入以破解 dynamic ↔ opus 循环依赖
+        from .opus import Opus
+
         return Opus(opus_id=self.__dynamic_id, credential=self.credential)
 
     async def markdown(self) -> str:

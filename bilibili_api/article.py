@@ -8,7 +8,7 @@ from copy import copy
 from enum import Enum
 import html
 import re
-from typing import TypeVar, overload
+from typing import TYPE_CHECKING, TypeVar, overload
 from urllib.parse import unquote
 
 from bs4 import BeautifulSoup, element
@@ -17,10 +17,13 @@ from yarl import URL
 
 from . import dynamic, opus
 from .exceptions import ApiException
-from .note import Note, NoteType
 from .utils import cache_pool
 from .utils.network import Api, Credential
 from .utils.utils import get_api
+
+if TYPE_CHECKING:
+    # 仅供类型检查：运行时 Note 在 turn_to_note 内导入（破解 article ↔ note 循环依赖）
+    from .note import Note
 
 API = get_api("article")
 
@@ -210,6 +213,9 @@ class Article:
         Returns:
             Note: 笔记实例
         """
+        # 函数内导入以破解 article ↔ note 循环依赖
+        from .note import Note, NoteType
+
         return Note(cvid=self.get_cvid(), note_type=NoteType.PUBLIC, credential=self.credential)
 
     def get_cvid(self) -> int:

@@ -32,6 +32,7 @@ class CurlCFFIClient(BiliAPIClient):
         trust_env: bool = True,
         impersonate: str = "",
         http2: bool = False,
+        chunk_size: int = 262144,
         session: requests.AsyncSession | None = None,
     ) -> None:
         """
@@ -42,14 +43,16 @@ class CurlCFFIClient(BiliAPIClient):
             trust_env (bool, optional): `trust_env`. Defaults to True.
             impersonate (str, optional): 伪装的浏览器，可参考 curl_cffi 文档. Defaults to "".
             http2 (bool, optional): 是否使用 HTTP2. Defaults to False.
+            chunk_size (int, optional): 下载分块大小（字节）. Defaults to 262144.
             session (object, optional): 会话对象. Defaults to None.
 
         Note: 仅当用户只提供 `session` 参数且用户中途未调用 `set_xxx` 函数才使用用户提供的 `session`。
         """
+        self.__chunk_size: int = chunk_size
         if session:
             self.__session = session
         else:
-            loop = asyncio.get_event_loop()
+            loop = asyncio.get_running_loop()
             self.__session = requests.AsyncSession(
                 loop=loop,
                 timeout=timeout,
@@ -98,6 +101,9 @@ class CurlCFFIClient(BiliAPIClient):
             impersonate (str, optional): 是否使用 http2. Defaults to False.
         """
         self.__session.http_version = curl_cffi.CurlHttpVersion.V2_0 if http2 else None
+
+    def set_chunk_size(self, chunk_size: int = 262144) -> None:
+        self.__chunk_size = chunk_size
 
     async def request(
         self,
@@ -205,11 +211,11 @@ class CurlCFFIClient(BiliAPIClient):
 
     async def download_chunk(self, cnt: int) -> bytes:
         resp = self.__downloads[cnt]
-        data = await anext(resp.aiter_content())
+        data = await anext(resp.aiter_content(self.__chunk_size))
         request_log.dispatch(
             "DWN_PART",
             "收到部分下载数据",
-            {"id": cnt, "data": data},
+            {"id": cnt, "length": len(data)},
         )
         return data
 

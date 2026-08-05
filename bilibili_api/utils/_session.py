@@ -24,6 +24,21 @@ client_settings: dict[str, list] = {}
 selected_client: str = ""
 
 
+def _get_current_loop() -> asyncio.AbstractEventLoop:
+    """
+    获取当前事件循环。
+
+    优先使用运行中的事件循环，非异步上下文调用时回退到 get_event_loop。
+
+    Returns:
+        asyncio.AbstractEventLoop: 当前事件循环
+    """
+    try:
+        return asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.get_event_loop()
+
+
 class BiliAPIClient(ABC):
     """
     请求客户端抽象类。通过对第三方模块请求客户端的封装令模块可对其进行调用。
@@ -357,7 +372,7 @@ def get_client() -> BiliAPIClient:
     pool = session_pool.get(selected_client)
     if pool is None:
         raise ArgsException("未找到用户指定的请求客户端。")
-    loop = asyncio.get_event_loop()
+    loop = _get_current_loop()
     session = pool.get(loop)
     if session is None:
         kwargs = {}
@@ -399,7 +414,7 @@ def set_session(session: object) -> None:
     pool = session_pool.get(selected_client)
     if not pool:
         raise ArgsException("未找到用户指定的请求客户端。")
-    loop = asyncio.get_event_loop()
+    loop = _get_current_loop()
     session_pool[selected_client][loop] = sessions[selected_client](session=session)
 
 
