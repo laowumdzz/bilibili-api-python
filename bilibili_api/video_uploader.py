@@ -4,7 +4,6 @@ bilibili_api.video_uploader
 视频上传
 """
 
-import asyncio
 from asyncio.exceptions import CancelledError
 from asyncio.tasks import Task, create_task
 import base64
@@ -22,6 +21,7 @@ from .utils.aid_bvid_transformer import bvid2aid
 from .utils.AsyncEvent import AsyncEvent
 from .utils.network import Api, Credential, get_client, request_settings
 from .utils.picture import Picture
+from .utils.upos import build_chunk_upload_params, upload_chunks_with_retry
 from .utils.utils import get_api
 from .video import Video
 
@@ -137,17 +137,7 @@ class VideoUploaderPage:
         if self.cached_size is not None:
             return self.cached_size
 
-        size: int = 0
-        stream = open(self.path, "rb")
-        while True:
-            s: bytes = stream.read(1024)
-
-            if not s:
-                break
-
-            size += len(s)
-
-        stream.close()
+        size = os.path.getsize(self.path)
 
         self.cached_size = size
         return size
@@ -997,44 +987,18 @@ class VideoUploader(AsyncEvent):
         preupload = await self._preupload(page)
         self.dispatch(VideoUploaderEvents.PRE_PAGE.value, {"page": page})
 
-        page_size = page.get_size()
-        # 所有分块起始位置
-        chunk_offset_list = list(range(0, page_size, preupload["chunk_size"]))
-        # 分块总数
-        total_chunk_count = len(chunk_offset_list)
-        # 并发上传分块
-        chunk_number = 0
-        # 上传队列
-        chunks_pending = []
         # 缓存 upload_id，这玩意只能从上传的分块预检结果获得
         upload_id = preupload["upload_id"]
-        for offset in chunk_offset_list:
-            chunks_pending.insert(
-                0,
-                self._upload_chunk(page, offset, chunk_number, total_chunk_count, preupload),
-            )
-            chunk_number += 1
 
-        while chunks_pending:
-            tasks = []
+        def make_chunk_task(offset: int, chunk_number: int, total_chunk_count: int):
+            return self._upload_chunk(page, offset, chunk_number, total_chunk_count, preupload)
 
-            while len(tasks) < preupload["threads"] and len(chunks_pending) > 0:
-                tasks.append(create_task(chunks_pending.pop()))
-
-            result = await asyncio.gather(*tasks)
-
-            for r in result:
-                if not r["ok"]:
-                    chunks_pending.insert(
-                        0,
-                        self._upload_chunk(
-                            page,
-                            r["offset"],
-                            r["chunk_number"],
-                            total_chunk_count,
-                            preupload,
-                        ),
-                    )
+        total_chunk_count = await upload_chunks_with_retry(
+            file_size=page.get_size(),
+            chunk_size=preupload["chunk_size"],
+            threads=preupload["threads"],
+            make_chunk_task=make_chunk_task,
+        )
 
         data = await self._complete_page(page, total_chunk_count, preupload, upload_id)
 
@@ -1102,16 +1066,14 @@ class VideoUploader(AsyncEvent):
 
         real_chunk_size = len(chunk)
 
-        params = {
-            "partNumber": str(chunk_number + 1),
-            "uploadId": str(preupload["upload_id"]),
-            "chunk": str(chunk_number),
-            "chunks": str(total_chunk_count),
-            "size": str(real_chunk_size),
-            "start": str(offset),
-            "end": str(offset + real_chunk_size),
-            "total": page.get_size(),
-        }
+        params = build_chunk_upload_params(
+            upload_id=preupload["upload_id"],
+            chunk_number=chunk_number,
+            total_chunk_count=total_chunk_count,
+            chunk_size=real_chunk_size,
+            offset=offset,
+            total_size=page.get_size(),
+        )
 
         ok_return = {
             "ok": True,

@@ -4,12 +4,103 @@ bilibili_api.utils.upos
 
 import asyncio
 from asyncio.tasks import create_task
+from collections.abc import Awaitable, Callable
 import json
 import os
 
 from ..exceptions.NetworkException import NetworkException
 from ..exceptions.ResponseCodeException import ResponseCodeException
 from .network import BiliAPIClient, get_client
+
+
+def build_chunk_upload_params(
+    upload_id: str,
+    chunk_number: int,
+    total_chunk_count: int,
+    chunk_size: int,
+    offset: int,
+    total_size: int,
+) -> dict:
+    """
+    构建 Upos 分块上传请求的查询参数。
+
+    Args:
+        upload_id         (str): 上传 ID。
+
+        chunk_number      (int): 分块编号（从 0 开始）。
+
+        total_chunk_count (int): 总分块数。
+
+        chunk_size        (int): 当前分块实际字节数。
+
+        offset            (int): 分块在文件中的起始位置。
+
+        total_size        (int): 文件总字节数。
+
+    Returns:
+        dict: 分块上传请求参数。
+    """
+    return {
+        "partNumber": str(chunk_number + 1),
+        "uploadId": str(upload_id),
+        "chunk": str(chunk_number),
+        "chunks": str(total_chunk_count),
+        "size": str(chunk_size),
+        "start": str(offset),
+        "end": str(offset + chunk_size),
+        "total": total_size,
+    }
+
+
+async def upload_chunks_with_retry(
+    file_size: int,
+    chunk_size: int,
+    threads: int,
+    make_chunk_task: Callable[[int, int, int], Awaitable[dict]],
+) -> int:
+    """
+    并发上传文件全部分块，失败的分块自动重试。
+
+    Args:
+        file_size       (int): 文件总字节数。
+
+        chunk_size      (int): 分块大小（字节）。
+
+        threads         (int): 并发上传线程数。
+
+        make_chunk_task (Callable[[int, int, int], Awaitable[dict]]):
+            接收 (offset, chunk_number, total_chunk_count) 并返回分块上传协程的工厂函数，
+            协程需返回含 `ok` / `offset` / `chunk_number` 字段的 dict。
+
+    Returns:
+        int: 总分块数。
+    """
+    # 所有分块起始位置
+    chunk_offset_list = list(range(0, file_size, chunk_size))
+    # 分块总数
+    total_chunk_count = len(chunk_offset_list)
+    # 并发上传分块
+    chunk_number = 0
+    # 上传队列
+    chunks_pending = []
+
+    for offset in chunk_offset_list:
+        chunks_pending.insert(0, make_chunk_task(offset, chunk_number, total_chunk_count))
+        chunk_number += 1
+
+    while chunks_pending:
+        tasks = []
+
+        while len(tasks) < threads and len(chunks_pending) > 0:
+            tasks.append(create_task(chunks_pending.pop()))
+
+        result = await asyncio.gather(*tasks)
+
+        for r in result:
+            if not r["ok"]:
+                chunks_pending.insert(0, make_chunk_task(r["offset"], r["chunk_number"], total_chunk_count))
+
+    return total_chunk_count
 
 
 class UposFile:
@@ -32,18 +123,7 @@ class UposFile:
             int: 文件大小
         """
 
-        size: int = 0
-        stream = open(self.path, "rb")
-        while True:
-            s: bytes = stream.read(1024)
-
-            if not s:
-                break
-
-            size += len(s)
-
-        stream.close()
-        return size
+        return os.path.getsize(self.path)
 
 
 class UposFileUploader:
@@ -69,41 +149,12 @@ class UposFileUploader:
         Returns:
             dict: filename, cid
         """
-        page_size = self.file.size
-        # 所有分块起始位置
-        chunk_offset_list = list(range(0, page_size, self.preupload["chunk_size"]))
-        # 分块总数
-        total_chunk_count = len(chunk_offset_list)
-        # 并发上传分块
-        chunk_number = 0
-        # 上传队列
-        chunks_pending = []
-
-        for offset in chunk_offset_list:
-            chunks_pending.insert(
-                0,
-                self._upload_chunk(offset, chunk_number, total_chunk_count),
-            )
-            chunk_number += 1
-
-        while chunks_pending:
-            tasks = []
-
-            while len(tasks) < self.preupload["threads"] and len(chunks_pending) > 0:
-                tasks.append(create_task(chunks_pending.pop()))
-
-            result = await asyncio.gather(*tasks)
-
-            for r in result:
-                if not r["ok"]:
-                    chunks_pending.insert(
-                        0,
-                        self._upload_chunk(
-                            r["offset"],
-                            r["chunk_number"],
-                            total_chunk_count,
-                        ),
-                    )
+        total_chunk_count = await upload_chunks_with_retry(
+            file_size=self.file.size,
+            chunk_size=self.preupload["chunk_size"],
+            threads=self.preupload["threads"],
+            make_chunk_task=self._upload_chunk,
+        )
 
         data = await self._complete_file(total_chunk_count)
 
@@ -148,16 +199,14 @@ class UposFileUploader:
 
         real_chunk_size = len(chunk)
 
-        params = {
-            "partNumber": str(chunk_number + 1),
-            "uploadId": str(self._upload_id),
-            "chunk": str(chunk_number),
-            "chunks": str(total_chunk_count),
-            "size": str(real_chunk_size),
-            "start": str(offset),
-            "end": str(offset + real_chunk_size),
-            "total": self.file.size,
-        }
+        params = build_chunk_upload_params(
+            upload_id=self._upload_id,
+            chunk_number=chunk_number,
+            total_chunk_count=total_chunk_count,
+            chunk_size=real_chunk_size,
+            offset=offset,
+            total_size=self.file.size,
+        )
 
         ok_return = {
             "ok": True,
