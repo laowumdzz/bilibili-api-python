@@ -36,3 +36,4 @@ virtualenv/
 env.sh
 .qoder/
 .bilibili.cookie
+temp/
