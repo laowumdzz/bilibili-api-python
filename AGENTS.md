@@ -54,10 +54,10 @@ scripts/                 # 开发脚本
 ├── doc_gen.py           # 文档自动生成（从 docstring）
 ├── lint.py              # ruff check + format + pyrefly 类型检查
 └── get_*.py             # 数据抓取脚本
-tests/                   # 测试套件
-├── main.py              # 测试入口
-├── common.py            # 测试用 Credential 获取
-└── test_*.py            # 各模块测试
+tests/                   # 测试套件（统一由 pytest 运行）
+├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记）
+├── test_offline_*.py    # 离线单元/冒烟测试（无需凭据与网络）
+└── test_*.py            # 各模块集成测试（需要 BILI_* 凭据，缺凭据自动 skip）
 docs/                    # docsify 文档站
 .githooks/               # commit-msg + pre-commit 钩子
 ```
@@ -163,37 +163,34 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 
 ## 测试
 
-测试分两条路径：
-
-### 离线快速路径（pytest，无需凭据）
+全部测试统一由 pytest 运行（异步用例由 pytest-asyncio 驱动，见 `pyproject.toml` 的 `[tool.pytest.ini_options]`）。集成用例由 `tests/conftest.py` 自动打上 `integration` 标记，缺凭据时自动 skip。
 
 ```bash
-# 运行全部离线单元/冒烟测试（不触碰网络与真实账号，无需 BILI_* 环境变量）
+# 运行全部测试（无凭据时集成用例自动 skip，仅离线用例实际执行）
 uv run pytest
-```
 
-- pytest 仅收集 `tests/test_offline_*.py`（见 `pyproject.toml` 的 `[tool.pytest.ini_options]`），其余 `test_*.py` 集成测试不会被 pytest 收集
-- 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作
-- 新增离线用例请放入 `tests/test_offline_*.py`
+# 仅离线快速路径（不触碰网络与真实账号，无需 BILI_* 环境变量）
+uv run pytest -m "not integration"
 
-### 集成测试路径（tests/main.py，需要凭据）
-
-```bash
-# 运行全部测试
-uv run python -m tests.main -a
+# 仅集成测试（需配置下方 BILI_* 环境变量）
+uv run pytest -m integration
 
 # 运行指定模块测试
-uv run python -m tests.main -m video
+uv run pytest tests/test_video.py
+```
 
-# 需要的环境变量
+集成测试需要的环境变量：
+
+```bash
 BILI_SESSDATA=xxx        # SESSDATA cookie
 BILI_CSRF=xxx            # bili_jct cookie
 BILI_BUVID3=xxx          # BUVID3 cookie
 BILI_DEDEUSERID=xxx      # DedeUserID cookie
-BILI_RATELIMIT=1.5       # 测试间隔秒数（可选）
+BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控）
 ```
 
-测试入口 `tests/main.py` 会自动发现 `test_*.py` 中以 `test` 开头的**异步函数**（同步函数由 pytest 离线路径负责）并依次执行。模块可定义 `before_all()` / `after_all()` 作为 setup/teardown。
+- 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作；新增离线用例请放入 `tests/test_offline_*.py`
+- 集成用例通过 `conftest.py` 的 `credential` fixture 获取登录态；模块级共享对象用 module 作用域 fixture 构建；同文件内用例按定义顺序执行，存在顺序依赖时不要重排用例
 
 ## 常见陷阱
 

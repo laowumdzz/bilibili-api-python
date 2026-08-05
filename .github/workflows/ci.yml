@@ -24,3 +24,23 @@ jobs:
 
       - name: Run lint
         run: uv run python scripts/lint.py
+
+  test:
+    name: Test (pytest, offline)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run pytest
+        # 未配置 BILI_* 凭据：离线用例实际执行，集成用例自动 skip
+        run: uv run pytest
