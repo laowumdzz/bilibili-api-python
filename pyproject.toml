@@ -152,28 +152,27 @@ keep-runtime-typing = true
 project-includes = ["bilibili_api/**"]
 project-excludes = ["tests/**", "docs/**", "scripts/**"]
 
-# 存量类型错误基线豁免（2026-08 审计，约 500 处）：以下错误码为上游遗留问题，
+# 存量类型错误基线豁免（2026-08-06 审计收紧）：以下错误码为上游遗留问题，
 # 暂时禁用以保证 CI 门禁可用；应另立任务逐步修复，修复完成后从此表移除对应条目。
-# 其余错误码（含新增代码引入的类型错误）仍会正常拦截。
+# 存量已清零的错误码（bad-override-mutable-attribute / bad-override-param-name）
+# 已从豁免表移除并恢复启用。其余错误码（含新增代码引入的类型错误）仍会正常拦截。
 [tool.pyrefly.errors]
-bad-argument-count = false
-bad-argument-type = false
-bad-assignment = false
-bad-function-definition = false
-bad-index = false
-bad-override = false
-bad-override-mutable-attribute = false
-bad-override-param-name = false
-bad-return = false
-bad-specialization = false
-bad-unpacking = false
-missing-attribute = false
-missing-import = false
-no-matching-overload = false
-not-callable = false
-not-iterable = false
-read-only = false
-unbound-name = false
-unexpected-keyword = false
-unknown-name = false
-unsupported-operation = false
+bad-argument-count = false # 存量 1
+bad-argument-type = false # 存量 72
+bad-assignment = false # 存量 58
+bad-function-definition = false # 存量 18
+bad-index = false # 存量 288
+bad-override = false # 存量 20
+bad-return = false # 存量 391
+bad-specialization = false # 存量 1
+bad-unpacking = false # 存量 1
+missing-attribute = false # 存量 48
+missing-import = false # 存量 4
+no-matching-overload = false # 存量 7
+not-callable = false # 存量 6
+not-iterable = false # 存量 13
+read-only = false # 存量 1
+unbound-name = false # 存量 5
+unexpected-keyword = false # 存量 2
+unknown-name = false # 存量 4
+unsupported-operation = false # 存量 216
