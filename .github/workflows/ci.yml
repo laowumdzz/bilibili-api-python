@@ -10,6 +10,23 @@ on:
     - cron: "0 4 * * 1"
 
 jobs:
+  commit-lint:
+    name: Commit messages (Conventional Commits)
+    runs-on: ubuntu-latest
+    # 提交信息随仓库传播的兜底校验：本地 commit-msg 钩子依赖 install.py 初始化
+    # core.hooksPath 后才生效，可能被跳过；此任务仅校验 PR 增量提交，不追溯 base 分支历史。
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit messages
+        # 纯标准库脚本，无需安装 uv / 依赖
+        run: python scripts/check_commit_msg.py --range "origin/${{ github.base_ref }}" HEAD
+
   lint:
     name: Lint (ruff + pyrefly)
     runs-on: ubuntu-latest
@@ -49,10 +66,59 @@ jobs:
         # 仅离线快速路径：不触碰网络与真实账号，无需 BILI_* 凭据
         run: uv run pytest -m "not integration"
 
+  integration-readonly:
+    name: Test (pytest, integration readonly)
+    runs-on: ubuntu-latest
+    # PR 快速回路：仅运行 readonly 标记的只读集成子集（反爬虫与 API 定义核心面，无写操作）。
+    # 反爬与公开接口用例无需凭据；凭据相关只读用例缺凭据时自动 skip 并在任务摘要中提示降级，
+    # 不阻塞无凭据贡献者（含 fork PR）。
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Check integration credentials
+        env:
+          BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
+          BILI_DEDEUSERID: ${{ secrets.BILI_DEDEUSERID }}
+        run: |
+          if [ -z "$BILI_SESSDATA" ] || [ -z "$BILI_DEDEUSERID" ]; then
+            {
+              echo "## ⚠️ 集成验证降级提示"
+              echo ""
+              echo "本次 PR 未配置 BILI_SESSDATA / BILI_DEDEUSERID 等集成凭据（fork 贡献属正常情况）："
+              echo "- 依赖凭据的只读集成用例已自动 skip，不影响合入；"
+              echo "- 反爬虫与公开只读接口验证仍正常执行；"
+              echo "- 全量集成测试由每周定时任务 / workflow_dispatch 手动触发覆盖。"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "缺少集成凭据：凭据相关只读用例将 skip（不阻塞合入）"
+          else
+            echo "集成凭据已配置：只读集成子集将完整执行"
+          fi
+
+      - name: Run pytest (readonly subset)
+        env:
+          BILI_SESSDATA: ${{ secrets.BILI_SESSDATA }}
+          BILI_CSRF: ${{ secrets.BILI_CSRF }}
+          BILI_BUVID3: ${{ secrets.BILI_BUVID3 }}
+          BILI_DEDEUSERID: ${{ secrets.BILI_DEDEUSERID }}
+          BILI_RATELIMIT: "1.5"
+        run: uv run pytest -m readonly
+
   integration:
     name: Test (pytest, integration)
     runs-on: ubuntu-latest
-    # 集成用例需要真实凭据：仅手动触发或每周定时运行，不阻塞 PR
+    # 全量集成用例（含写操作）需要真实凭据：仅手动触发、推送主干或每周定时运行，不参与 PR；
+    # PR 场景由上方 integration-readonly 只读子集覆盖。
     if: github.event_name != 'pull_request'
 
     steps:

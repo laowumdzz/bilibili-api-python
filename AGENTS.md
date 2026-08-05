@@ -175,6 +175,9 @@ uv run pytest -m "not integration"
 # 仅集成测试（需配置下方 BILI_* 环境变量）
 uv run pytest -m integration
 
+# 只读集成子集（readonly 标记，无写操作；参与 PR 验证，反爬用例无需凭据）
+uv run pytest -m readonly
+
 # 运行指定模块测试
 uv run pytest tests/test_video.py
 ```
@@ -195,6 +198,7 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控
 两者均缺失时，集成用例自动 skip，仅离线用例执行。
 
 - 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作；新增离线用例请放入 `tests/test_offline_*.py`
+- 只读集成用例（`readonly` 标记，如 `tests/test_readonly_smoke.py`）仅允许 GET 式读请求与反爬虫参数获取，严禁写操作；该子集在 CI 的 `integration-readonly` 任务中参与 PR 验证，缺凭据时自动降级为警告而不阻塞合入
 - 集成用例通过 `conftest.py` 的 `credential` fixture 获取登录态；模块级共享对象用 module 作用域 fixture 构建；同文件内用例按定义顺序执行，存在顺序依赖时不要重排用例
 
 ## 常见陷阱

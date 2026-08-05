@@ -74,11 +74,15 @@ package = true
 # 全部测试统一由 pytest 运行：离线用例（test_offline_*.py）无需凭据；
 # 集成用例由 conftest.py 自动打 integration 标记，缺 BILI_* 环境变量时自动 skip。
 # 只跑离线：uv run pytest -m "not integration"；只跑集成：uv run pytest -m integration
+# 只读集成子集（无写操作，参与 PR 验证）：uv run pytest -m readonly
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-markers = ["integration: 需要真实 B 站凭据（BILI_* 环境变量）的集成测试，缺凭据时自动 skip"]
+markers = [
+    "integration: 需要真实 B 站凭据（BILI_* 环境变量）的集成测试，缺凭据时自动 skip",
+    "readonly: 只读集成测试子集（仅 GET 式读请求与反爬虫参数获取，无写操作），参与 PR 快速回路",
+]
 
 [tool.ruff]
 line-length = 120
@@ -134,6 +138,8 @@ ignore = [
 "install.py" = ["T201"]
 # scripts/lint.py 为命令行脚本，允许 print
 "scripts/lint.py" = ["T201"]
+# scripts/check_commit_msg.py 为命令行脚本，允许 print
+"scripts/check_commit_msg.py" = ["T201"]
 # 上游有意在异步函数中使用阻塞 open/os.path（读取本地小文件），待后续引入 aiofiles 再改
 "bilibili_api/**" = ["ASYNC230", "ASYNC240"]
 
