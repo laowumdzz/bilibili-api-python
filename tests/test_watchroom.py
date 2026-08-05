@@ -20,29 +20,29 @@ async def test_b_create(credential):
     room = await watchroom.create(season_id=season_id, episode_id=episode_id, is_open=False, credential=credential)
 
 
-async def test_c_join():
+async def test_c_join(credential):
     assert room is not None, "test_b_create 未成功创建观影室"
     await room.join()
 
 
-async def test_d_share():
+async def test_d_share(credential):
     assert room is not None, "test_b_create 未成功创建观影室"
     await room.share()
 
 
-async def test_e_progress():
+async def test_e_progress(credential):
     assert room is not None, "test_b_create 未成功创建观影室"
     await room.progress(60, 0)
     await room.progress(30, 1)
 
 
-async def test_f_open_and_close():
+async def test_f_open_and_close(credential):
     assert room is not None, "test_b_create 未成功创建观影室"
     await room.close()
     await room.open()
 
 
-async def test_g_send():
+async def test_g_send(credential):
     assert room is not None, "test_b_create 未成功创建观影室"
     await room.send(
         watchroom.Message("测试")
