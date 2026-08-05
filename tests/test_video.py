@@ -6,7 +6,7 @@ import time
 
 import pytest
 
-from bilibili_api import exceptions
+from bilibili_api import exceptions, favorite_list
 from bilibili_api import video as video_m
 from bilibili_api.exceptions.ResponseCodeException import ResponseCodeException
 from bilibili_api.utils.danmaku import Danmaku
@@ -167,10 +167,13 @@ async def test_w_Video_pay_coin(video):
 #     await video.unsubscribe_tag(8583026)
 
 
-async def test_za_Video_set_favorite(video):
-    await video.set_favorite([1626035955])
+async def test_za_Video_set_favorite(video, credential):
+    # 使用本账号自己的收藏夹，避免依赖其他账号的硬编码收藏夹 id
+    fav_list = await favorite_list.get_video_favorite_list(int(credential.dedeuserid), credential=credential)
+    media_id = fav_list["list"][0]["id"]
+    await video.set_favorite([media_id])
     await asyncio.sleep(0.5)
-    await video.set_favorite(del_media_ids=[1626035955])
+    await video.set_favorite(del_media_ids=[media_id])
 
 
 async def test_zb_Video_add_to_toview(video):

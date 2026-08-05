@@ -39,17 +39,21 @@ async def test_g_get_note_favorite_list(credential):
 
 
 async def test_h_create_video_favorite_list(credential):
-    # 创建临时收藏夹
+    # 创建两个临时收藏夹（源与目标），使后续复制/移动/删除链路自包含于本账号
     rnd_name = random.randint(100000, 999999)
     data = await favorite_list.create_video_favorite_list(f"TESTING_{rnd_name}", "", False, credential=credential)
     global media_id
     media_id = data["id"]
+    data_dst = await favorite_list.create_video_favorite_list(
+        f"TESTING_DST_{rnd_name}", "", False, credential=credential
+    )
+    global default_media_id
+    default_media_id = data_dst["id"]
 
-    # 收藏两个视频供测试
+    # 收藏两个视频到源收藏夹，供后续复制/移动测试使用
     for aid in aids:
         v = video.Video(aid=aid, credential=credential)
         await v.set_favorite([media_id])
-        await v.set_favorite(del_media_ids=[media_id])
 
 
 # async def test_o_favorite_list_info():
@@ -83,7 +87,8 @@ async def test_m_delete_video_favorite_list_content(credential):
 
 
 async def test_n_delete_video_favorite_list(credential):
-    await favorite_list.delete_video_favorite_list([media_id], credential)
+    # 同时删除源与目标两个临时收藏夹，完成清理
+    await favorite_list.delete_video_favorite_list([media_id, default_media_id], credential)
 
 
 async def test_get_favorite_collected_1(credential):

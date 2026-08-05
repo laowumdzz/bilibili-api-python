@@ -20,7 +20,8 @@ async def test_d_send_msg(credential):
         await session.send_msg(credential, 1666311555, session.EventType.TEXT, "THIS IS A TEST MSG. ")
         # 660303135 表示有意见[doge]
     except ResponseCodeException as e:
-        if e.code != 21026:
+        # 21026：频率限制；21047：陌生人消息条数限制（账号关系状态问题，非本库 bug）
+        if e.code not in (21026, 21047):
             raise e
 
 

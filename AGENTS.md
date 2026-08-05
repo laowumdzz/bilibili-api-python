@@ -179,7 +179,10 @@ uv run pytest -m integration
 uv run pytest tests/test_video.py
 ```
 
-集成测试需要的环境变量：
+集成测试凭据来源（优先级从高到低，由 `tests/conftest.py` 自动加载）：
+
+1. **`.bilibili.cookie` 文件（推荐，本项目已配置）**：项目根目录下的 `.bilibili.cookie` 存放测试账号的完整 Cookie（浏览器导出的标准 Cookie 字符串，含 `SESSDATA` / `bili_jct` / `buvid3` / `buvid4` / `DedeUserID`）。每次测试直接 `uv run pytest` 即可自动使用它进行全量测试。**该文件已加入 `.gitignore`，严禁提交到仓库。**
+2. **BILI_* 环境变量**（同名环境变量优先于 cookie 文件）：
 
 ```bash
 BILI_SESSDATA=xxx        # SESSDATA cookie
@@ -188,6 +191,8 @@ BILI_BUVID3=xxx          # BUVID3 cookie
 BILI_DEDEUSERID=xxx      # DedeUserID cookie
 BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控）
 ```
+
+两者均缺失时，集成用例自动 skip，仅离线用例执行。
 
 - 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作；新增离线用例请放入 `tests/test_offline_*.py`
 - 集成用例通过 `conftest.py` 的 `credential` fixture 获取登录态；模块级共享对象用 module 作用域 fixture 构建；同文件内用例按定义顺序执行，存在顺序依赖时不要重排用例

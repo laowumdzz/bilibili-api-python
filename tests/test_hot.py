@@ -20,8 +20,8 @@ async def test_e_get_weekly_hot_video_content():
     try:
         await hot.get_weekly_hot_videos(161)
     except ResponseCodeException as e:
-        # 历史周榜数据可能已下线（上游接口数据变动，非本库 bug）
-        if e.code != -404:
+        # -404：历史周榜数据可能已下线；-352：登录态下可能触发风控校验（上游问题，非本库 bug）
+        if e.code not in (-404, -352):
             raise e
 
 

@@ -35,3 +35,4 @@ virtualenv/
 # sh
 env.sh
 .qoder/
+.bilibili.cookie
