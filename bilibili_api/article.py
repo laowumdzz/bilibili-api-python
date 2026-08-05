@@ -283,6 +283,18 @@ class Article:
         document = BeautifulSoup(f"<div>{resp['readInfo']['content']}</div>", "lxml")
 
         async def parse(el: BeautifulSoup):
+            """
+            递归解析专栏 HTML 元素为节点树。
+
+            按标签名分发：段落/标题/样式 span/引用块/图文 figure/列表/链接/公式等，
+            各分支构造对应的 Node 子类并递归解析子元素。
+
+            Args:
+                el (BeautifulSoup): 待解析的 HTML 元素
+
+            Returns:
+                list[Node]: 解析出的节点列表
+            """
             node_list = []
 
             for e in el.contents:  # type: ignore
@@ -645,28 +657,48 @@ class Article:
 
 
 class Node:
+    """专栏内容节点基类，子类需实现 markdown() 与 json() 序列化方法。"""
+
     def __init__(self):
+        """节点基类无属性，无需初始化。"""
         pass
 
     @overload
     def markdown(self) -> str:  # type: ignore
+        """将节点转换为 Markdown 文本。"""
         pass
 
     @overload
     def json(self) -> dict:  # type: ignore
+        """将节点转换为 JSON 数据。"""
         pass
 
 
 class ParagraphNode(Node):
+    """段落节点，记录对齐方式并包裹子节点。"""
+
     def __init__(self):
+        """初始化子节点列表与默认对齐方式（左对齐）。"""
         self.children = []
         self.align = "left"
 
     def markdown(self):
+        """
+        序列化为 Markdown 段落文本
+
+        Returns:
+            str: Markdown 内容
+        """
         content = "".join([node.markdown() for node in self.children])
         return content + "\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "ParagraphNode",
             "children": [x.json() for x in self.children],
@@ -674,16 +706,31 @@ class ParagraphNode(Node):
 
 
 class HeadingNode(Node):
+    """标题节点（h1），以二级标题形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 二级标题
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         text = "".join([node.markdown() for node in self.children])
         if len(text) == 0:
             return ""
         return f"## {text}\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "HeadingNode",
             "children": [x.json() for x in self.children],
@@ -691,10 +738,19 @@ class HeadingNode(Node):
 
 
 class BlockquoteNode(Node):
+    """引用块节点，每行以 > 前缀输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 引用块
+
+        Returns:
+            str: Markdown 内容
+        """
         t = "".join([node.markdown() for node in self.children])
         # 填补空白行的 > 并加上标识符
         t = "\n".join(["> " + line for line in t.split("\n")]) + "\n\n"
@@ -702,6 +758,12 @@ class BlockquoteNode(Node):
         return t
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "BlockquoteNode",
             "children": [x.json() for x in self.children],
@@ -709,16 +771,31 @@ class BlockquoteNode(Node):
 
 
 class ItalicNode(Node):
+    """斜体节点，包裹子节点并以 *text* 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 斜体文本
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         text = "".join([node.markdown() for node in self.children])
         if len(text) == 0:
             return ""
         return f" *{text}* "
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "ItalicNode",
             "children": [x.json() for x in self.children],
@@ -726,16 +803,31 @@ class ItalicNode(Node):
 
 
 class BoldNode(Node):
+    """加粗节点，包裹子节点并以 **text** 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 加粗文本
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         t = "".join([node.markdown() for node in self.children])
         if len(t) == 0:
             return ""
         return f" **{t.lstrip().rstrip()}** "
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "BoldNode",
             "children": [x.json() for x in self.children],
@@ -743,16 +835,31 @@ class BoldNode(Node):
 
 
 class DelNode(Node):
+    """删除线节点，包裹子节点并以 ~~text~~ 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 删除线文本
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         text = "".join([node.markdown() for node in self.children])
         if len(text) == 0:
             return ""
         return f" ~~{text}~~ "
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "DelNode",
             "children": [x.json() for x in self.children],
@@ -760,16 +867,31 @@ class DelNode(Node):
 
 
 class UnderlineNode(Node):
+    """下划线节点，包裹子节点并以 LaTeX \\underline{} 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 下划线文本（LaTeX 语法）
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         text = "".join([node.markdown() for node in self.children])
         if len(text) == 0:
             return ""
         return " $\\underline{" + text + "}$ "
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "UnderlineNode",
             "children": [x.json() for x in self.children],
@@ -777,13 +899,28 @@ class UnderlineNode(Node):
 
 
 class UlNode(Node):
+    """无序列表节点，子节点以 - 前缀逐行输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 无序列表
+
+        Returns:
+            str: Markdown 内容
+        """
         return "\n".join(["- " + node.markdown() for node in self.children])
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "UlNode",
             "children": [x.json() for x in self.children],
@@ -791,16 +928,31 @@ class UlNode(Node):
 
 
 class OlNode(Node):
+    """有序列表节点，子节点按序号逐行输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 有序列表
+
+        Returns:
+            str: Markdown 内容
+        """
         t = []
         for i, node in enumerate(self.children):
             t.append(f"{i + 1}. {node.markdown()}")
         return "\n".join(t)
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "OlNode",
             "children": [x.json() for x in self.children],
@@ -808,13 +960,28 @@ class OlNode(Node):
 
 
 class LiNode(Node):
+    """列表项节点，作为 UlNode/OlNode 的子节点。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 文本（列表前缀由父节点添加）
+
+        Returns:
+            str: Markdown 内容
+        """
         return "".join([node.markdown() for node in self.children])
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "LiNode",
             "children": [x.json() for x in self.children],
@@ -822,14 +989,29 @@ class LiNode(Node):
 
 
 class ColorNode(Node):
+    """文字颜色节点，记录颜色值并透传子节点的 Markdown 输出。"""
+
     def __init__(self):
+        """初始化颜色值（默认黑色）与子节点列表。"""
         self.color = "000000"
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 文本（Markdown 无颜色语法，仅透传子节点内容）
+
+        Returns:
+            str: Markdown 内容
+        """
         return "".join([node.markdown() for node in self.children])
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type、color 与 children 字段
+        """
         return {
             "type": "ColorNode",
             "color": self.color,
@@ -838,14 +1020,29 @@ class ColorNode(Node):
 
 
 class FontSizeNode(Node):
+    """字号节点，记录字号并透传子节点的 Markdown 输出。"""
+
     def __init__(self):
+        """初始化字号（默认 16）与子节点列表。"""
         self.size = 16
         self.children = []
 
     def markdown(self):
+        """
+        序列化为 Markdown 文本（Markdown 无字号语法，仅透传子节点内容）
+
+        Returns:
+            str: Markdown 内容
+        """
         return "".join([node.markdown() for node in self.children])
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type、size 与 children 字段
+        """
         return {
             "type": "FontSizeNode",
             "size": self.size,
@@ -857,10 +1054,22 @@ class FontSizeNode(Node):
 
 
 class TextNode(Node):
+    """纯文本节点，无子节点。"""
+
     def __init__(self, text: str):
+        """
+        Args:
+            text (str): 文本内容
+        """
         self.text = text
 
     def markdown(self):
+        """
+        序列化为 Markdown 文本，处理空格/不间断空格并转义 Markdown 特殊字符
+
+        Returns:
+            str: Markdown 内容
+        """
         txt = self.text
         txt = txt.replace("\t", " ")
         txt = txt.replace(" ", "&emsp;")
@@ -871,31 +1080,61 @@ class TextNode(Node):
         return txt
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 text 字段
+        """
         return {"type": "TextNode", "text": self.text}
 
 
 class ImageNode(Node):
+    """图片节点，无子节点。"""
+
     def __init__(self):
+        """初始化图片 URL 与替代文本。"""
         self.url = ""
         self.alt = ""
 
     def markdown(self):
+        """
+        序列化为 Markdown 图片语法，协议缺失时自动补全 https，并转义 alt 中的方括号
+
+        Returns:
+            str: Markdown 图片文本
+        """
         if URL(self.url).scheme == "":
             self.url = "https:" + self.url
         alt = self.alt.replace("[", "\\[")
         return f"![{alt}]({self.url})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据，协议缺失时自动补全 https
+
+        Returns:
+            dict: 含 type、url 与 alt 字段
+        """
         if URL(self.url).scheme == "":
             self.url = "https:" + self.url
         return {"type": "ImageNode", "url": self.url, "alt": self.alt}
 
 
 class LatexNode(Node):
+    """LaTeX 公式节点，无子节点；含换行时按块级公式输出，否则按行内公式输出。"""
+
     def __init__(self):
+        """初始化公式代码。"""
         self.code = ""
 
     def markdown(self):
+        """
+        序列化为 Markdown 公式（$$...$$ 或 $...$）
+
+        Returns:
+            str: Markdown 公式文本
+        """
         if "\n" in self.code:
             # 块级公式
             return f"$$\n{self.code}\n$$"
@@ -904,19 +1143,40 @@ class LatexNode(Node):
             return f"${self.code}$"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 code 字段
+        """
         return {"type": "LatexNode", "code": self.code}
 
 
 class CodeNode(Node):
+    """代码块节点，无子节点，记录代码内容与语言。"""
+
     def __init__(self):
+        """初始化代码内容与语言。"""
         self.code = ""
         self.lang = ""
 
     def markdown(self):
+        """
+        序列化为 Markdown 代码块（先反转义 HTML 实体）
+
+        Returns:
+            str: Markdown 代码块文本
+        """
         self.code = html.unescape(self.code)
         return f"```{self.lang if self.lang else ''}\n{self.code}\n```\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据（先反转义 HTML 实体）
+
+        Returns:
+            dict: 含 type、code 与 lang 字段
+        """
         self.code = html.unescape(self.code)
         return {"type": "CodeNode", "code": self.code, "lang": self.lang}
 
@@ -925,101 +1185,236 @@ class CodeNode(Node):
 
 
 class VideoCardNode(Node):
+    """视频卡片节点，无子节点，记录稿件 aid。"""
+
     def __init__(self):
+        """初始化稿件 aid。"""
         self.aid = 0
 
     def markdown(self):
+        """
+        序列化为指向视频页的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[视频 av{self.aid}](https://www.bilibili.com/av{self.aid})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 aid 字段
+        """
         return {"type": "VideoCardNode", "aid": self.aid}
 
 
 class ArticleCardNode(Node):
+    """文章卡片节点，无子节点，记录专栏 cvid。"""
+
     def __init__(self):
+        """初始化专栏 cvid。"""
         self.cvid = 0
 
     def markdown(self):
+        """
+        序列化为指向专栏页的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[文章 cv{self.cvid}](https://www.bilibili.com/read/cv{self.cvid})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 cvid 字段
+        """
         return {"type": "ArticleCardNode", "cvid": self.cvid}
 
 
 class BangumiCardNode(Node):
+    """番剧卡片节点，无子节点，记录剧集 epid。"""
+
     def __init__(self):
+        """初始化剧集 epid。"""
         self.epid = 0
 
     def markdown(self):
+        """
+        序列化为指向番剧播放页的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[番剧 ep{self.epid}](https://www.bilibili.com/bangumi/play/ep{self.epid})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 epid 字段
+        """
         return {"type": "BangumiCardNode", "epid": self.epid}
 
 
 class MusicCardNode(Node):
+    """音乐卡片节点，无子节点，记录音频 auid。"""
+
     def __init__(self):
+        """初始化音频 auid。"""
         self.auid = 0
 
     def markdown(self):
+        """
+        序列化为指向音频页的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[音乐 au{self.auid}](https://www.bilibili.com/audio/au{self.auid})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 auid 字段
+        """
         return {"type": "MusicCardNode", "auid": self.auid}
 
 
 class ShopCardNode(Node):
+    """会员购卡片节点，无子节点，记录商品 pwid。"""
+
     def __init__(self):
+        """初始化商品 pwid。"""
         self.pwid = 0
 
     def markdown(self):
+        """
+        序列化为指向会员购商品页的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[会员购 {self.pwid}](https://show.bilibili.com/platform/detail.html?id={self.pwid})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 pwid 字段
+        """
         return {"type": "ShopCardNode", "pwid": self.pwid}
 
 
 class ComicCardNode(Node):
+    """漫画卡片节点，无子节点，记录漫画 mcid。"""
+
     def __init__(self):
+        """初始化漫画 mcid。"""
         self.mcid = 0
 
     def markdown(self):
+        """
+        序列化为指向漫画详情页的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[漫画 mc{self.mcid}](https://manga.bilibili.com/m/detail/mc{self.mcid})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 mcid 字段
+        """
         return {"type": "ComicCardNode", "mcid": self.mcid}
 
 
 class LiveCardNode(Node):
+    """直播卡片节点，无子节点，记录直播间 room_id。"""
+
     def __init__(self):
+        """初始化直播间 room_id。"""
         self.room_id = 0
 
     def markdown(self):
+        """
+        序列化为指向直播间的 Markdown 链接
+
+        Returns:
+            str: Markdown 链接文本
+        """
         return f"[直播 {self.room_id}](https://live.bilibili.com/{self.room_id})\n\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 room_id 字段
+        """
         return {"type": "LiveCardNode", "room_id": self.room_id}
 
 
 class AnchorNode(Node):
+    """超链接节点，无子节点，记录链接地址与显示文本。"""
+
     def __init__(self):
+        """初始化链接地址与显示文本。"""
         self.url = ""
         self.text = ""
 
     def markdown(self):
+        """
+        序列化为 Markdown 链接，转义显示文本中的方括号
+
+        Returns:
+            str: Markdown 链接文本
+        """
         text = self.text.replace("[", "\\[")
         return f"[{text}]({self.url})"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 含 type、url 与 text 字段
+        """
         return {"type": "AnchorNode", "url": self.url, "text": self.text}
 
 
 class SeparatorNode(Node):
+    """分割线节点，无子节点。"""
+
     def __init__(self):
+        """分割线节点无属性，无需初始化。"""
         pass
 
     def markdown(self):
+        """
+        序列化为 Markdown 分割线
+
+        Returns:
+            str: Markdown 分割线文本
+        """
         return "\n------\n"
 
     def json(self):
+        """
+        序列化为 JSON 数据
+
+        Returns:
+            dict: 仅含 type 字段
+        """
         return {"type": "SeparatorNode"}

@@ -30,6 +30,7 @@ class AntiSpiderCache:
     WBI_MIXIN_KEY_TTL = 6 * 3600
 
     def __init__(self):
+        """初始化各项反爬虫参数缓存为空，锁惰性创建。"""
         self._buvid3: str = ""
         self._buvid4: str = ""
         self._bili_ticket: str = ""
@@ -94,14 +95,17 @@ class AntiSpiderCache:
         return self._wbi_mixin_key
 
     def invalidate_buvid(self) -> None:
+        """作废缓存的 buvid3/buvid4，下次 get_buvid() 时重新获取。"""
         self._buvid3 = ""
         self._buvid4 = ""
 
     def invalidate_bili_ticket(self) -> None:
+        """作废缓存的 bili_ticket，下次 get_bili_ticket() 时重新获取。"""
         self._bili_ticket = ""
         self._bili_ticket_expires = 0
 
     def invalidate_wbi(self) -> None:
+        """作废缓存的 wbi mixin key，下次 get_wbi_mixin_key() 时重新计算。"""
         self._wbi_mixin_key = ""
         self._wbi_mixin_key_ts = 0
 
@@ -109,7 +113,7 @@ class AntiSpiderCache:
 anti_spider_cache = AntiSpiderCache()
 
 
-OE = [
+OE = [  # Wbi 混淆密钥索引表：按该顺序从 img_key+sub_key 拼接串中重排字符
     46,
     47,
     18,
@@ -178,6 +182,12 @@ OE = [
 
 
 async def _get_spi_buvid() -> dict:
+    """
+    调用 spi 接口获取新的 buvid3/buvid4
+
+    Returns:
+        dict: 含 b_3（buvid3）与 b_4（buvid4）字段
+    """
     api = API["info"]["spi"]
     client = get_client()
     return (await client.request(method="GET", url=api["url"], headers=HEADERS.copy())).json()["data"]
@@ -189,26 +199,41 @@ async def _get_spi_buvid() -> dict:
 
 
 async def _active_buvid(buvid3: str, buvid4: str) -> dict:
+    """
+    激活 buvid3/buvid4，模拟浏览器环境构造指纹 payload 并提交风控激活接口。
+
+    Args:
+        buvid3 (str): 待激活的 buvid3
+        buvid4 (str): 待激活的 buvid4
+
+    Raises:
+        ExClimbWuzhiException: 激活接口返回非 0 错误码（风控拦截）时抛出
+    """
     MOD = 1 << 64
 
     def get_time_milli() -> int:
+        """获取当前毫秒级时间戳。"""
         return int(time.time() * 1000)
 
     def rotate_left(x: int, k: int) -> int:
+        """将 64 位整数 x 循环左移 k 位。"""
         bin_str = bin(x)[2:].rjust(64, "0")
         return int(bin_str[k:] + bin_str[:k], base=2)
 
     def gen_uuid_infoc() -> str:
+        """生成浏览器 _uuid cookie 格式的字符串（8-4-4-4-12 段 + 时间戳尾缀 + infoc）。"""
         t = get_time_milli() % 100000
         mp = [*list("123456789ABCDEF"), "10"]
         pck = [8, 4, 4, 4, 12]
 
         def gen_part(x):
+            """从字符表中随机取 x 个字符组成一段。"""
             return "".join([random.choice(mp) for _ in range(x)])
 
         return "-".join([gen_part(size) for size in pck]) + str(t).ljust(5, "0") + "infoc"
 
     def gen_b_lsid() -> str:
+        """生成 b_lsid cookie：8 位大写十六进制随机数 + 下划线 + 毫秒时间戳十六进制。"""
         ret = ""
         for _ in range(8):
             ret += hex(random.randint(0, 15))[2:].upper()
@@ -216,11 +241,13 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
         return ret
 
     def gen_buvid_fp(key: str, seed: int):
+        """对 payload 字符串做 murmur3 哈希生成 buvid_fp 指纹。"""
         source = io.BytesIO(bytes(key, "ascii"))
         m = murmur3_x64_128(source, seed)
         return f"{hex(m & (MOD - 1))[2:]}{hex(m >> 64)[2:]}"
 
     def murmur3_x64_128(source: io.BufferedIOBase, seed: int) -> str:
+        """murmur3 x64 128 位哈希算法实现（纯 Python 移植，按 16 字节块处理）。"""
         C1 = 0x87C3_7B91_1142_53D5
         C2 = 0x4CF5_AD43_2745_937F
         C3 = 0x52DC_E729
@@ -287,6 +314,7 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
                 h1 ^= k1
 
     def fmix64(k: int) -> int:
+        """murmur3 的最终混合（finalization mix）步骤，增强哈希扩散性。"""
         C1 = 0xFF51_AFD7_ED55_8CCD
         C2 = 0xC4CE_B9FE_1A85_EC53
         R = 33
@@ -299,6 +327,7 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
         return tmp
 
     def get_payload(uuid: str) -> str:
+        """构造风控激活接口的 payload：模拟浏览器采集的环境指纹信息（UA、WebGL、字体等）。"""
         content = {
             "3064": 1,
             "5062": get_time_milli(),
@@ -473,6 +502,7 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
 
     api = API["operate"]["active"]
     client = get_client()
+    # 依次生成模拟浏览器环境的 uuid、payload 与 buvid_fp 指纹，随 cookies 一并提交激活
     uuid = gen_uuid_infoc()
     payload = get_payload(uuid)
     buvid_fp = gen_buvid_fp(payload, 31)
@@ -496,6 +526,15 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
 
 
 async def _get_nav(credential: Credential | None = None) -> dict:
+    """
+    调用导航接口获取 wbi_img 等信息（计算 Wbi 签名的前置步骤）
+
+    Args:
+        credential (Credential | None, optional): 凭据类. Defaults to None.
+
+    Returns:
+        dict: 接口 data 字段，含 wbi_img 等
+    """
     credential = credential if credential else Credential()
     api = API["info"]["valid"]
     client = get_client()
@@ -510,18 +549,39 @@ async def _get_nav(credential: Credential | None = None) -> dict:
 
 
 async def _get_mixin_key(credential: Credential | None = None) -> str:
+    """
+    计算 Wbi 签名所需的 mixin key：从 img_url/sub_url 提取密钥并按 OE 表重排后截取前 32 位。
+
+    Args:
+        credential (Credential | None, optional): 凭据类. Defaults to None.
+
+    Returns:
+        str: 32 位 mixin key
+    """
     data = await _get_nav(credential=credential)
     wbi_img: dict[str, str] = data["wbi_img"]
 
     def split(key):
+        """从 URL 中提取文件名（去路径与扩展名）作为密钥片段。"""
         return wbi_img.get(key).split("/")[-1].split(".")[0]
 
+    # 拼接 img_key 与 sub_key，按 OE 索引表重排字符，越界索引跳过，最后截取前 32 位
     ae = split("img_url") + split("sub_url")
     le = reduce(lambda s, i: s + (ae[i] if i < len(ae) else ""), OE, "")
     return le[:32]
 
 
 def _enc_wbi(params: dict, mixin_key: str) -> dict:
+    """
+    为请求参数计算 Wbi 签名（w_rid）：追加时间戳与 web_location，按 key 排序拼接后与 mixin key 一起做 MD5。
+
+    Args:
+        params     (dict): 待签名参数，原地修改并返回
+        mixin_key  (str) : 混淆密钥，见 _get_mixin_key()
+
+    Returns:
+        dict: 追加了 wts / web_location / w_rid 的参数
+    """
     params.pop("w_rid", None)  # 重试时先把原有 w_rid 去除
     params["wts"] = int(time.time())
     # web_location 因为没被列入参数可能炸一些接口 比如 video.get_ai_conclusion
@@ -535,6 +595,15 @@ def _enc_wbi(params: dict, mixin_key: str) -> dict:
 
 
 def _enc_dm(params: dict) -> dict:
+    """
+    为请求参数补充 dm_img 系列风控字段（模拟浏览器行为指纹，当前为空记录 + 随机占位串）。
+
+    Args:
+        params (dict): 待补充参数，原地修改并返回
+
+    Returns:
+        dict: 补充了 dm_img_list / dm_img_str / dm_cover_img_str / dm_img_inter 的参数
+    """
     dm_rand = "ABCDEFGHIJK"
     params.update(
         {
@@ -548,6 +617,15 @@ def _enc_dm(params: dict) -> dict:
 
 
 def _enc_sign(paramsordata: dict) -> dict:
+    """
+    为 APP 端请求计算 sign 签名：追加 appkey，按 key 排序拼接后与 appsec 一起做 MD5。
+
+    Args:
+        paramsordata (dict): 待签名参数，原地修改并返回
+
+    Returns:
+        dict: 排序后追加了 appkey / sign 的参数
+    """
     paramsordata["appkey"] = APPKEY
     paramsordata = dict(sorted(paramsordata.items()))
     paramsordata["sign"] = hashlib.md5((urllib.parse.urlencode(paramsordata) + APPSEC).encode("utf-8")).hexdigest()
@@ -560,7 +638,18 @@ def _enc_sign(paramsordata: dict) -> dict:
 
 
 async def _get_bili_ticket(credential: Credential | None = None) -> str:
+    """
+    获取 bili_ticket：用固定密钥对当前时间戳做 HMAC-SHA256 签名后请求 ticket 接口。
+
+    Args:
+        credential (Credential | None, optional): 凭据类. Defaults to None.
+
+    Returns:
+        str: bili_ticket
+    """
+
     def hmac_sha256(key: str, message: str) -> str:
+        """计算 HMAC-SHA256 签名并返回十六进制字符串。"""
         key = key.encode("utf-8")
         message = message.encode("utf-8")
         hmac_obj = hmac.new(key, message, hashlib.sha256)

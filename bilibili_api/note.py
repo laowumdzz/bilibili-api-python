@@ -313,6 +313,12 @@ class Note:
         """
 
         async def parse_note(data: list[dict]):
+            """
+            将笔记内容 JSON 逐字段解析为节点树，追加到 self.__children。
+
+            Args:
+                data (list[dict]): 笔记内容字段列表，每项含 insert（文本或图片/分割线）与可选 attributes（加粗/删除线等）
+            """
             for field in data:
                 if not isinstance(field["insert"], str):
                     if "imageUpload" in field["insert"].keys():
@@ -411,29 +417,49 @@ class Note:
 
 
 class Node:
+    """笔记内容节点基类，子类需实现 markdown() 与 json() 序列化方法。"""
+
     def __init__(self):
+        """节点基类无属性，无需初始化。"""
         pass
 
     @overload
     def markdown(self) -> str:  # type: ignore
+        """将节点转换为 Markdown 文本。"""
         pass
 
     @overload
     def json(self) -> dict:  # type: ignore
+        """将节点转换为 JSON 数据。"""
         pass
 
 
 class BoldNode(Node):
+    """加粗节点，包裹子节点并以 **text** 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        转换为 Markdown 加粗文本
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         t = "".join([node.markdown() for node in self.children])
         if len(t) == 0:
             return ""
         return f" **{t.lstrip().rstrip()}** "
 
     def json(self):
+        """
+        转换为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "BoldNode",
             "children": [x.json() for x in self.children],
@@ -441,16 +467,31 @@ class BoldNode(Node):
 
 
 class DelNode(Node):
+    """删除线节点，包裹子节点并以 ~~text~~ 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        转换为 Markdown 删除线文本
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         text = "".join([node.markdown() for node in self.children])
         if len(text) == 0:
             return ""
         return f" ~~{text}~~"
 
     def json(self):
+        """
+        转换为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 children 字段
+        """
         return {
             "type": "DelNode",
             "children": [x.json() for x in self.children],
@@ -458,10 +499,19 @@ class DelNode(Node):
 
 
 class UnderlineNode(Node):
+    """下划线节点，包裹子节点并以 LaTeX \\underline{} 形式输出。"""
+
     def __init__(self):
+        """初始化子节点列表。"""
         self.children = []
 
     def markdown(self):
+        """
+        转换为 Markdown 下划线文本（LaTeX 语法）
+
+        Returns:
+            str: Markdown 内容，子节点为空时返回空字符串
+        """
         text = "".join([node.markdown() for node in self.children])
         if len(text) == 0:
             return ""
@@ -469,14 +519,29 @@ class UnderlineNode(Node):
 
 
 class ColorNode(Node):
+    """文字颜色节点，记录颜色值并透传子节点的 Markdown 输出。"""
+
     def __init__(self):
+        """初始化颜色值（默认黑色）与子节点列表。"""
         self.color = "000000"
         self.children = []
 
     def markdown(self):
+        """
+        转换为 Markdown 文本（Markdown 无颜色语法，仅透传子节点内容）
+
+        Returns:
+            str: Markdown 内容
+        """
         return "".join([node.markdown() for node in self.children])
 
     def json(self):
+        """
+        转换为 JSON 数据
+
+        Returns:
+            dict: 含 type、color 与 children 字段
+        """
         return {
             "type": "ColorNode",
             "color": self.color,
@@ -485,14 +550,29 @@ class ColorNode(Node):
 
 
 class FontSizeNode(Node):
+    """字号节点，记录字号并透传子节点的 Markdown 输出。"""
+
     def __init__(self):
+        """初始化字号（默认 16）与子节点列表。"""
         self.size = 16
         self.children = []
 
     def markdown(self):
+        """
+        转换为 Markdown 文本（Markdown 无字号语法，仅透传子节点内容）
+
+        Returns:
+            str: Markdown 内容
+        """
         return "".join([node.markdown() for node in self.children])
 
     def json(self):
+        """
+        转换为 JSON 数据
+
+        Returns:
+            dict: 含 type、size 与 children 字段
+        """
         return {
             "type": "FontSizeNode",
             "size": self.size,
@@ -504,28 +584,61 @@ class FontSizeNode(Node):
 
 
 class TextNode(Node):
+    """纯文本节点，无子节点。"""
+
     def __init__(self, text: str):
+        """
+        Args:
+            text (str): 文本内容
+        """
         self.text = text
 
     def markdown(self):
+        """
+        转换为 Markdown 文本
+
+        Returns:
+            str: 文本内容
+        """
         return self.text
 
     def json(self):
+        """
+        转换为 JSON 数据
+
+        Returns:
+            dict: 含 type 与 text 字段
+        """
         return {"type": "TextNode", "text": self.text}
 
 
 class ImageNode(Node):
+    """图片节点（含分割线图片），无子节点。"""
+
     def __init__(self):
+        """初始化图片 URL 与替代文本。"""
         self.url = ""
         self.alt = ""
 
     def markdown(self):
+        """
+        转换为 Markdown 图片语法，协议缺失时自动补全 https，并转义 alt 中的方括号
+
+        Returns:
+            str: Markdown 图片文本
+        """
         if URL(self.url).scheme == "":
             self.url = "https:" + self.url
         alt = self.alt.replace("[", "\\[")
         return f"![{alt}]({self.url})\n\n"
 
     def json(self):
+        """
+        转换为 JSON 数据，协议缺失时自动补全 https
+
+        Returns:
+            dict: 含 type、url 与 alt 字段
+        """
         if URL(self.url).scheme == "":
             self.url = "https:" + self.url
         return {"type": "ImageNode", "url": self.url, "alt": self.alt}

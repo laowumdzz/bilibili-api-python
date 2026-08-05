@@ -89,21 +89,51 @@ class HTTPXClient(BiliAPIClient):
             pass
 
     def get_wrapped_session(self) -> httpx.AsyncClient:
+        """
+        获取封装的第三方会话对象
+
+        Returns:
+            httpx.AsyncClient: 第三方会话对象
+        """
         return self.__session
 
     def set_proxy(self, proxy: str = "") -> None:
+        """
+        设置代理地址
+
+        Args:
+            proxy (str, optional): 代理地址. Defaults to "".
+        """
         self.__proxy = proxy
         self.__recreate_session()
 
     def set_timeout(self, timeout: float = 0.0) -> None:
+        """
+        设置请求超时时间
+
+        Args:
+            timeout (float, optional): 请求超时时间. Defaults to 0.0.
+        """
         self.__timeout = timeout
         self.__session.timeout = timeout
 
     def set_verify_ssl(self, verify_ssl: bool = True) -> None:
+        """
+        设置是否验证 SSL
+
+        Args:
+            verify_ssl (bool, optional): 是否验证 SSL. Defaults to True.
+        """
         self.__verify_ssl = verify_ssl
         self.__recreate_session()
 
     def set_trust_env(self, trust_env: bool = True) -> None:
+        """
+        设置 `trust_env`
+
+        Args:
+            trust_env (bool, optional): `trust_env`. Defaults to True.
+        """
         self.__trust_env = trust_env
         self.__session.trust_env = trust_env
 
@@ -118,6 +148,12 @@ class HTTPXClient(BiliAPIClient):
         self.__recreate_session()
 
     def set_chunk_size(self, chunk_size: int = 262144) -> None:
+        """
+        设置下载分块大小
+
+        Args:
+            chunk_size (int, optional): 下载分块大小（字节）. Defaults to 262144.
+        """
         self.__chunk_size = chunk_size
 
     async def request(
@@ -131,6 +167,24 @@ class HTTPXClient(BiliAPIClient):
         cookies: dict = {},
         allow_redirects: bool = True,
     ) -> BiliAPIResponse:
+        """
+        进行 HTTP 请求
+
+        Args:
+            method (str, optional): 请求方法. Defaults to "".
+            url (str, optional): 请求地址. Defaults to "".
+            params (dict, optional): 请求参数. Defaults to {}.
+            data (Union[dict, str, bytes], optional): 请求数据. Defaults to {}.
+            files (Dict[str, BiliAPIFile], optional): 请求文件. Defaults to {}.
+            headers (dict, optional): 请求头. Defaults to {}.
+            cookies (dict, optional): 请求 Cookies. Defaults to {}.
+            allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
+
+        Returns:
+            BiliAPIResponse: 响应对象
+
+        Note: 无需实现 data 为 str 且 files 不为空的情况。
+        """
         request_log.dispatch(
             "REQUEST",
             "发起请求",
@@ -204,6 +258,16 @@ class HTTPXClient(BiliAPIClient):
         url: str = "",
         headers: dict = {},
     ) -> int:
+        """
+        开始下载文件
+
+        Args:
+            url     (str, optional) : 请求地址. Defaults to "".
+            headers (dict, optional): 请求头. Defaults to {}.
+
+        Returns:
+            int: 下载编号，用于后续操作。
+        """
         self.__download_cnt += 1
         request_log.dispatch(
             "DWN_CREATE",
@@ -220,6 +284,15 @@ class HTTPXClient(BiliAPIClient):
         return self.__download_cnt
 
     async def download_chunk(self, cnt: int) -> bytes:
+        """
+        下载部分文件
+
+        Args:
+            cnt    (int): 下载编号
+
+        Returns:
+            bytes: 字节
+        """
         iter = self.__download_iter[cnt]
         data = await anext(iter)
         request_log.dispatch(
@@ -230,10 +303,25 @@ class HTTPXClient(BiliAPIClient):
         return data
 
     def download_content_length(self, cnt: int) -> int:
+        """
+        获取下载总字节数
+
+        Args:
+            cnt    (int): 下载编号
+
+        Returns:
+            int: 下载总字节数
+        """
         resp = self.__downloads[cnt]
         return int(resp.headers.get("content-length", "0"))
 
     async def download_close(self, cnt: int) -> None:
+        """
+        结束下载
+
+        Args:
+            cnt    (int): 下载编号
+        """
         resp = self.__downloads[cnt]
         await resp.aclose()
         del self.__downloads[cnt]
@@ -269,15 +357,7 @@ class HTTPXClient(BiliAPIClient):
         raise ApiException("httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>")
 
     async def close(self) -> None:
+        """
+        关闭请求客户端，即关闭封装的第三方会话对象
+        """
         await self.__session.aclose()
-
-    get_wrapped_session.__doc__ = BiliAPIClient.get_wrapped_session.__doc__
-    set_proxy.__doc__ = BiliAPIClient.set_proxy.__doc__
-    set_timeout.__doc__ = BiliAPIClient.set_timeout.__doc__
-    set_verify_ssl.__doc__ = BiliAPIClient.set_verify_ssl.__doc__
-    set_trust_env.__doc__ = BiliAPIClient.set_trust_env.__doc__
-    request.__doc__ = BiliAPIClient.request.__doc__
-    download_create.__doc__ = BiliAPIClient.download_create.__doc__
-    download_chunk.__doc__ = BiliAPIClient.download_chunk.__doc__
-    download_content_length.__doc__ = BiliAPIClient.download_content_length.__doc__
-    close.__doc__ = BiliAPIClient.close.__doc__
