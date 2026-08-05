@@ -1,41 +1,30 @@
 # bilibili_api.comment
 
-import random
 import asyncio
+import random
 
 from bilibili_api import comment
-from bilibili_api.exceptions.ResponseCodeException import ResponseCodeException
-
-from . import common
 
 BVID = "BV1xx411c7Xg"
 AID = 271
-credential = common.get_credential()
-
-
-async def test_a_get_comments():
-    result = await comment.get_comments(
-        oid=AID, type_=comment.CommentResourceType.VIDEO
-    )
-    return result
-
 
 comment_id = None
 
 
-async def test_b_send_comment():
-    print()
-    print("测试回复视频")
+async def test_a_get_comments():
+    await comment.get_comments(oid=AID, type_=comment.CommentResourceType.VIDEO)
+
+
+async def test_b_send_comment(credential):
+    global comment_id
     result = await comment.send_comment(
         "测试" + str(random.random()),
         oid=AID,
         type_=comment.CommentResourceType.VIDEO,
         credential=credential,
     )
-    global comment_id
     comment_id = result["rpid"]
     await asyncio.sleep(1)
-    print("测试回复评论")
     result = await comment.send_comment(
         "测试回复评论" + str(random.random()),
         oid=AID,
@@ -45,8 +34,7 @@ async def test_b_send_comment():
     )
     rpid = result["rpid"]
     await asyncio.sleep(1)
-    print("测试回复评论的评论")
-    result = await comment.send_comment(
+    await comment.send_comment(
         "测试回复评论的评论" + str(random.random()),
         oid=AID,
         type_=comment.CommentResourceType.VIDEO,
@@ -55,30 +43,29 @@ async def test_b_send_comment():
         credential=credential,
     )
     await asyncio.sleep(1)
-    return result
 
 
-async def test_c_like_comment():
+async def test_c_like_comment(credential):
     cmt = comment.Comment(
         oid=AID,
         type_=comment.CommentResourceType.VIDEO,
         rpid=comment_id,
         credential=credential,
     )
-    return await cmt.like()
+    await cmt.like()
 
 
-async def test_d_hate_comment():
+async def test_d_hate_comment(credential):
     cmt = comment.Comment(
         oid=AID,
         type_=comment.CommentResourceType.VIDEO,
         rpid=comment_id,
         credential=credential,
     )
-    return await cmt.hate()
+    await cmt.hate()
 
 
-# async def test_e_pin_comment():
+# async def test_e_pin_comment(credential):
 #     cmt = comment.Comment(
 #         oid=AID,
 #         type_=comment.CommentResourceType.VIDEO,
@@ -86,33 +73,32 @@ async def test_d_hate_comment():
 #         credential=credential,
 #     )
 #     try:
-#         info = await cmt.pin()
-#         return info
+#         await cmt.pin()
 #     except ResponseCodeException as e:
 #         # -403  权限不足
 #         if e.code not in (-403,):
 #             raise e
-#         return e.raw
 # FIXME: 重试次数达到上限
 
 
-async def test_f_get_sub_comments():
+async def test_f_get_sub_comments(credential):
     cmt = comment.Comment(
         oid=AID,
         type_=comment.CommentResourceType.VIDEO,
         rpid=comment_id,
         credential=credential,
     )
-    return await cmt.get_sub_comments()
+    await cmt.get_sub_comments()
 
 
-async def test_g_delete_comment():
+async def test_g_delete_comment(credential):
     cmt = comment.Comment(
         oid=AID,
         type_=comment.CommentResourceType.VIDEO,
         rpid=comment_id,
         credential=credential,
     )
-    return await cmt.delete()
+    await cmt.delete()
+
 
 # 举报评论不测试
