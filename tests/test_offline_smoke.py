@@ -2,7 +2,7 @@
 #
 # 本文件属于无凭据快速路径：全部用例均为纯本地逻辑验证，
 # 不触碰网络、不读取 BILI_* 环境变量、不依赖真实账号。
-# 由 pytest 收集运行（uv run pytest），tests.main 集成测试运行器会跳过本文件。
+# 由 pytest 收集运行（uv run pytest），且不会被 conftest.py 打上 integration 标记。
 
 import pytest
 
