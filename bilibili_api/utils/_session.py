@@ -8,6 +8,7 @@ import atexit
 from typing import Any
 
 from ..exceptions import ArgsException
+from ._log import request_log
 from ._types import (
     DEFAULT_SETTINGS,
     BiliAPIFile,
@@ -74,6 +75,101 @@ class BiliAPIClient(ABC):
             object: 第三方会话对象
         """
         raise NotImplementedError
+
+    @staticmethod
+    def _log_request(
+        method: str,
+        url: str,
+        params: dict,
+        data: dict | str | bytes,
+        files: dict[str, BiliAPIFile],
+        headers: dict,
+        cookies: dict,
+        allow_redirects: bool,
+    ) -> None:
+        """
+        分发请求日志事件，供各请求客户端实现复用。
+
+        Args:
+            method          (str)                  : 请求方法。
+            url             (str)                  : 请求地址。
+            params          (dict)                 : 请求参数。
+            data            (dict | str | bytes)   : 请求数据。
+            files           (dict[str, BiliAPIFile]): 请求文件。
+            headers         (dict)                 : 请求头。
+            cookies         (dict)                 : 请求 Cookies。
+            allow_redirects (bool)                 : 是否允许重定向。
+        """
+        request_log.dispatch(
+            "REQUEST",
+            "发起请求",
+            {
+                "method": method,
+                "url": url,
+                "params": params,
+                "data": data,
+                "files": files,
+                "headers": headers,
+                "cookies": cookies,
+                "allow_redirects": allow_redirects,
+            },
+        )
+
+    @staticmethod
+    def _log_response(resp: BiliAPIResponse) -> None:
+        """
+        分发响应日志事件，供各请求客户端实现复用。
+
+        Args:
+            resp (BiliAPIResponse): 统一响应对象。
+        """
+        request_log.dispatch(
+            "RESPONSE",
+            "获得响应",
+            {
+                "code": resp.code,
+                "headers": resp.headers,
+                "cookies": resp.cookies,
+                "data": resp.raw,
+                "url": resp.url,
+            },
+        )
+
+    @staticmethod
+    def _open_request_files(files: dict[str, BiliAPIFile]) -> tuple[dict, list]:
+        """
+        将 BiliAPIFile 字典转换为 requests 风格的文件元组字典。
+
+        传文件句柄而非整体读入内存，请求完成后由调用方统一关闭句柄。
+
+        Args:
+            files (dict[str, BiliAPIFile]): 请求文件。
+
+        Returns:
+            tuple[dict, list]: (requests 风格文件字典, 已打开的文件句柄列表)。
+        """
+        opened_files = []
+        requests_like_files = {}
+        for key, item in files.items():
+            f = open(item.path, "rb")
+            opened_files.append(f)
+            requests_like_files[key] = (
+                item.path,
+                f,
+                item.mime_type,
+            )
+        return requests_like_files, opened_files
+
+    @staticmethod
+    def _close_request_files(opened_files: list) -> None:
+        """
+        关闭 _open_request_files 打开的全部文件句柄。
+
+        Args:
+            opened_files (list): 已打开的文件句柄列表。
+        """
+        for f in opened_files:
+            f.close()
 
     @abstractmethod
     def set_timeout(self, timeout: float = 0.0) -> None:

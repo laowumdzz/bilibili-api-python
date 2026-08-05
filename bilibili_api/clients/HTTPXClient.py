@@ -185,33 +185,11 @@ class HTTPXClient(BiliAPIClient):
 
         Note: 无需实现 data 为 str 且 files 不为空的情况。
         """
-        request_log.dispatch(
-            "REQUEST",
-            "发起请求",
-            {
-                "method": method,
-                "url": url,
-                "params": params,
-                "data": data,
-                "files": files,
-                "headers": headers,
-                "cookies": cookies,
-                "allow_redirects": allow_redirects,
-            },
-        )
-        opened_files = []
+        self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
         if files != {}:
-            requests_like_files = {}
-            for key, item in files.items():
-                # 传文件句柄而非整体读入内存，请求完成后统一关闭
-                f = open(item.path, "rb")
-                opened_files.append(f)
-                requests_like_files[key] = (
-                    item.path,
-                    f,
-                    item.mime_type,
-                )
-            files = requests_like_files
+            files, opened_files = self._open_request_files(files)
+        else:
+            opened_files = []
         try:
             resp: httpx.Response = await self.__session.request(
                 method=method,
@@ -224,8 +202,7 @@ class HTTPXClient(BiliAPIClient):
                 follow_redirects=allow_redirects,
             )
         finally:
-            for f in opened_files:
-                f.close()
+            self._close_request_files(opened_files)
         resp_header_items = resp.headers.multi_items()
         resp_headers = {}
         for item in resp_header_items:
@@ -240,17 +217,7 @@ class HTTPXClient(BiliAPIClient):
             raw=resp.content,
             url=resp.url,
         )
-        request_log.dispatch(
-            "RESPONSE",
-            "获得响应",
-            {
-                "code": bili_api_resp.code,
-                "headers": bili_api_resp.headers,
-                "cookies": bili_api_resp.cookies,
-                "data": bili_api_resp.raw,
-                "url": bili_api_resp.url,
-            },
-        )
+        self._log_response(bili_api_resp)
         return bili_api_resp
 
     async def download_create(

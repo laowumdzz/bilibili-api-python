@@ -174,20 +174,7 @@ class CurlCFFIClient(BiliAPIClient):
             headers.pop("User-Agent")
         if headers.get("user-agent") and self.__session.impersonate != "":
             headers.pop("user-agent")
-        request_log.dispatch(
-            "REQUEST",
-            "发起请求",
-            {
-                "method": method,
-                "url": url,
-                "params": params,
-                "data": data,
-                "files": files,
-                "headers": headers,
-                "cookies": cookies,
-                "allow_redirects": allow_redirects,
-            },
-        )
+        self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
         if files != {}:
             cnt = 1
             multipart = curl_cffi.CurlMime()
@@ -228,17 +215,7 @@ class CurlCFFIClient(BiliAPIClient):
             url=resp.url,
         )
 
-        request_log.dispatch(
-            "RESPONSE",
-            "获得响应",
-            {
-                "code": bili_api_resp.code,
-                "headers": bili_api_resp.headers,
-                "cookies": bili_api_resp.cookies,
-                "data": bili_api_resp.raw,
-                "url": bili_api_resp.url,
-            },
-        )
+        self._log_response(bili_api_resp)
         return bili_api_resp
 
     async def download_create(

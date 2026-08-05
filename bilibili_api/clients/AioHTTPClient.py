@@ -174,20 +174,7 @@ class AioHTTPClient(BiliAPIClient):
 
         Note: 无需实现 data 为 str 且 files 不为空的情况。
         """
-        request_log.dispatch(
-            "REQUEST",
-            "发起请求",
-            {
-                "method": method,
-                "url": url,
-                "params": params,
-                "data": data,
-                "files": files,
-                "headers": headers,
-                "cookies": cookies,
-                "allow_redirects": allow_redirects,
-            },
-        )
+        self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
         if self.__need_update_session or self.__session is None:
             session = await self.__ensure_session()
         else:
@@ -243,17 +230,7 @@ class AioHTTPClient(BiliAPIClient):
             raw=await resp.read(),
             url=str(resp.url),
         )
-        request_log.dispatch(
-            "RESPONSE",
-            "获得响应",
-            {
-                "code": bili_api_resp.code,
-                "headers": bili_api_resp.headers,
-                "cookies": bili_api_resp.cookies,
-                "data": bili_api_resp.raw,
-                "url": bili_api_resp.url,
-            },
-        )
+        self._log_response(bili_api_resp)
         resp.release()
         await resp.wait_for_close()
         return bili_api_resp
