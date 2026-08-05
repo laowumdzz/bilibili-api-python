@@ -4,4 +4,4 @@ from bilibili_api import client
 
 
 async def test_a_get_zone():
-    return await client.get_zone()
+    await client.get_zone()

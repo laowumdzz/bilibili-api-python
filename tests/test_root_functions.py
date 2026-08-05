@@ -1,8 +1,6 @@
 # bilibili_api.__init__
 
-from bilibili_api import parse_link, get_real_url
-
-from .common import get_credential
+from bilibili_api import get_real_url, parse_link
 
 parse_link_urls = [
     "av82054919",
@@ -51,14 +49,11 @@ parse_link_urls = [
 ]
 
 
-async def test_a_parse_link():
-    print()
+async def test_a_parse_link(credential):
     for url in parse_link_urls:
-        print(f"正在测试 {url} ...")
-        result = await parse_link(url, get_credential())
-        assert result[0] != -1
-        print(f"结果: {result}")
+        result = await parse_link(url, credential)
+        assert result[0] != -1, f"解析失败：{url}"
 
 
 async def test_b_get_real_url():
-    return await get_real_url("https://b23.tv/mx00St")
+    await get_real_url("https://b23.tv/mx00St")

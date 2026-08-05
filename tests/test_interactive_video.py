@@ -1,32 +1,28 @@
 # bilibili_api.interactive_video
 
-from typing import List
+
+import pytest
 
 from bilibili_api import interactive_video
 
-from .common import get_credential
 
-v = interactive_video.InteractiveVideo("BV1Dt411N7LY", credential=get_credential())
-
-graph_version = None
-
-
-async def test_a_InteractiveVideo_get_graph_version():
-    return await v.get_graph_version()
+@pytest.fixture(scope="module")
+def v(credential) -> interactive_video.InteractiveVideo:
+    return interactive_video.InteractiveVideo("BV1Dt411N7LY", credential=credential)
 
 
-async def test_b_InteractiveVideo_get_edge_info():
-    return await v.get_edge_info()
+async def test_a_InteractiveVideo_get_graph_version(v):
+    await v.get_graph_version()
 
 
-async def test_c_get_all_nodes():
-    print()
+async def test_b_InteractiveVideo_get_edge_info(v):
+    await v.get_edge_info()
 
+
+async def test_c_get_all_nodes(v):
     edges_info = {}
 
-    queue: List[interactive_video.InteractiveNode] = [
-        await (await v.get_graph()).get_root_node()
-    ]
+    queue: list[interactive_video.InteractiveNode] = [await (await v.get_graph()).get_root_node()]
 
     def createEdge(edge_id: int):
         """
@@ -51,7 +47,6 @@ async def test_c_get_all_nodes():
             try:
                 node = await now_node.get_info()
                 title = node["title"]
-                print("当前节点: ", node["edge_id"], node["title"])
                 break
             except Exception as e:
                 retry -= 1
@@ -61,7 +56,7 @@ async def test_c_get_all_nodes():
         if node["edge_id"] not in edges_info:
             createEdge(node["edge_id"])
 
-        edges_info[node["edge_id"]]["title"] = node["title"]
+        edges_info[node["edge_id"]]["title"] = title
 
         if "questions" not in node["edges"]:
             continue
@@ -76,8 +71,8 @@ async def test_c_get_all_nodes():
             # 所有可达顶点 ID 入队
             queue.insert(0, n)
 
-    return edges_info
+    assert edges_info, "应至少遍历到一个互动视频节点"
 
 
-async def test_d_mark_score():
+async def test_d_mark_score(v):
     await v.mark_score(5)
