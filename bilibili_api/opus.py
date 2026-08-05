@@ -12,8 +12,8 @@ from . import article, dynamic
 from .exceptions import ArgsException
 from .utils import cache_pool
 from .utils.network import Api, Credential
-from .utils.picture import Picture
-from .utils.utils import get_api, img_auto_scheme
+from .utils.picture import Picture, load_pictures
+from .utils.utils import get_api
 
 API = get_api("opus")
 
@@ -197,11 +197,7 @@ class Opus:
         Returns:
             list: 图片信息
         """
-        result = []
-        images_raw_info = await self.get_images_raw_info()
-        for image in images_raw_info:
-            result.append(await Picture().load_url(url=img_auto_scheme(image["url"])))
-        return result
+        return await load_pictures(await self.get_images_raw_info())
 
     async def set_like(self, status: bool) -> dict:
         """

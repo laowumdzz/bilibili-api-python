@@ -7,18 +7,17 @@ bilibili_api.note
 from enum import Enum
 from html import unescape
 import json
-from typing import overload
 
 import yaml
-from yarl import URL
 
 from . import article
+from .article import BoldNode, ColorNode, FontSizeNode, ImageNode, Node
 from .exceptions import ApiException, ArgsException
 from .utils import cache_pool
 from .utils.initial_state import get_initial_state
 from .utils.network import Api, Credential
-from .utils.picture import Picture
-from .utils.utils import get_api, img_auto_scheme, raise_for_statement
+from .utils.picture import Picture, load_pictures
+from .utils.utils import get_api, raise_for_statement
 
 API = get_api("note")
 API_ARTICLE = get_api("article")
@@ -228,11 +227,7 @@ class Note:
             list: 图片信息
         """
 
-        result = []
-        images_raw_info = await self.get_images_raw_info()
-        for image in images_raw_info:
-            result.append(await Picture().load_url(url=img_auto_scheme(image["url"])))
-        return result
+        return await load_pictures(await self.get_images_raw_info())
 
     async def get_all(self) -> dict:
         """
@@ -416,54 +411,8 @@ class Note:
     # TODO: 笔记上传/编辑/删除
 
 
-class Node:
-    """笔记内容节点基类，子类需实现 markdown() 与 json() 序列化方法。"""
-
-    def __init__(self):
-        """节点基类无属性，无需初始化。"""
-        pass
-
-    @overload
-    def markdown(self) -> str:  # type: ignore
-        """将节点转换为 Markdown 文本。"""
-        pass
-
-    @overload
-    def json(self) -> dict:  # type: ignore
-        """将节点转换为 JSON 数据。"""
-        pass
-
-
-class BoldNode(Node):
-    """加粗节点，包裹子节点并以 **text** 形式输出。"""
-
-    def __init__(self):
-        """初始化子节点列表。"""
-        self.children = []
-
-    def markdown(self):
-        """
-        转换为 Markdown 加粗文本
-
-        Returns:
-            str: Markdown 内容，子节点为空时返回空字符串
-        """
-        t = "".join([node.markdown() for node in self.children])
-        if len(t) == 0:
-            return ""
-        return f" **{t.lstrip().rstrip()}** "
-
-    def json(self):
-        """
-        转换为 JSON 数据
-
-        Returns:
-            dict: 含 type 与 children 字段
-        """
-        return {
-            "type": "BoldNode",
-            "children": [x.json() for x in self.children],
-        }
+# 与 article 完全一致的节点类直接从 article 导入，避免重复定义。
+# DelNode / UnderlineNode / TextNode 与 article 存在行为差异，保留独立实现。
 
 
 class DelNode(Node):
@@ -518,71 +467,6 @@ class UnderlineNode(Node):
         return " $\\underline{" + text + "}$ "
 
 
-class ColorNode(Node):
-    """文字颜色节点，记录颜色值并透传子节点的 Markdown 输出。"""
-
-    def __init__(self):
-        """初始化颜色值（默认黑色）与子节点列表。"""
-        self.color = "000000"
-        self.children = []
-
-    def markdown(self):
-        """
-        转换为 Markdown 文本（Markdown 无颜色语法，仅透传子节点内容）
-
-        Returns:
-            str: Markdown 内容
-        """
-        return "".join([node.markdown() for node in self.children])
-
-    def json(self):
-        """
-        转换为 JSON 数据
-
-        Returns:
-            dict: 含 type、color 与 children 字段
-        """
-        return {
-            "type": "ColorNode",
-            "color": self.color,
-            "children": [x.json() for x in self.children],
-        }
-
-
-class FontSizeNode(Node):
-    """字号节点，记录字号并透传子节点的 Markdown 输出。"""
-
-    def __init__(self):
-        """初始化字号（默认 16）与子节点列表。"""
-        self.size = 16
-        self.children = []
-
-    def markdown(self):
-        """
-        转换为 Markdown 文本（Markdown 无字号语法，仅透传子节点内容）
-
-        Returns:
-            str: Markdown 内容
-        """
-        return "".join([node.markdown() for node in self.children])
-
-    def json(self):
-        """
-        转换为 JSON 数据
-
-        Returns:
-            dict: 含 type、size 与 children 字段
-        """
-        return {
-            "type": "FontSizeNode",
-            "size": self.size,
-            "children": [x.json() for x in self.children],
-        }
-
-
-# 特殊节点，即无子节点
-
-
 class TextNode(Node):
     """纯文本节点，无子节点。"""
 
@@ -610,35 +494,3 @@ class TextNode(Node):
             dict: 含 type 与 text 字段
         """
         return {"type": "TextNode", "text": self.text}
-
-
-class ImageNode(Node):
-    """图片节点（含分割线图片），无子节点。"""
-
-    def __init__(self):
-        """初始化图片 URL 与替代文本。"""
-        self.url = ""
-        self.alt = ""
-
-    def markdown(self):
-        """
-        转换为 Markdown 图片语法，协议缺失时自动补全 https，并转义 alt 中的方括号
-
-        Returns:
-            str: Markdown 图片文本
-        """
-        if URL(self.url).scheme == "":
-            self.url = "https:" + self.url
-        alt = self.alt.replace("[", "\\[")
-        return f"![{alt}]({self.url})\n\n"
-
-    def json(self):
-        """
-        转换为 JSON 数据，协议缺失时自动补全 https
-
-        Returns:
-            dict: 含 type、url 与 alt 字段
-        """
-        if URL(self.url).scheme == "":
-            self.url = "https:" + self.url
-        return {"type": "ImageNode", "url": self.url, "alt": self.alt}

@@ -7,6 +7,7 @@ from PIL import Image
 from yarl import URL
 
 from .network import BiliAPIFile, Credential, get_client
+from .utils import img_auto_scheme
 
 
 @dataclass
@@ -244,3 +245,19 @@ class Picture:
                 "img_size": self.size,
             }
         ]
+
+
+async def load_pictures(images_raw_info: list[dict]) -> list[Picture]:
+    """
+    根据图片原始信息列表批量加载图片并转为 Picture 类。
+
+    Args:
+        images_raw_info (list[dict]): 图片原始信息列表，每项需含 `url` 字段。
+
+    Returns:
+        list[Picture]: Picture 类的列表。
+    """
+    result = []
+    for image in images_raw_info:
+        result.append(await Picture().load_url(url=img_auto_scheme(image["url"])))
+    return result
