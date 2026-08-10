@@ -21,7 +21,7 @@ import zipfile
 from .exceptions import ApiException
 from .utils.AsyncEvent import AsyncEvent
 from .utils.network import HEADERS, Api, Credential, get_buvid, get_client
-from .utils.utils import get_api
+from .utils.utils import get_api, restricted_eval
 from .video import Video, VideoDownloadURLDataDetecter
 
 API = get_api("interactive_video")
@@ -274,7 +274,7 @@ class InteractiveJumpingCondition:
         command = command.replace("!==", "!=")
         command = command.replace("true", "True")
         command = command.replace("false", "False")
-        return eval(command)
+        return bool(restricted_eval(command))
 
     def __str__(self):
         return f"{self.__command}"
@@ -329,7 +329,7 @@ class InteractiveJumpingCommand:
                 var_name = var.get_id()
                 var_value = var.get_value()
                 var_new_value = var_new_value.replace(var_name, str(var_value))
-            var_new_value_calc = eval(var_new_value)
+            var_new_value_calc = restricted_eval(var_new_value)
             for idx, var in enumerate(self.__vars):
                 if var.get_name() == var_name_:
                     self.__vars[idx] = InteractiveVariable(

@@ -4,6 +4,7 @@ bilibili_api.utils.utils
 通用工具库。
 """
 
+import ast
 from datetime import datetime
 import json
 import os
@@ -11,7 +12,7 @@ import random
 from typing import TypeVar
 from urllib.parse import quote
 
-from ..exceptions import StatementException
+from ..exceptions import ApiException, StatementException
 
 # get_api 的模块级缓存：field -> 已解析的 JSON 文件内容。
 # API 定义文件为静态只读数据，首次加载后复用，避免每次调用重复磁盘 I/O 与 JSON 解析。
@@ -272,3 +273,117 @@ def img_auto_scheme(url: str) -> str:
     if url.startswith("//"):
         return "https:" + url
     return url
+
+
+def restricted_eval(expression: str):
+    """
+    受限表达式求值（eval() 的安全替代）。
+
+    仅支持常量（bool / int / float）与算术、比较、布尔、一元（not / 正负号）运算，
+    函数调用、属性访问、标识符引用、下标等其余语法一律拒绝。
+    用于求值来自远端、不可信任的互动视频脚本表达式，调用前须先完成
+    变量替换与 JS 语法转换（如 && -> and、|| -> or）。
+
+    Args:
+        expression (str): 待求值的表达式
+
+    Returns:
+        表达式求值结果。
+
+    Raises:
+        ApiException: 表达式语法非法或包含不允许的语法时抛出。
+    """
+    try:
+        # 去除首尾空白，避免 eval 模式下的 ast.parse 将前导空格误报为缩进错误
+        node = ast.parse(expression.strip(), mode="eval").body
+    except (SyntaxError, ValueError, RecursionError) as e:
+        raise ApiException(f"拒绝求值非法表达式: {e}") from None
+    return _eval_safe_node(node)
+
+
+def _eval_safe_node(node: ast.AST):
+    """递归求值 restricted_eval 白名单内的 AST 节点。"""
+    if isinstance(node, ast.Constant):
+        if isinstance(node.value, (bool, int, float)):
+            return node.value
+        raise ApiException(f"拒绝求值类型为 {type(node.value).__name__} 的常量")
+    if isinstance(node, ast.BoolOp):
+        # 保持 Python 短路求值语义：返回决定结果的操作数
+        if isinstance(node.op, ast.And):
+            result = True
+            for value_node in node.values:
+                result = _eval_safe_node(value_node)
+                if not result:
+                    break
+            return result
+        if isinstance(node.op, ast.Or):
+            result = False
+            for value_node in node.values:
+                result = _eval_safe_node(value_node)
+                if result:
+                    break
+            return result
+        raise ApiException(f"拒绝求值布尔运算符 {type(node.op).__name__}")
+    if isinstance(node, ast.UnaryOp):
+        operand = _eval_safe_node(node.operand)
+        if isinstance(node.op, ast.Not):
+            return not operand
+        if isinstance(node.op, ast.USub):
+            return -operand
+        if isinstance(node.op, ast.UAdd):
+            return +operand
+        raise ApiException(f"拒绝求值一元运算符 {type(node.op).__name__}")
+    if isinstance(node, ast.BinOp):
+        if isinstance(node.op, ast.Pow):
+            # 先静态检查指数，避免先求值超大指数造成计算资源耗尽
+            exponent = _safe_pow_exponent(node.right)
+            return _eval_safe_node(node.left) ** exponent
+        left = _eval_safe_node(node.left)
+        right = _eval_safe_node(node.right)
+        if isinstance(node.op, ast.Add):
+            return left + right
+        if isinstance(node.op, ast.Sub):
+            return left - right
+        if isinstance(node.op, ast.Mult):
+            return left * right
+        if isinstance(node.op, ast.Div):
+            return left / right
+        if isinstance(node.op, ast.FloorDiv):
+            return left // right
+        if isinstance(node.op, ast.Mod):
+            return left % right
+        raise ApiException(f"拒绝求值运算符 {type(node.op).__name__}")
+    if isinstance(node, ast.Compare):
+        left = _eval_safe_node(node.left)
+        for op, comparator in zip(node.ops, node.comparators):
+            right = _eval_safe_node(comparator)
+            if isinstance(op, ast.Eq):
+                passed = left == right
+            elif isinstance(op, ast.NotEq):
+                passed = left != right
+            elif isinstance(op, ast.Lt):
+                passed = left < right
+            elif isinstance(op, ast.LtE):
+                passed = left <= right
+            elif isinstance(op, ast.Gt):
+                passed = left > right
+            elif isinstance(op, ast.GtE):
+                passed = left >= right
+            else:
+                raise ApiException(f"拒绝求值比较运算符 {type(op).__name__}")
+            if not passed:
+                return False
+            left = right
+        return True
+    raise ApiException(f"拒绝求值表达式中的非法语法 {type(node).__name__}")
+
+
+def _safe_pow_exponent(node: ast.AST) -> int | float:
+    """静态校验幂运算指数：仅允许绝对值不超过 64 的数字常量，防止超大指数运算拖垮进程。"""
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
+        return -_safe_pow_exponent(node.operand)
+    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)) and not isinstance(node.value, bool):
+        if abs(node.value) > 64:
+            raise ApiException("拒绝求值指数超过 64 的幂运算")
+        return node.value
+    raise ApiException("拒绝求值指数非常量的幂运算")

@@ -11,6 +11,11 @@ import zipfile
 
 from PyQt6 import QtCore, QtGui, QtMultimedia, QtMultimediaWidgets, QtWidgets
 
+try:
+    from ...utils.utils import restricted_eval
+except ImportError:  # 以脚本方式直接运行时回退到绝对导入
+    from bilibili_api.utils.utils import restricted_eval
+
 
 class InteractiveVariable:
     """
@@ -171,7 +176,7 @@ class InteractiveJumpingCondition:
         command = command.replace("!==", "!=")
         command = command.replace("true", "True")
         command = command.replace("false", "False")
-        return eval(command)
+        return bool(restricted_eval(command))
 
     def __str__(self):
         return f"{self.__command}"
@@ -207,7 +212,7 @@ class InteractiveJumpingCommand:
                 var_name = var.get_id()
                 var_value = var.get_value()
                 var_new_value = var_new_value.replace(var_name, str(var_value))
-            var_new_value_calc = eval(var_new_value)
+            var_new_value_calc = restricted_eval(var_new_value)
             for var in self.__vars:
                 if var.get_id() == var_name_:
                     var._InteractiveVariable__var_value = var_new_value_calc  # type: ignore
