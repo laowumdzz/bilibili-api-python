@@ -24,7 +24,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # 与 [tool.pyrefly.errors] 豁免表一一对应的存量基线（只减不增）
 BASELINE: dict[str, int] = {
-    "bad-argument-count": 1,
     "bad-argument-type": 73,
     "bad-assignment": 57,
     "bad-function-definition": 18,
@@ -32,7 +31,6 @@ BASELINE: dict[str, int] = {
     "bad-override": 20,
     "bad-return": 391,
     "missing-attribute": 46,
-    "missing-import": 4,
     "not-iterable": 13,
     "unsupported-operation": 191,
 }

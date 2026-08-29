@@ -168,7 +168,6 @@ ignore-missing-imports = ["PyQt6", "fastapi", "PyInstaller", "PyInstaller.utils.
 # 2026-08-29 起引入存量棘轮（scripts/type_ratchet.py，由 scripts/lint.py 阻断式调用）：
 # 豁免类别的存量计数只减不增，新增类型错误会被棘轮拦截；下方行尾计数已按同日复核更新。
 [tool.pyrefly.errors]
-bad-argument-count = false # 存量 1
 bad-argument-type = false # 存量 73
 bad-assignment = false # 存量 57
 bad-function-definition = false # 存量 18
@@ -176,6 +175,5 @@ bad-index = false # 存量 288
 bad-override = false # 存量 20
 bad-return = false # 存量 391
 missing-attribute = false # 存量 46
-missing-import = false # 存量 4
 not-iterable = false # 存量 13
 unsupported-operation = false # 存量 191
