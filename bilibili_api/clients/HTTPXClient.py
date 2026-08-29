@@ -158,7 +158,8 @@ class HTTPXClient(BiliAPIClient):
             trust_env (bool, optional): `trust_env`. Defaults to True.
         """
         self.__trust_env = trust_env
-        self.__session.trust_env = trust_env
+        # httpx 的 trust_env 为只读属性，通过重建会话生效（与 set_verify_ssl 等一致）
+        self.__recreate_session()
 
     def set_http2(self, http2: bool = False) -> None:
         """

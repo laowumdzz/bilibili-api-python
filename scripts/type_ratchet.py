@@ -34,7 +34,6 @@ BASELINE: dict[str, int] = {
     "missing-attribute": 46,
     "missing-import": 4,
     "not-iterable": 13,
-    "read-only": 1,
     "unsupported-operation": 191,
 }
 
