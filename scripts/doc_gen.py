@@ -1,5 +1,6 @@
 # Requires Python 3.10+
 
+import importlib
 import json
 import logging
 import os
@@ -216,6 +217,20 @@ def parse(data: dict, indent: int = 0, root: bool = False):
             parse(data["node"]["names"][key], indent + 1)
 
 
+def _origin_is_private(cross_ref: str) -> bool:
+    """判断 cross_ref 的定义源是否位于私有（下划线前缀）模块。
+
+    Args:
+        cross_ref (str): mypy 缓存中的跨模块引用，如 "bilibili_api._video_download.VideoQuality"
+
+    Returns:
+        bool: 定义源的模块路径中任一层级为下划线前缀私有模块时返回 True。
+    """
+    parts = cross_ref.split(".")
+    # 去掉包名（bilibili_api）与末尾符号名，中间为模块路径各层级。
+    return any(part.startswith("_") for part in parts[1:-1])
+
+
 modules = os.listdir(f".mypy_cache/{sys.version_info.major}.{sys.version_info.minor}/bilibili_api")
 modules.sort()
 for module in modules:
@@ -233,10 +248,27 @@ for module in modules:
                 )
             )
         )
-        funcs.append((module[:-10], "bilibili_api." + module[:-10], "MODULE", 1))
+        module_name = module[: -len(".data.json")]
+        funcs.append((module_name, "bilibili_api." + module_name, "MODULE", 1))
+        try:
+            module_all = set(
+                getattr(importlib.import_module(f"bilibili_api.{module_name}"), "__all__", None) or []
+            )
+        except Exception:
+            module_all = set()
         for key in data["names"].keys():
             if key != ".class" and not key.startswith("_"):
-                parse(data["names"][key], 2)
+                node = data["names"][key]
+                if (
+                    node.get("cross_ref")
+                    and key in module_all
+                    and _origin_is_private(node["cross_ref"])
+                ):
+                    # 私有模块定义、经本模块 __all__ re-export 的公开符号：
+                    # 私有模块本身不生成文档，故在其文档归属模块（re-export 所在模块）生成章节。
+                    parse(node, 2, root=True)
+                else:
+                    parse(node, 2)
         all_funcs.append(funcs)
 
 funcs = []
@@ -272,11 +304,12 @@ for key in data["names"].keys():
                             f"{sys.version_info.major}.{sys.version_info.minor}",
                             "bilibili_api",
                             "utils",
-                            "network.data.json",
+                            "_log.data.json",
                         )
                     )
                 )["names"]["RequestLog"],
                 2,
+                root=True,
             )
         elif key == "request_settings":
             funcs.append(("request_settings", "bilibili_api.request_settings", "var", "builtins.object", 2))
@@ -288,11 +321,12 @@ for key in data["names"].keys():
                             f"{sys.version_info.major}.{sys.version_info.minor}",
                             "bilibili_api",
                             "utils",
-                            "network.data.json",
+                            "_types.data.json",
                         )
                     )
                 )["names"]["RequestSettings"],
                 2,
+                root=True,
             )
         elif key == "HEADERS":
             funcs.append(("HEADERS", "bilibili_api.HEADERS", "var", "builtins.object", 2))
@@ -408,7 +442,8 @@ def parse_docstring1(doc: str):
 
 import bilibili_api  # noqa: F401  # eval() 动态引用，不可删除
 
-# _video_* / _live_danmaku 为本仓库内部私有模块，不对外暴露，不生成文档（与现有 docs 产物保持一致）
+# _video_* / _live_danmaku 为本仓库内部私有模块，不单独生成文档；
+# 其经公开模块 __all__ re-export 的符号已在 re-export 所在模块的文档中生成章节（见收集阶段的 root=True 解析）。
 for module in all_funcs:
     if module[0][0] in [
         "_pyinstaller",
