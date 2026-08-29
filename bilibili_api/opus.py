@@ -67,7 +67,12 @@ class Opus:
             await self.get_info()
             if not await self.is_article():
                 raise ArgsException("提供的动态无对应专栏")
-        return article.Article(cvid=cache_pool.dynamic2article.get(self.__id), credential=self.credential)
+        cvid = cache_pool.dynamic2article.get(self.__id)
+        if cvid is None:
+            # 两次读缓存之间条目可能刚好过期（1 小时 TTL 窗口）被淘汰，
+            # 不得以 cvid=None 构造 Article，直接报错。
+            raise ArgsException("提供的动态无对应专栏")
+        return article.Article(cvid=cvid, credential=self.credential)
 
     def turn_to_dynamic(self) -> "dynamic.Dynamic":
         """

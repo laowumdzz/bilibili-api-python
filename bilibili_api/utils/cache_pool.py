@@ -138,7 +138,15 @@ def cached_async(ttl: float = 300.0, maxsize: int = 256) -> Callable:
             task = in_flight.get(key)
             if task is not None:
                 # 已有同键任务在执行：直接共享其结果（或异常）
-                return await task
+                try:
+                    return await task
+                except RuntimeError:
+                    # 病理路径：上一事件循环遗留的未完成任务仍留在 in-flight 表中，
+                    # 该任务绑定已销毁的旧循环，在新循环中 await 会抛 RuntimeError
+                    # （如 "Task got Future attached to a different loop"）。
+                    # 清除该残留条目后继续走下方新建任务分支，现场重跑一次自愈；
+                    # 因条目已移除，不会无限递归。
+                    in_flight.pop(key, None)
             task = asyncio.get_running_loop().create_task(func(*args, **kwargs))
             in_flight[key] = task
             try:

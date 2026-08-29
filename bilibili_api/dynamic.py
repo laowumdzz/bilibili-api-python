@@ -755,11 +755,16 @@ class Dynamic:
             await self.get_info()
             if not await self.is_article():
                 raise ArgsException("提供的动态无对应专栏")
+        cvid = cache_pool.dynamic2article.get(self.get_dynamic_id())
+        if cvid is None:
+            # 两次读缓存之间条目可能刚好过期（1 小时 TTL 窗口）被淘汰，
+            # 不得以 cvid=None 构造 Article，直接报错。
+            raise ArgsException("提供的动态无对应专栏")
         # 函数内导入以破解 dynamic ↔ article 循环依赖
         from .article import Article
 
         return Article(
-            cvid=cache_pool.dynamic2article.get(self.get_dynamic_id()),
+            cvid=cvid,
             credential=self.credential,
         )
 

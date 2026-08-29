@@ -80,6 +80,33 @@ async def test_cached_async_single_flight_distinct_keys_parallel():
     assert results == [i * 10 for i in range(4) for _ in range(3)]
 
 
+def test_cached_async_self_heals_stale_task_from_dead_loop():
+    """旧循环被销毁后残留的 in-flight 任务：等待分支报 RuntimeError 时须现场自愈重跑。
+
+    病理路径：前一事件循环中发起的调用尚未完成时循环被销毁，任务残留在
+    in-flight 表中；新循环中 await 该任务会抛 RuntimeError。装饰器应清除残留条目并重新执行。
+    """
+    block_forever = True
+
+    @cached_async(ttl=60.0, maxsize=4)
+    async def flaky_api(key: int):
+        if block_forever:
+            # 永不返回：模拟上一循环执行到一半被销毁，任务留在 in-flight 表
+            await asyncio.Event().wait()
+        return {"key": key}
+
+    # 在旧循环中发起调用，待 in-flight 登记后直接销毁循环（不等待任务完成）
+    old_loop = asyncio.new_event_loop()
+    stale_task = old_loop.create_task(flaky_api(1))
+    old_loop.run_until_complete(asyncio.sleep(0.05))
+    old_loop.close()
+    assert not stale_task.done()  # 任务确实未完成，残留在 in-flight 表中
+
+    block_forever = False  # 新循环中重跑时底层函数正常返回，验证自愈后拿到正确结果
+    result = asyncio.run(flaky_api(1))
+    assert result == {"key": 1}
+
+
 def test_module_mappings_are_bounded_ttl_caches():
     """5 个模块级映射应均为有界 + 带 TTL 的 TTLCache 实例。"""
     for name in MODULE_MAPPING_NAMES:
