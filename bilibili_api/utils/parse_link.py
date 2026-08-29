@@ -403,7 +403,7 @@ async def parse_video(
     解析视频,如果不是返回 -1，否则返回对应类
     """
     _ensure_submodules()
-    if url.host == "www.bilibili.com" and url.parts[1] == "video":
+    if url.host == "www.bilibili.com" and len(url.parts) >= 3 and url.parts[1] == "video":
         raw_video_id = url.parts[2]
         if raw_video_id[:2].upper() == "AV":
             aid = int(raw_video_id[2:])
@@ -485,7 +485,7 @@ def parse_audio(url: URL, credential: Credential) -> Audio | int:
     解析音频,如果不是返回 -1，否则返回对应类
     """
     _ensure_submodules()
-    if url.host == "www.bilibili.com" and url.parts[1] == "audio":
+    if url.host == "www.bilibili.com" and len(url.parts) >= 3 and url.parts[1] == "audio":
         if url.parts[2][:2].upper() == "AU":
             auid = int(url.parts[2][2:])
             return Audio(auid=auid, credential=credential)
@@ -497,7 +497,7 @@ def parse_audio_list(url: URL, credential: Credential) -> AudioList | int:
     解析歌单,如果不是返回 -1，否则返回对应类
     """
     _ensure_submodules()
-    if url.host == "www.bilibili.com" and url.parts[1] == "audio":
+    if url.host == "www.bilibili.com" and len(url.parts) >= 3 and url.parts[1] == "audio":
         if url.parts[2][:2].upper() == "AM":
             amid = int(url.parts[2][2:])
             return AudioList(amid=amid, credential=credential)
@@ -564,7 +564,7 @@ def parse_season_series(url: URL, credential: Credential) -> ChannelSeries | int
                                 id_=sid,
                                 credential=credential,
                             )
-    elif url.host == "www.bilibili.com":
+    elif url.host == "www.bilibili.com" and len(url.parts) >= 2:
         if url.parts[1] == "list":
             # https://www.bilibili.com/list/660303135?sid=2908236 旧版合集，不需要 real_url
             if len(url.parts) >= 3:
@@ -679,7 +679,12 @@ def parse_black_room(url: URL, credential: Credential) -> BlackRoom | int:
 
 def parse_game(url: URL, credential: Credential) -> Game | int:
     _ensure_submodules()
-    if url.host == "www.biligame.com" and url.parts[1] == "detail" and url.query.get("id") is not None:
+    if (
+        url.host == "www.biligame.com"
+        and len(url.parts) >= 2
+        and url.parts[1] == "detail"
+        and url.query.get("id") is not None
+    ):
         return Game(int(url.query["id"]), credential=credential)
     return -1
 
@@ -694,7 +699,7 @@ def parse_topic(url: URL, credential: Credential) -> Topic | int:
 
 def parse_manga(url: URL, credential: Credential) -> Manga | int:
     _ensure_submodules()
-    if url.host == "manga.bilibili.com" and url.parts[1] == "detail":
+    if url.host == "manga.bilibili.com" and len(url.parts) >= 3 and url.parts[1] == "detail":
         return Manga(int(url.parts[2][2:]), credential=credential)
     return -1
 
@@ -705,7 +710,9 @@ async def parse_festival(url: URL, credential: Credential) -> Video | int:
     if bvid is not None:  # get bvid if provided
         return Video(bvid, credential=credential)
 
-    if url.host == "www.bilibili.com" and url.parts[1] == "festival":  # use __initial_state__ to fetch
+    if (
+        url.host == "www.bilibili.com" and len(url.parts) >= 2 and url.parts[1] == "festival"
+    ):  # use __initial_state__ to fetch
         content, _content_type = await get_initial_state(url=str(url), credential=credential)
         return Video(content["videoSections"][0]["episodes"][0]["bvid"], credential=credential)  # 返回当前第一个视频
     return -1

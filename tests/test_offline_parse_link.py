@@ -223,6 +223,11 @@ def test_parse_season_series_legacy_list_and_medialist():
     )
 
 
+def test_parse_season_series_root_path_returns_failed():
+    """www.bilibili.com 根路径（无子路径段）应返回 -1 而非抛 IndexError。"""
+    assert pl.parse_season_series(u("https://www.bilibili.com/"), CREDENTIAL) == -1
+
+
 # ---------------------------------------------------------------- 空间收藏夹纯分支
 
 
@@ -321,5 +326,17 @@ async def test_parse_link_unresolvable_returns_failed(monkeypatch):
 
     monkeypatch.setattr(pl, "get_real_url", identity)
     obj, rtype = await pl.parse_link("https://www.bilibili.com/some/random/path", credential=CREDENTIAL)
+    assert obj == -1
+    assert rtype == ResourceType.FAILED
+
+
+async def test_parse_link_root_url_returns_failed(monkeypatch):
+    """www.bilibili.com 根路径应返回 (-1, FAILED) 而非 IndexError。"""
+
+    async def identity(url, credential=None):
+        return url
+
+    monkeypatch.setattr(pl, "get_real_url", identity)
+    obj, rtype = await pl.parse_link("https://www.bilibili.com/", credential=CREDENTIAL)
     assert obj == -1
     assert rtype == ResourceType.FAILED
