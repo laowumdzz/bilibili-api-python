@@ -78,6 +78,9 @@ async def get_wbi_mixin_key(credential: Credential | None = None) -> str:
 
 _CLIENT_REQUEST_PROXY_SUPPORT: dict[type, bool] = {}
 
+# JSONP 响应提取正则：模块级预编译，直接匹配原始 bytes，避免每次请求重复编译
+_JSONP_RE = re.compile(rb"^.*?({.*}).*$", re.S)
+
 
 def _client_request_supports_proxy(client: BiliAPIClient) -> bool:
     """
@@ -288,14 +291,13 @@ class Api:
         content_length = resp.headers.get("content-length")
         if content_length and int(content_length) == 0:
             return None
-        # 提取 json
-        resp_text = resp.utf8_text()
+        # 提取 json（直接解析原始 bytes，省去先全量解码为 str 的中间串）
         if "callback" in self.params:
             # JSONP 请求
-            resp_data: dict = json.loads(re.match("^.*?({.*}).*$", resp_text, re.S).group(1))
+            resp_data: dict = json.loads(_JSONP_RE.match(resp.raw).group(1))
         else:
             # JSON
-            resp_data: dict = json.loads(resp_text)
+            resp_data: dict = json.loads(resp.raw)
         if raw:
             return resp_data
         # 检查状态
