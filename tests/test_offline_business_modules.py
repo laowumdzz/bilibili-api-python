@@ -21,6 +21,7 @@ from bilibili_api.exceptions import StatementException
 from bilibili_api.garb import DLC, GarbSortType, GarbType, dlc_lottery_id
 from bilibili_api.music import MusicIndexTags, MusicOrder
 from bilibili_api.opus import Opus
+from bilibili_api.utils.picture import Picture
 
 CREDENTIAL = Credential()
 
@@ -131,6 +132,11 @@ def test_music_order_and_index_tags():
 # ---------------------------------------------------------------- audio_uploader
 
 
+def _offline_cover() -> Picture:
+    """构造一个离线占位 Picture 封面（不触网）。"""
+    return Picture(content=b"fake-image-bytes", width=600, height=600, imageType="png")
+
+
 def _valid_meta(**overrides) -> SongMeta:
     """构造一份能通过 _check_meta 的最小合法元数据。"""
     meta = SongMeta(
@@ -142,7 +148,7 @@ def _valid_meta(**overrides) -> SongMeta:
         creation_type=SongCategories.CreationType.ORIGINAL,
         language=SongCategories.Language.CHINESE,
         singer=[AuthorInfo(name="离线歌手", uid=1)],
-        cover="offline-cover.png",
+        cover=_offline_cover(),
     )
     for key, value in overrides.items():
         setattr(meta, key, value)
@@ -201,6 +207,17 @@ def test_check_meta_rejects_missing_title(tmp_path):
     uploader = _make_uploader(tmp_path, _valid_meta(title=None))
     with pytest.raises(StatementException):
         uploader._check_meta()
+
+
+def test_check_meta_rejects_non_picture_cover(tmp_path):
+    """封面非 Picture（如 URL 字符串）或缺失时应被拒绝。"""
+    uploader = _make_uploader(tmp_path, _valid_meta(cover="https://example.com/cover.png"))
+    with pytest.raises(StatementException):
+        uploader._check_meta()
+
+    uploader_no_cover = _make_uploader(tmp_path, _valid_meta(cover=None))
+    with pytest.raises(StatementException):
+        uploader_no_cover._check_meta()
 
 
 def test_check_meta_music_requires_language(tmp_path):

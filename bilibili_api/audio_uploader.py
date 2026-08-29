@@ -478,7 +478,7 @@ class AudioUploader(AsyncEvent):
     def _check_meta(self):
         raise_for_statement(self.meta.content_type is not None)
         raise_for_statement(self.meta.song_type is not None)
-        raise_for_statement(self.meta.cover is not None and isinstance(self.meta.cover, str))
+        raise_for_statement(self.meta.cover is not None and isinstance(self.meta.cover, Picture))
         if self.meta.content_type == SongCategories.ContentType.MUSIC:
             raise_for_statement(self.meta.creation_type is not None)
             raise_for_statement(self.meta.song_type is not None)
@@ -594,7 +594,7 @@ class AudioUploader(AsyncEvent):
         self.__song_id = preupload["biz_id"]
         return preupload
 
-    async def _upload_cover(self, cover: str) -> str:
+    async def _upload_cover(self, cover: Picture) -> str:
         return await upload_cover(cover, self.credential)
 
     async def _main(self):
