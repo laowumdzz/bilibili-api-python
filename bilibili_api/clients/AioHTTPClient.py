@@ -355,8 +355,15 @@ class AioHTTPClient(BiliAPIClient):
 
         Returns:
             Tuple[bytes, BiliWsMsgType]: WebSocket 数据和状态
+
+        Note: 连接已被关闭并清理（`ws_close` 后）时，返回 `(b"", BiliWsMsgType.CLOSED)`，
+        保持关闭状态可查询，不会因内部字典条目已移除而抛出 KeyError。
         """
-        msg = await self.__wss[cnt].receive()
+        ws = self.__wss.get(cnt)
+        if ws is None:
+            # 条目不存在说明连接已关闭并被清理，返回 CLOSED 保持既有语义
+            return (b"", BiliWsMsgType.CLOSED)
+        msg = await ws.receive()
         request_log.dispatch(
             "WS_RECV",
             "收到 WebSocket 数据",
@@ -366,7 +373,7 @@ class AioHTTPClient(BiliAPIClient):
 
     async def ws_send(self, cnt: int, data: bytes) -> None:
         """
-        发送 WebSocket 数据
+        发送 WebSocket 数据，连接已关闭并清理时静默跳过
 
         Args:
             cnt (int): WebSocket 连接编号
@@ -377,11 +384,15 @@ class AioHTTPClient(BiliAPIClient):
             "发送 WebSocket 数据",
             {"id": cnt, "data": data},
         )
-        return await self.__wss[cnt].send_bytes(data)
+        ws = self.__wss.get(cnt)
+        if ws is None:
+            # 条目不存在说明连接已关闭并被清理，静默跳过（与 CurlCFFIClient 行为一致）
+            return
+        await ws.send_bytes(data)
 
     async def ws_close(self, cnt: int) -> None:
         """
-        关闭 WebSocket 连接
+        关闭 WebSocket 连接，重复关闭时静默跳过，并从内部字典移除条目避免句柄泄漏。
 
         Args:
             cnt (int): WebSocket 连接编号
@@ -391,7 +402,12 @@ class AioHTTPClient(BiliAPIClient):
             "关闭 WebSocket 请求",
             {"id": cnt},
         )
-        return await self.__wss[cnt].close()
+        ws = self.__wss.pop(cnt, None)
+        if ws is None:
+            # 条目不存在说明已关闭并清理过，静默跳过，避免反复重连场景下单调累积泄漏条目。
+            # 关闭后 `ws_recv` 对不存在的条目返回 CLOSED，既有语义不受影响。
+            return
+        await ws.close()
 
     async def close(self):
         """

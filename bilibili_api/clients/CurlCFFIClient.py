@@ -338,13 +338,14 @@ class CurlCFFIClient(BiliAPIClient):
 
     async def ws_send(self, cnt: int, data: bytes) -> None:
         """
-        发送 WebSocket 数据，连接处于关闭/待关闭状态时静默跳过
+        发送 WebSocket 数据，连接处于关闭/待关闭/已清理状态时静默跳过
 
         Args:
             cnt (int): WebSocket 连接编号
             data (bytes): WebSocket 数据
         """
-        if self.__ws_need_close[cnt] or self.__ws_is_closed[cnt]:
+        # 条目不存在（已被 `ws_close` 清理）按已关闭处理，静默跳过，避免 KeyError。
+        if self.__ws_need_close.get(cnt, True) or self.__ws_is_closed.get(cnt, True):
             return
         request_log.dispatch(
             "WS_SEND",
@@ -365,17 +366,24 @@ class CurlCFFIClient(BiliAPIClient):
             Tuple[bytes, BiliWsMsgType]: WebSocket 数据和状态
 
         Note: 支持其他线程关闭不阻塞，除基础状态同时实现 CLOSING, CLOSED。
+            条目被 `ws_close` 清理后（含读取进行中被并发关闭的情况），
+            对不存在的条目按“已关闭”处理并返回 CLOSED，保持既有语义。
         """
-        ws = self.__ws[cnt]
+        ws = self.__ws.get(cnt)
+        if ws is None:
+            # 条目已被清理，连接已关闭，返回 CLOSED 而非抛 KeyError。
+            return (b"", BiliWsMsgType.CLOSED)
         chunks = []
         flags = 0
         sock_fd = ws.curl.getinfo(curl_cffi.CurlInfo.ACTIVESOCKET)
         if sock_fd == curl_cffi.aio.CURL_SOCKET_BAD:
             raise curl_cffi.WebSocketError("Invalid active socket", curl_cffi.CurlECode.NO_CONNECTION_AVAILABLE)
         while True:
-            if self.__ws_is_closed[cnt]:
+            # 用 .get() 兼容条目在读取过程中被 `ws_close` 并发清理的情况：
+            # 条目消失按已关闭处理返回 CLOSED，标志位存在时保持原有 CLOSING/CLOSED 语义。
+            if self.__ws_is_closed.get(cnt, True):
                 return (b"", BiliWsMsgType.CLOSED)
-            if self.__ws_need_close[cnt]:
+            if self.__ws_need_close.get(cnt, False):
                 return (b"", BiliWsMsgType.CLOSING)
             try:
                 loop = self.__session.loop
@@ -407,12 +415,18 @@ class CurlCFFIClient(BiliAPIClient):
 
     async def ws_close(self, cnt: int) -> None:
         """
-        关闭 WebSocket 连接，重复关闭时静默跳过
+        关闭 WebSocket 连接，重复关闭时静默跳过，并清理内部字典条目避免句柄泄漏。
 
         Args:
             cnt (int): WebSocket 连接编号
+
+        Note: 删除时机说明：先完成 terminate 与标志位置位，再移除 `__ws` / `__ws_need_close` /
+        `__ws_is_closed` 三个字典的条目；`ws_recv` / `ws_send` 对不存在的条目统一按“已关闭”
+        处理（`ws_recv` 返回 CLOSED），因此删除不会破坏关闭后状态可查询的既有语义，
+        同时避免反复重连场景下三个字典单调累积泄漏。
         """
-        if self.__ws_need_close[cnt] or self.__ws_is_closed[cnt]:
+        if cnt not in self.__ws or self.__ws_need_close.get(cnt, False) or self.__ws_is_closed.get(cnt, False):
+            # 条目不存在说明已关闭并清理过，静默跳过；标志位为关闭中/已关闭时同样跳过重复关闭。
             return
         ws = self.__ws[cnt]
         self.__ws_need_close[cnt] = True
@@ -423,6 +437,11 @@ class CurlCFFIClient(BiliAPIClient):
         )
         ws.terminate()  # It's better to terminate than close.
         self.__ws_is_closed[cnt] = True
+        # 关闭完成后移除条目，释放 WebSocket 句柄及其附属状态；
+        # 后续对同一编号的 `ws_recv` 将因条目不存在而返回 CLOSED（见 `ws_recv` 实现）。
+        del self.__ws[cnt]
+        del self.__ws_need_close[cnt]
+        del self.__ws_is_closed[cnt]
 
     async def close(self) -> None:
         """
