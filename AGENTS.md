@@ -159,8 +159,8 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx / curl_cffi）
 2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
 3. 从 `dev` 分支切出新分支开发
-4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 非阻断预览 → `pyrefly check` → 豁免错误码存量棘轮 `scripts/type_ratchet.py`）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`，类型存量变更需另跑 `uv run python scripts/type_ratchet.py` 确认基线只减不增
-5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（建议 Python ≥ 3.13）
+4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check` → 豁免错误码存量棘轮 `scripts/type_ratchet.py`）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`，类型存量变更需另跑 `uv run python scripts/type_ratchet.py` 确认基线只减不增
+5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（脚本已兼容 Python 3.10+；依赖 mypy（含 stubgen）先生成 `.mypy_cache`，且 mypy 需以忽略错误的方式运行，否则含错误模块的缓存会被 mypy 删除）
 6. 向 `dev` 分支发起 PR
 
 > 没有 uv 的环境可回退到 `pip install -r requirements.txt` + 手动装 dev 工具。

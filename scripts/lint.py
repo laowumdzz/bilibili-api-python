@@ -20,12 +20,12 @@ ret = run(["ruff", "format", "--check", "./bilibili_api/"])
 if ret != 0:
     sys.exit(ret)
 
-# 独立非阻断步骤：将检查范围扩展到 tests/ 与 scripts/ 的预览（2026-08-05 存量约 129 处违规，
-# 以 T201 print / I001 / F401 为主）；存量清零后再提升为阻断门禁，不与上述豁免债合并处理。
-print("Running ruff check on tests/ & scripts/ (non-blocking) ...")
+# 阻断步骤：检查范围扩展到 tests/ 与 scripts/（2026-08-05 存量约 129 处违规已于后续清零，
+# 由非阻断预览升级为阻断门禁）；install.py / scripts 下四个脚本的 T201 豁免在 pyproject 中有意保留。
+print("Running ruff check on tests/ & scripts/ ...")
 ret = run(["ruff", "check", "./tests/", "./scripts/"])
 if ret != 0:
-    print(f"[non-blocking] ruff check on tests/ & scripts/ exited with {ret}; gate continues.")
+    sys.exit(ret)
 
 print("Running pyrefly check ...")
 ret = run(["pyrefly", "check", "./bilibili_api/"])
