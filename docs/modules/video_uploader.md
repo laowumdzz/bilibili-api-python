@@ -274,6 +274,8 @@ meta 参数示例: (保留 video, cover, tid, aid 字段)
 
 ## class VideoPorderType()
 
+**Extend: enum.Enum**
+
 视频商业类型
 
 + FIREWORK: 花火
