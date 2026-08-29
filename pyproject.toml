@@ -121,13 +121,6 @@ ignore = [
 "bilibili_api/__init__.py" = ["I001"]
 # parse_link.py 导入顺序为避免循环引用精心设计，禁止重排
 "bilibili_api/utils/parse_link.py" = ["I001"]
-# danmaku2ass.py 为上游遗留的第三方移植代码（StarBrilliant/danmaku2ass），含大量预存在问题。
-# 追踪锚点：EXEMPT-danmaku2ass（待建追踪 issue，获授权创建后将锚点替换为 issue 编号）
-# 2026-08-05 审计：隔离配置复扫确认压制 53 处违规（F821 `_` 未导入 gettext ×41、UP031 ×10、E722 ×1、PYI056 ×1；
-# E501 已全局忽略，此处条目冗余可先行移除），差异快照见 temp/ruff-suppressed-2026-08-05.txt。
-# 2026-08-29：启用 B 规则后新增 B008 ×1、B904 ×2 属同批预存在问题（B008/B904 待豁免清零任务处理）。
-# 处理计划：违规清零后移除本豁免，无固定到期日，随清理任务推进。
-"bilibili_api/utils/danmaku2ass.py" = ["E501", "F821", "F841", "E722", "UP031", "PYI056", "B008", "B904"]
 # ivitools 为命令行工具，允许 print；PyQt6 探测导入
 "bilibili_api/tools/**" = ["T201", "F401", "E722"]
 # install.py 为命令行安装脚本，允许 print
@@ -168,12 +161,12 @@ ignore-missing-imports = ["PyQt6", "fastapi", "PyInstaller", "PyInstaller.utils.
 # 2026-08-29 起引入存量棘轮（scripts/type_ratchet.py，由 scripts/lint.py 阻断式调用）：
 # 豁免类别的存量计数只减不增，新增类型错误会被棘轮拦截；下方行尾计数已按同日复核更新。
 [tool.pyrefly.errors]
-bad-argument-type = false # 存量 73
+bad-argument-type = false # 存量 69
 bad-assignment = false # 存量 57
-bad-function-definition = false # 存量 18
-bad-index = false # 存量 288
+bad-function-definition = false # 存量 17
+bad-index = false # 存量 286
 bad-override = false # 存量 20
-bad-return = false # 存量 391
-missing-attribute = false # 存量 46
+bad-return = false # 存量 387
+missing-attribute = false # 存量 35
 not-iterable = false # 存量 13
-unsupported-operation = false # 存量 191
+unsupported-operation = false # 存量 186
