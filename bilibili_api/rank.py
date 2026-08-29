@@ -6,6 +6,7 @@ bilibili_api.rank
 
 from enum import Enum
 
+from .exceptions import ArgsException
 from .utils.network import Api, Credential
 from .utils.utils import get_api
 
@@ -193,7 +194,7 @@ async def get_rank(type_: RankType = RankType.All, day: RankDayType = RankDayTyp
         params["season_type"] = type_.value["season_type"]
         params["day"] = day.value
     else:
-        raise Exception("Unknown RankType")
+        raise ArgsException("Unknown RankType")
 
     return await Api(**api).update_params(**params).result
 

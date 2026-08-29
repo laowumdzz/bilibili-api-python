@@ -388,8 +388,8 @@ def unregister_client(name: str) -> None:
     try:
         sessions.pop(name)
         session_pool.pop(name)
-    except KeyError:
-        raise ArgsException("未找到指定请求客户端。")
+    except KeyError as e:
+        raise ArgsException("未找到指定请求客户端。") from e
 
 
 def select_client(name: str) -> None:

@@ -212,8 +212,8 @@ async def game_name2id(game_name: str) -> str:
                 method="GET",
             ).request(raw=True)
         )[3][0].removeprefix("https://wiki.biligame.com/wiki/")
-    except IndexError:
-        raise ApiException("未找到游戏")
+    except IndexError as e:
+        raise ApiException("未找到游戏") from e
     wiki_page_content = (
         await Api(
             url=f"https://wiki.biligame.com/wiki/api.php?action=query&prop=revisions&titles={wiki_page_title}&rvprop=content&format=json",

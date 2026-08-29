@@ -6,6 +6,7 @@ bilibili_api.BytesReader
 
 import struct
 
+from ..exceptions import ArgsException
 from .varint import read_varint
 
 
@@ -213,10 +214,10 @@ class BytesReader:
             pos (int): 读取起始位置。
         """
         if pos < 0:
-            raise Exception("读取位置不能小于 0")
+            raise ArgsException("读取位置不能小于 0")
 
         if pos >= len(self.__stream):
-            raise Exception("读取位置超过字节流长度")
+            raise ArgsException("读取位置超过字节流长度")
 
         self.__offset = pos
 

@@ -603,7 +603,7 @@ class Video:
         try:
             resp_data = await Api(**api, credential=self.credential).update_params(**params).request(byte=True)
         except (NetworkException, ResponseCodeException) as e:
-            raise NetworkException(-1, str(e))
+            raise NetworkException(-1, str(e)) from e
 
         return parse_danmaku_view(resp_data)
 
@@ -673,7 +673,7 @@ class Video:
             try:
                 data = await Api(**api, credential=self.credential).update_params(**params).request(byte=True)
             except (NetworkException, ResponseCodeException) as e:
-                raise NetworkException(-1, str(e))
+                raise NetworkException(-1, str(e)) from e
 
             if data == b"\x10\x01":
                 # 视频弹幕被关闭

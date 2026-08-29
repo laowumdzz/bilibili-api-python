@@ -302,7 +302,7 @@ async def request_subtitle(
 
     try:
         await subtitle_data_obj.request_ass_data_json(lan_set=lan_code)
-    except:  # noqa: E722
+    except Exception:
         await subtitle_data_obj.request_ass_data_json(lan_set=lan_name)
 
     return subtitle_data_obj
@@ -554,7 +554,7 @@ async def make_ass_file_danmakus_protobuf(
                 cid = await v.get_cid(page_index=page)  # type: ignore
         try:
             info = await v.get_info()
-        except:  # noqa: E722
+        except Exception:
             info = {"dimension": {"width": 1440, "height": 1080}}
         width = info["dimension"]["width"]
         height = info["dimension"]["height"]
@@ -629,7 +629,7 @@ async def make_ass_file_danmakus_xml(
                 cid = await v.get_cid(page)  # type: ignore
         try:
             info = await v.get_info()
-        except:  # noqa: E722
+        except Exception:
             info = {"dimension": {"width": 1440, "height": 1080}}
         width = info["dimension"]["width"]
         height = info["dimension"]["height"]

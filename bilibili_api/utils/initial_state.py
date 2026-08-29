@@ -8,11 +8,7 @@ from enum import Enum
 import json
 from urllib.parse import unquote
 
-from ..exceptions import (
-    InitialStateException,
-    NetworkException,
-    ResponseCodeException,
-)
+from ..exceptions import InitialStateException
 from .network import Api, Credential
 
 
@@ -73,22 +69,18 @@ async def get_initial_state(
 
         strict (bool): 无结果时报错。Defaults to True.
     """
+    resp = await Api(url=url, method="GET", credential=credential, comment="[获取初始化信息]").request(byte=True)
+    content = resp.decode("utf-8")
+    pos, content_type = find_json(content)
+    if pos == -1:
+        if strict:
+            raise InitialStateException("未找到相关信息")
+        return None, None
     try:
-        resp = await Api(url=url, method="GET", credential=credential, comment="[获取初始化信息]").request(byte=True)
-    except (NetworkException, ResponseCodeException) as e:
-        raise e
-    else:
-        content = resp.decode("utf-8")
-        pos, content_type = find_json(content)
-        if pos == -1:
-            if strict:
-                raise InitialStateException("未找到相关信息")
-            return None, None
-        try:
-            detected_content = content[pos:].strip().strip("\n").strip("\r")
-            if detected_content.startswith('{\\"'):  # 暂时都是字典
-                detected_content = detected_content.replace('\\"', '"')  # 存在转义且不在正文内
-            content = _parse_detected_content(detected_content)
-        except json.JSONDecodeError as e:
-            raise InitialStateException("信息解析错误") from e
-        return content, content_type
+        detected_content = content[pos:].strip().strip("\n").strip("\r")
+        if detected_content.startswith('{\\"'):  # 暂时都是字典
+            detected_content = detected_content.replace('\\"', '"')  # 存在转义且不在正文内
+        content = _parse_detected_content(detected_content)
+    except json.JSONDecodeError as e:
+        raise InitialStateException("信息解析错误") from e
+    return content, content_type

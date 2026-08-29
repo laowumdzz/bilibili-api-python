@@ -936,10 +936,10 @@ class InteractiveVideoDownloader(AsyncEvent):
                         },
                     )
                     break
-                except Exception:
+                except Exception as e:
                     retry -= 1
                     if retry < 0:
-                        raise ApiException("重试达到最大次数")
+                        raise ApiException("重试达到最大次数") from e
 
             # 检查节顶点是否在 edges_info 中，本次步骤得到 title 信息
             if node["edge_id"] not in edges_info:
@@ -1086,10 +1086,10 @@ class InteractiveVideoDownloader(AsyncEvent):
                         {"title": node["title"], "node_id": now_node.get_node_id()},
                     )
                     break
-                except Exception:
+                except Exception as e:
                     retry -= 1
                     if retry < 0:
-                        raise ApiException("重试达到最大次数")
+                        raise ApiException("重试达到最大次数") from e
 
             # 检查节顶点是否在 edges_info 中，本次步骤得到 title 信息
             if node["edge_id"] not in edges_info:
@@ -1309,10 +1309,10 @@ class InteractiveVideoDownloader(AsyncEvent):
                         {"title": node["title"], "node_id": now_node.get_node_id()},
                     )
                     break
-                except Exception:
+                except Exception as e:
                     retry -= 1
                     if retry < 0:
-                        raise ApiException("重试达到最大次数")
+                        raise ApiException("重试达到最大次数") from e
 
             # 检查节顶点是否在 edges_info 中，本次步骤得到 title 信息
             if node["edge_id"] not in edges_info:

@@ -168,8 +168,8 @@ def have_code(code: str | int) -> bool:
         code = code.lstrip("+")
         try:
             int_code = int(code)
-        except ValueError:
-            raise ValueError("地区代码参数错误")
+        except ValueError as e:
+            raise ValueError("地区代码参数错误") from e
     elif isinstance(code, int):
         int_code = code
     else:

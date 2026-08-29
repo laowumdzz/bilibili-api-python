@@ -12,7 +12,7 @@ import random
 from typing import TypeVar
 from urllib.parse import quote
 
-from ..exceptions import ApiException, StatementException
+from ..exceptions import ApiException, ArgsException, StatementException
 
 # get_api 的模块级缓存：field -> 已解析的 JSON 文件内容。
 # API 定义文件为静态只读数据，首次加载后复用，避免每次调用重复磁盘 I/O 与 JSON 解析。
@@ -176,7 +176,7 @@ ChunkT = TypeVar("ChunkT", list, list)
 
 def chunk(arr: ChunkT, size: int) -> list[ChunkT]:
     if size <= 0:
-        raise Exception('Parameter "size" must greater than 0')
+        raise ArgsException('Parameter "size" must greater than 0')
 
     result = []
     temp = []
@@ -260,7 +260,7 @@ def to_timestamps(time_start, time_end):
         return int(start_dt.timestamp()), int(end_dt.timestamp())
     except ValueError as e:
         # 捕获日期格式错误或自定义错误消息
-        raise ValueError(f"输入错误: {e}. 请确保使用 'YYYY-MM-DD' 格式，并且起始时间早于结束时间。")
+        raise ValueError(f"输入错误: {e}. 请确保使用 'YYYY-MM-DD' 格式，并且起始时间早于结束时间。") from e
 
 
 def img_auto_scheme(url: str) -> str:

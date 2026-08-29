@@ -344,7 +344,7 @@ class Api:
                     recalculate_wbi()
                     continue
                 # 不是 -403 错误直接报错
-                raise e
+                raise
         raise WbiRetryTimesExceedException()
 
     @property
