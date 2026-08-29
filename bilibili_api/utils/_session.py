@@ -222,6 +222,7 @@ class BiliAPIClient(ABC):
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,
+        proxy: str | None = None,
     ) -> BiliAPIResponse:
         """
         进行 HTTP 请求
@@ -235,11 +236,15 @@ class BiliAPIClient(ABC):
             headers (dict, optional): 请求头. Defaults to {}.
             cookies (dict, optional): 请求 Cookies. Defaults to {}.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
+            proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
         Returns:
             BiliAPIResponse: 响应对象
 
         Note: 无需实现 data 为 str 且 files 不为空的情况。
+            proxy 为 None 时沿用客户端自身配置（即全局 `request_settings` 的代理），
+            非 None 时本次请求单独使用该代理，不得修改任何全局/实例级长期配置。
+            第三方自定义客户端可不实现该参数，`Api` 请求前会自动探测并降级。
         """
         raise NotImplementedError
 

@@ -55,20 +55,27 @@ class HTTPXClient(BiliAPIClient):
             self.__session = session
         else:
             self.__session = self.__create_session()
+        # httpx 不支持单请求级代理参数，为不同代理维护实例级辅助 AsyncClient 缓存，
+        # 同一代理的后续请求复用连接池，不触碰主会话与全局配置。
+        self.__proxy_sessions: dict[str, httpx.AsyncClient] = {}
         self.__downloads: dict[int, httpx.Response] = {}
         self.__download_iter: dict[int, AsyncGenerator] = {}
         self.__download_cnt: int = 0
 
-    def __create_session(self) -> httpx.AsyncClient:
+    def __create_session(self, proxy: str | None = None) -> httpx.AsyncClient:
         """
         按当前配置创建新的 AsyncClient。
+
+        Args:
+            proxy (str | None, optional): 指定代理地址；为 None 时使用客户端当前配置的代理. Defaults to None.
 
         Returns:
             httpx.AsyncClient: 新会话
         """
+        effective_proxy = self.__proxy if proxy is None else proxy
         return httpx.AsyncClient(
             timeout=self.__timeout,
-            proxy=self.__proxy if self.__proxy != "" else None,
+            proxy=effective_proxy if effective_proxy != "" else None,
             verify=self.__verify_ssl,
             trust_env=self.__trust_env,
             http2=self.__http2,
@@ -166,6 +173,7 @@ class HTTPXClient(BiliAPIClient):
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,
+        proxy: str | None = None,
     ) -> BiliAPIResponse:
         """
         进行 HTTP 请求
@@ -179,19 +187,29 @@ class HTTPXClient(BiliAPIClient):
             headers (dict, optional): 请求头. Defaults to {}.
             cookies (dict, optional): 请求 Cookies. Defaults to {}.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
+            proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
         Returns:
             BiliAPIResponse: 响应对象
 
         Note: 无需实现 data 为 str 且 files 不为空的情况。
+            httpx 不支持单请求级代理参数（实测 0.28），因此显式传入与客户端配置不同的代理时，
+            改用按代理地址缓存的实例级辅助 AsyncClient（复用连接池，不重建主会话、不动全局配置）。
         """
         self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
+        if proxy is not None and proxy != self.__proxy:
+            session = self.__proxy_sessions.get(proxy)
+            if session is None:
+                session = self.__create_session(proxy=proxy)
+                self.__proxy_sessions[proxy] = session
+        else:
+            session = self.__session
         if files != {}:
             files, opened_files = self._open_request_files(files)
         else:
             opened_files = []
         try:
-            resp: httpx.Response = await self.__session.request(
+            resp: httpx.Response = await session.request(
                 method=method,
                 url=url,
                 params=params,
@@ -325,6 +343,9 @@ class HTTPXClient(BiliAPIClient):
 
     async def close(self) -> None:
         """
-        关闭请求客户端，即关闭封装的第三方会话对象
+        关闭请求客户端，即关闭封装的第三方会话对象（含按代理缓存的辅助会话）
         """
         await self.__session.aclose()
+        for proxy_session in self.__proxy_sessions.values():
+            await proxy_session.aclose()
+        self.__proxy_sessions.clear()

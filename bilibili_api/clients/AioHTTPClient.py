@@ -155,6 +155,7 @@ class AioHTTPClient(BiliAPIClient):
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,
+        proxy: str | None = None,
     ) -> BiliAPIResponse:
         """
         进行 HTTP 请求
@@ -168,11 +169,13 @@ class AioHTTPClient(BiliAPIClient):
             headers (dict, optional): 请求头. Defaults to {}.
             cookies (dict, optional): 请求 Cookies. Defaults to {}.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
+            proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
         Returns:
             BiliAPIResponse: 响应对象
 
         Note: 无需实现 data 为 str 且 files 不为空的情况。
+            proxy 为 None 时沿用客户端配置的代理，非 None 时仅本次请求生效（aiohttp 原生支持）。
         """
         self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
         if self.__need_update_session or self.__session is None:
@@ -203,10 +206,12 @@ class AioHTTPClient(BiliAPIClient):
                 headers=headers,
                 cookies=cookies,
                 allow_redirects=allow_redirects,
-                proxy=self.__args["proxy"],
+                # 本次请求显式指定的代理优先，否则沿用客户端配置的代理（现有行为不变）
+                proxy=proxy if proxy is not None else self.__args["proxy"],
                 timeout=aiohttp.ClientTimeout(self.__args["timeout"]),
             )
         else:
+            # 用户提供会话时不干预其默认配置，仅在显式传入代理时附加（proxy=None 与不传等价）
             resp = await session.request(
                 method=method,
                 url=url,
@@ -215,6 +220,7 @@ class AioHTTPClient(BiliAPIClient):
                 headers=headers,
                 cookies=cookies,
                 allow_redirects=allow_redirects,
+                proxy=proxy,
             )
         resp_code = resp.status
         resp_headers = {}

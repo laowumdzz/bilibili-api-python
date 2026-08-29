@@ -151,6 +151,7 @@ class CurlCFFIClient(BiliAPIClient):
         headers: dict = {},
         cookies: dict = {},
         allow_redirects: bool = True,
+        proxy: str | None = None,
     ) -> BiliAPIResponse:
         """
         进行 HTTP 请求
@@ -164,11 +165,13 @@ class CurlCFFIClient(BiliAPIClient):
             headers (dict, optional): 请求头. Defaults to {}.
             cookies (dict, optional): 请求 Cookies. Defaults to {}.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
+            proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
         Returns:
             BiliAPIResponse: 响应对象
 
         Note: 无需实现 data 为 str 且 files 不为空的情况。启用 impersonate 时会移除自定义 User-Agent。
+            proxy 为 None 时沿用会话配置的代理，非 None 时仅本次请求生效（curl_cffi 原生支持）。
         """
         if headers.get("User-Agent") and self.__session.impersonate != "":
             headers.pop("User-Agent")
@@ -197,6 +200,8 @@ class CurlCFFIClient(BiliAPIClient):
             cookies=cookies,
             allow_redirects=allow_redirects,
             multipart=multipart,
+            # 本次请求显式指定的代理优先（None 时回退到会话配置的代理，现有行为不变）
+            proxy=proxy,
         )
         if multipart:
             multipart.close()

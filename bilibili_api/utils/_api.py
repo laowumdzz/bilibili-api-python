@@ -3,6 +3,7 @@ bilibili_api.utils._api — API 请求核心。
 """
 
 from dataclasses import dataclass, field
+from inspect import Parameter, signature
 import json
 import re
 
@@ -72,6 +73,36 @@ async def get_wbi_mixin_key(credential: Credential | None = None) -> str:
         str: wbi mixin key
     """
     return await WbiManager.get_mixin_key(credential)
+
+
+_CLIENT_REQUEST_PROXY_SUPPORT: dict[type, bool] = {}
+
+
+def _client_request_supports_proxy(client: BiliAPIClient) -> bool:
+    """
+    判断请求客户端的 request 方法是否支持 proxy 关键字参数。
+
+    通过 `register_client` 注册的第三方自定义客户端可能未实现 proxy 参数，
+    因此基于签名内省探测，结果按客户端类缓存，每类仅探测一次。
+    接受 `**kwargs` 的实现视为支持。
+
+    Args:
+        client (BiliAPIClient): 请求客户端。
+
+    Returns:
+        bool: request 方法是否支持 proxy 关键字参数。
+    """
+    cls = type(client)
+    support = _CLIENT_REQUEST_PROXY_SUPPORT.get(cls)
+    if support is None:
+        try:
+            params = signature(client.request).parameters
+        except (TypeError, ValueError):
+            support = False
+        else:
+            support = "proxy" in params or any(param.kind is Parameter.VAR_KEYWORD for param in params.values())
+        _CLIENT_REQUEST_PROXY_SUPPORT[cls] = support
+    return support
 
 
 @dataclass
@@ -238,6 +269,8 @@ class Api:
             "files": self.files,
             "cookies": cookies,
             "headers": HEADERS.copy() if len(self.headers) == 0 else self.headers,
+            # 凭据携带的代理按请求传递，不再切换全局 request_settings；None 表示沿用全局代理
+            "proxy": self.credential.proxy,
         }
         # json_body
         if self.json_body:
@@ -294,12 +327,11 @@ class Api:
             "Api 发起请求",
             self.__dict__,
         )
-        legacy_proxy = None
-        if self.credential.proxy:
-            legacy_proxy = request_settings.get_proxy()
-            request_settings.set_proxy(self.credential.proxy)
         config: dict = await self._prepare_request()
         client: BiliAPIClient = get_client()
+        # 第三方自定义客户端可能未实现 proxy 参数，不支持时降级为沿用客户端配置的代理
+        if not _client_request_supports_proxy(client):
+            config.pop("proxy", None)
         resp: BiliAPIResponse = await client.request(**config)
         ret: int | str | dict | bytes | None
         if byte:
@@ -311,8 +343,6 @@ class Api:
             "Api 获得响应",
             {"result": ret},
         )
-        if self.credential.proxy:
-            request_settings.set_proxy(legacy_proxy)
         return ret
 
     async def request(self, raw: bool = False, byte: bool = False) -> int | str | dict | bytes | None:
