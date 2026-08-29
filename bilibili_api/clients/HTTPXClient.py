@@ -5,6 +5,7 @@ HTTPXClient 实现
 """
 
 import asyncio
+from collections import OrderedDict
 from collections.abc import AsyncGenerator
 
 import httpx  # pylint: disable=E0401
@@ -22,6 +23,10 @@ class HTTPXClient(BiliAPIClient):
     """
     httpx 模块请求客户端
     """
+
+    # 按代理缓存的辅助会话容量上限：代理轮换场景下防止连接池/句柄无界增长，
+    # 超出时关闭并淘汰最旧（最先插入）条目。
+    PROXY_SESSION_CAPACITY: int = 8
 
     def __init__(
         self,
@@ -57,7 +62,9 @@ class HTTPXClient(BiliAPIClient):
             self.__session = self.__create_session()
         # httpx 不支持单请求级代理参数，为不同代理维护实例级辅助 AsyncClient 缓存，
         # 同一代理的后续请求复用连接池，不触碰主会话与全局配置。
-        self.__proxy_sessions: dict[str, httpx.AsyncClient] = {}
+        # 用 OrderedDict 维护插入顺序，配合容量上限做最旧淘汰；
+        # 任何配置变更（set_xxx）会清空该缓存，避免辅助会话持旧配置。
+        self.__proxy_sessions: OrderedDict[str, httpx.AsyncClient] = OrderedDict()
         self.__downloads: dict[int, httpx.Response] = {}
         self.__download_iter: dict[int, AsyncGenerator] = {}
         self.__download_cnt: int = 0
@@ -110,6 +117,32 @@ class HTTPXClient(BiliAPIClient):
             # 当前无运行中的事件循环时无法异步关闭，交由 GC 处理
             pass
 
+    def __drop_proxy_sessions(self) -> None:
+        """
+        处置全部按代理缓存的辅助会话：异步关闭并清空缓存。
+
+        配置变更（超时 / SSL 验证 / trust_env / http2 / 代理）后辅助会话仍持旧配置，
+        必须整体作废；下次请求时按新配置惰性重建。
+        """
+        if not self.__proxy_sessions:
+            return
+        old_sessions = list(self.__proxy_sessions.values())
+        self.__proxy_sessions.clear()
+        try:
+            for session in old_sessions:
+                asyncio.get_running_loop().create_task(session.aclose())
+        except RuntimeError:
+            # 当前无运行中的事件循环时无法异步关闭，交由 GC 处理（与 __recreate_session 一致）
+            pass
+
+    async def __evict_proxy_sessions_over_capacity(self) -> None:
+        """
+        超出容量上限时关闭并淘汰最旧（最先插入）的辅助会话，避免代理轮换场景下无界增长。
+        """
+        while len(self.__proxy_sessions) > self.PROXY_SESSION_CAPACITY:
+            _, oldest = self.__proxy_sessions.popitem(last=False)
+            await oldest.aclose()
+
     def get_wrapped_session(self) -> httpx.AsyncClient:
         """
         获取封装的第三方会话对象
@@ -128,6 +161,8 @@ class HTTPXClient(BiliAPIClient):
         """
         self.__proxy = proxy
         self.__recreate_session()
+        # 主会话代理变更后，既有辅助会话的代理/配置组合全部失效，一并作废
+        self.__drop_proxy_sessions()
 
     def set_timeout(self, timeout: float = 0.0) -> None:
         """
@@ -139,6 +174,8 @@ class HTTPXClient(BiliAPIClient):
         self.__timeout = timeout
         # httpx 中 0.0 是“立即超时”，需归一化为 None 才是“不限时”
         self.__session.timeout = self.__normalize_timeout(timeout)
+        # 辅助会话的超时在创建时固化，无法随主会话原地更新，作废后按新配置惰性重建
+        self.__drop_proxy_sessions()
 
     def set_verify_ssl(self, verify_ssl: bool = True) -> None:
         """
@@ -149,6 +186,8 @@ class HTTPXClient(BiliAPIClient):
         """
         self.__verify_ssl = verify_ssl
         self.__recreate_session()
+        # 辅助会话持旧验证配置（如关闭验证后经代理的请求仍在验证证书），作废重建
+        self.__drop_proxy_sessions()
 
     def set_trust_env(self, trust_env: bool = True) -> None:
         """
@@ -160,6 +199,7 @@ class HTTPXClient(BiliAPIClient):
         self.__trust_env = trust_env
         # httpx 的 trust_env 为只读属性，通过重建会话生效（与 set_verify_ssl 等一致）
         self.__recreate_session()
+        self.__drop_proxy_sessions()
 
     def set_http2(self, http2: bool = False) -> None:
         """
@@ -170,6 +210,7 @@ class HTTPXClient(BiliAPIClient):
         """
         self.__http2 = http2
         self.__recreate_session()
+        self.__drop_proxy_sessions()
 
     def set_chunk_size(self, chunk_size: int = 262144) -> None:
         """
@@ -224,6 +265,7 @@ class HTTPXClient(BiliAPIClient):
             if session is None:
                 session = self.__create_session(proxy=proxy)
                 self.__proxy_sessions[proxy] = session
+                await self.__evict_proxy_sessions_over_capacity()
         else:
             session = self.__session
         if files != {}:

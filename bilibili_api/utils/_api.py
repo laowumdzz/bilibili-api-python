@@ -431,8 +431,12 @@ async def bili_simple_download(url: str, out: str, intro: str):
                 # 尾块不足一个缓冲阈值，体量小，直接同步写入，避免额外线程调度开销
                 file.write(buffer)
     finally:
-        # 任何异常路径（含 download_chunk 抛出非 StopAsyncIteration 异常）都需关闭下载句柄，防止泄漏
-        await client.download_close(cnt=dwn_id)
+        # 任何异常路径（含 download_chunk 抛出非 StopAsyncIteration 异常）都需关闭下载句柄，防止泄漏；
+        # 清理自身若抛异常会顶替下载主流程的原始异常、掩盖真正故障原因，故此处吞掉清理异常。
+        try:
+            await client.download_close(cnt=dwn_id)
+        except Exception:
+            pass
 
 
 ################################################## END Api ##################################################

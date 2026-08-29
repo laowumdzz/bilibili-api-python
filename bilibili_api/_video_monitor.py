@@ -322,6 +322,10 @@ class VideoOnlineMonitor(AsyncEvent):
         offset = 0
         real_data = []
         while offset < len(data):
+            # 剩余数据不足一个完整头部（16 字节头 + 2 字节 H 段）时直接终止，
+            # 守卫须先于解包，否则尾部残留 1..15 字节会先抛 struct.error 击穿接收循环。
+            if len(data) - offset < 18:
+                break
             # 头部切片须随 offset 移动，否则多包时会反复解析第一个包的头部。
             region_header = struct.unpack(">IIII", data[offset : offset + 16])
             packet_length = region_header[0]

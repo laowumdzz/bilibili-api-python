@@ -101,5 +101,23 @@ def test_unpack_empty_data():
     assert _unpack(b"") == ()
 
 
+def test_unpack_truncated_tail_does_not_raise():
+    """尾部残缺 1..17 字节（不足一个完整头部）时须安全终止，不抛 struct.error。"""
+    for length in (1, 15, 16, 17):
+        assert _unpack(b"\x00" * length) == ()
+
+
+def test_unpack_valid_packet_followed_by_truncated_tail():
+    """完整包 + 残缺尾部粘包：完整包正常解析，残缺尾部安全丢弃不抛异常。"""
+    payload = {"code": 0}
+    packet = _pack(Datapack.SERVER_VERIFY, 5, json.dumps(payload).encode())
+
+    (item,) = _unpack(packet + b"\x01\x02\x03")
+
+    assert item["type"] == Datapack.SERVER_VERIFY.value
+    assert item["number"] == 5
+    assert item["data"] == payload
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
