@@ -141,7 +141,7 @@ async def get_list_by_area(
 
         page       (int)                 : 第几页. Defaults to 1.
 
-        order      (LiveRoomOrder)       : 直播间排序方式. 访问接口后查询 `new_tags` 字段对应 `sort_type`。Defaults to "" (综合).
+        order      (str)                  : 直播间排序方式. 访问接口后查询 `new_tags` 字段对应 `sort_type` 取值, 如 "online" (人气排序). Defaults to "" (综合).
 
         credential (Credential, optional): 凭据类. Defaults to None.
 

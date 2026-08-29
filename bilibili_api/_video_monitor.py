@@ -40,7 +40,7 @@ class VideoOnlineMonitor(AsyncEvent):
 
     r.add_event_listener("ONLINE", handler2)
 
-    asyncio.get_event_loop().run_until_complete(r.connect())
+    asyncio.run(r.connect())
     ```
 
     Extends: AsyncEvent

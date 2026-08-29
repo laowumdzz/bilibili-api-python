@@ -151,8 +151,6 @@ class Opus:
             elif para["para_type"] == 2:
                 for pic in para["pic"]["pics"]:
                     url = pic["url"]
-                    pic["width"]
-                    pic["height"]
                     para_raw += f"![]({url}) \n"
             elif para["para_type"] == 7:
                 lang = para["code"]["lang"].removeprefix("language-")
