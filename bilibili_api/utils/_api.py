@@ -14,13 +14,13 @@ from ..exceptions import (
 from ._anti_spider import (
     _enc_dm,
     _enc_sign,
-    _enc_wbi,
     anti_spider_cache,
 )
 from ._credential import Credential
 from ._log import request_log
 from ._session import BiliAPIClient, get_client
 from ._types import HEADERS, BiliAPIFile, BiliAPIResponse, request_settings
+from ._wbi import WbiManager
 
 
 def refresh_buvid() -> None:
@@ -35,7 +35,7 @@ def refresh_bili_ticket() -> None:
 
 def recalculate_wbi() -> None:
     """重新计算 wbi 的参数"""
-    anti_spider_cache.invalidate_wbi()
+    WbiManager.invalidate()
 
 
 async def get_buvid() -> tuple[str, str]:
@@ -71,7 +71,7 @@ async def get_wbi_mixin_key(credential: Credential | None = None) -> str:
     Returns:
         str: wbi mixin key
     """
-    return await anti_spider_cache.get_wbi_mixin_key(credential)
+    return await WbiManager.get_mixin_key(credential)
 
 
 @dataclass
@@ -206,7 +206,7 @@ class Api:
             self.params = _enc_dm(self.params)
         # 普遍存在的 wbi 鉴权
         if self.wbi:
-            self.params = _enc_wbi(self.params, await get_wbi_mixin_key(self.credential))
+            self.params = await WbiManager.get_end_result(self.params, self.credential)
         # 自动添加 csrf
         if (not self.no_csrf and self.verify and self.method in ["POST", "DELETE", "PATCH"]) and isinstance(
             self.data, dict

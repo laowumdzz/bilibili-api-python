@@ -4,7 +4,6 @@ bilibili_api.utils._anti_spider — 反爬虫相关逻辑。
 
 ################################################## BEGIN Anti-Spider ##################################################
 import asyncio
-from functools import reduce
 import hashlib
 import hmac
 import io
@@ -26,17 +25,12 @@ from ._types import API, APPKEY, APPSEC, HEADERS
 class AntiSpiderCache:
     """线程/协程安全的反爬虫参数缓存"""
 
-    # wbi mixin key 缓存有效期（秒），过期后自动重新计算，减少对 -403 重试的依赖
-    WBI_MIXIN_KEY_TTL = 6 * 3600
-
     def __init__(self):
         """初始化各项反爬虫参数缓存为空，锁惰性创建。"""
         self._buvid3: str = ""
         self._buvid4: str = ""
         self._bili_ticket: str = ""
         self._bili_ticket_expires: int = 0
-        self._wbi_mixin_key: str = ""
-        self._wbi_mixin_key_ts: int = 0
         # 惰性创建，避免 sync() 包装器跨事件循环复用时 RuntimeError
         self._lock: asyncio.Lock | None = None
 
@@ -80,20 +74,6 @@ class AntiSpiderCache:
                     )
         return self._bili_ticket, self._bili_ticket_expires
 
-    async def get_wbi_mixin_key(self, credential=None):
-        """获取 wbi mixin key，为空或超过 TTL 时自动重新计算（双重检查锁避免并发重复获取）"""
-        if self._wbi_mixin_key == "" or time.time() - self._wbi_mixin_key_ts > self.WBI_MIXIN_KEY_TTL:
-            async with self._get_lock():
-                if self._wbi_mixin_key == "" or time.time() - self._wbi_mixin_key_ts > self.WBI_MIXIN_KEY_TTL:
-                    self._wbi_mixin_key = await _get_mixin_key(credential)
-                    self._wbi_mixin_key_ts = int(time.time())
-                    request_log.dispatch(
-                        "ANTI_SPIDER",
-                        "反爬虫",
-                        {"msg": f"获取 wbi mixin key: [{self._wbi_mixin_key}]"},
-                    )
-        return self._wbi_mixin_key
-
     def invalidate_buvid(self) -> None:
         """作废缓存的 buvid3/buvid4，下次 get_buvid() 时重新获取。"""
         self._buvid3 = ""
@@ -104,81 +84,8 @@ class AntiSpiderCache:
         self._bili_ticket = ""
         self._bili_ticket_expires = 0
 
-    def invalidate_wbi(self) -> None:
-        """作废缓存的 wbi mixin key，下次 get_wbi_mixin_key() 时重新计算。"""
-        self._wbi_mixin_key = ""
-        self._wbi_mixin_key_ts = 0
-
 
 anti_spider_cache = AntiSpiderCache()
-
-
-OE = [  # Wbi 混淆密钥索引表：按该顺序从 img_key+sub_key 拼接串中重排字符
-    46,
-    47,
-    18,
-    2,
-    53,
-    8,
-    23,
-    32,
-    15,
-    50,
-    10,
-    31,
-    58,
-    3,
-    45,
-    35,
-    27,
-    43,
-    5,
-    49,
-    33,
-    9,
-    42,
-    19,
-    29,
-    28,
-    14,
-    39,
-    12,
-    38,
-    41,
-    13,
-    37,
-    48,
-    7,
-    16,
-    24,
-    55,
-    40,
-    61,
-    26,
-    17,
-    0,
-    1,
-    60,
-    51,
-    30,
-    4,
-    22,
-    25,
-    54,
-    21,
-    56,
-    59,
-    6,
-    63,
-    57,
-    62,
-    11,
-    36,
-    20,
-    34,
-    44,
-    52,
-]
 
 
 async def _get_spi_buvid() -> dict:
@@ -523,75 +430,6 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
     data = resp.json()
     if data["code"] != 0:
         raise ExClimbWuzhiException(data["code"], data["msg"])
-
-
-async def _get_nav(credential: Credential | None = None) -> dict:
-    """
-    调用导航接口获取 wbi_img 等信息（计算 Wbi 签名的前置步骤）
-
-    Args:
-        credential (Credential | None, optional): 凭据类. Defaults to None.
-
-    Returns:
-        dict: 接口 data 字段，含 wbi_img 等
-    """
-    credential = credential if credential else Credential()
-    api = API["info"]["valid"]
-    client = get_client()
-    return (
-        await client.request(
-            method="GET",
-            url=api["url"],
-            headers=HEADERS.copy(),
-            cookies=credential.get_cookies(),
-        )
-    ).json()["data"]
-
-
-async def _get_mixin_key(credential: Credential | None = None) -> str:
-    """
-    计算 Wbi 签名所需的 mixin key：从 img_url/sub_url 提取密钥并按 OE 表重排后截取前 32 位。
-
-    Args:
-        credential (Credential | None, optional): 凭据类. Defaults to None.
-
-    Returns:
-        str: 32 位 mixin key
-    """
-    data = await _get_nav(credential=credential)
-    wbi_img: dict[str, str] = data["wbi_img"]
-
-    def split(key):
-        """从 URL 中提取文件名（去路径与扩展名）作为密钥片段。"""
-        return wbi_img.get(key).split("/")[-1].split(".")[0]
-
-    # 拼接 img_key 与 sub_key，按 OE 索引表重排字符，越界索引跳过，最后截取前 32 位
-    ae = split("img_url") + split("sub_url")
-    le = reduce(lambda s, i: s + (ae[i] if i < len(ae) else ""), OE, "")
-    return le[:32]
-
-
-def _enc_wbi(params: dict, mixin_key: str) -> dict:
-    """
-    为请求参数计算 Wbi 签名（w_rid）：追加时间戳与 web_location，按 key 排序拼接后与 mixin key 一起做 MD5。
-
-    Args:
-        params     (dict): 待签名参数，原地修改并返回
-        mixin_key  (str) : 混淆密钥，见 _get_mixin_key()
-
-    Returns:
-        dict: 追加了 wts / web_location / w_rid 的参数
-    """
-    params.pop("w_rid", None)  # 重试时先把原有 w_rid 去除
-    params["wts"] = int(time.time())
-    # web_location 因为没被列入参数可能炸一些接口 比如 video.get_ai_conclusion
-    # 但 video.get_download_url 的 web_location 不是这东西
-    # 因此此处默认提供 1550101，具体哪些一些也不清楚。
-    if not params.get("web_location"):
-        params["web_location"] = 1550101
-    Ae = urllib.parse.urlencode(sorted(params.items()))
-    params["w_rid"] = hashlib.md5((Ae + mixin_key).encode(encoding="utf-8")).hexdigest()
-    return params
 
 
 def _enc_dm(params: dict) -> dict:
