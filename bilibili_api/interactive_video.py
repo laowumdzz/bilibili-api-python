@@ -225,14 +225,14 @@ class InteractiveJumpingCondition:
     节点跳转的公式，只有公式成立才会跳转
     """
 
-    def __init__(self, var: list[InteractiveVariable] = [], condition: str = "True"):
+    def __init__(self, var: list[InteractiveVariable] | None = None, condition: str = "True"):
         """
         Args:
-            var       (List[InteractiveVariable]): 所有变量
+            var       (List[InteractiveVariable] | None): 所有变量. Defaults to None（等价于 []）。
 
             condition (str)                      : 公式
         """
-        self.__vars = var
+        self.__vars = var if var is not None else []
         self.__command = condition
 
     def get_vars(self) -> list[InteractiveVariable]:
@@ -285,14 +285,14 @@ class InteractiveJumpingCommand:
     节点跳转对变量的操作
     """
 
-    def __init__(self, var: list[InteractiveVariable] = [], command: str = ""):
+    def __init__(self, var: list[InteractiveVariable] | None = None, command: str = ""):
         """
         Args:
-            var       (List[InteractiveVariable]): 所有变量
+            var       (List[InteractiveVariable] | None): 所有变量. Defaults to None（等价于 []）。
 
             command   (str)                      : 公式
         """
-        self.__vars = var
+        self.__vars = var if var is not None else []
         self.__command = command
 
     def get_vars(self) -> list[InteractiveVariable]:
@@ -793,7 +793,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         out: str,
         self_download_func: Coroutine | None = None,
         downloader_mode: InteractiveVideoDownloaderMode = InteractiveVideoDownloaderMode.IVI,
-        stream_detecting_params: dict = {},
+        stream_detecting_params: dict | None = None,
         fetching_nodes_retry_times: int = 3,
     ):
         """
@@ -806,7 +806,7 @@ class InteractiveVideoDownloader(AsyncEvent):
 
             downloader_mode    (InteractiveVideoDownloaderMode): 下载模式
 
-            stream_detecting_params (dict)                     : `VideoDownloadURLDataDetecter` 提取最佳流时传入的参数，可控制视频及音频品质
+            stream_detecting_params (dict | None)                     : `VideoDownloadURLDataDetecter` 提取最佳流时传入的参数，可控制视频及音频品质. Defaults to None（等价于 {}）
 
             fetching_nodes_retry_times (int)                   : 获取节点时的最大重试次数
 
@@ -820,7 +820,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         self.__task = None
         self.__out = out
         self.__mode = downloader_mode
-        self.__detect_params = stream_detecting_params
+        self.__detect_params = {} if stream_detecting_params is None else stream_detecting_params
         self.__fetching_nodes_retry_times = fetching_nodes_retry_times
 
     async def __download(self, url: str, out: str) -> None:

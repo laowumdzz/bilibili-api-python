@@ -164,11 +164,11 @@ class AioHTTPClient(BiliAPIClient):
         self,
         method: str = "",
         url: str = "",
-        params: dict = {},
-        data: dict | str | bytes = {},
-        files: dict[str, BiliAPIFile] = {},
-        headers: dict = {},
-        cookies: dict = {},
+        params: dict | None = None,
+        data: dict | str | bytes | None = None,
+        files: dict[str, BiliAPIFile] | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
         allow_redirects: bool = True,
         proxy: str | None = None,
     ) -> BiliAPIResponse:
@@ -178,11 +178,11 @@ class AioHTTPClient(BiliAPIClient):
         Args:
             method (str, optional): 请求方法. Defaults to "".
             url (str, optional): 请求地址. Defaults to "".
-            params (dict, optional): 请求参数. Defaults to {}.
-            data (Union[dict, str, bytes], optional): 请求数据. Defaults to {}.
-            files (Dict[str, BiliAPIFile], optional): 请求文件. Defaults to {}.
-            headers (dict, optional): 请求头. Defaults to {}.
-            cookies (dict, optional): 请求 Cookies. Defaults to {}.
+            params (dict | None, optional): 请求参数. Defaults to None（等价于 {}）.
+            data (Union[dict, str, bytes] | None, optional): 请求数据. Defaults to None（等价于 {}）.
+            files (Dict[str, BiliAPIFile] | None, optional): 请求文件. Defaults to None（等价于 {}）.
+            headers (dict | None, optional): 请求头. Defaults to None（等价于 {}）.
+            cookies (dict | None, optional): 请求 Cookies. Defaults to None（等价于 {}）.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
             proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
@@ -192,6 +192,11 @@ class AioHTTPClient(BiliAPIClient):
         Note: 无需实现 data 为 str 且 files 不为空的情况。
             proxy 为 None 时沿用客户端配置的代理，非 None 时仅本次请求生效（aiohttp 原生支持）。
         """
+        params = {} if params is None else params
+        data = {} if data is None else data
+        files = {} if files is None else files
+        headers = {} if headers is None else headers
+        cookies = {} if cookies is None else cookies
         self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
         if self.__need_update_session or self.__session is None:
             session = await self.__ensure_session()
@@ -211,13 +216,15 @@ class AioHTTPClient(BiliAPIClient):
                     content_type=value.mime_type,
                     filename=os.path.basename(value.path),
                 )
-            data = form
+            request_data: dict | str | bytes | aiohttp.FormData = form
+        else:
+            request_data = data
         if self.__use_args:
             resp = await session.request(
                 method=method,
                 url=url,
                 params=params,
-                data=data,
+                data=request_data,
                 headers=headers,
                 cookies=cookies,
                 allow_redirects=allow_redirects,
@@ -233,7 +240,7 @@ class AioHTTPClient(BiliAPIClient):
                 method=method,
                 url=url,
                 params=params,
-                data=data,
+                data=request_data,
                 headers=headers,
                 cookies=cookies,
                 allow_redirects=allow_redirects,
@@ -261,18 +268,19 @@ class AioHTTPClient(BiliAPIClient):
     async def download_create(
         self,
         url: str = "",
-        headers: dict = {},
+        headers: dict | None = None,
     ) -> int:
         """
         开始下载文件
 
         Args:
             url     (str, optional) : 请求地址. Defaults to "".
-            headers (dict, optional): 请求头. Defaults to {}.
+            headers (dict | None, optional): 请求头. Defaults to None（等价于 {}）.
 
         Returns:
             int: 下载编号，用于后续操作。
         """
+        headers = {} if headers is None else headers
         session = await self.__ensure_session()
         self.__download_cnt += 1
         request_log.dispatch(
@@ -336,18 +344,20 @@ class AioHTTPClient(BiliAPIClient):
             {"id": cnt},
         )
 
-    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
+    async def ws_create(self, url: str = "", params: dict | None = None, headers: dict | None = None) -> int:
         """
         创建 WebSocket 连接
 
         Args:
             url (str, optional): WebSocket 地址. Defaults to "".
-            params (dict, optional): WebSocket 参数. Defaults to {}.
-            headers (dict, optional): WebSocket 头. Defaults to {}.
+            params (dict | None, optional): WebSocket 参数. Defaults to None（等价于 {}）.
+            headers (dict | None, optional): WebSocket 头. Defaults to None（等价于 {}）.
 
         Returns:
             int: WebSocket 连接编号，用于后续操作。
         """
+        params = {} if params is None else params
+        headers = {} if headers is None else headers
         session = await self.__ensure_session()
         self.__ws_cnt += 1
         request_log.dispatch(

@@ -221,13 +221,9 @@ class VideoDownloadURLDataDetecter:
         audio_max_quality: AudioQuality = AudioQuality._192K,
         video_min_quality: VideoQuality = VideoQuality._360P,
         audio_min_quality: AudioQuality = AudioQuality._64K,
-        video_accepted_qualities: list[VideoQuality] = [
-            item for _, item in VideoQuality.__dict__.items() if isinstance(item, VideoQuality)
-        ],
-        audio_accepted_qualities: list[AudioQuality] = [
-            item for _, item in AudioQuality.__dict__.items() if isinstance(item, AudioQuality)
-        ],
-        codecs: list[VideoCodecs] = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN],
+        video_accepted_qualities: list[VideoQuality] | None = None,
+        audio_accepted_qualities: list[AudioQuality] | None = None,
+        codecs: list[VideoCodecs] | None = None,
         no_dolby_video: bool = False,
         no_dolby_audio: bool = False,
         no_hdr: bool = False,
@@ -264,6 +260,16 @@ class VideoDownloadURLDataDetecter:
 
         **参数仅能在音视频流分离的情况下产生作用，flv / mp4 流下以下参数均没有作用**
         """
+        if video_accepted_qualities is None:
+            video_accepted_qualities = [
+                item for _, item in VideoQuality.__dict__.items() if isinstance(item, VideoQuality)
+            ]
+        if audio_accepted_qualities is None:
+            audio_accepted_qualities = [
+                item for _, item in AudioQuality.__dict__.items() if isinstance(item, AudioQuality)
+            ]
+        if codecs is None:
+            codecs = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN]
         if "durl" in self.__data.keys():
             if self.__data["format"].startswith("flv"):
                 # FLV 视频流
@@ -385,13 +391,9 @@ class VideoDownloadURLDataDetecter:
         audio_max_quality: AudioQuality = AudioQuality._192K,
         video_min_quality: VideoQuality = VideoQuality._360P,
         audio_min_quality: AudioQuality = AudioQuality._64K,
-        video_accepted_qualities: list[VideoQuality] = [
-            item for _, item in VideoQuality.__dict__.items() if isinstance(item, VideoQuality)
-        ],
-        audio_accepted_qualities: list[AudioQuality] = [
-            item for _, item in AudioQuality.__dict__.items() if isinstance(item, AudioQuality)
-        ],
-        codecs: list[VideoCodecs] = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN],
+        video_accepted_qualities: list[VideoQuality] | None = None,
+        audio_accepted_qualities: list[AudioQuality] | None = None,
+        codecs: list[VideoCodecs] | None = None,
         no_dolby_video: bool = False,
         no_dolby_audio: bool = False,
         no_hdr: bool = False,
@@ -428,6 +430,16 @@ class VideoDownloadURLDataDetecter:
 
         **以上参数仅能在音视频流分离的情况下产生作用，flv / mp4 试看流 / html5 mp4 流下以下参数均没有作用**
         """
+        if video_accepted_qualities is None:
+            video_accepted_qualities = [
+                item for _, item in VideoQuality.__dict__.items() if isinstance(item, VideoQuality)
+            ]
+        if audio_accepted_qualities is None:
+            audio_accepted_qualities = [
+                item for _, item in AudioQuality.__dict__.items() if isinstance(item, AudioQuality)
+            ]
+        if codecs is None:
+            codecs = [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV, VideoCodecs.UNKNOWN]
         if self.check_flv_mp4_stream():
             return self.detect_all()
         else:

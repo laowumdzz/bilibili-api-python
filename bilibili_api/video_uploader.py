@@ -308,14 +308,16 @@ class VideoPorderMeta:
         porden_type: VideoPorderType = VideoPorderType.FIREWORK,
         industry_type: VideoPorderIndustry | None = None,
         brand_name: str | None = None,
-        show_types: list[VideoPorderShowType] = [],
+        show_types: list[VideoPorderShowType] | None = None,
     ):
         self.flow_id = 1
         self.__info = porden_type.value
         if porden_type == VideoPorderType.OTHER:
             self.__info["industry"] = industry_type.value
             self.__info["brand_name"] = brand_name
-            self.__info["show_types"] = ",".join([str(show_type.value) for show_type in show_types])
+            self.__info["show_types"] = ",".join(
+                [str(show_type.value) for show_type in ([] if show_types is None else show_types)]
+            )
 
     def __dict__(self) -> dict:
         return self.__info

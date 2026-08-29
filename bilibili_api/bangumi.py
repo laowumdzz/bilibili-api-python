@@ -1474,18 +1474,22 @@ class Episode(Video):
             await self.__fetch_bangumi()
         return self.bangumi
 
-    async def set_favorite(self, add_media_ids: list[int] = [], del_media_ids: list[int] = []) -> dict:
+    async def set_favorite(
+        self, add_media_ids: list[int] | None = None, del_media_ids: list[int] | None = None
+    ) -> dict:
         """
         设置视频收藏状况。
 
         Args:
-            add_media_ids (List[int], optional): 要添加到的收藏夹 ID. Defaults to [].
+            add_media_ids (List[int] | None, optional): 要添加到的收藏夹 ID. Defaults to None（等价于 []）.
 
-            del_media_ids (List[int], optional): 要移出的收藏夹 ID. Defaults to [].
+            del_media_ids (List[int] | None, optional): 要移出的收藏夹 ID. Defaults to None（等价于 []）.
 
         Returns:
             dict: 调用 API 返回结果。
         """
+        add_media_ids = [] if add_media_ids is None else add_media_ids
+        del_media_ids = [] if del_media_ids is None else del_media_ids
         if len(add_media_ids) + len(del_media_ids) == 0:
             raise ArgsException("对收藏夹无修改。请至少提供 add_media_ids 和 del_media_ids 中的其中一个。")
 

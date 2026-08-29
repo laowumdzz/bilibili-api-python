@@ -183,11 +183,11 @@ class HTTPXClient(BiliAPIClient):
         self,
         method: str = "",
         url: str = "",
-        params: dict = {},
-        data: dict | str | bytes = {},
-        files: dict[str, BiliAPIFile] = {},
-        headers: dict = {},
-        cookies: dict = {},
+        params: dict | None = None,
+        data: dict | str | bytes | None = None,
+        files: dict[str, BiliAPIFile] | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
         allow_redirects: bool = True,
         proxy: str | None = None,
     ) -> BiliAPIResponse:
@@ -197,11 +197,11 @@ class HTTPXClient(BiliAPIClient):
         Args:
             method (str, optional): 请求方法. Defaults to "".
             url (str, optional): 请求地址. Defaults to "".
-            params (dict, optional): 请求参数. Defaults to {}.
-            data (Union[dict, str, bytes], optional): 请求数据. Defaults to {}.
-            files (Dict[str, BiliAPIFile], optional): 请求文件. Defaults to {}.
-            headers (dict, optional): 请求头. Defaults to {}.
-            cookies (dict, optional): 请求 Cookies. Defaults to {}.
+            params (dict | None, optional): 请求参数. Defaults to None（等价于 {}）.
+            data (Union[dict, str, bytes] | None, optional): 请求数据. Defaults to None（等价于 {}）.
+            files (Dict[str, BiliAPIFile] | None, optional): 请求文件. Defaults to None（等价于 {}）.
+            headers (dict | None, optional): 请求头. Defaults to None（等价于 {}）.
+            cookies (dict | None, optional): 请求 Cookies. Defaults to None（等价于 {}）.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
             proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
@@ -212,6 +212,11 @@ class HTTPXClient(BiliAPIClient):
             httpx 不支持单请求级代理参数（实测 0.28），因此显式传入与客户端配置不同的代理时，
             改用按代理地址缓存的实例级辅助 AsyncClient（复用连接池，不重建主会话、不动全局配置）。
         """
+        params = {} if params is None else params
+        data = {} if data is None else data
+        files = {} if files is None else files
+        headers = {} if headers is None else headers
+        cookies = {} if cookies is None else cookies
         self._log_request(method, url, params, data, files, headers, cookies, allow_redirects)
         if proxy is not None and proxy != self.__proxy:
             session = self.__proxy_sessions.get(proxy)
@@ -257,18 +262,19 @@ class HTTPXClient(BiliAPIClient):
     async def download_create(
         self,
         url: str = "",
-        headers: dict = {},
+        headers: dict | None = None,
     ) -> int:
         """
         开始下载文件
 
         Args:
             url     (str, optional) : 请求地址. Defaults to "".
-            headers (dict, optional): 请求头. Defaults to {}.
+            headers (dict | None, optional): 请求头. Defaults to None（等价于 {}）.
 
         Returns:
             int: 下载编号，用于后续操作。
         """
+        headers = {} if headers is None else headers
         self.__download_cnt += 1
         request_log.dispatch(
             "DWN_CREATE",

@@ -146,13 +146,13 @@ class InteractiveJumpingCondition:
     节点跳转的公式，只有公式成立才会跳转
     """
 
-    def __init__(self, var: list[InteractiveVariable] = [], condition: str = "True"):
+    def __init__(self, var: list[InteractiveVariable] | None = None, condition: str = "True"):
         """
         Args:
-            var       (List[InteractiveVariable]): 所有变量
+            var       (List[InteractiveVariable] | None): 所有变量. Defaults to None（等价于 []）
             condition (str)                      : 公式
         """
-        self.__vars = var
+        self.__vars = var if var is not None else []
         self.__command = condition
 
     def get_result(self) -> bool:
@@ -187,13 +187,13 @@ class InteractiveJumpingCommand:
     节点跳转对变量的操作
     """
 
-    def __init__(self, var: list[InteractiveVariable] = [], command: str = ""):
+    def __init__(self, var: list[InteractiveVariable] | None = None, command: str = ""):
         """
         Args:
-            var       (List[InteractiveVariable]): 所有变量
+            var       (List[InteractiveVariable] | None): 所有变量. Defaults to None（等价于 []）
             condition (str)                      : 公式
         """
-        self.__vars = var
+        self.__vars = var if var is not None else []
         self.__command = command
 
     def run_command(self) -> list["InteractiveVariable"]:

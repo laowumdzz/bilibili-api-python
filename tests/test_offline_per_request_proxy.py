@@ -44,7 +44,7 @@ class _BaseFakeClient(BiliAPIClient):
     def set_trust_env(self, trust_env: bool = True) -> None:
         pass
 
-    async def download_create(self, url: str = "", headers: dict = {}) -> int:
+    async def download_create(self, url: str = "", headers: dict | None = None) -> int:
         return 0
 
     async def download_chunk(self, cnt: int) -> bytes:
@@ -56,7 +56,7 @@ class _BaseFakeClient(BiliAPIClient):
     async def download_close(self, cnt: int) -> None:
         pass
 
-    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
+    async def ws_create(self, url: str = "", params: dict | None = None, headers: dict | None = None) -> int:
         return 0
 
     async def ws_send(self, cnt: int, data: bytes) -> None:
@@ -79,11 +79,11 @@ class ProxyCapturingClient(_BaseFakeClient):
         self,
         method: str = "",
         url: str = "",
-        params: dict = {},
-        data: dict | str | bytes = {},
-        files: dict = {},
-        headers: dict = {},
-        cookies: dict = {},
+        params: dict | None = None,
+        data: dict | str | bytes | None = None,
+        files: dict | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
         allow_redirects: bool = True,
         proxy: str | None = None,
     ) -> BiliAPIResponse:
@@ -99,11 +99,11 @@ class LegacyClient(_BaseFakeClient):
         self,
         method: str = "",
         url: str = "",
-        params: dict = {},
-        data: dict | str | bytes = {},
-        files: dict = {},
-        headers: dict = {},
-        cookies: dict = {},
+        params: dict | None = None,
+        data: dict | str | bytes | None = None,
+        files: dict | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
         allow_redirects: bool = True,
     ) -> BiliAPIResponse:
         self.records.append({"global_proxy": request_settings.get_proxy()})

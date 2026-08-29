@@ -42,7 +42,7 @@ class _FakeClient(BiliAPIClient):
     async def request(self, **kwargs) -> None:
         raise NotImplementedError
 
-    async def download_create(self, url: str = "", headers: dict = {}) -> int:
+    async def download_create(self, url: str = "", headers: dict | None = None) -> int:
         raise NotImplementedError
 
     async def download_chunk(self, cnt: int) -> bytes:
@@ -54,7 +54,7 @@ class _FakeClient(BiliAPIClient):
     async def download_close(self, cnt: int) -> None:
         pass
 
-    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
+    async def ws_create(self, url: str = "", params: dict | None = None, headers: dict | None = None) -> int:
         raise NotImplementedError
 
     async def ws_send(self, cnt: int, data: bytes) -> None:

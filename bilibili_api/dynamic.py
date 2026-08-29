@@ -219,7 +219,7 @@ class BuildDynamic:
     @staticmethod
     def create_by_args(
         text: str = "",
-        pics: list[Picture] = [],
+        pics: list[Picture] | None = None,
         topic_id: int = -1,
         vote_id: int = -1,
         live_reserve_id: int = -1,
@@ -231,7 +231,7 @@ class BuildDynamic:
         Args:
             text            (str            , optional): 动态文字. Defaults to "".
 
-            pics            (List[Picture]  , optional): 动态图片列表. Defaults to [].
+            pics            (List[Picture] | None, optional): 动态图片列表. Defaults to None（等价于 []）。
 
             topic_id        (int            , optional): 动态话题 id. Defaults to -1.
 
@@ -243,7 +243,7 @@ class BuildDynamic:
         """
         dyn = BuildDynamic()
         dyn.add_text(text)
-        dyn.add_image(pics)
+        dyn.add_image([] if pics is None else pics)
         if topic_id != -1:
             dyn.set_topic(topic_id)
         if vote_id != -1:

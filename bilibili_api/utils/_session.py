@@ -227,11 +227,11 @@ class BiliAPIClient(ABC):
         self,
         method: str = "",
         url: str = "",
-        params: dict = {},
-        data: dict | str | bytes = {},
-        files: dict[str, BiliAPIFile] = {},
-        headers: dict = {},
-        cookies: dict = {},
+        params: dict | None = None,
+        data: dict | str | bytes | None = None,
+        files: dict[str, BiliAPIFile] | None = None,
+        headers: dict | None = None,
+        cookies: dict | None = None,
         allow_redirects: bool = True,
         proxy: str | None = None,
     ) -> BiliAPIResponse:
@@ -241,11 +241,11 @@ class BiliAPIClient(ABC):
         Args:
             method (str, optional): 请求方法. Defaults to "".
             url (str, optional): 请求地址. Defaults to "".
-            params (dict, optional): 请求参数. Defaults to {}.
-            data (Union[dict, str, bytes], optional): 请求数据. Defaults to {}.
-            files (Dict[str, BiliAPIFile], optional): 请求文件. Defaults to {}.
-            headers (dict, optional): 请求头. Defaults to {}.
-            cookies (dict, optional): 请求 Cookies. Defaults to {}.
+            params (dict | None, optional): 请求参数. Defaults to None（等价于 {}）.
+            data (Union[dict, str, bytes] | None, optional): 请求数据. Defaults to None（等价于 {}）.
+            files (Dict[str, BiliAPIFile] | None, optional): 请求文件. Defaults to None（等价于 {}）.
+            headers (dict | None, optional): 请求头. Defaults to None（等价于 {}）.
+            cookies (dict | None, optional): 请求 Cookies. Defaults to None（等价于 {}）.
             allow_redirects (bool, optional): 是否允许重定向. Defaults to True.
             proxy (str | None, optional): 本次请求使用的代理地址. Defaults to None.
 
@@ -263,14 +263,14 @@ class BiliAPIClient(ABC):
     async def download_create(
         self,
         url: str = "",
-        headers: dict = {},
+        headers: dict | None = None,
     ) -> int:
         """
         开始下载文件
 
         Args:
             url     (str, optional) : 请求地址. Defaults to "".
-            headers (dict, optional): 请求头. Defaults to {}.
+            headers (dict | None, optional): 请求头. Defaults to None（等价于 {}）.
 
         Returns:
             int: 下载编号，用于后续操作。
@@ -314,14 +314,14 @@ class BiliAPIClient(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def ws_create(self, url: str = "", params: dict = {}, headers: dict = {}) -> int:
+    async def ws_create(self, url: str = "", params: dict | None = None, headers: dict | None = None) -> int:
         """
         创建 WebSocket 连接
 
         Args:
             url (str, optional): WebSocket 地址. Defaults to "".
-            params (dict, optional): WebSocket 参数. Defaults to {}.
-            headers (dict, optional): WebSocket 头. Defaults to {}.
+            params (dict | None, optional): WebSocket 参数. Defaults to None（等价于 {}）.
+            headers (dict | None, optional): WebSocket 头. Defaults to None（等价于 {}）.
 
         Returns:
             int: WebSocket 连接编号，用于后续操作。
@@ -372,15 +372,16 @@ class BiliAPIClient(ABC):
         raise NotImplementedError
 
 
-def register_client(name: str, cls: type, settings: dict = {}) -> None:
+def register_client(name: str, cls: type, settings: dict | None = None) -> None:
     """
     注册请求客户端并切换，可用于用户自定义请求客户端。
 
     Args:
         name     (str): 请求客户端类型名称，用户自定义命名。
         cls      (type): 基于 BiliAPIClient 重写后的请求客户端类。
-        settings (dict): 请求客户端在基础设置外的其他设置，键为设置名称，值为设置默认值。Defaults to {}.
+        settings (dict | None): 请求客户端在基础设置外的其他设置，键为设置名称，值为设置默认值。Defaults to None（等价于 {}）.
     """
+    settings = {} if settings is None else settings
     global sessions, session_pool, lazy_settings
     raise_for_statement(issubclass(cls, BiliAPIClient), "传入的类型需要继承 BiliAPIClient")
     sessions[name] = cls

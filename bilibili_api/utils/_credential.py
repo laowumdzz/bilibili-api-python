@@ -254,16 +254,17 @@ class Credential:
         self.ac_time_value = new_cred.ac_time_value
 
     @staticmethod
-    def from_cookies(cookies: dict = {}) -> "Credential":
+    def from_cookies(cookies: dict | None = None) -> "Credential":
         """
         从 cookies 新建 Credential
 
         Args:
-            cookies (dict, optional): Cookies. Defaults to {}.
+            cookies (dict | None, optional): Cookies. Defaults to None（等价于 {}）.
 
         Returns:
             Credential: 凭据类
         """
+        cookies = {} if cookies is None else cookies
         c = Credential()
         c.sessdata = cookies.get("SESSDATA")
         c.bili_jct = cookies.get("bili_jct")
