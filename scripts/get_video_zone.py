@@ -1,4 +1,5 @@
 import json
+import sys
 
 import httpx
 
@@ -15,4 +16,4 @@ for key, value in data.items():
     if str(key).startswith("channel_list.") and key != "channel_list.all":
         res.append(json.loads(value))
 
-print(json.dumps(res, indent=2, ensure_ascii=False))
+sys.stdout.write(json.dumps(res, indent=2, ensure_ascii=False) + "\n")
