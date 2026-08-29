@@ -812,19 +812,22 @@ class Dynamic:
                     pics = module["major"]["opus"]["pics"]
                     title = module["major"]["opus"]["title"]
                 else:
-                    # 按投稿
+                    # 按投稿：遍历 major 各条目，跳过 type 等非 dict 字段，定位含封面/跳转链接/标题的投稿数据
                     keys = module["major"].keys()
                     for key in keys:
+                        major_item = module["major"][key]
+                        if not isinstance(major_item, dict):
+                            continue
                         if (
-                            module["major"][key].get("cover") is not None
-                            and module["major"][key].get("jump_url") is not None
-                            and module["major"][key].get("title") is not None
+                            major_item.get("cover") is not None
+                            and major_item.get("jump_url") is not None
+                            and major_item.get("title") is not None
                         ):
-                            cover = module["major"][key].get("cover")
-                            jump_url = module["major"][key].get("jump_url")
+                            cover = major_item.get("cover")
+                            jump_url = major_item.get("jump_url")
                             if jump_url and jump_url.startswith("//"):
                                 jump_url = "https:" + jump_url
-                            title = module["major"][key].get("title")
+                            title = major_item.get("title")
                             return f"# {title}\n\n![]({cover})\n\n<{jump_url}>\n"
             ret = "" if title is None else "# " + title + "\n\n"
             for node in nodes:
