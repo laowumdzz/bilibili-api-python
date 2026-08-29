@@ -7,7 +7,7 @@ bilibili_api.interactive_video
 # pylint: skip-file
 
 from asyncio import CancelledError, create_task
-from collections.abc import Coroutine
+from collections.abc import Awaitable, Callable
 import copy
 import enum
 import json
@@ -653,7 +653,10 @@ class InteractiveVideo(Video):
         }
         data = parse.urlencode(form_data)
         return (
-            await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_headers(**headers).result
+            await Api(**api, credential=credential, no_csrf=True)
+            .update_data(data=data)
+            .update_headers(**headers)
+            .result
         )
 
     async def get_graph_version(self) -> int:
@@ -793,7 +796,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         self,
         video: InteractiveVideo,
         out: str,
-        self_download_func: Coroutine | None = None,
+        self_download_func: Callable[[str, str], Awaitable[None]] | None = None,
         downloader_mode: InteractiveVideoDownloaderMode = InteractiveVideoDownloaderMode.IVI,
         stream_detecting_params: dict | None = None,
         fetching_nodes_retry_times: int = 3,
@@ -804,7 +807,7 @@ class InteractiveVideoDownloader(AsyncEvent):
 
             out                (str)                           : 输出文件地址 (如果模式为 NODE_VIDEOS/NO_PACKAGING 则此参数表示所有节点视频的存放目录)
 
-            self_download_func (Coroutine)                     : 自定义下载函数（需 async 函数）. Defaults to None.
+            self_download_func (Callable[[str, str], Awaitable[None]], optional): 自定义下载函数（需 async 函数）. Defaults to None.
 
             downloader_mode    (InteractiveVideoDownloaderMode): 下载模式
 
@@ -1002,11 +1005,11 @@ class InteractiveVideoDownloader(AsyncEvent):
                 await self.__download_func(
                     streams[0].url,
                     tmp_dir_name + "/" + str(cid) + ".video.mp4",
-                )  # type: ignore
+                )
                 await self.__download_func(
                     streams[1].url,
                     tmp_dir_name + "/" + str(cid) + ".audio.mp4",
-                )  # type: ignore
+                )
 
         self.dispatch("PACKAGING")
         zip = zipfile.ZipFile(
@@ -1125,11 +1128,11 @@ class InteractiveVideoDownloader(AsyncEvent):
                 await self.__download_func(
                     streams[0].url,
                     tmp_dir_name + "/" + str(cid) + " " + item["title"] + ".video.mp4",
-                )  # type: ignore
+                )
                 await self.__download_func(
                     streams[1].url,
                     tmp_dir_name + "/" + str(cid) + " " + item["title"] + ".audio.mp4",
-                )  # type: ignore
+                )
 
         self.dispatch("SUCCESS")
 
@@ -1375,11 +1378,11 @@ class InteractiveVideoDownloader(AsyncEvent):
                 await self.__download_func(
                     streams[0].url,
                     tmp_dir_name + "/" + str(cid) + ".video.mp4",
-                )  # type: ignore
+                )
                 await self.__download_func(
                     streams[1].url,
                     tmp_dir_name + "/" + str(cid) + ".audio.mp4",
-                )  # type: ignore
+                )
 
         self.dispatch("SUCCESS")
 
