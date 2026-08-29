@@ -687,7 +687,7 @@ class Dynamic:
         self.__detail = None
         self.credential: Credential = credential if credential is not None else Credential()
 
-    def get_dynamic_id(self) -> None:
+    def get_dynamic_id(self) -> int:
         """
         获取 动态 ID。
 
