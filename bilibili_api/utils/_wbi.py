@@ -20,7 +20,7 @@ from ._types import API
 __all__ = ["WbiManager"]
 
 # 参数值过滤用翻译表：删除 "!'()*" 字符（模块级预建，热路径复用）
-_WBI_VALUE_TRANS: dict[int, None] = str.maketrans("", "", "!'()*")
+_WBI_VALUE_TRANS: dict[int, int | None] = str.maketrans("", "", "!'()*")
 
 
 class WbiManager:
