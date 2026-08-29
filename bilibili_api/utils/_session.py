@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 import asyncio
 import atexit
 from typing import Any
+from weakref import WeakKeyDictionary
 
 from ..exceptions import ArgsException
 from ._log import request_log
@@ -19,8 +20,10 @@ from ._types import (
 from .utils import raise_for_statement
 
 sessions: dict[str, type["BiliAPIClient"]] = {}
-session_pool: dict[str, dict[asyncio.AbstractEventLoop, "BiliAPIClient"]] = {}
-lazy_settings: dict[str, dict[asyncio.AbstractEventLoop, dict[str, Any]]] = {}
+# 内层使用弱引用字典：以事件循环对象为键，循环销毁后条目自动移除，
+# 避免已销毁循环对应的整套客户端无法 GC；CPython 事件循环对象支持弱引用。
+session_pool: dict[str, WeakKeyDictionary[asyncio.AbstractEventLoop, "BiliAPIClient"]] = {}
+lazy_settings: dict[str, WeakKeyDictionary[asyncio.AbstractEventLoop, dict[str, Any]]] = {}
 client_settings: dict[str, list] = {}
 selected_client: str = ""
 
@@ -29,7 +32,8 @@ def _get_current_loop() -> asyncio.AbstractEventLoop:
     """
     获取当前事件循环。
 
-    优先使用运行中的事件循环，非异步上下文调用时回退到 get_event_loop。
+    优先使用运行中的事件循环；非异步上下文调用时复用当前线程已绑定的事件循环，
+    无绑定时保持惰性创建策略新建一个并绑定，不引入跨循环对象复用。
 
     Returns:
         asyncio.AbstractEventLoop: 当前事件循环
@@ -37,7 +41,14 @@ def _get_current_loop() -> asyncio.AbstractEventLoop:
     try:
         return asyncio.get_running_loop()
     except RuntimeError:
+        pass
+    try:
         return asyncio.get_event_loop()
+    except Exception:
+        # 无可用循环时新建并绑定（等价于弃用的 get_event_loop 的原行为，且无弃用警告）
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        return loop
 
 
 class BiliAPIClient(ABC):
@@ -373,13 +384,13 @@ def register_client(name: str, cls: type, settings: dict = {}) -> None:
     global sessions, session_pool, lazy_settings
     raise_for_statement(issubclass(cls, BiliAPIClient), "传入的类型需要继承 BiliAPIClient")
     sessions[name] = cls
-    session_pool[name] = {}
+    session_pool[name] = WeakKeyDictionary()
     select_client(name)
     for key, value in settings.items():
         request_settings.set(key, value)
     client_settings[name] = DEFAULT_SETTINGS.copy()
     client_settings[name] += list(settings.keys())
-    lazy_settings[name] = {}
+    lazy_settings[name] = WeakKeyDictionary()
 
 
 def unregister_client(name: str) -> None:
@@ -389,12 +400,16 @@ def unregister_client(name: str) -> None:
     Args:
         name (str): 请求客户端类型名称，用户自定义命名。
     """
-    global sessions, session_pool
+    global sessions, session_pool, lazy_settings, client_settings
     try:
         sessions.pop(name)
         session_pool.pop(name)
     except KeyError as e:
         raise ArgsException("未找到指定请求客户端。") from e
+    # 同步清理客户端设置与惰性设置条目，避免注销后残留泄漏；
+    # 历史版本仅弹出 sessions / session_pool，遗留了这两处条目。
+    client_settings.pop(name, None)
+    lazy_settings.pop(name, None)
 
 
 def select_client(name: str) -> None:
@@ -483,7 +498,7 @@ def get_client() -> BiliAPIClient:
         session_pool[selected_client][loop] = session
         lazy_settings[selected_client][loop] = {}
     else:
-        for name, value in lazy_settings[selected_client][loop].items():
+        for name, value in lazy_settings[selected_client].get(loop, {}).items():
             try:
                 session.__getattribute__(f"set_{name}")(value)
             except AttributeError:
@@ -522,22 +537,21 @@ def set_session(session: object) -> None:
 @atexit.register
 def __clean() -> None:
     """
-    程序退出清理操作。
+    程序退出清理操作：遍历关闭全部登记过的（客户端名称, 事件循环）条目。
+
+    事件循环键以弱引用持有，已销毁的循环会自动从池中移除，
+    因此此处仅需遍历仍存活的循环条目；单个客户端关闭失败不影响其余条目。
     """
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError:
-        return
-
-    async def __clean_task():
-        for _, pool in session_pool.items():
-            for _, client in pool.items():
-                await client.close()
-
-    if loop.is_closed():
-        loop.run_until_complete(__clean_task())
-    else:
-        loop.create_task(__clean_task())  # noqa: RUF006  TODO: __clean 整体逻辑待重构
+    for pool in session_pool.values():
+        # 先快照再遍历，避免关闭过程中弱引用回调引起的字典变更干扰迭代。
+        for loop, client in list(pool.items()):
+            try:
+                if loop.is_closed():
+                    continue
+                loop.run_until_complete(client.close())
+            except Exception:
+                # 退出阶段循环可能已被销毁/关闭失败，跳过即可。
+                continue
 
 
 ################################################## END Session Management ##################################################

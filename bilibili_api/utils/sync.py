@@ -14,12 +14,29 @@ from typing import Any, TypeVar
 T = TypeVar("T")
 
 
-def __ensure_event_loop() -> None:
+def __ensure_event_loop() -> asyncio.AbstractEventLoop:
+    """
+    确保当前线程有可用的事件循环。
+
+    存在运行中的循环时直接返回；否则复用当前线程已绑定的事件循环，
+    无绑定时以 `new_event_loop()` + `set_event_loop()` 新建并绑定，
+    保持“无循环时新建、有运行中循环则复用”的原语义。
+    探测优先走 `get_running_loop()`，仅在无运行中循环时才回退到 `get_event_loop()`
+    复用已绑定循环（保留其复用语义），其异常创建行为改由显式新建替代。
+
+    Returns:
+        asyncio.AbstractEventLoop: 当前可用的事件循环。
+    """
     try:
-        asyncio.get_event_loop()
+        return asyncio.get_running_loop()
+    except RuntimeError:
+        pass
+    try:
+        return asyncio.get_event_loop()
     except Exception:
-        asyncio.set_event_loop(asyncio.new_event_loop())
-    return asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        return loop
 
 
 def sync(coroutine: Coroutine[Any, Any, T] | AsyncioFuture | ConcurrentFuture) -> T:
