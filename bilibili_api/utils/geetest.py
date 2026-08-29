@@ -294,6 +294,9 @@ class Geetest:
 
         Returns:
             str: 链接
+
+        Raises:
+            GeetestException: 未创建验证码服务（请先调用 `start_geetest_server`）
         """
         if not self.thread:
             raise GeetestException("未创建验证码服务。请调用 `start_geetest_server`")

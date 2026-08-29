@@ -37,6 +37,8 @@ gettext.install(
 )
 # 兜底：gettext.install() 仅将 `_` 注入 builtins，静态检查器无法识别；
 # 显式绑定模块级 `_` 以确保名称始终可用（未加载翻译时等价于恒等函数）。
+# 语义决策：模块级绑定在导入时固化，本模块不再支持运行时翻译注入——
+# 后续再调用 gettext.install() 或向 builtins 注入 `_` 均不会影响本模块已绑定的 `_`。
 _ = gettext.gettext
 _DEFAULT_FONT_FACE = _("(FONT) sans-serif")[7:]
 

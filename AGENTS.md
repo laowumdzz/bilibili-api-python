@@ -226,7 +226,6 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控
 | `pillow` | 图片处理 |
 | `qrcode` / `qrcode_terminal` | 二维码生成（扫码登录） |
 | `APScheduler` | 定时任务（cookies 刷新等） |
-| `colorama` | 终端彩色输出（测试） |
 | `pyyaml` | YAML 解析 |
 
 ## 不要做的事
