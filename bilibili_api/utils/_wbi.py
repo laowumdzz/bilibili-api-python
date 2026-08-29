@@ -19,6 +19,9 @@ from ._types import API
 
 __all__ = ["WbiManager"]
 
+# 参数值过滤用翻译表：删除 "!'()*" 字符（模块级预建，热路径复用）
+_WBI_VALUE_TRANS: dict[int, None] = str.maketrans("", "", "!'()*")
+
 
 class WbiManager:
     """
@@ -183,12 +186,17 @@ class WbiManager:
         Returns:
             dict[str, str | int]: params 原有参数及加密后的 `w_rid` 值
         """
-        mixin_key = cls._get_mixin_key(img_key + sub_key)
+        # 与缓存密钥一致时直接复用已计算的 mixin_key，避免每次签名重复执行 64 项重排；
+        # 自定义入参（不一致或缓存为空）时回退现场计算，保证正确性。
+        if img_key == cls._img_key and sub_key == cls._sub_key and cls._mixin_key:
+            mixin_key = cls._mixin_key
+        else:
+            mixin_key = cls._get_mixin_key(img_key + sub_key)
         params.pop("w_rid", None)  # -403 重试时先把原有 w_rid 去除
         params["wts"] = round(time.time())  # 添加 wts 字段
         params = dict(sorted(params.items()))  # 按照 key 重排参数
-        # 过滤 value 中的 "!'()*" 字符
-        params = {k: "".join(filter(lambda x: x not in "!'()*", str(v))) for k, v in params.items()}
+        # 过滤 value 中的 "!'()*" 字符（translate 表删除，替代逐字符 filter）
+        params = {k: str(v).translate(_WBI_VALUE_TRANS) for k, v in params.items()}
         query = urllib.parse.urlencode(params)  # 序列化参数
         params["w_rid"] = hashlib.md5((query + mixin_key).encode()).hexdigest()  # 计算 w_rid
         return params
