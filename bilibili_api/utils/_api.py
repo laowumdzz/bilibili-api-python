@@ -2,6 +2,7 @@
 bilibili_api.utils._api — API 请求核心。
 """
 
+import asyncio
 from dataclasses import dataclass, field
 from inspect import Parameter, signature
 import json
@@ -404,26 +405,32 @@ async def bili_simple_download(url: str, out: str, intro: str):
     tot = client.download_content_length(dwn_id)
     # 缓冲写入：累积到 64KB 再落盘，减少系统调用次数
     flush_size = 65536
-    with open(out, "wb") as file:
-        buffer = bytearray()
-        while True:
-            try:
-                chunk = await client.download_chunk(cnt=dwn_id)
-            except StopAsyncIteration:
-                # 流结束（content-length 缺失或不准确时的安全退出路径）
-                break
-            if chunk == b"":
-                break
-            buffer.extend(chunk)
-            bts += len(chunk)
-            if len(buffer) >= flush_size:
+    try:
+        with open(out, "wb") as file:
+            buffer = bytearray()
+            while True:
+                try:
+                    chunk = await client.download_chunk(cnt=dwn_id)
+                except StopAsyncIteration:
+                    # 流结束（content-length 缺失或不准确时的安全退出路径）
+                    break
+                if chunk == b"":
+                    break
+                buffer.extend(chunk)
+                bts += len(chunk)
+                if len(buffer) >= flush_size:
+                    # 大块落盘经线程池执行，避免同步阻塞 IO 占用事件循环；
+                    # 转为不可变 bytes 再交给线程，规避 bytearray 跨线程共享风险
+                    await asyncio.to_thread(file.write, bytes(buffer))
+                    buffer.clear()
+                if tot and bts >= tot:
+                    break
+            if buffer:
+                # 尾块不足一个缓冲阈值，体量小，直接同步写入，避免额外线程调度开销
                 file.write(buffer)
-                buffer.clear()
-            if tot and bts >= tot:
-                break
-        if buffer:
-            file.write(buffer)
-    await client.download_close(cnt=dwn_id)
+    finally:
+        # 任何异常路径（含 download_chunk 抛出非 StopAsyncIteration 异常）都需关闭下载句柄，防止泄漏
+        await client.download_close(cnt=dwn_id)
 
 
 ################################################## END Api ##################################################
