@@ -32,7 +32,9 @@ bilibili_api/            # 库源码
 ├── search.py            # 搜索
 ├── ...                  # 其他功能模块
 ├── utils/
-│   ├── network.py       # 核心网络层（Credential / Api / request_settings / 反爬虫）
+│   ├── network.py       # 网络层兼容 re-export（Credential / Api / request_settings）
+│   ├── _api.py          # API 请求核心（反爬逻辑入口：recalculate_wbi / get_buvid / get_bili_ticket）
+│   ├── _anti_spider.py  # 反爬虫主体实现与参数缓存（AntiSpiderCache）
 │   ├── utils.py         # get_api() / 工具函数
 │   ├── sync.py          # 同步包装器 (@sync)
 │   ├── AsyncEvent.py    # 事件系统基类
@@ -52,7 +54,8 @@ bilibili_api/            # 库源码
 └── tools/               # 附带工具（ivitools / parser）
 scripts/                 # 开发脚本
 ├── doc_gen.py           # 文档自动生成（从 docstring）
-├── lint.py              # ruff check + format + pyrefly 类型检查
+├── lint.py              # ruff check + format + pyrefly 类型检查 + 豁免错误码存量棘轮（type_ratchet）
+├── type_ratchet.py      # pyrefly 豁免错误码存量棘轮校验（基线只减不增）
 └── get_*.py             # 数据抓取脚本
 tests/                   # 测试套件（统一由 pytest 运行）
 ├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记）
@@ -82,7 +85,7 @@ API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP
 
 ### 4. 反爬虫机制
 
-`network.py` 中内置了 Wbi 签名（`recalculate_wbi`）、buvid 自动生成（`get_buvid`）、bili_ticket 获取（`get_bili_ticket`）等反爬逻辑。`request_settings` 全局管理代理、超时、SSL 验证等配置。
+Wbi 签名（`recalculate_wbi`）、buvid 自动生成（`get_buvid`）、bili_ticket 获取（`get_bili_ticket`）等反爬逻辑入口定义在 `utils/_api.py`，反爬主体实现与参数缓存（`AntiSpiderCache`）位于 `utils/_anti_spider.py`。`request_settings` 全局管理代理、超时、SSL 验证等配置。
 
 ### 5. 异步事件系统
 
@@ -92,7 +95,8 @@ API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP
 
 ### 风格
 
-- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行）
+- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行，末尾含 `scripts/type_ratchet.py` 豁免错误码存量棘轮：豁免类别的存量计数只减不增，新增类型错误会被阻断）
+- **类型存量棘轮维护义务**：修复存量类型错误后仅向下更新 `scripts/type_ratchet.py` 基线；某错误码基线清零后，须同步从 `pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表移除该条目并从脚本基线中删除，恢复默认启用
 - **下划线命名**，与现有代码保持一致
 - **全面类型注解**：函数参数、返回值均需类型注释
 - **docstring 必须完整**：每个公共函数都应有中文 docstring（Args / Returns / Raises），因为 `scripts/doc_gen.py` 会从 docstring 自动生成文档
@@ -155,7 +159,7 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx / curl_cffi）
 2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
 3. 从 `dev` 分支切出新分支开发
-4. 完成后运行 `uv run python scripts/lint.py` 或单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`
+4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 非阻断预览 → `pyrefly check` → 豁免错误码存量棘轮 `scripts/type_ratchet.py`）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`，类型存量变更需另跑 `uv run python scripts/type_ratchet.py` 确认基线只减不增
 5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（建议 Python ≥ 3.13）
 6. 向 `dev` 分支发起 PR
 

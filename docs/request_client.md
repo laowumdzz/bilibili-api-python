@@ -85,8 +85,10 @@ resp = await client.request(**config)
   - `dm_cover_img_str`: AC
   - `dm_img_inter`: {"ds":[],"wh":[0,0,0],"of":[0,0,0]}
   - `wts`: 1737376069
-  - `web_location`: 1550101
+  - `web_location`: "444.8"
   - `w_rid`: bfe6d5df5f...
+
+> 其中 `web_location` 的默认值为 `"444.8"`，由 `bilibili_api.utils._wbi.WbiManager.get_end_result` 在调用方未显式传入时自动补充；若已显式提供 `web_location`，则以传入值为准，不会被覆盖。
 
 这就是正常情况下，为了访问这个接口，需要往 `httpx.get`, `aiohttp.get`, `curl_cffi.requests.get` 等第三方库中传入的参数。在浏览器控制台抓取到的真实请求也应该长这样子。
 

@@ -1,0 +1,124 @@
+"""pyrefly 豁免错误码存量棘轮校验：存量只减不增。
+
+背景：`pyproject.toml` 的 `[tool.pyrefly.errors]` 对一批上游存量类型错误做了
+豁免（2026-08-06 审计），豁免类别中的新增类型错误不会被默认门禁拦截。本脚本
+强制启用全部豁免错误码重跑类型检查，将各错误码计数与冻结基线对比：
+
+- 计数高于基线 -> 判定为新增类型错误，退出码非零，阻断门禁；
+- 计数低于基线 -> 提示同步下调脚本中的基线（基线只允许下调，不允许上调）。
+
+基线冻结于 2026-08-29（测量方式与本脚本一致：
+`pyrefly check ./bilibili_api/ --error <豁免码列表> --output-format min-text`）。
+修复存量错误后，请仅向下更新基线；某错误码基线归零后，应从
+`pyproject.toml` 豁免表中移除该条目并从本脚本基线中删除，恢复默认启用。
+"""
+
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+
+# 仓库根目录（本脚本位于 scripts/ 下），避免依赖调用方的工作目录
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+# 与 [tool.pyrefly.errors] 豁免表一一对应的存量基线（只减不增）
+BASELINE: dict[str, int] = {
+    "bad-argument-count": 1,
+    "bad-argument-type": 73,
+    "bad-assignment": 57,
+    "bad-function-definition": 18,
+    "bad-index": 288,
+    "bad-override": 20,
+    "bad-return": 391,
+    "bad-specialization": 1,
+    "bad-unpacking": 1,
+    "missing-attribute": 46,
+    "missing-import": 4,
+    "no-matching-overload": 7,
+    "not-callable": 6,
+    "not-iterable": 13,
+    "read-only": 1,
+    "unbound-name": 5,
+    "unexpected-keyword": 2,
+    "unknown-name": 4,
+    "unsupported-operation": 191,
+}
+
+# 非豁免表内、但在强制检查中仍会现身的残留错误码（2026-08-06 审计时已清零并恢复默认启用，
+# 后因上游依赖变化重新出现，按默认严重级别处理，不纳入豁免棘轮）
+KNOWN_RESIDUAL = {"bad-override-mutable-attribute", "bad-override-param-name"}
+
+# min-text 输出中每条错误的首行形如：
+# ERROR path:line:col-range: message [error-code]
+ERROR_LINE = re.compile(r"^ERROR .+\[([a-z][a-z\-]*)\]\s*$")
+
+
+def run_pyrefly() -> str:
+    """以强制启用全部豁免错误码的方式运行 pyrefly，返回 min-text 输出。"""
+    codes = ",".join(sorted(BASELINE))
+    cmd = [
+        "pyrefly",
+        "check",
+        str(REPO_ROOT / "bilibili_api"),
+        "--error",
+        codes,
+        "--output-format",
+        "min-text",
+        "--color",
+        "never",
+    ]
+    if shutil.which("uv"):
+        proc = subprocess.run(["uv", "run", *cmd], capture_output=True, text=True)
+    else:
+        proc = subprocess.run([sys.executable, "-m", *cmd], capture_output=True, text=True)
+    return proc.stdout + proc.stderr
+
+
+def count_errors(output: str) -> dict[str, int]:
+    """统计输出中各错误码的出现次数。"""
+    counts: dict[str, int] = {}
+    for line in output.splitlines():
+        m = ERROR_LINE.match(line)
+        if m:
+            code = m.group(1)
+            counts[code] = counts.get(code, 0) + 1
+    return counts
+
+
+def main() -> int:
+    output = run_pyrefly()
+    counts = count_errors(output)
+
+    regressions: list[str] = []
+    improvements: list[str] = []
+    for code in sorted(BASELINE):
+        actual = counts.get(code, 0)
+        limit = BASELINE[code]
+        if actual > limit:
+            regressions.append(f"  {code}: 存量 {actual} > 基线 {limit}")
+        elif actual < limit:
+            improvements.append(f"  {code}: 存量 {actual} < 基线 {limit}，请下调 BASELINE")
+    unexpected = sorted(code for code in counts if code not in BASELINE and code not in KNOWN_RESIDUAL)
+
+    if regressions:
+        print("类型存量棘轮校验失败：以下豁免错误码出现新增类型错误（存量只减不增）：")
+        print("\n".join(regressions))
+        print("请修复新增的类型错误；基线不允许上调。")
+        return 1
+    if unexpected:
+        # 基线之外的错误码出现报错：可能是豁免表与本脚本失同步，或新引入的错误落在豁免类别，
+        # 一律阻断并要求人工核对，避免豁免缺口扩大。
+        print("类型存量棘轮校验失败：检测到基线之外的错误码报错，请核对豁免表与本脚本基线：")
+        for code in unexpected:
+            print(f"  {code}: {counts[code]}")
+        return 1
+    if improvements:
+        print("以下错误码存量已低于基线，请下调 scripts/type_ratchet.py 的 BASELINE（只减不增）：")
+        print("\n".join(improvements))
+    print(f"类型存量棘轮校验通过：{len(BASELINE)} 个豁免错误码存量均未超过基线。")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -211,18 +211,14 @@ def test_request_log_user_listener_independent():
 
 
 async def test_anti_spider_cache_invalidate_state():
-    """AntiSpiderCache 的失效操作应重置缓存状态（不触发网络请求）。"""
+    """AntiSpiderCache / WbiManager 的失效操作应重置缓存状态（不触发网络请求）。"""
     from bilibili_api.utils._anti_spider import AntiSpiderCache
+    from bilibili_api.utils._wbi import WbiManager
 
     cache = AntiSpiderCache()
-    cache._wbi_mixin_key = "test-key"
-    cache._wbi_mixin_key_ts = int(time.time())
     cache._bili_ticket = "test-ticket"
     cache._bili_ticket_expires = str(int(time.time()) + 100)
-    cache.invalidate_wbi()
     cache.invalidate_bili_ticket()
-    assert cache._wbi_mixin_key == ""
-    assert cache._wbi_mixin_key_ts == 0
     assert cache._bili_ticket == ""
     assert cache._bili_ticket_expires == 0
     # 锁为惰性创建，未发生并发获取时应为 None
@@ -230,3 +226,14 @@ async def test_anti_spider_cache_invalidate_state():
     lock = cache._get_lock()
     assert isinstance(lock, asyncio.Lock)
     assert cache._get_lock() is lock
+
+    # WbiManager 类级缓存的失效操作应重置密钥与时间戳（恢复原状避免影响其他用例）
+    WbiManager._img_key = "test-img-key"
+    WbiManager._sub_key = "test-sub-key"
+    WbiManager._mixin_key = "test-mixin-key"
+    WbiManager._cache_ts = time.time()
+    WbiManager.invalidate()
+    assert WbiManager._img_key == ""
+    assert WbiManager._sub_key == ""
+    assert WbiManager._mixin_key == ""
+    assert WbiManager._cache_ts == 0.0
