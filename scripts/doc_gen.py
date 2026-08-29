@@ -1,10 +1,14 @@
-# Recommend cpython 3.13
+# Requires Python 3.10+
 
+import json
+import logging
 import os
 import sys
-import json
 
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+logger = logging.getLogger("doc_gen")
 
 os.system("stubgen bilibili_api -o .doc_cache/ --include-docstrings")
 
@@ -136,12 +140,13 @@ def parse(data: dict, indent: int = 0, root: bool = False):
     if data.get("cross_ref") and not root:
         return
     elif data.get("cross_ref"):
+        # 单段引用（如标准库模块 importlib）无法按“模块.成员”解析，直接跳过。
+        if "." not in data["cross_ref"]:
+            return
         file = "/".join(data["cross_ref"].split(".")[:-1])
         jsons = json.load(
             open(
-                os.path.join(
-                    ".mypy_cache", f"{sys.version_info.major}.{sys.version_info.minor}"
-                )
+                os.path.join(".mypy_cache", f"{sys.version_info.major}.{sys.version_info.minor}")
                 + "/"
                 + file
                 + ".data.json"
@@ -176,27 +181,17 @@ def parse(data: dict, indent: int = 0, root: bool = False):
                 indent,
             ]
         )
-    elif (
-        data["node"][".class"] == "Decorator"
-        and "is_static" in data["node"]["func"]["flags"]
-    ):
+    elif data["node"][".class"] == "Decorator" and "is_static" in data["node"]["func"]["flags"]:
         funcs.append(
             [
                 data["node"]["func"]["name"],
                 data["node"]["func"]["fullname"],
-                (
-                    "async def"
-                    if "is_coroutine" in data["node"]["func"]["flags"]
-                    else "def"
-                ),
+                ("async def" if "is_coroutine" in data["node"]["func"]["flags"] else "def"),
                 "@staticmethod",
                 indent,
             ]
         )
-    elif (
-        data["node"][".class"] == "Var"
-        and not "is_suppressed_import" in data["node"]["flags"]
-    ):
+    elif data["node"][".class"] == "Var" and "is_suppressed_import" not in data["node"]["flags"]:
         if data["node"]["name"] in ignored_vars:
             return
         if indent != 1:
@@ -212,7 +207,7 @@ def parse(data: dict, indent: int = 0, root: bool = False):
         )
     else:
         return
-    if not "names" in data["node"]:
+    if "names" not in data["node"]:
         return
     if data["node"]["bases"][0] == "enum.Enum":
         return
@@ -221,9 +216,7 @@ def parse(data: dict, indent: int = 0, root: bool = False):
             parse(data["node"]["names"][key], indent + 1)
 
 
-modules = os.listdir(
-    f".mypy_cache/{sys.version_info.major}.{sys.version_info.minor}/bilibili_api"
-)
+modules = os.listdir(f".mypy_cache/{sys.version_info.major}.{sys.version_info.minor}/bilibili_api")
 modules.sort()
 for module in modules:
     if module.find("settings") != -1:
@@ -271,22 +264,36 @@ for key in data["names"].keys():
             continue
         if key == "request_log":
             funcs.append(("request_log", "bilibili_api.request_log", "var", "AsyncEvent", 2))
-            parse(json.load(open(os.path.join(
-                ".mypy_cache",
-                f"{sys.version_info.major}.{sys.version_info.minor}",
-                "bilibili_api",
-                "utils",
-                "network.data.json"
-            )))["names"]["RequestLog"], 2)
+            parse(
+                json.load(
+                    open(
+                        os.path.join(
+                            ".mypy_cache",
+                            f"{sys.version_info.major}.{sys.version_info.minor}",
+                            "bilibili_api",
+                            "utils",
+                            "network.data.json",
+                        )
+                    )
+                )["names"]["RequestLog"],
+                2,
+            )
         elif key == "request_settings":
             funcs.append(("request_settings", "bilibili_api.request_settings", "var", "builtins.object", 2))
-            parse(json.load(open(os.path.join(
-                ".mypy_cache",
-                f"{sys.version_info.major}.{sys.version_info.minor}",
-                "bilibili_api",
-                "utils",
-                "network.data.json"
-            )))["names"]["RequestSettings"], 2)
+            parse(
+                json.load(
+                    open(
+                        os.path.join(
+                            ".mypy_cache",
+                            f"{sys.version_info.major}.{sys.version_info.minor}",
+                            "bilibili_api",
+                            "utils",
+                            "network.data.json",
+                        )
+                    )
+                )["names"]["RequestSettings"],
+                2,
+            )
         elif key == "HEADERS":
             funcs.append(("HEADERS", "bilibili_api.HEADERS", "var", "builtins.object", 2))
         else:
@@ -326,7 +333,7 @@ def parse_docstring(doc: str):
                     .replace("list", "List")
                     .replace("dict", "Dict")
                     .replace("union", "Union")
-                    .replace("|", "\|")
+                    .replace("|", "\\|")
                 )
                 # print(line)
                 # assert argtype != ""
@@ -360,8 +367,6 @@ def parse_docstring1(doc: str):
     doc = doc.lstrip("\n")
     info = ""
     table = []
-    ret = ""
-    note = ""
     state = 0
     for line in doc.split("\n"):
         if line.startswith("Attribute") or line.startswith("Args"):
@@ -387,7 +392,7 @@ def parse_docstring1(doc: str):
                     .replace("list", "List")
                     .replace("dict", "Dict")
                     .replace("union", "Union")
-                    .replace("|", "\|")
+                    .replace("|", "\\|")
                 )
                 # print(line)
                 # assert argtype != ""
@@ -397,25 +402,36 @@ def parse_docstring1(doc: str):
         mdstring += "| name | type | description |\n| - | - | - |\n"
         for arg in table:
             mdstring += f"| `{arg[0]}` | `{arg[1]}` | {arg[2]} |\n"
-    mdstring += f"\n\n"
+    mdstring += "\n\n"
     return mdstring
 
 
-import bilibili_api
+import bilibili_api  # noqa: F401  # eval() 动态引用，不可删除
 
+# _video_* 为本仓库内部私有模块，不对外暴露，不生成文档（与现有 docs 产物保持一致）
 for module in all_funcs:
-    if module[0][0] in ["_pyinstaller", "tools", "exceptions", "clients"]:
+    if module[0][0] in [
+        "_pyinstaller",
+        "tools",
+        "exceptions",
+        "clients",
+        "_video_appeal",
+        "_video_download",
+        "_video_monitor",
+    ]:
         continue
     docs_dir = "./docs/modules/" + module[0][0] + ".md"
     file = open(docs_dir, "w+")
-    print("BEGIN", module[0][0])
+    logger.info("BEGIN %s", module[0][0])
     if module[0][0] != "bilibili_api":
         file.write(
             f"# Module {module[0][0]}.py\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import {module[0][0]}\n```\n\n"
         )
     else:
-        file.write(f"# Module bilibili_api\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import ...\n```\n\n")
-    print("GENERATING TOC")
+        file.write(
+            f"# Module bilibili_api\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import ...\n```\n\n"
+        )
+    logger.info("GENERATING TOC")
     last_data_class = -114514
     for idx, func in enumerate(module[1:]):
         if idx == last_data_class + 1:
@@ -423,10 +439,10 @@ for module in all_funcs:
             continue
         if func[3] == "@dataclasses.dataclass" or func[1].count("exceptions") == 1 or func[0].startswith("request_"):
             last_data_class = idx
-        file.write(
-            "  " * (func[4] - 2)
-            + f"- [{func[2]} {func[0].replace("_", "\\_")}{["()", ""][func[2] == "var"]}](#{func[2].replace(' ', '-')}-{func[0].replace("_", "\\_")})\n"
-        )
+        escaped_name = func[0].replace("_", "\\_")
+        var_suffix = "" if func[2] == "var" else "()"
+        anchor_kind = func[2].replace(" ", "-")
+        file.write("  " * (func[4] - 2) + f"- [{func[2]} {escaped_name}{var_suffix}](#{anchor_kind}-{escaped_name})\n")
     file.write("\n")
     last_data_class = -114514
     for idx, func in enumerate(module[1:]):
@@ -435,7 +451,7 @@ for module in all_funcs:
             continue
         if func[1].count("exceptions") == 1:
             func[1] = ".".join(func[1].split(".")[:2] + func[1].split(".")[3:])
-        print("PROCESS", func[1])
+        logger.info("PROCESS %s", func[1])
         if func[4] == 2:
             file.write("---\n\n")
         if func[3].startswith("@"):
@@ -444,7 +460,8 @@ for module in all_funcs:
             last_data_class = idx
         if func[0] == "__init__":
             func[0] = "\\_\\_init\\_\\_"
-        file.write("#" * func[4] + f" {func[2]} {func[0]}{["()", ""][func[2] == "var"]}\n\n")
+        var_suffix = "" if func[2] == "var" else "()"
+        file.write("#" * func[4] + f" {func[2]} {func[0]}{var_suffix}\n\n")
         if func[0] == "HEADERS":
             continue
         if func[2] == "class" or func[2] == "var":
@@ -463,4 +480,4 @@ for module in all_funcs:
             else:
                 file.write(parse_docstring(eval(f"{func[1]}.__doc__")))
     file.close()
-    print("DONE", docs_dir)
+    logger.info("DONE %s", docs_dir)
