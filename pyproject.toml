@@ -182,5 +182,4 @@ missing-import = false # 存量 4
 not-callable = false # 存量 6
 not-iterable = false # 存量 13
 read-only = false # 存量 1
-unexpected-keyword = false # 存量 2
 unsupported-operation = false # 存量 191

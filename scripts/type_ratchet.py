@@ -38,7 +38,6 @@ BASELINE: dict[str, int] = {
     "not-callable": 6,
     "not-iterable": 13,
     "read-only": 1,
-    "unexpected-keyword": 2,
     "unsupported-operation": 191,
 }
 

@@ -286,3 +286,12 @@ class BiliAPIFile:
         path      (str): 文件地址
         mime_type (str): 文件类型
     """
+
+    def __init__(self, path: str = "", mime_type: str | None = None):
+        """
+        Args:
+            path      (str): 文件地址. Defaults to "".
+            mime_type (str, optional): 文件类型. Defaults to None.
+        """
+        self.path = path
+        self.mime_type = mime_type
