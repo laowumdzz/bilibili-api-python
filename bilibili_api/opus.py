@@ -51,7 +51,7 @@ class Opus:
         """
         if cache_pool.dynamic_is_article.get(self.__id) is None:
             await self.get_info()
-        return cache_pool.dynamic_is_article[self.__id]
+        return cache_pool.dynamic_is_article.get(self.__id)
 
     async def turn_to_article(self) -> "article.Article":
         """
@@ -67,7 +67,7 @@ class Opus:
             await self.get_info()
             if not await self.is_article():
                 raise ArgsException("提供的动态无对应专栏")
-        return article.Article(cvid=cache_pool.dynamic2article[self.__id], credential=self.credential)
+        return article.Article(cvid=cache_pool.dynamic2article.get(self.__id), credential=self.credential)
 
     def turn_to_dynamic(self) -> "dynamic.Dynamic":
         """
@@ -97,11 +97,13 @@ class Opus:
             self.__info = await Api(**api, credential=self.credential).update_params(**params).result
         if self.__info.get("fallback"):
             raise ArgsException("传入的 opus_id 不正确")
-        cache_pool.dynamic_is_article[self.__id] = self.__info["item"]["basic"]["comment_type"] == 12
-        if cache_pool.dynamic_is_article[self.__id]:
-            cache_pool.dynamic2article[self.__id] = int(self.__info["item"]["basic"]["rid_str"])
-            cache_pool.article2dynamic[cache_pool.dynamic2article[self.__id]] = self.__id
-        cache_pool.dynamic_is_opus[self.__id] = True
+        is_article = self.__info["item"]["basic"]["comment_type"] == 12
+        cache_pool.dynamic_is_article.set(self.__id, is_article)
+        if is_article:
+            cvid = int(self.__info["item"]["basic"]["rid_str"])
+            cache_pool.dynamic2article.set(self.__id, cvid)
+            cache_pool.article2dynamic.set(cvid, self.__id)
+        cache_pool.dynamic_is_opus.set(self.__id, True)
         return self.__info
 
     async def markdown(self) -> str:

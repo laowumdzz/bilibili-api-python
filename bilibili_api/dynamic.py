@@ -716,15 +716,17 @@ class Dynamic:
                 "x-bili-web-req-json": '{"spm_id":"333.1368"}',
             }
             self.__detail = await Api(**api, credential=self.credential).update_params(**params).result
-            cache_pool.dynamic_is_article[self.__dynamic_id] = self.__detail["item"]["basic"]["comment_type"] == 12
-            if cache_pool.dynamic_is_article[self.__dynamic_id]:
-                cache_pool.dynamic2article[self.__dynamic_id] = int(self.__detail["item"]["basic"]["rid_str"])
-                cache_pool.article2dynamic[cache_pool.dynamic2article[self.__dynamic_id]] = self.__dynamic_id
+            is_article = self.__detail["item"]["basic"]["comment_type"] == 12
+            cache_pool.dynamic_is_article.set(self.__dynamic_id, is_article)
+            if is_article:
+                cvid = int(self.__detail["item"]["basic"]["rid_str"])
+                cache_pool.dynamic2article.set(self.__dynamic_id, cvid)
+                cache_pool.article2dynamic.set(cvid, self.__dynamic_id)
             module_dynamic = self.__detail["item"]["modules"]["module_dynamic"]
             if module_dynamic.get("major") is None:
-                cache_pool.dynamic_is_opus[self.__dynamic_id] = False
+                cache_pool.dynamic_is_opus.set(self.__dynamic_id, False)
             else:
-                cache_pool.dynamic_is_opus[self.__dynamic_id] = module_dynamic["major"]["type"] == "MAJOR_TYPE_OPUS"
+                cache_pool.dynamic_is_opus.set(self.__dynamic_id, module_dynamic["major"]["type"] == "MAJOR_TYPE_OPUS")
         return self.__detail
 
     async def is_article(self) -> bool:
@@ -736,7 +738,7 @@ class Dynamic:
         """
         if cache_pool.dynamic_is_article.get(self.get_dynamic_id()) is None:
             await self.get_info()
-        return cache_pool.dynamic_is_article[self.get_dynamic_id()]
+        return cache_pool.dynamic_is_article.get(self.get_dynamic_id())
 
     async def turn_to_article(self) -> "Article":
         """
@@ -757,7 +759,7 @@ class Dynamic:
         from .article import Article
 
         return Article(
-            cvid=cache_pool.dynamic2article[self.get_dynamic_id()],
+            cvid=cache_pool.dynamic2article.get(self.get_dynamic_id()),
             credential=self.credential,
         )
 
@@ -772,7 +774,7 @@ class Dynamic:
         """
         if cache_pool.dynamic_is_opus.get(self.__dynamic_id) is None:
             await self.get_info()
-        return cache_pool.dynamic_is_opus[self.__dynamic_id]
+        return cache_pool.dynamic_is_opus.get(self.__dynamic_id)
 
     def turn_to_opus(self) -> "Opus":
         """
@@ -819,8 +821,9 @@ class Dynamic:
                             and module["major"][key].get("title") is not None
                         ):
                             cover = module["major"][key].get("cover")
-                            if jump_url.startswith("//"):
-                                jump_url = "https:" + module["major"][key].get("jump_url")
+                            jump_url = module["major"][key].get("jump_url")
+                            if jump_url and jump_url.startswith("//"):
+                                jump_url = "https:" + jump_url
                             title = module["major"][key].get("title")
                             return f"# {title}\n\n![]({cover})\n\n<{jump_url}>\n"
             ret = "" if title is None else "# " + title + "\n\n"
@@ -859,8 +862,6 @@ class Dynamic:
                     ret += f"{text} "
             ret += "\n\n"
             for pic in pics:
-                pic["width"]
-                pic["height"]
                 url = pic["url"]
                 if url.startswith("//"):
                     url = f"https:{url}"

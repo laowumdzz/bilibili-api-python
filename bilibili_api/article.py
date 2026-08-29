@@ -173,7 +173,7 @@ class Article:
         if cache_pool.article2dynamic.get(self.get_cvid()) is None:
             await self.get_all()
         return dynamic.Dynamic(
-            dynamic_id=cache_pool.article2dynamic[self.get_cvid()],
+            dynamic_id=cache_pool.article2dynamic.get(self.get_cvid()),
             credential=self.credential,
         )
 
@@ -191,7 +191,7 @@ class Article:
         if cache_pool.article2dynamic.get(self.get_cvid()) is None:
             await self.get_all()
         return opus.Opus(
-            opus_id=cache_pool.article2dynamic[self.get_cvid()],
+            opus_id=cache_pool.article2dynamic.get(self.get_cvid()),
             credential=self.credential,
         )
 
@@ -204,7 +204,7 @@ class Article:
         """
         if cache_pool.article_is_note.get(self.get_cvid()) is None:
             await self.get_all()
-        return cache_pool.article_is_note[self.get_cvid()]
+        return cache_pool.article_is_note.get(self.get_cvid())
 
     def turn_to_note(self) -> "Note":
         """
@@ -599,11 +599,14 @@ class Article:
         """
         if not self.__get_all_data:
             self.__get_all_data = {"readInfo": await self.get_detail()}
-            cache_pool.article2dynamic[self.__cvid] = self.__get_all_data["readInfo"]["dyn_id_str"]
-            cache_pool.dynamic2article[cache_pool.article2dynamic[self.__cvid]] = self.__cvid
-            cache_pool.dynamic_is_article[cache_pool.article2dynamic[self.__cvid]] = True
-            cache_pool.dynamic_is_opus[cache_pool.article2dynamic[self.__cvid]] = True
-            cache_pool.article_is_note[self.get_cvid()] = self.__get_all_data["readInfo"]["category"]["id"] in [41, 42]
+            dyn_id = self.__get_all_data["readInfo"]["dyn_id_str"]
+            cache_pool.article2dynamic.set(self.__cvid, dyn_id)
+            cache_pool.dynamic2article.set(dyn_id, self.__cvid)
+            cache_pool.dynamic_is_article.set(dyn_id, True)
+            cache_pool.dynamic_is_opus.set(dyn_id, True)
+            cache_pool.article_is_note.set(
+                self.get_cvid(), self.__get_all_data["readInfo"]["category"]["id"] in [41, 42]
+            )
         return self.__get_all_data
 
     async def set_like(self, status: bool = True) -> dict:

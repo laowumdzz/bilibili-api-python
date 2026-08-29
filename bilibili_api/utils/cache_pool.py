@@ -2,9 +2,10 @@
 bilibili_api.utils.cache_pool — 缓存池。
 
 提供轻量级 TTL + LRU 缓存工具（TTLCache / cached_async），
-以及 article ↔ dynamic 等映射的模块级缓存。
+以及 article ↔ dynamic 等映射的模块级缓存（均为有界 TTLCache）。
 """
 
+import asyncio
 from collections import OrderedDict
 from collections.abc import Callable
 from functools import wraps
@@ -109,6 +110,12 @@ def cached_async(ttl: float = 300.0, maxsize: int = 256) -> Callable:
     缓存键由函数的位置参数与关键字参数构造，仅适用于只读查询类函数，
     严禁用于会改变账号/服务端状态的写操作接口。
 
+    具备并发单飞（single-flight）语义：缓存未命中时，同一缓存键的并发调用
+    共享同一个 in-flight 任务，底层函数仅实际执行一次；任务失败时不写入缓存，
+    异常传播给所有等待者，且下一次调用会重新执行。
+    in-flight 表随装饰器闭包持有（每个被装饰函数独立），与 TTLCache 相同，
+    非线程安全，适用于单事件循环场景，不引入额外锁。
+
     Args:
         ttl (float): 缓存有效期（秒）. Defaults to 300.0.
         maxsize (int): 最大缓存条目数. Defaults to 256.
@@ -119,15 +126,28 @@ def cached_async(ttl: float = 300.0, maxsize: int = 256) -> Callable:
 
     def decorator(func: Callable) -> Callable:
         cache = TTLCache(maxsize=maxsize, ttl=ttl)
+        # 每个缓存键对应的 in-flight 任务，用于并发单飞去重。
+        in_flight: dict[Any, asyncio.Task[Any]] = {}
 
         @wraps(func)
         async def wrapper(*args: Any, **kwargs: Any) -> Any:
             key = (_make_hashable(args), _make_hashable(kwargs))
             result = cache.get(key)
-            if result is None:
-                result = await func(*args, **kwargs)
-                if result is not None:
-                    cache.set(key, result)
+            if result is not None:
+                return result
+            task = in_flight.get(key)
+            if task is not None:
+                # 已有同键任务在执行：直接共享其结果（或异常）
+                return await task
+            task = asyncio.get_running_loop().create_task(func(*args, **kwargs))
+            in_flight[key] = task
+            try:
+                result = await task
+            finally:
+                # 无论成功还是失败，均从 in-flight 表移除（失败不缓存，下次重新执行）
+                in_flight.pop(key, None)
+            if result is not None:
+                cache.set(key, result)
             return result
 
         wrapper.cache = cache  # type: ignore[attr-defined]
@@ -136,8 +156,10 @@ def cached_async(ttl: float = 300.0, maxsize: int = 256) -> Callable:
     return decorator
 
 
-article2dynamic: dict[int, str] = {}
-dynamic2article: dict[int, int] = {}
-article_is_note: dict[int, bool] = {}
-dynamic_is_article: dict[int, bool] = {}
-dynamic_is_opus: dict[int, bool] = {}
+# article ↔ dynamic 等映射的模块级缓存：均为有界（4096 条）+ 1 小时 TTL，
+# 避免长期运行单调增长。访问统一走 TTLCache 的 get()/set()/invalidate() 接口。
+article2dynamic: TTLCache = TTLCache(maxsize=4096, ttl=3600.0)
+dynamic2article: TTLCache = TTLCache(maxsize=4096, ttl=3600.0)
+article_is_note: TTLCache = TTLCache(maxsize=4096, ttl=3600.0)
+dynamic_is_article: TTLCache = TTLCache(maxsize=4096, ttl=3600.0)
+dynamic_is_opus: TTLCache = TTLCache(maxsize=4096, ttl=3600.0)

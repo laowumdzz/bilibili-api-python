@@ -199,7 +199,7 @@ class Note:
         resp = await Api(**api, credential=self.credential).update_params(**params).result
         # 存入 self.__info 中以备后续调用
         self.__info = resp
-        cache_pool.article_is_note[self.__cvid] = True
+        cache_pool.article_is_note.set(self.__cvid, True)
         return resp
 
     async def get_images_raw_info(self) -> list["dict"]:
