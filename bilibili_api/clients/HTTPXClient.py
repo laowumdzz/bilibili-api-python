@@ -36,7 +36,7 @@ class HTTPXClient(BiliAPIClient):
         """
         Args:
             proxy (str, optional): 代理地址. Defaults to "".
-            timeout (float, optional): 请求超时时间. Defaults to 0.0.
+            timeout (float, optional): 请求超时时间（秒），`<= 0` 表示不限时. Defaults to 0.0.
             verify_ssl (bool, optional): 是否验证 SSL. Defaults to True.
             trust_env (bool, optional): `trust_env`. Defaults to True.
             http2 (bool, optional): 是否使用 HTTP2. Defaults to False.
@@ -62,9 +62,24 @@ class HTTPXClient(BiliAPIClient):
         self.__download_iter: dict[int, AsyncGenerator] = {}
         self.__download_cnt: int = 0
 
+    @staticmethod
+    def __normalize_timeout(timeout: float) -> float | None:
+        """
+        归一化超时配置：`<= 0` 统一表示不限时。
+        httpx 原生语义中 `0.0` 是“立即超时”，与库约定的“0 = 不限时”相反，
+        因此必须转换为 `None`（httpx 的无限时表示）后才能传给 AsyncClient。
+
+        Args:
+            timeout (float): 原始超时配置（秒）
+
+        Returns:
+            float | None: 归一化后的超时配置，`None` 表示不限时
+        """
+        return None if timeout <= 0 else timeout
+
     def __create_session(self, proxy: str | None = None) -> httpx.AsyncClient:
         """
-        按当前配置创建新的 AsyncClient。
+        按当前配置创建新的 AsyncClient（主会话与按代理缓存的辅助会话共用同一归一化逻辑）。
 
         Args:
             proxy (str | None, optional): 指定代理地址；为 None 时使用客户端当前配置的代理. Defaults to None.
@@ -74,7 +89,7 @@ class HTTPXClient(BiliAPIClient):
         """
         effective_proxy = self.__proxy if proxy is None else proxy
         return httpx.AsyncClient(
-            timeout=self.__timeout,
+            timeout=self.__normalize_timeout(self.__timeout),
             proxy=effective_proxy if effective_proxy != "" else None,
             verify=self.__verify_ssl,
             trust_env=self.__trust_env,
@@ -116,13 +131,14 @@ class HTTPXClient(BiliAPIClient):
 
     def set_timeout(self, timeout: float = 0.0) -> None:
         """
-        设置请求超时时间
+        设置请求超时时间（秒），`<= 0` 表示不限时。
 
         Args:
             timeout (float, optional): 请求超时时间. Defaults to 0.0.
         """
         self.__timeout = timeout
-        self.__session.timeout = timeout
+        # httpx 中 0.0 是“立即超时”，需归一化为 None 才是“不限时”
+        self.__session.timeout = self.__normalize_timeout(timeout)
 
     def set_verify_ssl(self, verify_ssl: bool = True) -> None:
         """

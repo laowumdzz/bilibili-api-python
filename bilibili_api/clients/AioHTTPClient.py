@@ -34,7 +34,7 @@ class AioHTTPClient(BiliAPIClient):
         """
         Args:
             proxy (str, optional): 代理地址. Defaults to "".
-            timeout (float, optional): 请求超时时间. Defaults to 0.
+            timeout (float, optional): 请求超时时间（秒），`<= 0` 表示不限时. Defaults to 0.
             verify_ssl (bool, optional): 是否验证 SSL. Defaults to True.
             trust_env (bool, optional): `trust_env`. Defaults to True.
             chunk_size (int, optional): 下载分块大小（字节）. Defaults to 262144.
@@ -106,7 +106,7 @@ class AioHTTPClient(BiliAPIClient):
 
     def set_timeout(self, timeout: float = 0) -> None:
         """
-        设置请求超时时间
+        设置请求超时时间（秒），`<= 0` 表示不限时。
 
         Args:
             timeout (float, optional): 请求超时时间. Defaults to 0.
@@ -144,6 +144,21 @@ class AioHTTPClient(BiliAPIClient):
             chunk_size (int, optional): 下载分块大小（字节）. Defaults to 262144.
         """
         self.__chunk_size = chunk_size
+
+    @staticmethod
+    def __normalize_timeout(timeout: float) -> aiohttp.ClientTimeout | None:
+        """
+        归一化超时配置为 aiohttp 表示：`<= 0` 统一表示不限时。
+        实测确认：aiohttp 的 `ceil_timeout` 对 `<= 0` 已视为无超时，
+        此处仍显式归一化为 `None`，与全库“0 = 不限时”语义对齐并避免歧义。
+
+        Args:
+            timeout (float): 原始超时配置（秒）
+
+        Returns:
+            aiohttp.ClientTimeout | None: 归一化后的超时配置，`None` 表示不限时
+        """
+        return None if timeout <= 0 else aiohttp.ClientTimeout(timeout)
 
     async def request(
         self,
@@ -208,7 +223,9 @@ class AioHTTPClient(BiliAPIClient):
                 allow_redirects=allow_redirects,
                 # 本次请求显式指定的代理优先，否则沿用客户端配置的代理（现有行为不变）
                 proxy=proxy if proxy is not None else self.__args["proxy"],
-                timeout=aiohttp.ClientTimeout(self.__args["timeout"]),
+                # `<= 0` 显式归一为不限时（None），与其他客户端的“0 = 不限时”语义一致；
+                # aiohttp 的 ceil_timeout 对 `<= 0` 本已视为无超时，此归一为显式保证。
+                timeout=self.__normalize_timeout(self.__args["timeout"]),
             )
         else:
             # 用户提供会话时不干预其默认配置，仅在显式传入代理时附加（proxy=None 与不传等价）

@@ -38,7 +38,7 @@ class CurlCFFIClient(BiliAPIClient):
         """
         Args:
             proxy (str, optional): 代理地址. Defaults to "".
-            timeout (float, optional): 请求超时时间. Defaults to 0.0.
+            timeout (float, optional): 请求超时时间（秒），`<= 0` 表示不限时. Defaults to 0.0.
             verify_ssl (bool, optional): 是否验证 SSL. Defaults to True.
             trust_env (bool, optional): `trust_env`. Defaults to True.
             impersonate (str, optional): 伪装的浏览器，可参考 curl_cffi 文档. Defaults to "".
@@ -55,7 +55,7 @@ class CurlCFFIClient(BiliAPIClient):
             loop = asyncio.get_running_loop()
             self.__session = requests.AsyncSession(
                 loop=loop,
-                timeout=timeout,
+                timeout=self.__normalize_timeout(timeout),
                 proxies={"all": proxy},
                 verify=verify_ssl,
                 trust_env=trust_env,
@@ -68,6 +68,22 @@ class CurlCFFIClient(BiliAPIClient):
         self.__ws_is_closed: dict[int, bool] = {}
         self.__downloads: dict[int, requests.Response] = {}
         self.__download_cnt: int = 0
+
+    @staticmethod
+    def __normalize_timeout(timeout: float) -> float | None:
+        """
+        归一化超时配置：`<= 0` 统一表示不限时。
+        实测确认（curl_cffi 0.13，requests/utils.py）：`timeout=None` 会被转换为 `0`，
+        而 libcurl 中 `TIMEOUT_MS=0` 即“不限时”，因此归一目标选 `None`（语义更明确）；
+        直接传 `0` 虽效果相同，但负数会被原样下发给 libcurl，归一化可一并消除。
+
+        Args:
+            timeout (float): 原始超时配置（秒）
+
+        Returns:
+            float | None: 归一化后的超时配置，`None` 表示不限时
+        """
+        return None if timeout <= 0 else timeout
 
     def get_wrapped_session(self) -> requests.AsyncSession:
         """
@@ -89,12 +105,12 @@ class CurlCFFIClient(BiliAPIClient):
 
     def set_timeout(self, timeout: float = 0.0) -> None:
         """
-        设置请求超时时间
+        设置请求超时时间（秒），`<= 0` 表示不限时。
 
         Args:
             timeout (float, optional): 请求超时时间. Defaults to 0.0.
         """
-        self.__session.timeout = timeout
+        self.__session.timeout = self.__normalize_timeout(timeout)
 
     def set_verify_ssl(self, verify_ssl: bool = True) -> None:
         """

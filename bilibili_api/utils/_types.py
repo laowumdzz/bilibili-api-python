@@ -82,16 +82,18 @@ class RequestSettings:
         获取设置的 web 请求超时时间
 
         Returns:
-            float: 超时时间. Defaults to 5.0.
+            float: 超时时间（秒），`<= 0` 表示不限时. Defaults to 30.0.
         """
         return self.get("timeout")
 
     def set_timeout(self, timeout: float):
         """
-        修改设置的 web 请求超时时间
+        修改设置的 web 请求超时时间（秒）。
+        `timeout <= 0` 表示不限时（三种请求客户端均已归一化为各自底层库的无限时表示）。
+        默认值为 30.0。
 
         Args:
-            timeout (float): 超时时间
+            timeout (float): 超时时间（秒），`<= 0` 表示不限时
         """
         self.set("timeout", timeout)
 
