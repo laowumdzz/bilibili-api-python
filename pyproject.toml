@@ -155,6 +155,11 @@ keep-runtime-typing = true
 [tool.pyrefly]
 project-includes = ["bilibili_api/**"]
 project-excludes = ["tests/**", "docs/**", "scripts/**"]
+# 可选依赖（tools 层 PyQt6 / fastapi、_pyinstaller 钩子的 PyInstaller）未安装时
+# 以 typing.Any 替代，抑制对应 missing-import；其余类型检查不受影响。
+# 注：门禁均以显式路径调用（pyrefly check ./bilibili_api/），此时配置文件的
+# project-excludes 不生效，故改用本配置项而非排除目录。
+ignore-missing-imports = ["PyQt6", "fastapi", "PyInstaller", "PyInstaller.utils.hooks"]
 
 # 存量类型错误基线豁免（2026-08-06 审计收紧）：以下错误码为上游遗留问题，
 # 暂时禁用以保证 CI 门禁可用；应另立任务逐步修复，修复完成后从此表移除对应条目。
@@ -174,7 +179,6 @@ bad-specialization = false # 存量 1
 bad-unpacking = false # 存量 1
 missing-attribute = false # 存量 46
 missing-import = false # 存量 4
-no-matching-overload = false # 存量 7
 not-callable = false # 存量 6
 not-iterable = false # 存量 13
 read-only = false # 存量 1
