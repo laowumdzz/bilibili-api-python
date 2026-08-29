@@ -77,3 +77,10 @@ def test_urlhandler_unknown_path_returns_empty():
     """未知路径应返回空字符串。"""
     geetest = Geetest()
     assert geetest._geetest_urlhandler("/nonexistent.css", "text/css") == ""
+
+
+def test_get_geetest_server_url_without_server_raises():
+    """未启动本地服务时 get_geetest_server_url 应抛 GeetestException。"""
+    geetest = Geetest()
+    with pytest.raises(GeetestException):
+        geetest.get_geetest_server_url()

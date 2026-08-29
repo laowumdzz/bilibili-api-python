@@ -296,7 +296,7 @@ class Geetest:
             str: 链接
         """
         if not self.thread:
-            return GeetestException("未创建验证码服务。请调用 `start_geetest_server`")
+            raise GeetestException("未创建验证码服务。请调用 `start_geetest_server`")
         return self.thread.url
 
     def close_geetest_server(self) -> None:
