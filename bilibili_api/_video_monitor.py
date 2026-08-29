@@ -307,7 +307,11 @@ class VideoOnlineMonitor(AsyncEvent):
     @staticmethod
     def __unpack(data: bytes):
         """
-        解包数据。
+        解包数据（支持一次收到多个粘包的数据流）。
+
+        数据包格式与 __pack 对称：16 字节头部（总长度 / 0x00120001 /
+        类型 / 编号）+ 2 字节固定 0 填充（H 段），共 18 字节，之后为 JSON 载荷；
+        头部首字段的总长度包含这 18 字节头部本身。
 
         Args:
             data (bytes):  原始数据。
@@ -318,14 +322,20 @@ class VideoOnlineMonitor(AsyncEvent):
         offset = 0
         real_data = []
         while offset < len(data):
-            region_header = struct.unpack(">IIII", data[:16])
-            region_data = data[offset : offset + region_header[0]]
+            # 头部切片须随 offset 移动，否则多包时会反复解析第一个包的头部。
+            region_header = struct.unpack(">IIII", data[offset : offset + 16])
+            packet_length = region_header[0]
+            if packet_length < 18 or offset + packet_length > len(data):
+                # 数据不完整或长度字段异常，终止解析避免越界与死循环。
+                break
+            # 载荷紧跟 18 字节头部（16 字节头 + 2 字节 H 段）之后，
+            # 长度为总长度减去头部；切片基于 data 的绝对偏移，勿叠加 offset。
             real_data.append(
                 {
                     "type": region_header[2],
                     "number": region_header[3],
-                    "data": json.loads(region_data[offset + 18 : offset + 18 + (region_header[0] - 16)]),
+                    "data": json.loads(data[offset + 18 : offset + packet_length]),
                 }
             )
-            offset += region_header[0]
+            offset += packet_length
         return tuple(real_data)
