@@ -130,6 +130,7 @@ class Opus:
             para_raw = ""
             if para["para_type"] == 1:
                 for node in para["text"]["nodes"]:
+                    raw = ""
                     if node.get("rich"):
                         url = node["rich"].get("jump_url")
                         if url is None:

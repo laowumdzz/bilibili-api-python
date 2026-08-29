@@ -812,6 +812,10 @@ class Dynamic:
                     pics = module["major"]["opus"]["pics"]
                     title = module["major"]["opus"]["title"]
                 else:
+                    # 先置默认值：major 为非 OPUS 类型且未命中下方投稿数据时，避免变量未绑定，退化为空内容
+                    nodes = []
+                    pics = []
+                    title = ""
                     # 按投稿：遍历 major 各条目，跳过 type 等非 dict 字段，定位含封面/跳转链接/标题的投稿数据
                     keys = module["major"].keys()
                     for key in keys:

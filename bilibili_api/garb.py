@@ -215,7 +215,6 @@ async def search_garb_dlc_obj(
     Returns:
         List[DLC | Garb]: 装扮/收藏集对象列表
     """
-    global dlc_properties
     credential = credential if credential else Credential()
     res = await search_garb_dlc_raw(keyword=keyword, pn=pn, ps=ps, credential=credential)
     ret = []
@@ -244,7 +243,6 @@ async def search_garb_dlc(
     Returns:
         List[Tuple[dict, DLC | Garb]]: 装扮/收藏集信息与装扮/收藏集对象列表
     """
-    global dlc_properties
     credential = credential if credential else Credential()
     res = await search_garb_dlc_raw(keyword=keyword, pn=pn, ps=ps, credential=credential)
     ret = []
@@ -310,7 +308,6 @@ async def get_garb_dlc_items_obj(
     Returns:
         List[DLC | Garb]: 装扮/收藏集对象列表
     """
-    global dlc_properties
     credential = credential if credential else Credential()
     res = await get_garb_dlc_items_raw(type_=type_, sort=sort, pn=pn, ps=ps, credential=credential)
     ret = []
@@ -344,7 +341,6 @@ async def get_garb_dlc_items(
     Returns:
         List[Tuple[dict, DLC | Garb]]: 装扮/收藏集信息与装扮/收藏集对象列表
     """
-    global dlc_properties
     credential = credential if credential else Credential()
     res = await get_garb_dlc_items_raw(type_=type_, sort=sort, pn=pn, ps=ps, credential=credential)
     ret = []
