@@ -29,4 +29,14 @@ if ret != 0:
 
 print("Running pyrefly check ...")
 ret = run(["pyrefly", "check", "./bilibili_api/"])
+if ret != 0:
+    sys.exit(ret)
+
+# 豁免错误码存量棘轮（2026-08-29 引入）：[tool.pyrefly.errors] 豁免类别的存量计数只减不增，
+# 新增类型错误在此被阻断；存量清零后从豁免表与脚本基线中移除对应错误码。
+print("Running pyrefly type ratchet check ...")
+if shutil.which("uv"):
+    ret = subprocess.call(["uv", "run", "python", "scripts/type_ratchet.py"])
+else:
+    ret = subprocess.call([sys.executable, "scripts/type_ratchet.py"])
 sys.exit(ret)
