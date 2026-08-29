@@ -28,8 +28,14 @@ jobs:
         run: python scripts/check_commit_msg.py --range "origin/${{ github.base_ref }}" HEAD
 
   lint:
-    name: Lint (ruff + pyrefly)
+    name: Lint (ruff + pyrefly, Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 覆盖支持区间的两端（最低版本与最新版本），拦截版本相关的语法/依赖回归；
+        # 起步两个点以控制 CI 时长，后续可按需扩展至 3.11/3.12。
+        python-version: ["3.10", "3.13"]
 
     steps:
       - name: Checkout
@@ -38,7 +44,9 @@ jobs:
       - name: Install uv and Python
         uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.10"
+          # setup-uv 会安装对应版本的 Python 并注册到 uv，后续 uv sync 自动使用该版本建环境；
+          # 若本地无 uv 缓存，还会在 uv sync 时按需下载对应版本的 Python。
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: uv sync
@@ -47,8 +55,13 @@ jobs:
         run: uv run python scripts/lint.py
 
   test:
-    name: Test (pytest, offline)
+    name: Test (pytest, offline, Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 离线测试是版本回归的核心保障：覆盖支持区间的两端（3.10 与 3.13）。
+        python-version: ["3.10", "3.13"]
 
     steps:
       - name: Checkout
@@ -57,7 +70,7 @@ jobs:
       - name: Install uv and Python
         uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.10"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: uv sync
@@ -69,6 +82,9 @@ jobs:
   integration-readonly:
     name: Test (pytest, integration readonly)
     runs-on: ubuntu-latest
+    # 单版本策略说明：本 job 及下方 integration 均固定在 3.10。版本矩阵的核心目标是静态检查与离线回归，
+    # 集成类任务依赖外部凭据与网络环境，多版本矩阵会成倍增加资源消耗与 412 风控风险，
+    # 收益有限，故保持单一基线版本；高版本回归已由上方矩阵覆盖。
     # PR 快速回路：仅运行 readonly 标记的只读集成子集（反爬虫与 API 定义核心面，无写操作）。
     # 反爬与公开接口用例无需凭据；凭据相关只读用例缺凭据时自动 skip 并在任务摘要中提示降级，
     # 不阻塞无凭据贡献者（含 fork PR）。
