@@ -7,10 +7,13 @@
 # 反爬虫与公开接口用例无需登录凭据；依赖凭据的用例由 credential fixture 在缺凭据时自动 skip，
 # 不阻塞无凭据贡献者（含 fork PR）。
 
+import re
+
 import pytest
 
 from bilibili_api import hot, user
 from bilibili_api.utils._api import get_bili_ticket, get_buvid, get_wbi_mixin_key
+from bilibili_api.utils._wbi import WbiManager
 
 pytestmark = pytest.mark.readonly
 
@@ -33,6 +36,16 @@ async def test_get_wbi_mixin_key():
     """Wbi mixin key 应成功计算且长度为 32（Wbi 签名核心面）。"""
     mixin_key = await get_wbi_mixin_key()
     assert len(mixin_key) == 32
+
+
+async def test_wbi_get_end_result(credential):
+    """WbiManager 签名应生成 32 位十六进制 w_rid、wts 与默认 web_location（只读，缺凭据自动 skip）。"""
+    result = await WbiManager.get_end_result({"foo": "bar"}, credential=credential)
+    assert re.fullmatch(r"[0-9a-f]{32}", result["w_rid"])
+    assert int(result["wts"]) > 0
+    assert result["web_location"] == "444.8"
+    assert result["foo"] == "bar"
+    assert len(await WbiManager.get_mixin_key(credential=credential)) == 32
 
 
 async def test_public_readonly_api():
