@@ -3,7 +3,7 @@
 
 bilibili_api.user
 
-ç”¨æˆ·ç›¸å…³
+ÓÃ»§Ïà¹Ø
 
 
 ``` python
@@ -96,12 +96,12 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-ç›¸å†Œç±»å‹
+Ïà²áÀàĞÍ
 
-+ ALL : å…¨éƒ¨ã€‚
-+ DRAW: ç»˜ç”»ã€‚
-+ PHOTO: æ‘„å½±ã€‚
-+ DAILY: æ—¥å¸¸ã€‚
++ ALL : È«²¿¡£
++ DRAW: »æ»­¡£
++ PHOTO: ÉãÓ°¡£
++ DAILY: ÈÕ³£¡£
 
 
 
@@ -112,10 +112,10 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-æ–‡é›†æ’åºé¡ºåºã€‚
+ÎÄ¼¯ÅÅĞòË³Ğò¡£
 
-+ LATEST: æœ€è¿‘æ›´æ–°å€’åºã€‚
-+ VIEW  : æ€»é˜…è¯»é‡å€’åºã€‚
++ LATEST: ×î½ü¸üĞÂµ¹Ğò¡£
++ VIEW  : ×ÜÔÄ¶ÁÁ¿µ¹Ğò¡£
 
 
 
@@ -126,11 +126,11 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-ä¸“æ æ’åºé¡ºåºã€‚
+×¨À¸ÅÅĞòË³Ğò¡£
 
-+ PUBDATE : å‘å¸ƒæ—¥æœŸå€’åºã€‚
-+ FAVORITE: æ”¶è—é‡å€’åºã€‚
-+ VIEW: é˜…è¯»é‡å€’åºã€‚
++ PUBDATE : ·¢²¼ÈÕÆÚµ¹Ğò¡£
++ FAVORITE: ÊÕ²ØÁ¿µ¹Ğò¡£
++ VIEW: ÔÄ¶ÁÁ¿µ¹Ğò¡£
 
 
 
@@ -141,11 +141,11 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-éŸ³é¢‘æ’åºé¡ºåºã€‚
+ÒôÆµÅÅĞòË³Ğò¡£
 
-+ PUBDATE : ä¸Šä¼ æ—¥æœŸå€’åºã€‚
-+ FAVORITE: æ”¶è—é‡å€’åºã€‚
-+ VIEW: æ’­æ”¾é‡å€’åºã€‚
++ PUBDATE : ÉÏ´«ÈÕÆÚµ¹Ğò¡£
++ FAVORITE: ÊÕ²ØÁ¿µ¹Ğò¡£
++ VIEW: ²¥·ÅÁ¿µ¹Ğò¡£
 
 
 
@@ -156,12 +156,12 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-ç•ªå‰§è¿½ç•ªçŠ¶æ€ç±»å‹ã€‚
+·¬¾ç×··¬×´Ì¬ÀàĞÍ¡£
 
-+ ALL: å…¨éƒ¨
-+ WANT   : æƒ³çœ‹
-+ WATCHING   : åœ¨çœ‹
-+ WATCHED: å·²çœ‹
++ ALL: È«²¿
++ WANT   : Ïë¿´
++ WATCHING   : ÔÚ¿´
++ WATCHED: ÒÑ¿´
 
 
 
@@ -172,10 +172,10 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-ç•ªå‰§ç±»å‹ã€‚
+·¬¾çÀàĞÍ¡£
 
-+ BANGUMI: ç•ªå‰§ã€‚
-+ DRAMA  : ç”µè§†å‰§/çºªå½•ç‰‡ç­‰ã€‚
++ BANGUMI: ·¬¾ç¡£
++ DRAMA  : µçÊÓ¾ç/¼ÍÂ¼Æ¬µÈ¡£
 
 
 
@@ -186,13 +186,13 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-å†å²è®°å½• Business åˆ†ç±»
+ÀúÊ·¼ÇÂ¼ Business ·ÖÀà
 
-+ archiveï¼šç¨¿ä»¶
-+ pgcï¼šå‰§é›†ï¼ˆç•ªå‰§ / å½±è§†ï¼‰
-+ liveï¼šç›´æ’­
-+ article-listï¼šæ–‡é›†
-+ articleï¼šæ–‡ç« 
++ archive£º¸å¼ş
++ pgc£º¾ç¼¯£¨·¬¾ç / Ó°ÊÓ£©
++ live£ºÖ±²¥
++ article-list£ºÎÄ¼¯
++ article£ºÎÄÕÂ
 
 
 
@@ -203,12 +203,12 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-å†å²è®°å½•åˆ†ç±»
+ÀúÊ·¼ÇÂ¼·ÖÀà
 
-+ ALL  : å…¨éƒ¨
-+ archive  : ç¨¿ä»¶
-+ live : ç›´æ’­
-+ article  : ä¸“æ 
++ ALL  : È«²¿
++ archive  : ¸å¼ş
++ live : Ö±²¥
++ article  : ×¨À¸
 
 
 
@@ -219,11 +219,11 @@ from bilibili_api import user
 
 **Extend: enum.Enum**
 
-medialistæ’åºé¡ºåºã€‚
+medialistÅÅĞòË³Ğò¡£
 
-+ PUBDATE : ä¸Šä¼ æ—¥æœŸã€‚
-+ PLAY: æ’­æ”¾é‡ã€‚
-+ COLLECT : æ”¶è—é‡ã€‚
++ PUBDATE : ÉÏ´«ÈÕÆÚ¡£
++ PLAY: ²¥·ÅÁ¿¡£
++ COLLECT : ÊÕ²ØÁ¿¡£
 
 
 
@@ -234,11 +234,11 @@ medialistæ’åºé¡ºåºã€‚
 
 **Extend: enum.Enum**
 
-å›¾æ–‡ç±»å‹
+Í¼ÎÄÀàĞÍ
 
-+ ALL: æ‰€æœ‰
-+ ARTICLE: å±äºä¸“æ çš„å›¾æ–‡
-+ DYNAMIC: ä¸å±äºä¸“æ ï¼ˆä½†ä¸ºåŠ¨æ€ï¼‰çš„å›¾æ–‡
++ ALL: ËùÓĞ
++ ARTICLE: ÊôÓÚ×¨À¸µÄÍ¼ÎÄ
++ DYNAMIC: ²»ÊôÓÚ×¨À¸£¨µ«Îª¶¯Ì¬£©µÄÍ¼ÎÄ
 
 
 
@@ -249,10 +249,10 @@ medialistæ’åºé¡ºåºã€‚
 
 **Extend: enum.Enum**
 
-æ’åºå­—æ®µ
+ÅÅĞò×Ö¶Î
 
-+ descï¼šå€’åº
-+ ascï¼šæ­£åº
++ desc£ºµ¹Ğò
++ asc£ºÕıĞò
 
 
 
@@ -263,14 +263,14 @@ medialistæ’åºé¡ºåºã€‚
 
 **Extend: enum.Enum**
 
-ç”¨æˆ·å…³ç³»æ“ä½œç±»å‹ã€‚
+ÓÃ»§¹ØÏµ²Ù×÷ÀàĞÍ¡£
 
-+ SUBSCRIBE : å…³æ³¨ã€‚
-+ UNSUBSCRIBE   : å–å…³ã€‚
-+ SUBSCRIBE_SECRETLY: æ‚„æ‚„å…³æ³¨ã€‚å·²å¤±æ•ˆ
-+ BLOCK : æ‹‰é»‘ã€‚
-+ UNBLOCK   : å–æ¶ˆæ‹‰é»‘ã€‚
-+ REMOVE_FANS   : ç§»é™¤ç²‰ä¸ã€‚
++ SUBSCRIBE : ¹Ø×¢¡£
++ UNSUBSCRIBE   : È¡¹Ø¡£
++ SUBSCRIBE_SECRETLY: ÇÄÇÄ¹Ø×¢¡£ÒÑÊ§Ğ§
++ BLOCK : À­ºÚ¡£
++ UNBLOCK   : È¡ÏûÀ­ºÚ¡£
++ REMOVE_FANS   : ÒÆ³ı·ÛË¿¡£
 
 
 
@@ -279,7 +279,7 @@ medialistæ’åºé¡ºåºã€‚
 
 ## class User()
 
-ç”¨æˆ·ç›¸å…³
+ÓÃ»§Ïà¹Ø
 
 
 
@@ -289,13 +289,13 @@ medialistæ’åºé¡ºåºã€‚
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ· UID |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
+| `uid` | `int` | ÓÃ»§ UID |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
 
 
 ### async def get_access_id()
 
-è·å–ç”¨æˆ· access_id (w_webid) å¦‚æœªè¿‡æœŸç›´æ¥ä»æœ¬åœ°è·å– é˜²æ­¢é‡å¤è¯·æ±‚
+»ñÈ¡ÓÃ»§ access_id (w_webid) ÈçÎ´¹ıÆÚÖ±½Ó´Ó±¾µØ»ñÈ¡ ·ÀÖ¹ÖØ¸´ÇëÇó
 
 
 
@@ -306,536 +306,536 @@ medialistæ’åºé¡ºåºã€‚
 
 ### async def get_album()
 
-è·å–ç”¨æˆ·æŠ•ç¨¿ç›¸ç°¿ã€‚
+»ñÈ¡ÓÃ»§Í¶¸åÏà²¾¡£
 
 
 | name | type | description |
 | - | - | - |
-| `biz` | `AlbumType, optional` | æ’åºæ–¹å¼. Defaults to AlbumType.ALL. |
-| `page_num` | `int, optional` | é¡µç æ•°ï¼Œä» 1 å¼€å§‹ã€‚ Defaults to 1. |
-| `page_size` | `int` | æ¯ä¸€é¡µçš„ç›¸ç°¿æ¡ç›®. Defaults to 30. |
+| `biz` | `AlbumType, optional` | ÅÅĞò·½Ê½. Defaults to AlbumType.ALL. |
+| `page_num` | `int, optional` | Ò³ÂëÊı£¬´Ó 1 ¿ªÊ¼¡£ Defaults to 1. |
+| `page_size` | `int` | Ã¿Ò»Ò³µÄÏà²¾ÌõÄ¿. Defaults to 30. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_all_followings()
 
-è·å–æ‰€æœ‰çš„å…³æ³¨åˆ—è¡¨ã€‚ï¼ˆå¦‚æœç”¨æˆ·è®¾ç½®ä¿å¯†ä¼šæ²¡æœ‰ä»»ä½•æ•°æ®ï¼‰
+»ñÈ¡ËùÓĞµÄ¹Ø×¢ÁĞ±í¡££¨Èç¹ûÓÃ»§ÉèÖÃ±£ÃÜ»áÃ»ÓĞÈÎºÎÊı¾İ£©
 
 
 
-**Returns:** `list`:  å…³æ³¨åˆ—è¡¨
+**Returns:** `list`:  ¹Ø×¢ÁĞ±í
 
 
 
 
 ### async def get_article_list()
 
-è·å–ç”¨æˆ·ä¸“æ æ–‡é›†ã€‚
+»ñÈ¡ÓÃ»§×¨À¸ÎÄ¼¯¡£
 
 
 | name | type | description |
 | - | - | - |
-| `order` | `ArticleListOrder, optional` | æ’åºæ–¹å¼. Defaults to ArticleListOrder.LATEST |
+| `order` | `ArticleListOrder, optional` | ÅÅĞò·½Ê½. Defaults to ArticleListOrder.LATEST |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_articles()
 
-è·å–ç”¨æˆ·æŠ•ç¨¿ä¸“æ ã€‚
+»ñÈ¡ÓÃ»§Í¶¸å×¨À¸¡£
 
 
 | name | type | description |
 | - | - | - |
-| `order` | `ArticleOrder, optional` | æ’åºæ–¹å¼. Defaults to ArticleOrder.PUBDATE. |
-| `pn` | `int, optional` | é¡µç æ•°ï¼Œä» 1 å¼€å§‹ã€‚ Defaults to 1. |
-| `ps` | `int, optional` | æ¯ä¸€é¡µçš„è§†é¢‘æ•°. Defaults to 30. |
+| `order` | `ArticleOrder, optional` | ÅÅĞò·½Ê½. Defaults to ArticleOrder.PUBDATE. |
+| `pn` | `int, optional` | Ò³ÂëÊı£¬´Ó 1 ¿ªÊ¼¡£ Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò»Ò³µÄÊÓÆµÊı. Defaults to 30. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_audios()
 
-è·å–ç”¨æˆ·æŠ•ç¨¿éŸ³é¢‘ã€‚
+»ñÈ¡ÓÃ»§Í¶¸åÒôÆµ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `order` | `AudioOrder, optional` | æ’åºæ–¹å¼. Defaults to AudioOrder.PUBDATE. |
-| `pn` | `int, optional` | é¡µç æ•°ï¼Œä» 1 å¼€å§‹ã€‚ Defaults to 1. |
-| `ps` | `int, optional` | æ¯ä¸€é¡µçš„è§†é¢‘æ•°. Defaults to 30. |
+| `order` | `AudioOrder, optional` | ÅÅĞò·½Ê½. Defaults to AudioOrder.PUBDATE. |
+| `pn` | `int, optional` | Ò³ÂëÊı£¬´Ó 1 ¿ªÊ¼¡£ Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò»Ò³µÄÊÓÆµÊı. Defaults to 30. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_channel_list()
 
-æŸ¥çœ‹ç”¨æˆ·æ‰€æœ‰çš„é¢‘é“ï¼ˆåŒ…æ‹¬æ–°ç‰ˆï¼‰å’Œéƒ¨åˆ†è§†é¢‘ã€‚
+²é¿´ÓÃ»§ËùÓĞµÄÆµµÀ£¨°üÀ¨ĞÂ°æ£©ºÍ²¿·ÖÊÓÆµ¡£
 
-é€‚ç”¨äºè·å–åˆ—è¡¨ã€‚
+ÊÊÓÃÓÚ»ñÈ¡ÁĞ±í¡£
 
-æœªå¤„ç†æ•°æ®ã€‚ä¸æ¨èã€‚
+Î´´¦ÀíÊı¾İ¡£²»ÍÆ¼ö¡£
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | é¡µç . Defaults to 1. |
-| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20 (max). |
+| `pn` | `int` | Ò³Âë. Defaults to 1. |
+| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20 (max). |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_channel_videos_season()
 
-æŸ¥çœ‹é¢‘é“å†…æ‰€æœ‰è§†é¢‘ã€‚ä»…ä¾› season_listã€‚
+²é¿´ÆµµÀÄÚËùÓĞÊÓÆµ¡£½ö¹© season_list¡£
 
 
 | name | type | description |
 | - | - | - |
-| `sid` | `int` | é¢‘é“çš„ season_id |
-| `sort` | `ChannelOrder` | æ’åºæ–¹å¼ |
-| `pn` | `int` | é¡µæ•°ï¼Œé»˜è®¤ä¸º 1 |
-| `ps` | `int` | æ¯ä¸€é¡µæ˜¾ç¤ºçš„è§†é¢‘æ•°é‡ |
+| `sid` | `int` | ÆµµÀµÄ season_id |
+| `sort` | `ChannelOrder` | ÅÅĞò·½Ê½ |
+| `pn` | `int` | Ò³Êı£¬Ä¬ÈÏÎª 1 |
+| `ps` | `int` | Ã¿Ò»Ò³ÏÔÊ¾µÄÊÓÆµÊıÁ¿ |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ
 
 
 
 
 ### async def get_channel_videos_series()
 
-æŸ¥çœ‹é¢‘é“å†…æ‰€æœ‰è§†é¢‘ã€‚ä»…ä¾› series_listã€‚
+²é¿´ÆµµÀÄÚËùÓĞÊÓÆµ¡£½ö¹© series_list¡£
 
 
 | name | type | description |
 | - | - | - |
-| `sid` | `int` | é¢‘é“çš„ series_id |
-| `pn` | `int` | é¡µæ•°ï¼Œé»˜è®¤ä¸º 1 |
-| `ps` | `int` | æ¯ä¸€é¡µæ˜¾ç¤ºçš„è§†é¢‘æ•°é‡ |
+| `sid` | `int` | ÆµµÀµÄ series_id |
+| `pn` | `int` | Ò³Êı£¬Ä¬ÈÏÎª 1 |
+| `ps` | `int` | Ã¿Ò»Ò³ÏÔÊ¾µÄÊÓÆµÊıÁ¿ |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ
 
 
 
 
 ### async def get_channels()
 
-è·å–ç”¨æˆ·æ‰€æœ‰åˆé›†
+»ñÈ¡ÓÃ»§ËùÓĞºÏ¼¯
 
 
 
-**Returns:** `List[ChannelSeries]`:  åˆé›†ä¸åˆ—è¡¨ç±»çš„åˆ—è¡¨
+**Returns:** `List[ChannelSeries]`:  ºÏ¼¯ÓëÁĞ±íÀàµÄÁĞ±í
 
 
 
 
 ### async def get_cheese()
 
-æŸ¥çœ‹ç”¨æˆ·çš„æ‰€æœ‰è¯¾ç¨‹
+²é¿´ÓÃ»§µÄËùÓĞ¿Î³Ì
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_dynamics()
 
-è·å–ç”¨æˆ·åŠ¨æ€ã€‚
+»ñÈ¡ÓÃ»§¶¯Ì¬¡£
 
-å»ºè®®ä½¿ç”¨ user.get_dynamics_new() æ–°æ¥å£ã€‚
+½¨ÒéÊ¹ÓÃ user.get_dynamics_new() ĞÂ½Ó¿Ú¡£
 
 
 | name | type | description |
 | - | - | - |
-| `offset` | `int, optional` | è¯¥å€¼ä¸ºç¬¬ä¸€æ¬¡è°ƒç”¨æœ¬æ–¹æ³•æ—¶ï¼Œæ•°æ®ä¸­ä¼šæœ‰ä¸ª next_offset å­—æ®µï¼ŒæŒ‡å‘ä¸‹ä¸€åŠ¨æ€åˆ—è¡¨ç¬¬ä¸€æ¡åŠ¨æ€ï¼ˆç±»ä¼¼å•å‘é“¾è¡¨ï¼‰ã€‚æ ¹æ®ä¸Šä¸€æ¬¡è·å–ç»“æœä¸­çš„ next_offset å­—æ®µå€¼ï¼Œå¾ªç¯å¡«å……è¯¥å€¼å³å¯è·å–åˆ°å…¨éƒ¨åŠ¨æ€ã€‚0 ä¸ºä»å¤´å¼€å§‹ã€‚Defaults to 0. |
-| `need_top` | `bool, optional` | æ˜¾ç¤ºç½®é¡¶åŠ¨æ€. Defaults to False. |
+| `offset` | `int, optional` | ¸ÃÖµÎªµÚÒ»´Îµ÷ÓÃ±¾·½·¨Ê±£¬Êı¾İÖĞ»áÓĞ¸ö next_offset ×Ö¶Î£¬Ö¸ÏòÏÂÒ»¶¯Ì¬ÁĞ±íµÚÒ»Ìõ¶¯Ì¬£¨ÀàËÆµ¥ÏòÁ´±í£©¡£¸ù¾İÉÏÒ»´Î»ñÈ¡½á¹ûÖĞµÄ next_offset ×Ö¶ÎÖµ£¬Ñ­»·Ìî³ä¸ÃÖµ¼´¿É»ñÈ¡µ½È«²¿¶¯Ì¬¡£0 Îª´ÓÍ·¿ªÊ¼¡£Defaults to 0. |
+| `need_top` | `bool, optional` | ÏÔÊ¾ÖÃ¶¥¶¯Ì¬. Defaults to False. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_dynamics_new()
 
-è·å–ç”¨æˆ·åŠ¨æ€ã€‚
+»ñÈ¡ÓÃ»§¶¯Ì¬¡£
 
 
 | name | type | description |
 | - | - | - |
-| `offset` | `str, optional` | è¯¥å€¼ä¸ºç¬¬ä¸€æ¬¡è°ƒç”¨æœ¬æ–¹æ³•æ—¶ï¼Œæ•°æ®ä¸­ä¼šæœ‰ä¸ª offset å­—æ®µï¼ŒæŒ‡å‘ä¸‹ä¸€åŠ¨æ€åˆ—è¡¨ç¬¬ä¸€æ¡åŠ¨æ€ï¼ˆç±»ä¼¼å•å‘é“¾è¡¨ï¼‰ã€‚æ ¹æ®ä¸Šä¸€æ¬¡è·å–ç»“æœä¸­çš„ next_offset å­—æ®µå€¼ï¼Œå¾ªç¯å¡«å……è¯¥å€¼å³å¯è·å–åˆ°å…¨éƒ¨åŠ¨æ€ã€‚ç©ºå­—ç¬¦ä¸²ä¸ºä»å¤´å¼€å§‹ã€‚Defaults to "". |
+| `offset` | `str, optional` | ¸ÃÖµÎªµÚÒ»´Îµ÷ÓÃ±¾·½·¨Ê±£¬Êı¾İÖĞ»áÓĞ¸ö offset ×Ö¶Î£¬Ö¸ÏòÏÂÒ»¶¯Ì¬ÁĞ±íµÚÒ»Ìõ¶¯Ì¬£¨ÀàËÆµ¥ÏòÁ´±í£©¡£¸ù¾İÉÏÒ»´Î»ñÈ¡½á¹ûÖĞµÄ next_offset ×Ö¶ÎÖµ£¬Ñ­»·Ìî³ä¸ÃÖµ¼´¿É»ñÈ¡µ½È«²¿¶¯Ì¬¡£¿Õ×Ö·û´®Îª´ÓÍ·¿ªÊ¼¡£Defaults to "". |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_elec_user_monthly()
 
-è·å–ç©ºé—´å……ç”µå…¬ç¤ºä¿¡æ¯
+»ñÈ¡¿Õ¼ä³äµç¹«Ê¾ĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_followers()
 
-è·å–ç”¨æˆ·ç²‰ä¸åˆ—è¡¨ï¼ˆä¸æ˜¯è‡ªå·±åªèƒ½è®¿é—®å‰ 5 é¡µï¼Œæ˜¯è‡ªå·±ä¹Ÿä¸èƒ½è·å–å…¨éƒ¨çš„æ ·å­ï¼‰
+»ñÈ¡ÓÃ»§·ÛË¿ÁĞ±í£¨²»ÊÇ×Ô¼ºÖ»ÄÜ·ÃÎÊÇ° 5 Ò³£¬ÊÇ×Ô¼ºÒ²²»ÄÜ»ñÈ¡È«²¿µÄÑù×Ó£©
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µç ï¼Œä» 1 å¼€å§‹. Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µçš„æ•°æ®é‡. Defaults to 100. |
-| `desc` | `bool, optional` | å€’åºæ’åº. Defaults to True. |
+| `pn` | `int, optional` | Ò³Âë£¬´Ó 1 ¿ªÊ¼. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³µÄÊı¾İÁ¿. Defaults to 100. |
+| `desc` | `bool, optional` | µ¹ĞòÅÅĞò. Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_followings()
 
-è·å–ç”¨æˆ·å…³æ³¨åˆ—è¡¨ï¼ˆä¸æ˜¯è‡ªå·±åªèƒ½è®¿é—®å‰ 5 é¡µï¼‰
+»ñÈ¡ÓÃ»§¹Ø×¢ÁĞ±í£¨²»ÊÇ×Ô¼ºÖ»ÄÜ·ÃÎÊÇ° 5 Ò³£©
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µç ï¼Œä» 1 å¼€å§‹. Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µçš„æ•°æ®é‡. Defaults to 100. |
-| `attention` | `bool, optional` | æ˜¯å¦é‡‡ç”¨â€œæœ€å¸¸è®¿é—®â€æ’åºï¼Œå¦åˆ™ä¸ºâ€œå…³æ³¨é¡ºåºâ€æ’åº. Defaults to False. |
-| `order` | `OrderType, optional` | æ’åºæ–¹å¼. Defaults to OrderType.desc. |
+| `pn` | `int, optional` | Ò³Âë£¬´Ó 1 ¿ªÊ¼. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³µÄÊı¾İÁ¿. Defaults to 100. |
+| `attention` | `bool, optional` | ÊÇ·ñ²ÉÓÃ¡°×î³£·ÃÎÊ¡±ÅÅĞò£¬·ñÔòÎª¡°¹Ø×¢Ë³Ğò¡±ÅÅĞò. Defaults to False. |
+| `order` | `OrderType, optional` | ÅÅĞò·½Ê½. Defaults to OrderType.desc. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_live_info()
 
-è·å–ç”¨æˆ·ç›´æ’­é—´ä¿¡æ¯ã€‚
+»ñÈ¡ÓÃ»§Ö±²¥¼äĞÅÏ¢¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_masterpiece()
 
-è·å–ç”¨æˆ·ä»£è¡¨ä½œ
+»ñÈ¡ÓÃ»§´ú±í×÷
 
 
 
-**Returns:** `list`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `list`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_media_list()
 
-ä»¥ medialist å½¢å¼è·å–ç”¨æˆ·æŠ•ç¨¿ä¿¡æ¯ã€‚
+ÒÔ medialist ĞÎÊ½»ñÈ¡ÓÃ»§Í¶¸åĞÅÏ¢¡£
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int, optional` | èµ·å§‹è§†é¢‘ aidï¼Œ é»˜è®¤ä¸ºåˆ—è¡¨å¼€å¤´ |
-| `ps` | `int, optional` | æ¯ä¸€é¡µçš„è§†é¢‘æ•°. Defaults to 20. Max 100 |
-| `direction` | `bool, optional` | ç›¸å¯¹äºç»™å®šoidçš„æŸ¥è¯¢æ–¹å‘ True å‘åˆ—è¡¨æœ«å°¾æ–¹å‘ False å‘åˆ—è¡¨å¼€å¤´æ–¹å‘ Defaults to False. |
-| `desc` | `bool, optional` | å€’åºæ’åº. Defaults to True. |
-| `sort_field` | `int, optional` | ç”¨äºæ’åºçš„æ   1 å‘å¸ƒæ—¶é—´ï¼Œ2 æ’­æ”¾é‡ï¼Œ3 æ”¶è—é‡ |
-| `tid` | `int, optional` | åˆ†åŒº ID. Defaults to 0ï¼ˆå…¨éƒ¨ï¼‰. 1 éƒ¨åˆ†ï¼ˆæœªçŸ¥ï¼‰ |
-| `with_current` | `bool, optional` | è¿”å›çš„åˆ—è¡¨ä¸­æ˜¯å¦åŒ…å«ç»™å®šoidè‡ªèº« Defaults to False. |
+| `oid` | `int, optional` | ÆğÊ¼ÊÓÆµ aid£¬ Ä¬ÈÏÎªÁĞ±í¿ªÍ· |
+| `ps` | `int, optional` | Ã¿Ò»Ò³µÄÊÓÆµÊı. Defaults to 20. Max 100 |
+| `direction` | `bool, optional` | Ïà¶ÔÓÚ¸ø¶¨oidµÄ²éÑ¯·½Ïò True ÏòÁĞ±íÄ©Î²·½Ïò False ÏòÁĞ±í¿ªÍ··½Ïò Defaults to False. |
+| `desc` | `bool, optional` | µ¹ĞòÅÅĞò. Defaults to True. |
+| `sort_field` | `int, optional` | ÓÃÓÚÅÅĞòµÄÀ¸  1 ·¢²¼Ê±¼ä£¬2 ²¥·ÅÁ¿£¬3 ÊÕ²ØÁ¿ |
+| `tid` | `int, optional` | ·ÖÇø ID. Defaults to 0£¨È«²¿£©. 1 ²¿·Ö£¨Î´Öª£© |
+| `with_current` | `bool, optional` | ·µ»ØµÄÁĞ±íÖĞÊÇ·ñ°üº¬¸ø¶¨oid×ÔÉí Defaults to False. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_opus()
 
-è·å–ç”¨æˆ·å‘å¸ƒè¿‡çš„å›¾æ–‡
+»ñÈ¡ÓÃ»§·¢²¼¹ıµÄÍ¼ÎÄ
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `OpusType, optional` | è·å–çš„å›¾æ–‡ç±»å‹. Defaults to OpusType.ALL. |
-| `offset` | `str, optional` | åç§»é‡ã€‚æ¯æ¬¡è¯·æ±‚å¯è·å–ä¸‹æ¬¡è¯·æ±‚å¯¹åº”çš„åç§»é‡ï¼Œç±»ä¼¼å•å‘é“¾è¡¨ã€‚å¯¹åº”è¿”å›ç»“æœçš„ `["offset"]` Defaults to "". |
+| `type_` | `OpusType, optional` | »ñÈ¡µÄÍ¼ÎÄÀàĞÍ. Defaults to OpusType.ALL. |
+| `offset` | `str, optional` | Æ«ÒÆÁ¿¡£Ã¿´ÎÇëÇó¿É»ñÈ¡ÏÂ´ÎÇëÇó¶ÔÓ¦µÄÆ«ÒÆÁ¿£¬ÀàËÆµ¥ÏòÁ´±í¡£¶ÔÓ¦·µ»Ø½á¹ûµÄ `["offset"]` Defaults to "". |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_overview_stat()
 
-è·å–ç”¨æˆ·çš„ç®€æ˜“è®¢é˜…å’ŒæŠ•ç¨¿ä¿¡æ¯ã€‚
+»ñÈ¡ÓÃ»§µÄ¼òÒ×¶©ÔÄºÍÍ¶¸åĞÅÏ¢¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_relation()
 
-è·å–ä¸æŸç”¨æˆ·çš„å…³ç³»
+»ñÈ¡ÓëÄ³ÓÃ»§µÄ¹ØÏµ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_relation_info()
 
-è·å–ç”¨æˆ·å…³ç³»ä¿¡æ¯ï¼ˆå…³æ³¨æ•°ï¼Œç²‰ä¸æ•°ï¼Œæ‚„æ‚„å…³æ³¨ï¼Œé»‘åå•æ•°ï¼‰
+»ñÈ¡ÓÃ»§¹ØÏµĞÅÏ¢£¨¹Ø×¢Êı£¬·ÛË¿Êı£¬ÇÄÇÄ¹Ø×¢£¬ºÚÃûµ¥Êı£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_reservation()
 
-è·å–ç”¨æˆ·ç©ºé—´é¢„çº¦
+»ñÈ¡ÓÃ»§¿Õ¼äÔ¤Ô¼
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_self_same_followers()
 
-è·å–ç”¨æˆ·ä¸è‡ªå·±å…±åŒå…³æ³¨çš„ up ä¸»
+»ñÈ¡ÓÃ»§Óë×Ô¼º¹²Í¬¹Ø×¢µÄ up Ö÷
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | é¡µç . Defaults to 1. |
-| `ps` | `int` | å•é¡µæ•°æ®é‡. Defaults to 50. |
+| `pn` | `int` | Ò³Âë. Defaults to 1. |
+| `ps` | `int` | µ¥Ò³Êı¾İÁ¿. Defaults to 50. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_space_notice()
 
-è·å–ç”¨æˆ·ç©ºé—´å…¬å‘Š
+»ñÈ¡ÓÃ»§¿Õ¼ä¹«¸æ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_subscribed_bangumi()
 
-è·å–ç”¨æˆ·è¿½ç•ª/è¿½å‰§åˆ—è¡¨ã€‚
+»ñÈ¡ÓÃ»§×··¬/×·¾çÁĞ±í¡£
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µç æ•°ï¼Œä» 1 å¼€å§‹ã€‚ Defaults to 1. |
-| `ps` | `int, optional` | æ¯ä¸€é¡µçš„ç•ªå‰§æ•°. Defaults to 15. |
-| `type_` | `BangumiType, optional` | èµ„æºç±»å‹. Defaults to BangumiType.BANGUMI |
-| `follow_status` | `BangumiFollowStatus, optional` | è¿½ç•ªçŠ¶æ€. Defaults to BangumiFollowStatus.ALL |
+| `pn` | `int, optional` | Ò³ÂëÊı£¬´Ó 1 ¿ªÊ¼¡£ Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò»Ò³µÄ·¬¾çÊı. Defaults to 15. |
+| `type_` | `BangumiType, optional` | ×ÊÔ´ÀàĞÍ. Defaults to BangumiType.BANGUMI |
+| `follow_status` | `BangumiFollowStatus, optional` | ×··¬×´Ì¬. Defaults to BangumiFollowStatus.ALL |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_top_videos()
 
-è·å–ç”¨æˆ·çš„æŒ‡å®šè§†é¢‘ï¼ˆä»£è¡¨ä½œï¼‰
+»ñÈ¡ÓÃ»§µÄÖ¸¶¨ÊÓÆµ£¨´ú±í×÷£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### def get_uid()
 
-è·å–ç”¨æˆ· UID
+»ñÈ¡ÓÃ»§ UID
 
 
 
-**Returns:** `int`:  ç”¨æˆ· UID
+**Returns:** `int`:  ÓÃ»§ UID
 
 
 
 
 ### async def get_up_stat()
 
-è·å– UP ä¸»æ•°æ®ä¿¡æ¯ï¼ˆè§†é¢‘æ€»æ’­æ”¾é‡ï¼Œæ–‡ç« æ€»é˜…è¯»é‡ï¼Œæ€»ç‚¹èµæ•°ï¼‰
+»ñÈ¡ UP Ö÷Êı¾İĞÅÏ¢£¨ÊÓÆµ×Ü²¥·ÅÁ¿£¬ÎÄÕÂ×ÜÔÄ¶ÁÁ¿£¬×ÜµãÔŞÊı£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_uplikeimg()
 
-è§†é¢‘ä¸‰è”ç‰¹æ•ˆ
+ÊÓÆµÈıÁªÌØĞ§
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_upower_qa_detail()
 
-è·å–å……ç”µé—®ç­”è¯¦æƒ…ä¿¡æ¯ã€‚
+»ñÈ¡³äµçÎÊ´ğÏêÇéĞÅÏ¢¡£
 
-æ ¹æ®é—®ç­” ID è·å–å•æ¡å……ç”µé—®ç­”çš„è¯¦ç»†å†…å®¹
+¸ù¾İÎÊ´ğ ID »ñÈ¡µ¥Ìõ³äµçÎÊ´ğµÄÏêÏ¸ÄÚÈİ
 
 
 | name | type | description |
 | - | - | - |
-| `qa_id` | `int` | å……ç”µé—®ç­”çš„å”¯ä¸€ IDï¼Œå¯ä»`get_upower_qa_list` è¿”å›çš„æ•°æ®ä¸­è·å–ã€‚ |
+| `qa_id` | `int` | ³äµçÎÊ´ğµÄÎ¨Ò» ID£¬¿É´Ó`get_upower_qa_list` ·µ»ØµÄÊı¾İÖĞ»ñÈ¡¡£ |
 
 
 
 
 ### async def get_upower_qa_list()
 
-è·å–ç”¨æˆ·å……ç”µé—®ç­”åˆ—è¡¨ã€‚
+»ñÈ¡ÓÃ»§³äµçÎÊ´ğÁĞ±í¡£
 
 
 | name | type | description |
 | - | - | - |
-| `anchor` | `int, optional` | è¯¥å€¼ä¸ºç¬¬ä¸€æ¬¡è°ƒç”¨æœ¬æ–¹æ³•æ—¶ï¼Œæ•°æ®ä¸­ä¼šæœ‰ä¸ª anchor å­—æ®µï¼ŒæŒ‡å‘ä¸‹ä¸€åŠ¨æ€åˆ—è¡¨ç¬¬ä¸€æ¡åŠ¨æ€ï¼ˆç±»ä¼¼å•å‘é“¾è¡¨ï¼‰ã€‚æ ¹æ®ä¸Šä¸€æ¬¡è·å–ç»“æœä¸­çš„ anchor å­—æ®µå€¼ï¼Œå¾ªç¯å¡«å……è¯¥å€¼å³å¯è·å–åˆ°å…¨éƒ¨åŠ¨æ€ |
+| `anchor` | `int, optional` | ¸ÃÖµÎªµÚÒ»´Îµ÷ÓÃ±¾·½·¨Ê±£¬Êı¾İÖĞ»áÓĞ¸ö anchor ×Ö¶Î£¬Ö¸ÏòÏÂÒ»¶¯Ì¬ÁĞ±íµÚÒ»Ìõ¶¯Ì¬£¨ÀàËÆµ¥ÏòÁ´±í£©¡£¸ù¾İÉÏÒ»´Î»ñÈ¡½á¹ûÖĞµÄ anchor ×Ö¶ÎÖµ£¬Ñ­»·Ìî³ä¸ÃÖµ¼´¿É»ñÈ¡µ½È«²¿¶¯Ì¬ |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_user_fav_tag()
 
-è·å–ç”¨æˆ·å…³æ³¨çš„ Tag ä¿¡æ¯ï¼Œå¦‚æœç”¨æˆ·è®¾ä¸ºéšç§ï¼Œåˆ™è¿”å› è·å–ç™»å½•æ•°æ®å¤±è´¥
+»ñÈ¡ÓÃ»§¹Ø×¢µÄ Tag ĞÅÏ¢£¬Èç¹ûÓÃ»§ÉèÎªÒşË½£¬Ôò·µ»Ø »ñÈ¡µÇÂ¼Êı¾İÊ§°Ü
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µç ï¼Œä» 1 å¼€å§‹. Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µçš„æ•°æ®é‡. Defaults to 20. |
+| `pn` | `int, optional` | Ò³Âë£¬´Ó 1 ¿ªÊ¼. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³µÄÊı¾İÁ¿. Defaults to 20. |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_user_info()
 
-è·å–ç”¨æˆ·ä¿¡æ¯ï¼ˆæ˜µç§°ï¼Œæ€§åˆ«ï¼Œç”Ÿæ—¥ï¼Œç­¾åï¼Œå¤´åƒ URLï¼Œç©ºé—´æ¨ªå¹… URL ç­‰ï¼‰
+»ñÈ¡ÓÃ»§ĞÅÏ¢£¨êÇ³Æ£¬ĞÔ±ğ£¬ÉúÈÕ£¬Ç©Ãû£¬Í·Ïñ URL£¬¿Õ¼äºá·ù URL µÈ£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
-[ç”¨æˆ·ç©ºé—´è¯¦ç»†ä¿¡æ¯](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/user/info.md#%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
+[ÓÃ»§¿Õ¼äÏêÏ¸ĞÅÏ¢](https://github.com/SocialSisterYi/bilibili-API-collect/blob/master/docs/user/info.md#%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF)
 
 
 
 ### async def get_user_medal()
 
-è¯»å–ç”¨æˆ·ç²‰ä¸ç‰Œè¯¦ç»†åˆ—è¡¨ï¼Œå¦‚æœéšç§åˆ™ä¸å¯ä»¥
+¶ÁÈ¡ÓÃ»§·ÛË¿ÅÆÏêÏ¸ÁĞ±í£¬Èç¹ûÒşË½Ôò²»¿ÉÒÔ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def get_videos()
 
-è·å–ç”¨æˆ·æŠ•ç¨¿è§†é¢‘ä¿¡æ¯ã€‚
+»ñÈ¡ÓÃ»§Í¶¸åÊÓÆµĞÅÏ¢¡£
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int, optional` | åˆ†åŒº ID. Defaults to 0ï¼ˆå…¨éƒ¨ï¼‰. |
-| `pn` | `int, optional` | é¡µç ï¼Œä» 1 å¼€å§‹. Defaults to 1. |
-| `ps` | `int, optional` | æ¯ä¸€é¡µçš„è§†é¢‘æ•°. Defaults to 30. |
-| `keyword` | `str, optional` | æœç´¢å…³é”®è¯. Defaults to "". |
-| `order` | `VideoOrder, optional` | æ’åºæ–¹å¼. Defaults to VideoOrder.PUBDATE |
+| `tid` | `int, optional` | ·ÖÇø ID. Defaults to 0£¨È«²¿£©. |
+| `pn` | `int, optional` | Ò³Âë£¬´Ó 1 ¿ªÊ¼. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò»Ò³µÄÊÓÆµÊı. Defaults to 30. |
+| `keyword` | `str, optional` | ËÑË÷¹Ø¼ü´Ê. Defaults to "". |
+| `order` | `VideoOrder, optional` | ÅÅĞò·½Ê½. Defaults to VideoOrder.PUBDATE |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def modify_relation()
 
-ä¿®æ”¹å’Œç”¨æˆ·çš„å…³ç³»ï¼Œæ¯”å¦‚æ‹‰é»‘ã€å…³æ³¨ã€å–å…³ç­‰ã€‚
+ĞŞ¸ÄºÍÓÃ»§µÄ¹ØÏµ£¬±ÈÈçÀ­ºÚ¡¢¹Ø×¢¡¢È¡¹ØµÈ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `relation` | `RelationType` | ç”¨æˆ·å…³ç³»ã€‚ |
+| `relation` | `RelationType` | ÓÃ»§¹ØÏµ¡£ |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def set_space_notice()
 
-ä¿®æ”¹ç”¨æˆ·ç©ºé—´å…¬å‘Š
+ĞŞ¸ÄÓÃ»§¿Õ¼ä¹«¸æ
 
 
 | name | type | description |
 | - | - | - |
-| `content` | `str` | éœ€è¦ä¿®æ”¹çš„å†…å®¹ |
+| `content` | `str` | ĞèÒªĞŞ¸ÄµÄÄÚÈİ |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
 
 ### async def top_followers()
 
-è·å–ç”¨æˆ·ç²‰ä¸æ’è¡Œ
+»ñÈ¡ÓÃ»§·ÛË¿ÅÅĞĞ
 
 | name | type | description |
 | - | - | - |
-| `since` | `int, optional` | å¼€å§‹æ—¶é—´(msec) |
+| `since` | `int, optional` | ¿ªÊ¼Ê±¼ä(msec) |
 
-**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
+**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
 
 
 
@@ -846,11 +846,11 @@ medialistæ’åºé¡ºåºã€‚
 
 **Extend: enum.Enum**
 
-è§†é¢‘æ’åºé¡ºåºã€‚
+ÊÓÆµÅÅĞòË³Ğò¡£
 
-+ PUBDATE : ä¸Šä¼ æ—¥æœŸå€’åºã€‚
-+ FAVORITE: æ”¶è—é‡å€’åºã€‚
-+ VIEW: æ’­æ”¾é‡å€’åºã€‚
++ PUBDATE : ÉÏ´«ÈÕÆÚµ¹Ğò¡£
++ FAVORITE: ÊÕ²ØÁ¿µ¹Ğò¡£
++ VIEW: ²¥·ÅÁ¿µ¹Ğò¡£
 
 
 
@@ -859,14 +859,14 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def check_nickname()
 
-æ£€éªŒæ˜µç§°æ˜¯å¦å¯ç”¨
+¼ìÑéêÇ³ÆÊÇ·ñ¿ÉÓÃ
 
 
 | name | type | description |
 | - | - | - |
-| `nick_name` | `str` | æ˜µç§° |
+| `nick_name` | `str` | êÇ³Æ |
 
-**Returns:** `List[bool, str]`:  æ˜µç§°æ˜¯å¦å¯ç”¨ + ä¸å¯ç”¨åŸå› 
+**Returns:** `List[bool, str]`:  êÇ³ÆÊÇ·ñ¿ÉÓÃ + ²»¿ÉÓÃÔ­Òò
 
 
 
@@ -875,14 +875,14 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def clear_toview_list()
 
-æ¸…ç©ºç¨åå†çœ‹åˆ—è¡¨
+Çå¿ÕÉÔºóÔÙ¿´ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -891,15 +891,15 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def create_subscribe_group()
 
-åˆ›å»ºç”¨æˆ·å…³æ³¨åˆ†ç»„
+´´½¨ÓÃ»§¹Ø×¢·Ö×é
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | åˆ†ç»„å |
+| `name` | `str` | ·Ö×éÃû |
 | `credential` | `Credential` | Credential |
 
-**Returns:** `dict`:  API è°ƒç”¨è¿”å›ç»“æœã€‚
+**Returns:** `dict`:  API µ÷ÓÃ·µ»Ø½á¹û¡£
 
 
 
@@ -908,15 +908,15 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def delete_subscribe_group()
 
-åˆ é™¤ç”¨æˆ·å…³æ³¨åˆ†ç»„
+É¾³ıÓÃ»§¹Ø×¢·Ö×é
 
 
 | name | type | description |
 | - | - | - |
-| `group_id` | `int` | åˆ†ç»„ ID |
+| `group_id` | `int` | ·Ö×é ID |
 | `credential` | `Credential` | Credential |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
 
 
 
@@ -925,14 +925,14 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def delete_viewed_videos_from_toview()
 
-åˆ é™¤ç¨åå†çœ‹åˆ—è¡¨å·²ç»çœ‹è¿‡çš„è§†é¢‘
+É¾³ıÉÔºóÔÙ¿´ÁĞ±íÒÑ¾­¿´¹ıµÄÊÓÆµ
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -941,15 +941,15 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def edit_self_info()
 
-ä¿®æ”¹è‡ªå·±çš„ä¿¡æ¯ (Web)
+ĞŞ¸Ä×Ô¼ºµÄĞÅÏ¢ (Web)
 
 
 | name | type | description |
 | - | - | - |
-| `birthday` | `str` | ç”Ÿæ—¥ YYYY-MM-DD |
-| `sex` | `str` | æ€§åˆ« ç”·|å¥³|ä¿å¯† |
-| `uname` | `str` | ç”¨æˆ·å |
-| `usersign` | `str` | ä¸ªæ€§ç­¾å |
+| `birthday` | `str` | ÉúÈÕ YYYY-MM-DD |
+| `sex` | `str` | ĞÔ±ğ ÄĞ|Å®|±£ÃÜ |
+| `uname` | `str` | ÓÃ»§Ãû |
+| `usersign` | `str` | ¸öĞÔÇ©Ãû |
 | `credential` | `Credential` | Credential |
 
 
@@ -959,14 +959,14 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def get_self_black_list()
 
-è·å–è‡ªå·±çš„é»‘åå•ä¿¡æ¯
+»ñÈ¡×Ô¼ºµÄºÚÃûµ¥ĞÅÏ¢
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
-| `pn` | `int, optional` | é¡µç . Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µæ•°æ®å¤§å°. Defaults to 50. |
+| `credential` | `Credential` | Æ¾¾İÀà |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³Êı¾İ´óĞ¡. Defaults to 50. |
 
 
 
@@ -975,11 +975,11 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def get_self_coins()
 
-è·å–è‡ªå·±çš„ç¡¬å¸æ•°é‡ã€‚
+»ñÈ¡×Ô¼ºµÄÓ²±ÒÊıÁ¿¡£
 
 
 
-**Returns:** `int`:  ç¡¬å¸æ•°é‡
+**Returns:** `int`:  Ó²±ÒÊıÁ¿
 
 
 
@@ -988,14 +988,14 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def get_self_experience_log()
 
-è·å–è‡ªå·±çš„ç»éªŒè®°å½•
+»ñÈ¡×Ô¼ºµÄ¾­Ñé¼ÇÂ¼
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­è¯ã€‚ |
+| `credential` | `Credential` | Æ¾Ö¤¡£ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1004,12 +1004,12 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def get_self_friends()
 
-è·å–ä¸è‡ªå·±äº’ç²‰çš„äºº
+»ñÈ¡Óë×Ô¼º»¥·ÛµÄÈË
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 
@@ -1018,16 +1018,16 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def get_self_history()
 
-è·å–ç”¨æˆ·æµè§ˆå†å²è®°å½•ï¼ˆæ—§ç‰ˆï¼‰
+»ñÈ¡ÓÃ»§ä¯ÀÀÀúÊ·¼ÇÂ¼£¨¾É°æ£©
 
 
 | name | type | description |
 | - | - | - |
-| `page_num` | `int` | é¡µç æ•° |
-| `per_page_item` | `int` | æ¯é¡µå¤šå°‘æ¡å†å²è®°å½• |
+| `page_num` | `int` | Ò³ÂëÊı |
+| `per_page_item` | `int` | Ã¿Ò³¶àÉÙÌõÀúÊ·¼ÇÂ¼ |
 | `credential` | `Credential` | Credential |
 
-**Returns:** `list(dict)`:  è¿”å›å½“å‰é¡µçš„æŒ‡å®šå†å²è®°å½•åˆ—è¡¨
+**Returns:** `list(dict)`:  ·µ»Øµ±Ç°Ò³µÄÖ¸¶¨ÀúÊ·¼ÇÂ¼ÁĞ±í
 
 
 
@@ -1036,22 +1036,22 @@ medialistæ’åºé¡ºåºã€‚
 
 ## async def get_self_history_new()
 
-è·å–ç”¨æˆ·æµè§ˆå†å²è®°å½•ï¼ˆæ–°ç‰ˆï¼‰ï¼Œä¸æ—§ç‰ˆä¸åŒæœ‰åˆ†ç±»å‚æ•°ï¼Œä½†ç›¸å¯¹ç¼ºå°‘è§†é¢‘ä¿¡æ¯
+»ñÈ¡ÓÃ»§ä¯ÀÀÀúÊ·¼ÇÂ¼£¨ĞÂ°æ£©£¬Óë¾É°æ²»Í¬ÓĞ·ÖÀà²ÎÊı£¬µ«Ïà¶ÔÈ±ÉÙÊÓÆµĞÅÏ¢
 
-maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œå…¶ç”¨æ³•ç±»ä¼¼é“¾è¡¨çš„ next æŒ‡é’ˆ
+max¡¢business¡¢view_at ²ÎÊıÓÃÓÚÀúÊ·¼ÇÂ¼ÁĞ±íµÄ IFS (ÎŞÏŞ¹ö¶¯)£¬ÆäÓÃ·¨ÀàËÆÁ´±íµÄ next Ö¸Õë
 
-å°†è¿”å›å€¼æŸå†å²è®°å½•çš„ oidã€businessã€view_at ä½œä¸ºä¸Šè¿°å‚æ•°ä¼ å…¥ï¼Œå³å¯è·å–æ­¤ oid ä¹‹å‰çš„å†å²è®°å½•
+½«·µ»ØÖµÄ³ÀúÊ·¼ÇÂ¼µÄ oid¡¢business¡¢view_at ×÷ÎªÉÏÊö²ÎÊı´«Èë£¬¼´¿É»ñÈ¡´Ë oid Ö®Ç°µÄÀúÊ·¼ÇÂ¼
 
 
 | name | type | description |
 | - | - | - |
 | `credential` | `Credential` | Credential |
-| `_type` | `HistroyType` | å†å²è®°å½•åˆ†ç±», é»˜è®¤ä¸º HistroyType.ALL |
-| `ps` | `int` | æ¯é¡µå¤šå°‘æ¡å†å²è®°å½•, é»˜è®¤ä¸º 20 |
-| `view_at` | `int` | æ—¶é—´æˆ³ï¼Œè·å–æ­¤æ—¶é—´æˆ³ä¹‹å‰çš„å†å²è®°å½• |
-| `max` | `int` | å†å²è®°å½•æˆªæ­¢ç›®æ ‡ oid |
+| `_type` | `HistroyType` | ÀúÊ·¼ÇÂ¼·ÖÀà, Ä¬ÈÏÎª HistroyType.ALL |
+| `ps` | `int` | Ã¿Ò³¶àÉÙÌõÀúÊ·¼ÇÂ¼, Ä¬ÈÏÎª 20 |
+| `view_at` | `int` | Ê±¼ä´Á£¬»ñÈ¡´ËÊ±¼ä´ÁÖ®Ç°µÄÀúÊ·¼ÇÂ¼ |
+| `max` | `int` | ÀúÊ·¼ÇÂ¼½ØÖ¹Ä¿±ê oid |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1060,7 +1060,7 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_info()
 
-è·å–è‡ªå·±çš„ä¿¡æ¯
+»ñÈ¡×Ô¼ºµÄĞÅÏ¢
 
 
 | name | type | description |
@@ -1074,7 +1074,7 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_jury_info()
 
-è·å–è‡ªå·±é£çºªå§”å‘˜ä¿¡æ¯
+»ñÈ¡×Ô¼º·ç¼ÍÎ¯Ô±ĞÅÏ¢
 
 
 
@@ -1085,14 +1085,14 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_login_log()
 
-è·å–è‡ªå·±çš„ç™»å½•è®°å½•
+»ñÈ¡×Ô¼ºµÄµÇÂ¼¼ÇÂ¼
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­è¯ã€‚ |
+| `credential` | `Credential` | Æ¾Ö¤¡£ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1101,14 +1101,14 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_moral_log()
 
-è·å–è‡ªå·±çš„èŠ‚æ“è®°å½•
+»ñÈ¡×Ô¼ºµÄ½Ú²Ù¼ÇÂ¼
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­è¯ã€‚ |
+| `credential` | `Credential` | Æ¾Ö¤¡£ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1117,16 +1117,16 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_notes_info()
 
-è·å–è‡ªå·±çš„ç¬”è®°åˆ—è¡¨
+»ñÈ¡×Ô¼ºµÄ±Ê¼ÇÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `page_num` | `int` | é¡µç  |
-| `page_size` | `int` | æ¯é¡µé¡¹æ•° |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `page_num` | `int` | Ò³Âë |
+| `page_size` | `int` | Ã¿Ò³ÏîÊı |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1135,16 +1135,16 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_public_notes_info()
 
-è·å–è‡ªå·±çš„å…¬å¼€ç¬”è®°åˆ—è¡¨
+»ñÈ¡×Ô¼ºµÄ¹«¿ª±Ê¼ÇÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `page_num` | `int` | é¡µç  |
-| `page_size` | `int` | æ¯é¡µé¡¹æ•° |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `page_num` | `int` | Ò³Âë |
+| `page_size` | `int` | Ã¿Ò³ÏîÊı |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1153,14 +1153,14 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_special_followings()
 
-è·å–è‡ªå·±ç‰¹æ®Šå…³æ³¨çš„åˆ—è¡¨
+»ñÈ¡×Ô¼ºÌØÊâ¹Ø×¢µÄÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
-| `pn` | `int, optional` | é¡µç . Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µæ•°æ®å¤§å°. Defaults to 50. |
+| `credential` | `Credential` | Æ¾¾İÀà |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³Êı¾İ´óĞ¡. Defaults to 50. |
 
 
 
@@ -1169,14 +1169,14 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_self_whisper_followings()
 
-è·å–è‡ªå·±æ‚„æ‚„å…³æ³¨çš„åˆ—è¡¨ã€‚
+»ñÈ¡×Ô¼ºÇÄÇÄ¹Ø×¢µÄÁĞ±í¡£
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
-| `pn` | `int, optional` | é¡µç . Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µæ•°æ®å¤§å°. Defaults to 50. |
+| `credential` | `Credential` | Æ¾¾İÀà |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³Êı¾İ´óĞ¡. Defaults to 50. |
 
 
 
@@ -1185,14 +1185,14 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def get_toview_list()
 
-è·å–ç¨åå†çœ‹åˆ—è¡¨
+»ñÈ¡ÉÔºóÔÙ¿´ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1201,15 +1201,15 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def name2uid()
 
-å°†ç”¨æˆ·åè½¬ä¸º uid
+½«ÓÃ»§Ãû×ªÎª uid
 
 
 | name | type | description |
 | - | - | - |
-| `names` | `str/List[str]` | ç”¨æˆ·å |
-| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
+| `names` | `str/List[str]` | ÓÃ»§Ãû |
+| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -1218,16 +1218,16 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def rename_subscribe_group()
 
-é‡å‘½åå…³æ³¨åˆ†ç»„
+ÖØÃüÃû¹Ø×¢·Ö×é
 
 
 | name | type | description |
 | - | - | - |
-| `group_id` | `int` | åˆ†ç»„ ID |
-| `new_name` | `str` | æ–°çš„åˆ†ç»„å |
+| `group_id` | `int` | ·Ö×é ID |
+| `new_name` | `str` | ĞÂµÄ·Ö×éÃû |
 | `credential` | `Credential` | Credential |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
 
 
 
@@ -1236,16 +1236,16 @@ maxã€businessã€view_at å‚æ•°ç”¨äºå†å²è®°å½•åˆ—è¡¨çš„ IFS (æ— é™æ»šåŠ¨)ï¼Œ
 
 ## async def set_subscribe_group()
 
-è®¾ç½®ç”¨æˆ·å…³æ³¨åˆ†ç»„
+ÉèÖÃÓÃ»§¹Ø×¢·Ö×é
 
 
 | name | type | description |
 | - | - | - |
-| `uids` | `List[int]` | è¦è®¾ç½®çš„ç”¨æˆ· UID åˆ—è¡¨ï¼Œå¿…é¡»å·²å…³æ³¨ã€‚ |
-| `group_ids` | `List[int]` | è¦å¤åˆ¶åˆ°çš„åˆ†ç»„åˆ—è¡¨ |
+| `uids` | `List[int]` | ÒªÉèÖÃµÄÓÃ»§ UID ÁĞ±í£¬±ØĞëÒÑ¹Ø×¢¡£ |
+| `group_ids` | `List[int]` | Òª¸´ÖÆµ½µÄ·Ö×éÁĞ±í |
 | `credential` | `Credential` | Credential |
 
-**Returns:** `dict`:  API è°ƒç”¨ç»“æœ
+**Returns:** `dict`:  API µ÷ÓÃ½á¹û
 
 
 

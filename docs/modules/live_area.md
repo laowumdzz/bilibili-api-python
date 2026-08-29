@@ -3,7 +3,7 @@
 
 bilibili_api.live_area
 
-ç›´æ’­é—´åˆ†åŒºç›¸å…³æ“ä½œã€‚
+Ö±²¥¼ä·ÖÇøÏà¹Ø²Ù×÷¡£
 
 
 ``` python
@@ -21,11 +21,11 @@ from bilibili_api import live_area
 
 ## async def fetch_live_area_data()
 
-æŠ“å–ç›´æ’­åˆ†åŒºæ•°æ®
+×¥È¡Ö±²¥·ÖÇøÊı¾İ
 
-å› ä¸ºç›´æ’­åˆ†åŒºå®¹æ˜“å‡ºç°å˜åŠ¨ï¼Œæ•…ä¸åƒè§†é¢‘åˆ†åŒºä¸€æ ·ç›´æ¥ä½¿ç”¨æ–‡ä»¶ä¿å­˜ï¼Œè€Œæ˜¯æ¯æ¬¡æŸ¥è¯¢æ—¶å…ˆæŠ“å–ä¸€éã€‚
+ÒòÎªÖ±²¥·ÖÇøÈİÒ×³öÏÖ±ä¶¯£¬¹Ê²»ÏñÊÓÆµ·ÖÇøÒ»ÑùÖ±½ÓÊ¹ÓÃÎÄ¼ş±£´æ£¬¶øÊÇÃ¿´Î²éÑ¯Ê±ÏÈ×¥È¡Ò»±é¡£
 
-ä¸€æ¬¡è¿è¡Œæ•´ä¸ªç¨‹åºä»…éœ€æ‰§è¡Œä¸€æ¬¡æ­¤å‡½æ•°å³å¯ï¼Œæ— éœ€å¤šæ¬¡è°ƒç”¨ã€‚
+Ò»´ÎÔËĞĞÕû¸ö³ÌĞò½öĞèÖ´ĞĞÒ»´Î´Ëº¯Êı¼´¿É£¬ÎŞĞè¶à´Îµ÷ÓÃ¡£
 
 
 
@@ -36,14 +36,14 @@ from bilibili_api import live_area
 
 ## def get_area_info_by_id()
 
-æ ¹æ® id è·å–åˆ†åŒºä¿¡æ¯ã€‚
+¸ù¾İ id »ñÈ¡·ÖÇøĞÅÏ¢¡£
 
 
 | name | type | description |
 | - | - | - |
-| `id` | `int` | åˆ†åŒºçš„ idã€‚ |
+| `id` | `int` | ·ÖÇøµÄ id¡£ |
 
-**Returns:** `Tuple[dict | None, dict | None]`:  ç¬¬ä¸€ä¸ªæ˜¯ä¸»åˆ†åŒºï¼Œç¬¬äºŒä¸ªæ˜¯å­åˆ†åŒºï¼Œæ²¡æœ‰æ—¶è¿”å› Noneã€‚
+**Returns:** `Tuple[dict | None, dict | None]`:  µÚÒ»¸öÊÇÖ÷·ÖÇø£¬µÚ¶ş¸öÊÇ×Ó·ÖÇø£¬Ã»ÓĞÊ±·µ»Ø None¡£
 
 
 
@@ -52,14 +52,14 @@ from bilibili_api import live_area
 
 ## def get_area_info_by_name()
 
-æ ¹æ®é¢‘é“åç§°è·å–é¢‘é“ä¿¡æ¯ã€‚
+¸ù¾İÆµµÀÃû³Æ»ñÈ¡ÆµµÀĞÅÏ¢¡£
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | åˆ†åŒºçš„åç§°ã€‚ |
+| `name` | `str` | ·ÖÇøµÄÃû³Æ¡£ |
 
-**Returns:** `Tuple[dict | None, dict | None]`:  ç¬¬ä¸€ä¸ªæ˜¯ä¸»åˆ†åŒºï¼Œç¬¬äºŒä¸ªæ˜¯å­åˆ†åŒºï¼Œæ²¡æœ‰æ—¶è¿”å› Noneã€‚
+**Returns:** `Tuple[dict | None, dict | None]`:  µÚÒ»¸öÊÇÖ÷·ÖÇø£¬µÚ¶ş¸öÊÇ×Ó·ÖÇø£¬Ã»ÓĞÊ±·µ»Ø None¡£
 
 
 
@@ -68,11 +68,11 @@ from bilibili_api import live_area
 
 ## def get_area_list()
 
-è·å–æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
+»ñÈ¡ËùÓĞ·ÖÇøµÄÊı¾İ
 
 
 
-**Returns:** `List[dict]`:  æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
+**Returns:** `List[dict]`:  ËùÓĞ·ÖÇøµÄÊı¾İ
 
 
 
@@ -81,12 +81,12 @@ from bilibili_api import live_area
 
 ## def get_area_list_sub()
 
-è·å–æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
-å«çˆ¶å­å…³ç³»ï¼ˆå³ä¸€å±‚æ¬¡åªæœ‰ä¸»åˆ†åŒºï¼‰
+»ñÈ¡ËùÓĞ·ÖÇøµÄÊı¾İ
+º¬¸¸×Ó¹ØÏµ£¨¼´Ò»²ã´ÎÖ»ÓĞÖ÷·ÖÇø£©
 
 
 
-**Returns:** `dict`:  æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
+**Returns:** `dict`:  ËùÓĞ·ÖÇøµÄÊı¾İ
 
 
 
@@ -95,17 +95,17 @@ from bilibili_api import live_area
 
 ## async def get_list_by_area()
 
-æ ¹æ®åˆ†åŒºè·å–ç›´æ’­é—´åˆ—è¡¨
+¸ù¾İ·ÖÇø»ñÈ¡Ö±²¥¼äÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `area_id` | `int` | åˆ†åŒº id |
-| `page` | `int` | ç¬¬å‡ é¡µ. Defaults to 1. |
-| `order` | `str` | ç›´æ’­é—´æ’åºæ–¹å¼. è®¿é—®æ¥å£åæŸ¥è¯¢ `new_tags` å­—æ®µå¯¹åº” `sort_type` å–å€¼, å¦‚ "online" (äººæ°”æ’åº). Defaults to "" (ç»¼åˆ). |
-| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
+| `area_id` | `int` | ·ÖÇø id |
+| `page` | `int` | µÚ¼¸Ò³. Defaults to 1. |
+| `order` | `str` | Ö±²¥¼äÅÅĞò·½Ê½. ·ÃÎÊ½Ó¿Úºó²éÑ¯ `new_tags` ×Ö¶Î¶ÔÓ¦ `sort_type` È¡Öµ, Èç "online" (ÈËÆøÅÅĞò). Defaults to "" (×ÛºÏ). |
+| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

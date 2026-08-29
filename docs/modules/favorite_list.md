@@ -3,7 +3,7 @@
 
 bilibili_api.favorite_list
 
-æ”¶è—å¤¹æ“ä½œã€‚
+ÊÕ²Ø¼Ğ²Ù×÷¡£
 
 
 ``` python
@@ -41,12 +41,12 @@ from bilibili_api import favorite_list
 
 ## class FavoriteList()
 
-æ”¶è—å¤¹ç±»
+ÊÕ²Ø¼ĞÀà
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -54,81 +54,81 @@ from bilibili_api import favorite_list
 
 | name | type | description |
 | - | - | - |
-| `type_` | `FavoriteListType, optional` | æ”¶è—å¤¹ç±»å‹. Defaults to FavoriteListType.VIDEO. |
-| `media_id` | `int, optional` | æ”¶è—å¤¹å·ï¼ˆä»…ä¸ºè§†é¢‘æ”¶è—å¤¹æ—¶æä¾›ï¼‰. Defaults to None. |
-| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to Credential(). |
+| `type_` | `FavoriteListType, optional` | ÊÕ²Ø¼ĞÀàĞÍ. Defaults to FavoriteListType.VIDEO. |
+| `media_id` | `int, optional` | ÊÕ²Ø¼ĞºÅ£¨½öÎªÊÓÆµÊÕ²Ø¼ĞÊ±Ìá¹©£©. Defaults to None. |
+| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to Credential(). |
 
 
 ### async def get_content()
 
-è·å–æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡ÊÕ²Ø¼ĞÄÚÈİ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_content_ids_info()
 
-è·å–æ”¶è—å¤¹æ‰€æœ‰å†…å®¹çš„ IDã€‚
+»ñÈ¡ÊÕ²Ø¼ĞËùÓĞÄÚÈİµÄ ID¡£
 
-**æ³¨æ„ï¼šæ¥å£é’ˆå¯¹ç•ªå‰§å‰§é›†è§†é¢‘è¿”å›çš„ id / bvid å®é™…ä¸Šå¯¹åº”çš„æ˜¯å…¶ epid**
+**×¢Òâ£º½Ó¿ÚÕë¶Ô·¬¾ç¾ç¼¯ÊÓÆµ·µ»ØµÄ id / bvid Êµ¼ÊÉÏ¶ÔÓ¦µÄÊÇÆä epid**
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_content_video()
 
-è·å–è§†é¢‘æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡ÊÓÆµÊÕ²Ø¼ĞÄÚÈİ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
-| `keyword` | `str \| None, optional` | æœç´¢å…³é”®è¯. Defaults to None. |
-| `order` | `FavoriteListContentOrder, optional` | æ’åºæ–¹å¼. Defaults to FavoriteListContentOrder.MTIME. |
-| `mode` | `SearchFavoriteListMode, optional` | æœç´¢æ¨¡å¼ï¼Œé»˜è®¤ä»…å½“å‰æ”¶è—å¤¹. |
-| `tid` | `int, optional` | åˆ†åŒº ID. Defaults to 0. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `keyword` | `str \| None, optional` | ËÑË÷¹Ø¼ü´Ê. Defaults to None. |
+| `order` | `FavoriteListContentOrder, optional` | ÅÅĞò·½Ê½. Defaults to FavoriteListContentOrder.MTIME. |
+| `mode` | `SearchFavoriteListMode, optional` | ËÑË÷Ä£Ê½£¬Ä¬ÈÏ½öµ±Ç°ÊÕ²Ø¼Ğ. |
+| `tid` | `int, optional` | ·ÖÇø ID. Defaults to 0. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_favorite_list_type()
 
-è·å–æ”¶è—å¤¹ç±»å‹
+»ñÈ¡ÊÕ²Ø¼ĞÀàĞÍ
 
 
 
-**Returns:** `FavoriteListType`:  æ”¶è—å¤¹ç±»å‹
+**Returns:** `FavoriteListType`:  ÊÕ²Ø¼ĞÀàĞÍ
 
 
 
 
 ### async def get_info()
 
-è·å–æ”¶è—å¤¹ä¿¡æ¯ã€‚
+»ñÈ¡ÊÕ²Ø¼ĞĞÅÏ¢¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_media_id()
 
-è·å–æ”¶è—å¤¹ media_idï¼Œä»…è§†é¢‘æ”¶è—å¤¹å­˜åœ¨æ­¤å±æ€§
+»ñÈ¡ÊÕ²Ø¼Ğ media_id£¬½öÊÓÆµÊÕ²Ø¼Ğ´æÔÚ´ËÊôĞÔ
 
 
 
@@ -139,11 +139,11 @@ from bilibili_api import favorite_list
 
 ### def is_video_favorite_list()
 
-æ”¶è—å¤¹æ˜¯å¦ä¸ºè§†é¢‘æ”¶è—å¤¹
+ÊÕ²Ø¼ĞÊÇ·ñÎªÊÓÆµÊÕ²Ø¼Ğ
 
 
 
-**Returns:** `bool`:  æ˜¯å¦ä¸ºè§†é¢‘æ”¶è—å¤¹
+**Returns:** `bool`:  ÊÇ·ñÎªÊÓÆµÊÕ²Ø¼Ğ
 
 
 
@@ -154,11 +154,11 @@ from bilibili_api import favorite_list
 
 **Extend: enum.Enum**
 
-æ”¶è—å¤¹åˆ—è¡¨å†…å®¹æ’åºæ–¹å¼æšä¸¾ã€‚
+ÊÕ²Ø¼ĞÁĞ±íÄÚÈİÅÅĞò·½Ê½Ã¶¾Ù¡£
 
-+ MTIME  : æœ€è¿‘æ”¶è—
-+ VIEW   : æœ€å¤šæ’­æ”¾
-+ PUBTIME: æœ€æ–°æŠ•ç¨¿
++ MTIME  : ×î½üÊÕ²Ø
++ VIEW   : ×î¶à²¥·Å
++ PUBTIME: ×îĞÂÍ¶¸å
 
 
 
@@ -169,11 +169,11 @@ from bilibili_api import favorite_list
 
 **Extend: enum.Enum**
 
-æ”¶è—å¤¹ç±»å‹æšä¸¾
+ÊÕ²Ø¼ĞÀàĞÍÃ¶¾Ù
 
-+ VIDEO  : è§†é¢‘æ”¶è—å¤¹
-+ ARTICLE: ä¸“æ æ”¶è—å¤¹
-+ CHEESE : è¯¾ç¨‹æ”¶è—å¤¹
++ VIDEO  : ÊÓÆµÊÕ²Ø¼Ğ
++ ARTICLE: ×¨À¸ÊÕ²Ø¼Ğ
++ CHEESE : ¿Î³ÌÊÕ²Ø¼Ğ
 
 
 
@@ -184,10 +184,10 @@ from bilibili_api import favorite_list
 
 **Extend: enum.Enum**
 
-æ”¶è—å¤¹æœç´¢æ¨¡å¼æšä¸¾
+ÊÕ²Ø¼ĞËÑË÷Ä£Ê½Ã¶¾Ù
 
-+ ONLY : ä»…å½“å‰æ”¶è—å¤¹
-+ ALL  : è¯¥ç”¨æˆ·æ‰€æœ‰æ”¶è—å¤¹
++ ONLY : ½öµ±Ç°ÊÕ²Ø¼Ğ
++ ALL  : ¸ÃÓÃ»§ËùÓĞÊÕ²Ø¼Ğ
 
 
 
@@ -196,15 +196,15 @@ from bilibili_api import favorite_list
 
 ## async def clean_video_favorite_list_content()
 
-æ¸…é™¤è§†é¢‘æ”¶è—å¤¹å¤±æ•ˆå†…å®¹
+Çå³ıÊÓÆµÊÕ²Ø¼ĞÊ§Ğ§ÄÚÈİ
 
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int` | æ”¶è—å¤¹ ID |
-| `credential` | `Credential` | å‡­æ® |
+| `media_id` | `int` | ÊÕ²Ø¼Ğ ID |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  API è°ƒç”¨ç»“æœã€‚
+**Returns:** `dict`:  API µ÷ÓÃ½á¹û¡£
 
 
 
@@ -213,17 +213,17 @@ from bilibili_api import favorite_list
 
 ## async def copy_video_favorite_list_content()
 
-å¤åˆ¶è§†é¢‘æ”¶è—å¤¹å†…å®¹
+¸´ÖÆÊÓÆµÊÕ²Ø¼ĞÄÚÈİ
 
 
 | name | type | description |
 | - | - | - |
-| `media_id_from` | `int` | è¦å¤åˆ¶çš„æºæ”¶è—å¤¹ IDã€‚ |
-| `media_id_to` | `int` | ç›®æ ‡æ”¶è—å¤¹ IDã€‚ |
-| `aids` | `List[int]` | è¢«å¤åˆ¶çš„è§†é¢‘ ID åˆ—è¡¨ã€‚ |
-| `credential` | `Credential` | å‡­æ® |
+| `media_id_from` | `int` | Òª¸´ÖÆµÄÔ´ÊÕ²Ø¼Ğ ID¡£ |
+| `media_id_to` | `int` | Ä¿±êÊÕ²Ø¼Ğ ID¡£ |
+| `aids` | `List[int]` | ±»¸´ÖÆµÄÊÓÆµ ID ÁĞ±í¡£ |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -232,17 +232,17 @@ from bilibili_api import favorite_list
 
 ## async def create_video_favorite_list()
 
-æ–°å»ºè§†é¢‘æ”¶è—å¤¹åˆ—è¡¨ã€‚
+ĞÂ½¨ÊÓÆµÊÕ²Ø¼ĞÁĞ±í¡£
 
 
 | name | type | description |
 | - | - | - |
-| `title` | `str` | æ”¶è—å¤¹åã€‚ |
-| `introduction` | `str, optional` | æ”¶è—å¤¹ç®€ä»‹. Defaults to ''. |
-| `private` | `bool, optional` | æ˜¯å¦ä¸ºç§æœ‰. Defaults to False. |
-| `credential` | `Credential, optional` | å‡­æ®. Defaults to None. |
+| `title` | `str` | ÊÕ²Ø¼ĞÃû¡£ |
+| `introduction` | `str, optional` | ÊÕ²Ø¼Ğ¼ò½é. Defaults to ''. |
+| `private` | `bool, optional` | ÊÇ·ñÎªË½ÓĞ. Defaults to False. |
+| `credential` | `Credential, optional` | Æ¾¾İ. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -251,15 +251,15 @@ from bilibili_api import favorite_list
 
 ## async def delete_video_favorite_list()
 
-åˆ é™¤è§†é¢‘æ”¶è—å¤¹ï¼Œå¯æ‰¹é‡åˆ é™¤ã€‚
+É¾³ıÊÓÆµÊÕ²Ø¼Ğ£¬¿ÉÅúÁ¿É¾³ı¡£
 
 
 | name | type | description |
 | - | - | - |
-| `media_ids` | `List[int]` | æ”¶è—å¤¹ ID åˆ—è¡¨ã€‚ |
+| `media_ids` | `List[int]` | ÊÕ²Ø¼Ğ ID ÁĞ±í¡£ |
 | `credential` | `Credential` | Credential. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -268,16 +268,16 @@ from bilibili_api import favorite_list
 
 ## async def delete_video_favorite_list_content()
 
-åˆ é™¤è§†é¢‘æ”¶è—å¤¹å†…å®¹
+É¾³ıÊÓÆµÊÕ²Ø¼ĞÄÚÈİ
 
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int` | æ”¶è—å¤¹ IDã€‚ |
-| `aids` | `List[int]` | è¢«åˆ é™¤çš„è§†é¢‘ ID åˆ—è¡¨ã€‚ |
-| `credential` | `Credential` | å‡­æ® |
+| `media_id` | `int` | ÊÕ²Ø¼Ğ ID¡£ |
+| `aids` | `List[int]` | ±»É¾³ıµÄÊÓÆµ ID ÁĞ±í¡£ |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  API è°ƒç”¨ç»“æœã€‚
+**Returns:** `dict`:  API µ÷ÓÃ½á¹û¡£
 
 
 
@@ -286,15 +286,15 @@ from bilibili_api import favorite_list
 
 ## async def get_article_favorite_list()
 
-è·å–è‡ªå·±çš„ä¸“æ æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡×Ô¼ºµÄ×¨À¸ÊÕ²Ø¼ĞÄÚÈİ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
 | `credential` | `Credential \| None, optional` | Credential. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -303,15 +303,15 @@ from bilibili_api import favorite_list
 
 ## async def get_course_favorite_list()
 
-è·å–è‡ªå·±çš„è¯¾ç¨‹æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡×Ô¼ºµÄ¿Î³ÌÊÕ²Ø¼ĞÄÚÈİ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
 | `credential` | `Credential \| None, optional` | Credential. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -320,14 +320,14 @@ from bilibili_api import favorite_list
 
 ## async def get_favorite_collected()
 
-è·å–æ”¶è—åˆé›†åˆ—è¡¨
+»ñÈ¡ÊÕ²ØºÏ¼¯ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ· UIDã€‚ |
-| `pn` | `int, optional` | é¡µç . Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µæ•°æ®å¤§å°. Defaults to 20. |
+| `uid` | `int` | ÓÃ»§ UID¡£ |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³Êı¾İ´óĞ¡. Defaults to 20. |
 | `credential` | `Credential \| None, optional` | Credential. Defaults to None. |
 
 
@@ -337,15 +337,15 @@ from bilibili_api import favorite_list
 
 ## async def get_note_favorite_list()
 
-è·å–è‡ªå·±çš„ç¬”è®°æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡×Ô¼ºµÄ±Ê¼ÇÊÕ²Ø¼ĞÄÚÈİ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
 | `credential` | `Credential \| None, optional` | Credential. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -354,15 +354,15 @@ from bilibili_api import favorite_list
 
 ## async def get_topic_favorite_list()
 
-è·å–è‡ªå·±çš„è¯é¢˜æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡×Ô¼ºµÄ»°ÌâÊÕ²Ø¼ĞÄÚÈİ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
 | `credential` | `Credential \| None, optional` | Credential |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -371,16 +371,16 @@ from bilibili_api import favorite_list
 
 ## async def get_video_favorite_list()
 
-è·å–è§†é¢‘æ”¶è—å¤¹åˆ—è¡¨ã€‚
+»ñÈ¡ÊÓÆµÊÕ²Ø¼ĞÁĞ±í¡£
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ· UIDã€‚ |
-| `video` | `Video \| None, optional` | è§†é¢‘ç±»ã€‚è‹¥æä¾›è¯¥å‚æ•°åˆ™ç»“æœä¼šé™„å¸¦è¯¥æ”¶è—å¤¹æ˜¯å¦å­˜åœ¨è¯¥è§†é¢‘ã€‚Defaults to None. |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
+| `uid` | `int` | ÓÃ»§ UID¡£ |
+| `video` | `Video \| None, optional` | ÊÓÆµÀà¡£ÈôÌá¹©¸Ã²ÎÊıÔò½á¹û»á¸½´ø¸ÃÊÕ²Ø¼ĞÊÇ·ñ´æÔÚ¸ÃÊÓÆµ¡£Defaults to None. |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -389,22 +389,22 @@ from bilibili_api import favorite_list
 
 ## async def get_video_favorite_list_content()
 
-è·å–è§†é¢‘æ”¶è—å¤¹åˆ—è¡¨å†…å®¹ï¼Œä¹Ÿå¯ç”¨äºæœç´¢æ”¶è—å¤¹å†…å®¹ã€‚
+»ñÈ¡ÊÓÆµÊÕ²Ø¼ĞÁĞ±íÄÚÈİ£¬Ò²¿ÉÓÃÓÚËÑË÷ÊÕ²Ø¼ĞÄÚÈİ¡£
 
-mode å‚æ•°è§ SearchFavoriteListMode æšä¸¾ã€‚
+mode ²ÎÊı¼û SearchFavoriteListMode Ã¶¾Ù¡£
 
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int` | æ”¶è—å¤¹ IDã€‚ |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
-| `keyword` | `str, optional` | æœç´¢å…³é”®è¯. Defaults to None. |
-| `order` | `FavoriteListContentOrder, optional` | æ’åºæ–¹å¼. Defaults to FavoriteListContentOrder.MTIME. |
-| `tid` | `int, optional` | åˆ†åŒº ID. Defaults to 0. |
-| `mode` | `SearchFavoriteListMode, optional` | æœç´¢æ¨¡å¼ï¼Œé»˜è®¤ä»…å½“å‰æ”¶è—å¤¹. |
+| `media_id` | `int` | ÊÕ²Ø¼Ğ ID¡£ |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `keyword` | `str, optional` | ËÑË÷¹Ø¼ü´Ê. Defaults to None. |
+| `order` | `FavoriteListContentOrder, optional` | ÅÅĞò·½Ê½. Defaults to FavoriteListContentOrder.MTIME. |
+| `tid` | `int, optional` | ·ÖÇø ID. Defaults to 0. |
+| `mode` | `SearchFavoriteListMode, optional` | ËÑË÷Ä£Ê½£¬Ä¬ÈÏ½öµ±Ç°ÊÕ²Ø¼Ğ. |
 | `credential` | `Credential, optional` | Credential. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -413,18 +413,18 @@ mode å‚æ•°è§ SearchFavoriteListMode æšä¸¾ã€‚
 
 ## async def modify_video_favorite_list()
 
-ä¿®æ”¹è§†é¢‘æ”¶è—å¤¹ä¿¡æ¯ã€‚
+ĞŞ¸ÄÊÓÆµÊÕ²Ø¼ĞĞÅÏ¢¡£
 
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int` | æ”¶è—å¤¹ ID. |
-| `title` | `str` | æ”¶è—å¤¹åã€‚ |
-| `introduction` | `str, optional` | æ”¶è—å¤¹ç®€ä»‹. Defaults to ''. |
-| `private` | `bool, optional` | æ˜¯å¦ä¸ºç§æœ‰. Defaults to False. |
+| `media_id` | `int` | ÊÕ²Ø¼Ğ ID. |
+| `title` | `str` | ÊÕ²Ø¼ĞÃû¡£ |
+| `introduction` | `str, optional` | ÊÕ²Ø¼Ğ¼ò½é. Defaults to ''. |
+| `private` | `bool, optional` | ÊÇ·ñÎªË½ÓĞ. Defaults to False. |
 | `credential` | `Credential, optional` | Credential. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -433,17 +433,17 @@ mode å‚æ•°è§ SearchFavoriteListMode æšä¸¾ã€‚
 
 ## async def move_video_favorite_list_content()
 
-ç§»åŠ¨è§†é¢‘æ”¶è—å¤¹å†…å®¹
+ÒÆ¶¯ÊÓÆµÊÕ²Ø¼ĞÄÚÈİ
 
 
 | name | type | description |
 | - | - | - |
-| `media_id_from` | `int` | è¦ç§»åŠ¨çš„æºæ”¶è—å¤¹ IDã€‚ |
-| `media_id_to` | `int` | ç›®æ ‡æ”¶è—å¤¹ IDã€‚ |
-| `aids` | `List[int]` | è¢«ç§»åŠ¨çš„è§†é¢‘ ID åˆ—è¡¨ã€‚ |
-| `credential` | `Credential` | å‡­æ® |
+| `media_id_from` | `int` | ÒªÒÆ¶¯µÄÔ´ÊÕ²Ø¼Ğ ID¡£ |
+| `media_id_to` | `int` | Ä¿±êÊÕ²Ø¼Ğ ID¡£ |
+| `aids` | `List[int]` | ±»ÒÆ¶¯µÄÊÓÆµ ID ÁĞ±í¡£ |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

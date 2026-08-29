@@ -3,7 +3,7 @@
 
 bilibili_api.app
 
-æ‰‹æœº APP ç›¸å…³
+ÊÖ»ú APP Ïà¹Ø
 
 
 ``` python
@@ -17,20 +17,20 @@ from bilibili_api import app
 
 ## async def get_loading_images()
 
-è·å–å¼€å±å¯åŠ¨ç”»é¢
+»ñÈ¡¿ªÆÁÆô¶¯»­Ãæ
 
 
 | name | type | description |
 | - | - | - |
-| `build` | `int, optional` | å®¢æˆ·ç«¯å†…éƒ¨ç‰ˆæœ¬å· |
+| `build` | `int, optional` | ¿Í»§¶ËÄÚ²¿°æ±¾ºÅ |
 | `mobi_app` | `str, optional` | android / iphone / ipad |
 | `platform` | `str, optional` | android / ios/ ios |
-| `height` | `int, optional` | å±å¹•é«˜åº¦ |
-| `width` | `int, optional` | å±å¹•å®½åº¦ |
-| `birth` | `str, optional` | ç”Ÿæ—¥æ—¥æœŸ(å››ä½æ•°ï¼Œä¾‹ 0101) |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
+| `height` | `int, optional` | ÆÁÄ»¸ß¶È |
+| `width` | `int, optional` | ÆÁÄ»¿í¶È |
+| `birth` | `str, optional` | ÉúÈÕÈÕÆÚ(ËÄÎ»Êı£¬Àı 0101) |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -39,18 +39,18 @@ from bilibili_api import app
 
 ## async def get_loading_images_special()
 
-è·å–ç‰¹æ®Šå¼€å±å¯åŠ¨ç”»é¢
+»ñÈ¡ÌØÊâ¿ªÆÁÆô¶¯»­Ãæ
 
 
 | name | type | description |
 | - | - | - |
 | `mobi_app` | `str, optional` | android / iphone / ipad |
 | `platform` | `str, optional` | android / ios/ ios |
-| `height` | `str, optional` | å±å¹•é«˜åº¦ |
-| `width` | `str, optional` | å±å¹•å®½åº¦ |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
+| `height` | `str, optional` | ÆÁÄ»¸ß¶È |
+| `width` | `str, optional` | ÆÁÄ»¿í¶È |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

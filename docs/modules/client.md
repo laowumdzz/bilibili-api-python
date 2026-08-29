@@ -3,7 +3,7 @@
 
 bilibili_api.client
 
-IP ç»ˆç«¯ç›¸å…³
+IP ÖÕ¶ËÏà¹Ø
 
 
 ``` python
@@ -17,11 +17,11 @@ from bilibili_api import client
 
 ## async def get_zone()
 
-é€šè¿‡ IP è·å–åœ°ç†ä½ç½®
+Í¨¹ı IP »ñÈ¡µØÀíÎ»ÖÃ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -30,11 +30,11 @@ from bilibili_api import client
 
 ## async def get_zone_live()
 
-é€šè¿‡ IP è·å–åœ°ç†ä½ç½® (ç›´æ’­æ¥å£)
+Í¨¹ı IP »ñÈ¡µØÀíÎ»ÖÃ (Ö±²¥½Ó¿Ú)
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

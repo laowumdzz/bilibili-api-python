@@ -3,7 +3,7 @@
 
 bilibili_api.ass
 
-æœ‰å…³ ASS æ–‡ä»¶çš„æ“ä½œ
+ÓĞ¹Ø ASS ÎÄ¼şµÄ²Ù×÷
 
 
 ``` python
@@ -37,96 +37,96 @@ from bilibili_api import ass
 
 ### def \_\_init\_\_()
 
-è·å–è¿œç¨‹å­—å¹•
+»ñÈ¡Ô¶³Ì×ÖÄ»
 
 
 | name | type | description |
 | - | - | - |
-| `json_lan_list` | `List[Dict]` | å­—å¹•å¯é€‰è¯­è¨€ |
-| `obj` | `Video \| Episode` | å¯¹è±¡ |
-| `lan_set` | `str \| None` | è®¾ç½®é»˜è®¤å­—å¹•è¯­è¨€,å¦‚æœä¸ºNone,åˆ™è‡ªåŠ¨è·å–å¯è·å–è¯­è¨€ |
+| `json_lan_list` | `List[Dict]` | ×ÖÄ»¿ÉÑ¡ÓïÑÔ |
+| `obj` | `Video \| Episode` | ¶ÔÏó |
+| `lan_set` | `str \| None` | ÉèÖÃÄ¬ÈÏ×ÖÄ»ÓïÑÔ,Èç¹ûÎªNone,Ôò×Ô¶¯»ñÈ¡¿É»ñÈ¡ÓïÑÔ |
 
 
 ### def get_lan_list()
 
-è·å–å­—å¹•è¯­è¨€åˆ—è¡¨
+»ñÈ¡×ÖÄ»ÓïÑÔÁĞ±í
 
 
 
-**Returns:** `tuple[list[str], list[str | None]]`:  å­—å¹•å,å­—å¹•è¯­è¨€ä»£ç  # XXX
+**Returns:** `tuple[list[str], list[str | None]]`:  ×ÖÄ»Ãû,×ÖÄ»ÓïÑÔ´úÂë # XXX
 
 
 
 
 ### async def request_ass_data_json()
 
-è·å–å¯¹åº”è¯­è¨€çš„å­—å¹•
+»ñÈ¡¶ÔÓ¦ÓïÑÔµÄ×ÖÄ»
 
 
 | name | type | description |
 | - | - | - |
-| `lan_set` | `str \| None` | å¦‚æœä¸ºNoneï¼Œåˆ™è·å–é»˜è®¤å­—å¹•è¯­è¨€ |
+| `lan_set` | `str \| None` | Èç¹ûÎªNone£¬Ôò»ñÈ¡Ä¬ÈÏ×ÖÄ»ÓïÑÔ |
 
-**Returns:** `json`:  å­—å¹•æ•°æ®
+**Returns:** `json`:  ×ÖÄ»Êı¾İ
 
 
 
 
 ### def to_ass()
 
-è·å–assæ ¼å¼çš„å­—å¹•
+»ñÈ¡ass¸ñÊ½µÄ×ÖÄ»
 
 
 | name | type | description |
 | - | - | - |
-| `font` | `str` | å­—ä½“. Defaults to Simsun. |
-| `font_size` | `float` | å­—ä½“å¤§å°. Defaults to 25.0 |
+| `font` | `str` | ×ÖÌå. Defaults to Simsun. |
+| `font_size` | `float` | ×ÖÌå´óĞ¡. Defaults to 25.0 |
 
-**Returns:** `str`:  asså­—å¹•
+**Returns:** `str`:  ass×ÖÄ»
 
 
 
 
 ### def to_lrc()
 
-è·å–lrcæ ¼å¼çš„å­—å¹•
+»ñÈ¡lrc¸ñÊ½µÄ×ÖÄ»
 
 
 
-**Returns:** `str`:  lrcå­—å¹•
+**Returns:** `str`:  lrc×ÖÄ»
 
 
 
 
 ### def to_simple_json()
 
-è·å–ç®€åŒ–åçš„JSONæ•°æ®
+»ñÈ¡¼ò»¯ºóµÄJSONÊı¾İ
 
 
 
-**Returns:** `List[dict]`:  å­—å¹•æ•°æ®
+**Returns:** `List[dict]`:  ×ÖÄ»Êı¾İ
 
 
 
 
 ### def to_simple_json_str()
 
-è·å–ç®€åŒ–åçš„JSONå­—ç¬¦ä¸²
+»ñÈ¡¼ò»¯ºóµÄJSON×Ö·û´®
 
 
 
-**Returns:** `str`:  è·å–ç®€åŒ–åçš„JSONå­—ç¬¦ä¸²
+**Returns:** `str`:  »ñÈ¡¼ò»¯ºóµÄJSON×Ö·û´®
 
 
 
 
 ### def to_srt()
 
-è·å–srtæ ¼å¼çš„å­—å¹•
+»ñÈ¡srt¸ñÊ½µÄ×ÖÄ»
 
 
 
-**Returns:** `str`:  srtå­—å¹•
+**Returns:** `str`:  srt×ÖÄ»
 
 
 
@@ -135,25 +135,25 @@ from bilibili_api import ass
 
 ## async def make_ass_file_danmakus_protobuf()
 
-ç”Ÿæˆè§†é¢‘å¼¹å¹•æ–‡ä»¶
+Éú³ÉÊÓÆµµ¯Ä»ÎÄ¼ş
 
-å¼¹å¹•æ•°æ®æ¥æºäº protobuf æ¥å£
+µ¯Ä»Êı¾İÀ´Ô´ÓÚ protobuf ½Ó¿Ú
 
-ç¼–ç é»˜è®¤é‡‡ç”¨ utf-8
+±àÂëÄ¬ÈÏ²ÉÓÃ utf-8
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode,CheeseVideo]` | å¯¹è±¡ |
-| `page` | `int, optional` | åˆ† P å·. Defaults to 0. |
-| `out` | `str, optional` | è¾“å‡ºæ–‡ä»¶. Defaults to "test.ass" |
+| `obj` | `Union[Video,Episode,CheeseVideo]` | ¶ÔÏó |
+| `page` | `int, optional` | ·Ö P ºÅ. Defaults to 0. |
+| `out` | `str, optional` | Êä³öÎÄ¼ş. Defaults to "test.ass" |
 | `cid` | `int \| None, optional` | cid. Defaults to None. |
-| `date` | `datetime.date, optional` | è·å–æ—¶é—´. Defaults to None. |
-| `font_name` | `str, optional` | å­—ä½“. Defaults to "Simsun". |
-| `font_size` | `float, optional` | å­—ä½“å¤§å°. Defaults to 25.0. |
-| `alpha` | `float, optional` | é€æ˜åº¦(0-1). Defaults to 1. |
-| `fly_time` | `float, optional` | æ»šåŠ¨å¼¹å¹•æŒç»­æ—¶é—´. Defaults to 7. |
-| `static_time` | `float, optional` | é™æ€å¼¹å¹•æŒç»­æ—¶é—´. Defaults to 5. |
+| `date` | `datetime.date, optional` | »ñÈ¡Ê±¼ä. Defaults to None. |
+| `font_name` | `str, optional` | ×ÖÌå. Defaults to "Simsun". |
+| `font_size` | `float, optional` | ×ÖÌå´óĞ¡. Defaults to 25.0. |
+| `alpha` | `float, optional` | Í¸Ã÷¶È(0-1). Defaults to 1. |
+| `fly_time` | `float, optional` | ¹ö¶¯µ¯Ä»³ÖĞøÊ±¼ä. Defaults to 7. |
+| `static_time` | `float, optional` | ¾²Ì¬µ¯Ä»³ÖĞøÊ±¼ä. Defaults to 5. |
 
 
 
@@ -162,24 +162,24 @@ from bilibili_api import ass
 
 ## async def make_ass_file_danmakus_xml()
 
-ç”Ÿæˆè§†é¢‘å¼¹å¹•æ–‡ä»¶
+Éú³ÉÊÓÆµµ¯Ä»ÎÄ¼ş
 
-å¼¹å¹•æ•°æ®æ¥æºäº xml æ¥å£
+µ¯Ä»Êı¾İÀ´Ô´ÓÚ xml ½Ó¿Ú
 
-ç¼–ç é»˜è®¤é‡‡ç”¨ utf-8
+±àÂëÄ¬ÈÏ²ÉÓÃ utf-8
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode,Cheese]` | å¯¹è±¡ |
-| `page` | `int, optional` | åˆ† P å·. Defaults to 0. |
-| `out` | `str, optional` | è¾“å‡ºæ–‡ä»¶. Defaults to "test.ass". |
+| `obj` | `Union[Video,Episode,Cheese]` | ¶ÔÏó |
+| `page` | `int, optional` | ·Ö P ºÅ. Defaults to 0. |
+| `out` | `str, optional` | Êä³öÎÄ¼ş. Defaults to "test.ass". |
 | `cid` | `int \| None, optional` | cid. Defaults to None. |
-| `font_name` | `str, optional` | å­—ä½“. Defaults to "Simsun". |
-| `font_size` | `float, optional` | å­—ä½“å¤§å°. Defaults to 25.0. |
-| `alpha` | `float, optional` | é€æ˜åº¦(0-1). Defaults to 1. |
-| `fly_time` | `float, optional` | æ»šåŠ¨å¼¹å¹•æŒç»­æ—¶é—´. Defaults to 7. |
-| `static_time` | `float, optional` | é™æ€å¼¹å¹•æŒç»­æ—¶é—´. Defaults to 5. |
+| `font_name` | `str, optional` | ×ÖÌå. Defaults to "Simsun". |
+| `font_size` | `float, optional` | ×ÖÌå´óĞ¡. Defaults to 25.0. |
+| `alpha` | `float, optional` | Í¸Ã÷¶È(0-1). Defaults to 1. |
+| `fly_time` | `float, optional` | ¹ö¶¯µ¯Ä»³ÖĞøÊ±¼ä. Defaults to 7. |
+| `static_time` | `float, optional` | ¾²Ì¬µ¯Ä»³ÖĞøÊ±¼ä. Defaults to 5. |
 
 
 
@@ -188,22 +188,22 @@ from bilibili_api import ass
 
 ## async def make_ass_file_subtitle()
 
-ç”Ÿæˆassæ ¼å¼è§†é¢‘å­—å¹•æ–‡ä»¶
+Éú³Éass¸ñÊ½ÊÓÆµ×ÖÄ»ÎÄ¼ş
 
-ç¼–ç é»˜è®¤é‡‡ç”¨ utf-8
+±àÂëÄ¬ÈÏ²ÉÓÃ utf-8
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode]` | å¯¹è±¡ |
-| `page_index` | `int, optional` | åˆ† P ç´¢å¼• |
+| `obj` | `Union[Video,Episode]` | ¶ÔÏó |
+| `page_index` | `int, optional` | ·Ö P Ë÷Òı |
 | `cid` | `int, optional` | cid |
-| `out` | `str, optional` | è¾“å‡ºä½ç½®. Defaults to "test.ass". |
-| `lan_name` | `str, optional` | å­—å¹•åï¼Œå¦‚â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ,æ˜¯ç®€ä»‹çš„ subtitle é¡¹çš„'list'é¡¹ä¸­çš„å¼¹å¹•çš„'lan_doc'å±æ€§ã€‚Defaults to "ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰". |
-| `lan_code` | `str, optional` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå¦‚ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç¿»è¯‘ï¼‰â€ å’Œ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ ä¸º "ai-zh" |
-| `font` | `str, optional` | å­—ä½“. Defaults to Simsun. |
-| `font_size` | `float, optional` | å­—ä½“å¤§å°. Defaults to 65. |
-| `credential` | `Credential, optional` | Credential ç±». å¿…é¡»åœ¨æ­¤å¤„æˆ–ä¼ å…¥çš„è§†é¢‘ obj ä¸­ä¼ å…¥å‡­æ®ï¼Œä¸¤è€…å‡å­˜åœ¨åˆ™ä¼˜å…ˆæ­¤å¤„ |
+| `out` | `str, optional` | Êä³öÎ»ÖÃ. Defaults to "test.ass". |
+| `lan_name` | `str, optional` | ×ÖÄ»Ãû£¬Èç¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡°,ÊÇ¼ò½éµÄ subtitle ÏîµÄ'list'ÏîÖĞµÄµ¯Ä»µÄ'lan_doc'ÊôĞÔ¡£Defaults to "ÖĞÎÄ£¨×Ô¶¯Éú³É£©". |
+| `lan_code` | `str, optional` | ×ÖÄ»ÓïÑÔ´úÂë£¬Èç ¡±ÖĞÎÄ£¨×Ô¶¯·­Òë£©¡± ºÍ ¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡° Îª "ai-zh" |
+| `font` | `str, optional` | ×ÖÌå. Defaults to Simsun. |
+| `font_size` | `float, optional` | ×ÖÌå´óĞ¡. Defaults to 65. |
+| `credential` | `Credential, optional` | Credential Àà. ±ØĞëÔÚ´Ë´¦»ò´«ÈëµÄÊÓÆµ obj ÖĞ´«ÈëÆ¾¾İ£¬Á½Õß¾ù´æÔÚÔòÓÅÏÈ´Ë´¦ |
 
 
 
@@ -212,20 +212,20 @@ from bilibili_api import ass
 
 ## async def make_lrc_file_subtitle()
 
-ç”Ÿæˆlrcæ ¼å¼è§†é¢‘å­—å¹•æ–‡ä»¶
+Éú³Élrc¸ñÊ½ÊÓÆµ×ÖÄ»ÎÄ¼ş
 
-ç¼–ç é»˜è®¤é‡‡ç”¨ utf-8
+±àÂëÄ¬ÈÏ²ÉÓÃ utf-8
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode]` | å¯¹è±¡ |
-| `page_index` | `int, optional` | åˆ† P ç´¢å¼• |
+| `obj` | `Union[Video,Episode]` | ¶ÔÏó |
+| `page_index` | `int, optional` | ·Ö P Ë÷Òı |
 | `cid` | `int, optional` | cid |
-| `out` | `str, optional` | è¾“å‡ºä½ç½®. Defaults to "test.lrc". |
-| `lan_name` | `str, optional` | å­—å¹•åï¼Œå¦‚â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ,æ˜¯ç®€ä»‹çš„ subtitle é¡¹çš„'list'é¡¹ä¸­çš„å¼¹å¹•çš„'lan_doc'å±æ€§ã€‚Defaults to "ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰". |
-| `lan_code` | `str, optional` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå¦‚ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç¿»è¯‘ï¼‰â€ å’Œ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ ä¸º "ai-zh" |
-| `credential` | `Credential, optional` | Credential ç±». å¿…é¡»åœ¨æ­¤å¤„æˆ–ä¼ å…¥çš„è§†é¢‘ obj ä¸­ä¼ å…¥å‡­æ®ï¼Œä¸¤è€…å‡å­˜åœ¨åˆ™ä¼˜å…ˆæ­¤å¤„ |
+| `out` | `str, optional` | Êä³öÎ»ÖÃ. Defaults to "test.lrc". |
+| `lan_name` | `str, optional` | ×ÖÄ»Ãû£¬Èç¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡°,ÊÇ¼ò½éµÄ subtitle ÏîµÄ'list'ÏîÖĞµÄµ¯Ä»µÄ'lan_doc'ÊôĞÔ¡£Defaults to "ÖĞÎÄ£¨×Ô¶¯Éú³É£©". |
+| `lan_code` | `str, optional` | ×ÖÄ»ÓïÑÔ´úÂë£¬Èç ¡±ÖĞÎÄ£¨×Ô¶¯·­Òë£©¡± ºÍ ¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡° Îª "ai-zh" |
+| `credential` | `Credential, optional` | Credential Àà. ±ØĞëÔÚ´Ë´¦»ò´«ÈëµÄÊÓÆµ obj ÖĞ´«ÈëÆ¾¾İ£¬Á½Õß¾ù´æÔÚÔòÓÅÏÈ´Ë´¦ |
 
 
 
@@ -234,20 +234,20 @@ from bilibili_api import ass
 
 ## async def make_simple_json_file_subtitle()
 
-ç”Ÿæˆç®€åŒ–åçš„jsonæ ¼å¼è§†é¢‘å­—å¹•æ–‡ä»¶
+Éú³É¼ò»¯ºóµÄjson¸ñÊ½ÊÓÆµ×ÖÄ»ÎÄ¼ş
 
-ç¼–ç é»˜è®¤é‡‡ç”¨ utf-8
+±àÂëÄ¬ÈÏ²ÉÓÃ utf-8
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode]` | å¯¹è±¡ |
-| `page_index` | `int, optional` | åˆ† P ç´¢å¼• |
+| `obj` | `Union[Video,Episode]` | ¶ÔÏó |
+| `page_index` | `int, optional` | ·Ö P Ë÷Òı |
 | `cid` | `int, optional` | cid |
-| `out` | `str, optional` | è¾“å‡ºä½ç½®. Defaults to "test.json". |
-| `lan_name` | `str, optional` | å­—å¹•åï¼Œå¦‚â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ,æ˜¯ç®€ä»‹çš„ subtitle é¡¹çš„'list'é¡¹ä¸­çš„å¼¹å¹•çš„'lan_doc'å±æ€§ã€‚Defaults to "ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰". |
-| `lan_code` | `str, optional` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå¦‚ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç¿»è¯‘ï¼‰â€ å’Œ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ ä¸º "ai-zh" |
-| `credential` | `Credential, optional` | Credential ç±». å¿…é¡»åœ¨æ­¤å¤„æˆ–ä¼ å…¥çš„è§†é¢‘ obj ä¸­ä¼ å…¥å‡­æ®ï¼Œä¸¤è€…å‡å­˜åœ¨åˆ™ä¼˜å…ˆæ­¤å¤„ |
+| `out` | `str, optional` | Êä³öÎ»ÖÃ. Defaults to "test.json". |
+| `lan_name` | `str, optional` | ×ÖÄ»Ãû£¬Èç¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡°,ÊÇ¼ò½éµÄ subtitle ÏîµÄ'list'ÏîÖĞµÄµ¯Ä»µÄ'lan_doc'ÊôĞÔ¡£Defaults to "ÖĞÎÄ£¨×Ô¶¯Éú³É£©". |
+| `lan_code` | `str, optional` | ×ÖÄ»ÓïÑÔ´úÂë£¬Èç ¡±ÖĞÎÄ£¨×Ô¶¯·­Òë£©¡± ºÍ ¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡° Îª "ai-zh" |
+| `credential` | `Credential, optional` | Credential Àà. ±ØĞëÔÚ´Ë´¦»ò´«ÈëµÄÊÓÆµ obj ÖĞ´«ÈëÆ¾¾İ£¬Á½Õß¾ù´æÔÚÔòÓÅÏÈ´Ë´¦ |
 
 
 
@@ -256,20 +256,20 @@ from bilibili_api import ass
 
 ## async def make_srt_file_subtitle()
 
-ç”Ÿæˆsrtæ ¼å¼è§†é¢‘å­—å¹•æ–‡ä»¶
+Éú³Ésrt¸ñÊ½ÊÓÆµ×ÖÄ»ÎÄ¼ş
 
-ç¼–ç é»˜è®¤é‡‡ç”¨ utf-8
+±àÂëÄ¬ÈÏ²ÉÓÃ utf-8
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode]` | å¯¹è±¡ |
-| `page_index` | `int, optional` | åˆ† P ç´¢å¼• |
+| `obj` | `Union[Video,Episode]` | ¶ÔÏó |
+| `page_index` | `int, optional` | ·Ö P Ë÷Òı |
 | `cid` | `int, optional` | cid |
-| `out` | `str, optional` | è¾“å‡ºä½ç½®. Defaults to "test.srt". |
-| `lan_name` | `str, optional` | å­—å¹•åï¼Œå¦‚â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ,æ˜¯ç®€ä»‹çš„ subtitle é¡¹çš„'list'é¡¹ä¸­çš„å¼¹å¹•çš„'lan_doc'å±æ€§ã€‚Defaults to "ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰". |
-| `lan_code` | `str, optional` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå¦‚ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç¿»è¯‘ï¼‰â€ å’Œ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ ä¸º "ai-zh" |
-| `credential` | `Credential, optional` | Credential ç±». å¿…é¡»åœ¨æ­¤å¤„æˆ–ä¼ å…¥çš„è§†é¢‘ obj ä¸­ä¼ å…¥å‡­æ®ï¼Œä¸¤è€…å‡å­˜åœ¨åˆ™ä¼˜å…ˆæ­¤å¤„ |
+| `out` | `str, optional` | Êä³öÎ»ÖÃ. Defaults to "test.srt". |
+| `lan_name` | `str, optional` | ×ÖÄ»Ãû£¬Èç¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡°,ÊÇ¼ò½éµÄ subtitle ÏîµÄ'list'ÏîÖĞµÄµ¯Ä»µÄ'lan_doc'ÊôĞÔ¡£Defaults to "ÖĞÎÄ£¨×Ô¶¯Éú³É£©". |
+| `lan_code` | `str, optional` | ×ÖÄ»ÓïÑÔ´úÂë£¬Èç ¡±ÖĞÎÄ£¨×Ô¶¯·­Òë£©¡± ºÍ ¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡° Îª "ai-zh" |
+| `credential` | `Credential, optional` | Credential Àà. ±ØĞëÔÚ´Ë´¦»ò´«ÈëµÄÊÓÆµ obj ÖĞ´«ÈëÆ¾¾İ£¬Á½Õß¾ù´æÔÚÔòÓÅÏÈ´Ë´¦ |
 
 
 
@@ -278,19 +278,19 @@ from bilibili_api import ass
 
 ## async def request_subtitle()
 
-è·å–è¿œç¨‹å­—å¹•
+»ñÈ¡Ô¶³Ì×ÖÄ»
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Union[Video,Episode]` | å¯¹è±¡ |
-| `page_index` | `int, optional` | åˆ† P ç´¢å¼• |
+| `obj` | `Union[Video,Episode]` | ¶ÔÏó |
+| `page_index` | `int, optional` | ·Ö P Ë÷Òı |
 | `cid` | `int, optional` | cid |
-| `lan_name` | `str, optional` | å­—å¹•åï¼Œå¦‚â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ,æ˜¯ç®€ä»‹çš„ subtitle é¡¹çš„'list'é¡¹ä¸­çš„å¼¹å¹•çš„'lan_doc'å±æ€§ã€‚Defaults to "ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰" é»˜è®¤None åˆ™è‡ªåŠ¨è·å–å¯ç”¨æ­Œè¯. |
-| `lan_code` | `str, optional` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå¦‚ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç¿»è¯‘ï¼‰â€ å’Œ â€ä¸­æ–‡ï¼ˆè‡ªåŠ¨ç”Ÿæˆï¼‰â€œ ä¸º "ai-zh" é»˜è®¤None åˆ™è‡ªåŠ¨è·å–å¯ç”¨æ­Œè¯ |
-| `credential` | `Credential, optional` | Credential ç±». å¿…é¡»åœ¨æ­¤å¤„æˆ–ä¼ å…¥çš„è§†é¢‘ obj ä¸­ä¼ å…¥å‡­æ®ï¼Œä¸¤è€…å‡å­˜åœ¨åˆ™ä¼˜å…ˆæ­¤å¤„ |
+| `lan_name` | `str, optional` | ×ÖÄ»Ãû£¬Èç¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡°,ÊÇ¼ò½éµÄ subtitle ÏîµÄ'list'ÏîÖĞµÄµ¯Ä»µÄ'lan_doc'ÊôĞÔ¡£Defaults to "ÖĞÎÄ£¨×Ô¶¯Éú³É£©" Ä¬ÈÏNone Ôò×Ô¶¯»ñÈ¡¿ÉÓÃ¸è´Ê. |
+| `lan_code` | `str, optional` | ×ÖÄ»ÓïÑÔ´úÂë£¬Èç ¡±ÖĞÎÄ£¨×Ô¶¯·­Òë£©¡± ºÍ ¡±ÖĞÎÄ£¨×Ô¶¯Éú³É£©¡° Îª "ai-zh" Ä¬ÈÏNone Ôò×Ô¶¯»ñÈ¡¿ÉÓÃ¸è´Ê |
+| `credential` | `Credential, optional` | Credential Àà. ±ØĞëÔÚ´Ë´¦»ò´«ÈëµÄÊÓÆµ obj ÖĞ´«ÈëÆ¾¾İ£¬Á½Õß¾ù´æÔÚÔòÓÅÏÈ´Ë´¦ |
 
-**Returns:** `AssSubtitleObject`:  å­—å¹•å¯¹è±¡
+**Returns:** `AssSubtitleObject`:  ×ÖÄ»¶ÔÏó
 
 
 

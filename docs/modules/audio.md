@@ -3,7 +3,7 @@
 
 bilibili_api.audio
 
-éŸ³é¢‘ç›¸å…³
+ÒôÆµÏà¹Ø
 
 
 ``` python
@@ -30,12 +30,12 @@ from bilibili_api import audio
 
 ## class Audio()
 
-éŸ³é¢‘
+ÒôÆµ
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -43,27 +43,27 @@ from bilibili_api import audio
 
 | name | type | description |
 | - | - | - |
-| `auid` | `int` | éŸ³é¢‘ AU å· |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None |
+| `auid` | `int` | ÒôÆµ AU ºÅ |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None |
 
 
 ### async def add_coins()
 
-æŠ•å¸
+Í¶±Ò
 
 
 | name | type | description |
 | - | - | - |
-| `num` | `int, optional` | æŠ•å¸æ•°é‡ã€‚Defaults to 2. |
+| `num` | `int, optional` | Í¶±ÒÊıÁ¿¡£Defaults to 2. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_auid()
 
-è·å– auid
+»ñÈ¡ auid
 
 
 
@@ -74,33 +74,33 @@ from bilibili_api import audio
 
 ### async def get_download_url()
 
-è·å–éŸ³é¢‘ä¸‹è½½é“¾æ¥
+»ñÈ¡ÒôÆµÏÂÔØÁ´½Ó
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_info()
 
-è·å–éŸ³é¢‘ä¿¡æ¯
+»ñÈ¡ÒôÆµĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_tags()
 
-è·å–éŸ³é¢‘ tags
+»ñÈ¡ÒôÆµ tags
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -109,12 +109,12 @@ from bilibili_api import audio
 
 ## class AudioList()
 
-æ­Œå•
+¸èµ¥
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -122,13 +122,13 @@ from bilibili_api import audio
 
 | name | type | description |
 | - | - | - |
-| `amid` | `int` | æ­Œå• ID |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
+| `amid` | `int` | ¸èµ¥ ID |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
 
 
 ### def get_amid()
 
-è·å– amid
+»ñÈ¡ amid
 
 
 
@@ -139,36 +139,36 @@ from bilibili_api import audio
 
 ### async def get_info()
 
-è·å–æ­Œå•ä¿¡æ¯
+»ñÈ¡¸èµ¥ĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_song_list()
 
-è·å–æ­Œå•æ­Œæ›²åˆ—è¡¨
+»ñÈ¡¸èµ¥¸èÇúÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µç . Defaults to 1 |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_tags()
 
-è·å–æ­Œå• tags
+»ñÈ¡¸èµ¥ tags
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -177,15 +177,15 @@ from bilibili_api import audio
 
 ## async def get_hot_song_list()
 
-è·å–çƒ­é—¨æ­Œå•
+»ñÈ¡ÈÈÃÅ¸èµ¥
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µæ•°. Defaults to 1 |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None |
+| `pn` | `int, optional` | Ò³Êı. Defaults to 1 |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -194,15 +194,15 @@ from bilibili_api import audio
 
 ## async def get_user_stat()
 
-è·å–ç”¨æˆ·æ•°æ®ï¼ˆæ”¶å¬æ•°ï¼Œç²‰ä¸æ•°ç­‰ï¼‰
+»ñÈ¡ÓÃ»§Êı¾İ£¨ÊÕÌıÊı£¬·ÛË¿ÊıµÈ£©
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ· UID |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None |
+| `uid` | `int` | ÓÃ»§ UID |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

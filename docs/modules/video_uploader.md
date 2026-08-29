@@ -3,7 +3,7 @@
 
 bilibili_api.video_uploader
 
-è§†é¢‘ä¸Šä¼ 
+ÊÓÆµÉÏ´«
 
 
 ``` python
@@ -42,14 +42,14 @@ from bilibili_api import video_uploader
 
 **Extend: enum.Enum**
 
-å¯é€‰çº¿è·¯
+¿ÉÑ¡ÏßÂ·
 
-bupfetch æ¨¡å¼ä¸‹ kodo ç›®å‰å¼ƒç”¨ `{'error': 'no such bucket'}`
+bupfetch Ä£Ê½ÏÂ kodo Ä¿Ç°ÆúÓÃ `{'error': 'no such bucket'}`
 
-+ BDA2ï¼šç™¾åº¦
-+ QNï¼šä¸ƒç‰›
-+ WSï¼šç½‘å®¿
-+ BLDSAï¼šbldsa
++ BDA2£º°Ù¶È
++ QN£ºÆßÅ£
++ WS£ºÍøËŞ
++ BLDSA£ºbldsa
 
 
 
@@ -60,38 +60,38 @@ bupfetch æ¨¡å¼ä¸‹ kodo ç›®å‰å¼ƒç”¨ `{'error': 'no such bucket'}`
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-è§†é¢‘ç¨¿ä»¶ç¼–è¾‘
+ÊÓÆµ¸å¼ş±à¼­
 
 
 | name | type | description |
 | - | - | - |
-| `bvid` | `str` | ç¨¿ä»¶ BVID |
-| `meta` | `Dict` | è§†é¢‘ä¿¡æ¯ |
-| `cover_path` | `str` | å°é¢è·¯å¾„. Defaults to None(ä¸æ›´æ¢å°é¢). |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `bvid` | `str` | ¸å¼ş BVID |
+| `meta` | `Dict` | ÊÓÆµĞÅÏ¢ |
+| `cover_path` | `str` | ·âÃæÂ·¾¶. Defaults to None(²»¸ü»»·âÃæ). |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### def \_\_init\_\_()
 
-meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
+meta ²ÎÊıÊ¾Àı: (±£Áô video, cover, tid, aid ×Ö¶Î)
 
 ``` json
 {
-"title": "str: æ ‡é¢˜",
-"copyright": "int: æ˜¯å¦åŸåˆ›ï¼Œ0 å¦ 1 æ˜¯",
-"tag": "æ ‡ç­¾. ç”¨,éš”å¼€. ",
+"title": "str: ±êÌâ",
+"copyright": "int: ÊÇ·ñÔ­´´£¬0 ·ñ 1 ÊÇ",
+"tag": "±êÇ©. ÓÃ,¸ô¿ª. ",
 "desc_format_id": "const int: 0",
-"desc": "str: æè¿°",
-"dynamic": "str: åŠ¨æ€ä¿¡æ¯",
+"desc": "str: ÃèÊö",
+"dynamic": "str: ¶¯Ì¬ĞÅÏ¢",
 "interactive": "const int: 0",
 "new_web_edit": "const int: 1",
 "act_reserve_create": "const int: 0",
 "handle_staff": "const bool: false",
 "topic_grey": "const int: 1",
-"no_reprint": "int: æ˜¯å¦æ˜¾ç¤ºâ€œæœªç»å…è®¸ç¦æ­¢è½¬è½½â€. 0 å¦ 1 æ˜¯",
-"subtitles # å­—å¹•è®¾ç½®": {
-"lan": "str: å­—å¹•æŠ•ç¨¿è¯­è¨€ï¼Œä¸æ¸…æ¥šä½œç”¨è¯·å°†è¯¥é¡¹è®¾ç½®ä¸ºç©º",
-"open": "int: æ˜¯å¦å¯ç”¨å­—å¹•æŠ•ç¨¿ï¼Œ1 or 0"
+"no_reprint": "int: ÊÇ·ñÏÔÊ¾¡°Î´¾­ÔÊĞí½ûÖ¹×ªÔØ¡±. 0 ·ñ 1 ÊÇ",
+"subtitles # ×ÖÄ»ÉèÖÃ": {
+"lan": "str: ×ÖÄ»Í¶¸åÓïÑÔ£¬²»Çå³ş×÷ÓÃÇë½«¸ÃÏîÉèÖÃÎª¿Õ",
+"open": "int: ÊÇ·ñÆôÓÃ×ÖÄ»Í¶¸å£¬1 or 0"
 },
 "web_os": "const int: 2"
 }
@@ -100,15 +100,15 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 | name | type | description |
 | - | - | - |
-| `bvid` | `str` | ç¨¿ä»¶ BVID |
-| `meta` | `Dict` | è§†é¢‘ä¿¡æ¯ |
-| `cover` | `str \| Picture` | å°é¢åœ°å€. Defaults to None(ä¸æ›´æ”¹å°é¢). |
-| `credential` | `Credential \| None` | å‡­æ®ç±». Defaults to None. |
+| `bvid` | `str` | ¸å¼ş BVID |
+| `meta` | `Dict` | ÊÓÆµĞÅÏ¢ |
+| `cover` | `str \| Picture` | ·âÃæµØÖ·. Defaults to None(²»¸ü¸Ä·âÃæ). |
+| `credential` | `Credential \| None` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### async def abort()
 
-ä¸­æ–­æ›´æ”¹
+ÖĞ¶Ï¸ü¸Ä
 
 
 
@@ -117,11 +117,11 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 ### async def start()
 
-å¼€å§‹æ›´æ”¹
+¿ªÊ¼¸ü¸Ä
 
 
 
-**Returns:** `dict`:  è¿”å›å¸¦æœ‰ bvid å’Œ aid çš„å­—å…¸ã€‚
+**Returns:** `dict`:  ·µ»Ø´øÓĞ bvid ºÍ aid µÄ×Öµä¡£
 
 
 
@@ -132,20 +132,20 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 **Extend: enum.Enum**
 
-è§†é¢‘ç¨¿ä»¶ç¼–è¾‘äº‹ä»¶æšä¸¾
+ÊÓÆµ¸å¼ş±à¼­ÊÂ¼şÃ¶¾Ù
 
-+ PRELOAD   : åŠ è½½æ•°æ®å‰
-+ AFTER_PRELOAD : åŠ è½½æˆåŠŸ
-+ PRELOAD_FAILED: åŠ è½½å¤±è´¥
-+ PRE_COVER : ä¸Šä¼ å°é¢å‰
-+ AFTER_COVER   : ä¸Šä¼ å°é¢å
-+ COVER_FAILED  : ä¸Šä¼ å°é¢å¤±è´¥
-+ PRE_SUBMIT: æäº¤å‰
-+ AFTER_SUBMIT  : æäº¤å
-+ SUBMIT_FAILED : æäº¤å¤±è´¥
-+ COMPLETED : å®Œæˆ
-+ ABOTRED   : åœæ­¢
-+ FAILED: å¤±è´¥
++ PRELOAD   : ¼ÓÔØÊı¾İÇ°
++ AFTER_PRELOAD : ¼ÓÔØ³É¹¦
++ PRELOAD_FAILED: ¼ÓÔØÊ§°Ü
++ PRE_COVER : ÉÏ´«·âÃæÇ°
++ AFTER_COVER   : ÉÏ´«·âÃæºó
++ COVER_FAILED  : ÉÏ´«·âÃæÊ§°Ü
++ PRE_SUBMIT: Ìá½»Ç°
++ AFTER_SUBMIT  : Ìá½»ºó
++ SUBMIT_FAILED : Ìá½»Ê§°Ü
++ COMPLETED : Íê³É
++ ABOTRED   : Í£Ö¹
++ FAILED: Ê§°Ü
 
 
 
@@ -154,52 +154,52 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 ## class VideoMeta()
 
-è§†é¢‘æºæ•°æ®
+ÊÓÆµÔ´Êı¾İ
 
 
 
 
 ### def \_\_init\_\_()
 
-åŸºæœ¬è§†é¢‘ä¸Šä¼ å‚æ•°
+»ù±¾ÊÓÆµÉÏ´«²ÎÊı
 
-å¯è°ƒç”¨ VideoMeta.verify() éªŒè¯éƒ¨åˆ†å‚æ•°æ˜¯å¦å¯ç”¨
+¿Éµ÷ÓÃ VideoMeta.verify() ÑéÖ¤²¿·Ö²ÎÊıÊÇ·ñ¿ÉÓÃ
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int` | åˆ†åŒº id |
-| `title` | `str` | è§†é¢‘æ ‡é¢˜ï¼Œæœ€å¤š 80 å­— |
-| `desc` | `str` | è§†é¢‘ç®€ä»‹ï¼Œæœ€å¤š 2000 å­— |
-| `cover` | `Union[Picture, str]` | å°é¢ï¼Œå¯ä»¥ä¼ å…¥è·¯å¾„ |
-| `tags` | `List[str], str` | æ ‡ç­¾åˆ—è¡¨ï¼Œä¼ å…¥ List æˆ–è€…ä¼ å…¥ str ä»¥ "," ä¸ºåˆ†éš”ç¬¦ï¼Œè‡³å°‘ 1 ä¸ª Tagï¼Œæœ€å¤š 10 ä¸ª |
-| `topic` | `Optional[Union[int, Topic]]` | æ´»åŠ¨ä¸»é¢˜ï¼Œåº”è¯¥ä» video_uploader.get_available_topics(tid) è·å–ï¼Œå¯é€‰ |
-| `mission_id` | `Optional[int]` | ä»»åŠ¡ idï¼Œä¸ topic ä¸€åŒè·å–ä¼ å…¥ |
-| `original` | `bool` | æ˜¯å¦åŸåˆ›ï¼Œé»˜è®¤åŸåˆ› |
-| `source` | `Optional[str]` | è½¬è½½æ¥æºï¼ŒéåŸåˆ›åº”è¯¥æä¾› |
-| `recreate` | `Optional[bool]` | æ˜¯å¦å…è®¸è½¬è½½. å¯é€‰ï¼Œé»˜è®¤ä¸ºä¸å…è®¸äºŒåˆ› |
-| `no_reprint` | `Optional[bool]` | æœªç»å…è®¸æ˜¯å¦ç¦æ­¢è½¬è½½. å¯é€‰ï¼Œé»˜è®¤ä¸ºå…è®¸è½¬è½½ |
-| `open_elec` | `Optional[bool]` | æ˜¯å¦å¼€å¯å……ç”µ. å¯é€‰ï¼Œé»˜è®¤ä¸ºå…³é—­å……ç”µ |
-| `up_selection_reply` | `Optional[bool]` | æ˜¯å¦å¼€å¯è¯„è®ºç²¾é€‰. å¯é€‰ï¼Œé»˜è®¤ä¸ºå…³é—­è¯„è®ºç²¾é€‰ |
-| `up_close_danmu` | `Optional[bool]` | æ˜¯å¦å…³é—­å¼¹å¹•. å¯é€‰ï¼Œé»˜è®¤ä¸ºå¼€å¯å¼¹å¹• |
-| `up_close_reply` | `Optional[bool]` | æ˜¯å¦å…³é—­è¯„è®º. å¯é€‰ï¼Œé»˜è®¤ä¸ºå¼€å¯è¯„è®º |
-| `lossless_music` | `Optional[bool]` | æ˜¯å¦å¼€å¯æ— æŸéŸ³ä¹. å¯é€‰ï¼Œé»˜è®¤ä¸ºå…³é—­æ— æŸéŸ³ä¹ |
-| `dolby` | `Optional[bool]` | æ˜¯å¦å¼€å¯æœæ¯”éŸ³æ•ˆ. å¯é€‰ï¼Œé»˜è®¤ä¸ºå…³é—­æœæ¯”éŸ³æ•ˆ |
-| `subtitle` | `Optional[Dict]` | å­—å¹•ä¿¡æ¯ï¼Œå¯é€‰ |
-| `dynamic` | `Optional[str]` | ç²‰ä¸åŠ¨æ€ï¼Œå¯é€‰ï¼Œæœ€å¤š 233 å­— |
-| `neutral_mark` | `Optional[str]` | åˆ›ä½œè€…å£°æ˜ï¼Œå¯é€‰ |
-| `delay_time` | `Optional[Union[int, datetime]]` | å®šæ—¶å‘å¸ƒæ—¶é—´ï¼Œå¯é€‰ |
-| `porder` | `Optional[VideoPorderMeta]` | å•†ä¸šç›¸å…³å‚æ•°ï¼Œå¯é€‰ |
-| `watermark` | `Optional[bool]` | æ˜¯å¦æ·»åŠ æ°´å°ï¼Œå¯é€‰ï¼Œé»˜è®¤ä¸ºæ²¡æœ‰æ°´å° |
+| `tid` | `int` | ·ÖÇø id |
+| `title` | `str` | ÊÓÆµ±êÌâ£¬×î¶à 80 ×Ö |
+| `desc` | `str` | ÊÓÆµ¼ò½é£¬×î¶à 2000 ×Ö |
+| `cover` | `Union[Picture, str]` | ·âÃæ£¬¿ÉÒÔ´«ÈëÂ·¾¶ |
+| `tags` | `List[str], str` | ±êÇ©ÁĞ±í£¬´«Èë List »òÕß´«Èë str ÒÔ "," Îª·Ö¸ô·û£¬ÖÁÉÙ 1 ¸ö Tag£¬×î¶à 10 ¸ö |
+| `topic` | `Optional[Union[int, Topic]]` | »î¶¯Ö÷Ìâ£¬Ó¦¸Ã´Ó video_uploader.get_available_topics(tid) »ñÈ¡£¬¿ÉÑ¡ |
+| `mission_id` | `Optional[int]` | ÈÎÎñ id£¬Óë topic Ò»Í¬»ñÈ¡´«Èë |
+| `original` | `bool` | ÊÇ·ñÔ­´´£¬Ä¬ÈÏÔ­´´ |
+| `source` | `Optional[str]` | ×ªÔØÀ´Ô´£¬·ÇÔ­´´Ó¦¸ÃÌá¹© |
+| `recreate` | `Optional[bool]` | ÊÇ·ñÔÊĞí×ªÔØ. ¿ÉÑ¡£¬Ä¬ÈÏÎª²»ÔÊĞí¶ş´´ |
+| `no_reprint` | `Optional[bool]` | Î´¾­ÔÊĞíÊÇ·ñ½ûÖ¹×ªÔØ. ¿ÉÑ¡£¬Ä¬ÈÏÎªÔÊĞí×ªÔØ |
+| `open_elec` | `Optional[bool]` | ÊÇ·ñ¿ªÆô³äµç. ¿ÉÑ¡£¬Ä¬ÈÏÎª¹Ø±Õ³äµç |
+| `up_selection_reply` | `Optional[bool]` | ÊÇ·ñ¿ªÆôÆÀÂÛ¾«Ñ¡. ¿ÉÑ¡£¬Ä¬ÈÏÎª¹Ø±ÕÆÀÂÛ¾«Ñ¡ |
+| `up_close_danmu` | `Optional[bool]` | ÊÇ·ñ¹Ø±Õµ¯Ä». ¿ÉÑ¡£¬Ä¬ÈÏÎª¿ªÆôµ¯Ä» |
+| `up_close_reply` | `Optional[bool]` | ÊÇ·ñ¹Ø±ÕÆÀÂÛ. ¿ÉÑ¡£¬Ä¬ÈÏÎª¿ªÆôÆÀÂÛ |
+| `lossless_music` | `Optional[bool]` | ÊÇ·ñ¿ªÆôÎŞËğÒôÀÖ. ¿ÉÑ¡£¬Ä¬ÈÏÎª¹Ø±ÕÎŞËğÒôÀÖ |
+| `dolby` | `Optional[bool]` | ÊÇ·ñ¿ªÆô¶Å±ÈÒôĞ§. ¿ÉÑ¡£¬Ä¬ÈÏÎª¹Ø±Õ¶Å±ÈÒôĞ§ |
+| `subtitle` | `Optional[Dict]` | ×ÖÄ»ĞÅÏ¢£¬¿ÉÑ¡ |
+| `dynamic` | `Optional[str]` | ·ÛË¿¶¯Ì¬£¬¿ÉÑ¡£¬×î¶à 233 ×Ö |
+| `neutral_mark` | `Optional[str]` | ´´×÷ÕßÉùÃ÷£¬¿ÉÑ¡ |
+| `delay_time` | `Optional[Union[int, datetime]]` | ¶¨Ê±·¢²¼Ê±¼ä£¬¿ÉÑ¡ |
+| `porder` | `Optional[VideoPorderMeta]` | ÉÌÒµÏà¹Ø²ÎÊı£¬¿ÉÑ¡ |
+| `watermark` | `Optional[bool]` | ÊÇ·ñÌí¼ÓË®Ó¡£¬¿ÉÑ¡£¬Ä¬ÈÏÎªÃ»ÓĞË®Ó¡ |
 
 
 ### async def verify()
 
-éªŒè¯å‚æ•°æ˜¯å¦å¯ç”¨ï¼Œä»…ä¾›å‚è€ƒ
+ÑéÖ¤²ÎÊıÊÇ·ñ¿ÉÓÃ£¬½ö¹©²Î¿¼
 
-æ£€æµ‹ tagsã€delay_timeã€topic -> missionã€cover å’Œ tid
+¼ì²â tags¡¢delay_time¡¢topic -> mission¡¢cover ºÍ tid
 
-éªŒè¯å¤±è´¥ä¼šæŠ›å‡ºå¼‚å¸¸
+ÑéÖ¤Ê§°Ü»áÅ×³öÒì³£
 
 
 
@@ -212,23 +212,23 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 **Extend: enum.Enum**
 
-å•†å•è¡Œä¸š
+ÉÌµ¥ĞĞÒµ
 
-+ MOBILE_GAME: æ‰‹æ¸¸
-+ CONSOLE_GAME: ä¸»æœºæ¸¸æˆ
-+ WEB_GAME: ç½‘é¡µæ¸¸æˆ
-+ PC_GAME: PCå•æœºæ¸¸æˆ
-+ PC_NETWORK_GAME: PCç½‘ç»œæ¸¸æˆ
-+ SOFTWARE_APPLICATION: è½¯ä»¶åº”ç”¨
-+ DAILY_NECESSITIES_AND_COSMETICS: æ—¥ç”¨å“åŒ–å¦†å“
-+ CLOTHING_SHOES_AND_HATS: æœè£…é‹å¸½
-+ LUGGAGE_AND_ACCESSORIES: ç®±åŒ…é¥°å“
-+ FOOD_AND_BEVERAGE: é£Ÿå“é¥®æ–™
-+ PUBLISHING_AND_MEDIA: å‡ºç‰ˆä¼ åª’
-+ COMPUTER_HARDWARE: ç”µè„‘ç¡¬ä»¶
-+ OTHER: å…¶ä»–
-+ MEDICAL: åŒ»ç–—ç±»
-+ FINANCE: é‡‘è
++ MOBILE_GAME: ÊÖÓÎ
++ CONSOLE_GAME: Ö÷»úÓÎÏ·
++ WEB_GAME: ÍøÒ³ÓÎÏ·
++ PC_GAME: PCµ¥»úÓÎÏ·
++ PC_NETWORK_GAME: PCÍøÂçÓÎÏ·
++ SOFTWARE_APPLICATION: Èí¼şÓ¦ÓÃ
++ DAILY_NECESSITIES_AND_COSMETICS: ÈÕÓÃÆ·»¯×±Æ·
++ CLOTHING_SHOES_AND_HATS: ·ş×°Ğ¬Ã±
++ LUGGAGE_AND_ACCESSORIES: Ïä°üÊÎÆ·
++ FOOD_AND_BEVERAGE: Ê³Æ·ÒûÁÏ
++ PUBLISHING_AND_MEDIA: ³ö°æ´«Ã½
++ COMPUTER_HARDWARE: µçÄÔÓ²¼ş
++ OTHER: ÆäËû
++ MEDICAL: Ò½ÁÆÀà
++ FINANCE: ½ğÈÚ
 
 
 
@@ -237,7 +237,7 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 ## class VideoPorderMeta()
 
-è§†é¢‘å•†ä¸šç›¸å…³å‚æ•°
+ÊÓÆµÉÌÒµÏà¹Ø²ÎÊı
 
 
 
@@ -254,18 +254,18 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 **Extend: enum.Enum**
 
-å•†å•å½¢å¼
+ÉÌµ¥ĞÎÊ½
 
 + LOGO: Logo
-+ OTHER: å…¶ä»–
-+ SPOKEN_AD: å£æ’­
-+ PATCH: è´´ç‰‡
-+ TVC_IMBEDDED: TVCæ¤å…¥
-+ CUSTOMIZED_AD: å®šåˆ¶è½¯å¹¿
-+ PROGRAM_SPONSORSHIP: èŠ‚ç›®èµåŠ©
++ OTHER: ÆäËû
++ SPOKEN_AD: ¿Ú²¥
++ PATCH: ÌùÆ¬
++ TVC_IMBEDDED: TVCÖ²Èë
++ CUSTOMIZED_AD: ¶¨ÖÆÈí¹ã
++ PROGRAM_SPONSORSHIP: ½ÚÄ¿ÔŞÖú
 + SLOGAN: SLOGAN
-+ QR_CODE: äºŒç»´ç 
-+ SUBTITLE_PROMOTION: å­—å¹•æ¨å¹¿
++ QR_CODE: ¶şÎ¬Âë
++ SUBTITLE_PROMOTION: ×ÖÄ»ÍÆ¹ã
 
 
 
@@ -276,10 +276,10 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 **Extend: enum.Enum**
 
-è§†é¢‘å•†ä¸šç±»å‹
+ÊÓÆµÉÌÒµÀàĞÍ
 
-+ FIREWORK: èŠ±ç«
-+ OTHER: å…¶ä»–
++ FIREWORK: »¨»ğ
++ OTHER: ÆäËû
 
 
 
@@ -290,23 +290,23 @@ meta å‚æ•°ç¤ºä¾‹: (ä¿ç•™ video, cover, tid, aid å­—æ®µ)
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-è§†é¢‘ä¸Šä¼ 
+ÊÓÆµÉÏ´«
 
 
 | name | type | description |
 | - | - | - |
-| `pages` | `List[VideoUploaderPage]` | åˆ† P åˆ—è¡¨ |
-| `meta` | `VideoMeta, Dict` | è§†é¢‘ä¿¡æ¯ |
-| `credential` | `Credential` | å‡­æ® |
-| `cover_path` | `str` | å°é¢è·¯å¾„ |
-| `line` | `Lines, Optional` | çº¿è·¯. Defaults to None. ä¸é€‰æ‹©åˆ™è‡ªåŠ¨æµ‹é€Ÿé€‰æ‹© |
+| `pages` | `List[VideoUploaderPage]` | ·Ö P ÁĞ±í |
+| `meta` | `VideoMeta, Dict` | ÊÓÆµĞÅÏ¢ |
+| `credential` | `Credential` | Æ¾¾İ |
+| `cover_path` | `str` | ·âÃæÂ·¾¶ |
+| `line` | `Lines, Optional` | ÏßÂ·. Defaults to None. ²»Ñ¡ÔñÔò×Ô¶¯²âËÙÑ¡Ôñ |
 
 
 ### def \_\_init\_\_()
 
-å»ºè®®ä¼ å…¥ VideoMeta å¯¹è±¡ï¼Œé¿å…å‚æ•°æœ‰è¯¯
+½¨Òé´«Èë VideoMeta ¶ÔÏó£¬±ÜÃâ²ÎÊıÓĞÎó
 
-meta å‚æ•°ç¤ºä¾‹ï¼š
+meta ²ÎÊıÊ¾Àı£º
 
 ```json
 {
@@ -332,21 +332,21 @@ meta å‚æ•°ç¤ºä¾‹ï¼š
 }
 ```
 
-meta ä¿ç•™å­—æ®µï¼švideos, cover
+meta ±£Áô×Ö¶Î£ºvideos, cover
 
 
 | name | type | description |
 | - | - | - |
-| `pages` | `List[VideoUploaderPage]` | åˆ† P åˆ—è¡¨ |
-| `meta` | `VideoMeta, Dict` | è§†é¢‘ä¿¡æ¯ |
-| `credential` | `Credential` | å‡­æ® |
-| `cover` | `Union[str, Picture]` | å°é¢è·¯å¾„æˆ–è€…å°é¢å¯¹è±¡. Defaults to ""ï¼Œä¼ å…¥ meta ç±»å‹ä¸º VideoMeta æ—¶å¯ä¸ä¼  |
-| `line` | `Lines, Optional` | çº¿è·¯. Defaults to None. ä¸é€‰æ‹©åˆ™è‡ªåŠ¨æµ‹é€Ÿé€‰æ‹© |
+| `pages` | `List[VideoUploaderPage]` | ·Ö P ÁĞ±í |
+| `meta` | `VideoMeta, Dict` | ÊÓÆµĞÅÏ¢ |
+| `credential` | `Credential` | Æ¾¾İ |
+| `cover` | `Union[str, Picture]` | ·âÃæÂ·¾¶»òÕß·âÃæ¶ÔÏó. Defaults to ""£¬´«Èë meta ÀàĞÍÎª VideoMeta Ê±¿É²»´« |
+| `line` | `Lines, Optional` | ÏßÂ·. Defaults to None. ²»Ñ¡ÔñÔò×Ô¶¯²âËÙÑ¡Ôñ |
 
 
 ### async def abort()
 
-ä¸­æ–­ä¸Šä¼ 
+ÖĞ¶ÏÉÏ´«
 
 
 
@@ -355,11 +355,11 @@ meta ä¿ç•™å­—æ®µï¼švideos, cover
 
 ### async def start()
 
-å¼€å§‹ä¸Šä¼ 
+¿ªÊ¼ÉÏ´«
 
 
 
-**Returns:** `dict`:  è¿”å›å¸¦æœ‰ bvid å’Œ aid çš„å­—å…¸ã€‚
+**Returns:** `dict`:  ·µ»Ø´øÓĞ bvid ºÍ aid µÄ×Öµä¡£
 
 
 
@@ -370,28 +370,28 @@ meta ä¿ç•™å­—æ®µï¼švideos, cover
 
 **Extend: enum.Enum**
 
-ä¸Šä¼ äº‹ä»¶æšä¸¾
+ÉÏ´«ÊÂ¼şÃ¶¾Ù
 
 Events:
-+ PRE_PAGE ä¸Šä¼ åˆ† P å‰
-+ PREUPLOAD  è·å–ä¸Šä¼ ä¿¡æ¯
-+ PREUPLOAD_FAILED  è·å–ä¸Šä¼ ä¿¡æ¯å¤±è´¥
-+ PRE_CHUNK  ä¸Šä¼ åˆ†å—å‰
-+ AFTER_CHUNK  ä¸Šä¼ åˆ†å—å
-+ CHUNK_FAILED  åŒºå—ä¸Šä¼ å¤±è´¥
-+ PRE_PAGE_SUBMIT  æäº¤åˆ† P å‰
-+ PAGE_SUBMIT_FAILED  æäº¤åˆ† P å¤±è´¥
-+ AFTER_PAGE_SUBMIT  æäº¤åˆ† P å
-+ AFTER_PAGE  ä¸Šä¼ åˆ† P å
-+ PRE_COVER  ä¸Šä¼ å°é¢å‰
-+ AFTER_COVER  ä¸Šä¼ å°é¢å
-+ COVER_FAILED  ä¸Šä¼ å°é¢å¤±è´¥
-+ PRE_SUBMIT  æäº¤è§†é¢‘å‰
-+ SUBMIT_FAILED  æäº¤è§†é¢‘å¤±è´¥
-+ AFTER_SUBMIT  æäº¤è§†é¢‘å
-+ COMPLETED  å®Œæˆä¸Šä¼ 
-+ ABORTED  ç”¨æˆ·ä¸­æ­¢
-+ FAILED  ä¸Šä¼ å¤±è´¥
++ PRE_PAGE ÉÏ´«·Ö P Ç°
++ PREUPLOAD  »ñÈ¡ÉÏ´«ĞÅÏ¢
++ PREUPLOAD_FAILED  »ñÈ¡ÉÏ´«ĞÅÏ¢Ê§°Ü
++ PRE_CHUNK  ÉÏ´«·Ö¿éÇ°
++ AFTER_CHUNK  ÉÏ´«·Ö¿éºó
++ CHUNK_FAILED  Çø¿éÉÏ´«Ê§°Ü
++ PRE_PAGE_SUBMIT  Ìá½»·Ö P Ç°
++ PAGE_SUBMIT_FAILED  Ìá½»·Ö P Ê§°Ü
++ AFTER_PAGE_SUBMIT  Ìá½»·Ö P ºó
++ AFTER_PAGE  ÉÏ´«·Ö P ºó
++ PRE_COVER  ÉÏ´«·âÃæÇ°
++ AFTER_COVER  ÉÏ´«·âÃæºó
++ COVER_FAILED  ÉÏ´«·âÃæÊ§°Ü
++ PRE_SUBMIT  Ìá½»ÊÓÆµÇ°
++ SUBMIT_FAILED  Ìá½»ÊÓÆµÊ§°Ü
++ AFTER_SUBMIT  Ìá½»ÊÓÆµºó
++ COMPLETED  Íê³ÉÉÏ´«
++ ABORTED  ÓÃ»§ÖĞÖ¹
++ FAILED  ÉÏ´«Ê§°Ü
 
 
 
@@ -400,7 +400,7 @@ Events:
 
 ## class VideoUploaderPage()
 
-åˆ† P å¯¹è±¡
+·Ö P ¶ÔÏó
 
 
 
@@ -410,18 +410,18 @@ Events:
 
 | name | type | description |
 | - | - | - |
-| `path` | `str` | è§†é¢‘æ–‡ä»¶è·¯å¾„ |
-| `title` | `str` | è§†é¢‘æ ‡é¢˜ |
-| `description` | `str, optional` | è§†é¢‘ç®€ä»‹. Defaults to "". |
+| `path` | `str` | ÊÓÆµÎÄ¼şÂ·¾¶ |
+| `title` | `str` | ÊÓÆµ±êÌâ |
+| `description` | `str, optional` | ÊÓÆµ¼ò½é. Defaults to "". |
 
 
 ### def get_size()
 
-è·å–æ–‡ä»¶å¤§å°
+»ñÈ¡ÎÄ¼ş´óĞ¡
 
 
 
-**Returns:** `int`:  æ–‡ä»¶å¤§å°
+**Returns:** `int`:  ÎÄ¼ş´óĞ¡
 
 
 
@@ -430,7 +430,7 @@ Events:
 
 ## async def get_available_topics()
 
-è·å–å¯ç”¨ topic åˆ—è¡¨
+»ñÈ¡¿ÉÓÃ topic ÁĞ±í
 
 
 
@@ -441,15 +441,15 @@ Events:
 
 ## async def get_missions()
 
-è·å–æ´»åŠ¨ä¿¡æ¯
+»ñÈ¡»î¶¯ĞÅÏ¢
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int, optional` | åˆ†åŒº ID. Defaults to 0. |
-| `credential` | `Credential, optional` | å‡­æ®. Defaults to None. |
+| `tid` | `int, optional` | ·ÖÇø ID. Defaults to 0. |
+| `credential` | `Credential, optional` | Æ¾¾İ. Defaults to None. |
 
-**Returns:** `dict`:  API è°ƒç”¨è¿”å›ç»“æœ
+**Returns:** `dict`:  API µ÷ÓÃ·µ»Ø½á¹û
 
 
 
@@ -458,11 +458,11 @@ Events:
 
 ## async def upload_cover()
 
-ä¸Šä¼ å°é¢
+ÉÏ´«·âÃæ
 
 
 
-**Returns:** `str`:  å°é¢ URL
+**Returns:** `str`:  ·âÃæ URL
 
 
 

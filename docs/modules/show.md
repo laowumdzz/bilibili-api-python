@@ -3,7 +3,7 @@
 
 bilibili_api.show
 
-å±•å‡ºç›¸å…³
+Õ¹³öÏà¹Ø
 
 
 ``` python
@@ -27,37 +27,37 @@ from bilibili_api import show
 
 ## class BuyerInfo()
 
-è´­ä¹°äººä¿¡æ¯
+¹ºÂòÈËĞÅÏ¢
 
-id (int): ä¿¡æ¯åºå·
+id (int): ĞÅÏ¢ĞòºÅ
 
-uid (int): ç”¨æˆ· ID
+uid (int): ÓÃ»§ ID
 
-account_channel (str): é»˜è®¤ä¸ºç©º
+account_channel (str): Ä¬ÈÏÎª¿Õ
 
-personal_id (str): èº«ä»½è¯å·
+personal_id (str): Éí·İÖ¤ºÅ
 
-name (str): å§“å
+name (str): ĞÕÃû
 
-id_card_front (str): æœªçŸ¥
+id_card_front (str): Î´Öª
 
-id_card_back (str): æœªçŸ¥
+id_card_back (str): Î´Öª
 
-is_default (bool): æ˜¯å¦ä¸ºé»˜è®¤ä¿¡æ¯
+is_default (bool): ÊÇ·ñÎªÄ¬ÈÏĞÅÏ¢
 
-tel (str): ç”µè¯å·ç 
+tel (str): µç»°ºÅÂë
 
-error_code (str): é”™è¯¯ä»£ç 
+error_code (str): ´íÎó´úÂë
 
-id_type (int): é»˜è®¤ 0
+id_type (int): Ä¬ÈÏ 0
 
-verify_status (int): è®¤è¯çŠ¶æ€
+verify_status (int): ÈÏÖ¤×´Ì¬
 
-accountId (int): ç”¨æˆ· ID
+accountId (int): ÓÃ»§ ID
 
-isBuyerInfoVerified (bool): é»˜è®¤ä¸º True
+isBuyerInfoVerified (bool): Ä¬ÈÏÎª True
 
-isBuyerValid (bool): é»˜è®¤ä¸º True
+isBuyerValid (bool): Ä¬ÈÏÎª True
 
 
 
@@ -68,36 +68,36 @@ isBuyerValid (bool): é»˜è®¤ä¸º True
 
 ## class OrderTicket()
 
-è´­ç¥¨ç±»
+¹ºÆ±Àà
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Credential å¯¹è±¡ |
-| `target_buyer` | `BuyerInfo` | è´­ç¥¨äºº |
-| `project_id` | `int` | å±•å‡ºid |
-| `session` | `Session` | Session å¯¹è±¡ |
-| `ticket` | `Ticket` | Ticket å¯¹è±¡ |
+| `credential` | `Credential` | Credential ¶ÔÏó |
+| `target_buyer` | `BuyerInfo` | ¹ºÆ±ÈË |
+| `project_id` | `int` | Õ¹³öid |
+| `session` | `Session` | Session ¶ÔÏó |
+| `ticket` | `Ticket` | Ticket ¶ÔÏó |
 
 
 ### async def create_order()
 
-åˆ›å»ºè´­ä¹°è®¢å•
+´´½¨¹ºÂò¶©µ¥
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_token()
 
-è·å–è´­ç¥¨Token
+»ñÈ¡¹ºÆ±Token
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -108,15 +108,15 @@ isBuyerValid (bool): é»˜è®¤ä¸º True
 
 ## class Session()
 
-åœºæ¬¡å¯¹è±¡
+³¡´Î¶ÔÏó
 
-id (int): åœºæ¬¡id
+id (int): ³¡´Îid
 
-start_time (int): åœºæ¬¡å¼€å§‹æ—¶é—´æˆ³
+start_time (int): ³¡´Î¿ªÊ¼Ê±¼ä´Á
 
-formatted_time (str): æ ¼å¼åŒ–start_timeåçš„æ—¶é—´æ ¼å¼: YYYY-MM-DD dddd
+formatted_time (str): ¸ñÊ½»¯start_timeºóµÄÊ±¼ä¸ñÊ½: YYYY-MM-DD dddd
 
-ticket_list (list[Ticket]): å­˜æ”¾Ticketå¯¹è±¡çš„list
+ticket_list (list[Ticket]): ´æ·ÅTicket¶ÔÏóµÄlist
 
 
 
@@ -127,17 +127,17 @@ ticket_list (list[Ticket]): å­˜æ”¾Ticketå¯¹è±¡çš„list
 
 ## class Ticket()
 
-ç¥¨å¯¹è±¡
+Æ±¶ÔÏó
 
-id (int): åœºæ¬¡id
+id (int): ³¡´Îid
 
-price (float): ä»·æ ¼(RMB)
+price (float): ¼Û¸ñ(RMB)
 
-desc (str): æè¿°
+desc (str): ÃèÊö
 
-sale_start (str): å¼€å”®å¼€å§‹æ—¶é—´
+sale_start (str): ¿ªÊÛ¿ªÊ¼Ê±¼ä
 
-sale_end (str): å¼€å”®ç»“æŸæ—¶é—´
+sale_end (str): ¿ªÊÛ½áÊøÊ±¼ä
 
 
 
@@ -146,14 +146,14 @@ sale_end (str): å¼€å”®ç»“æŸæ—¶é—´
 
 ## async def get_all_buyer_info()
 
-è¿”å›è´¦å·çš„å…¨éƒ¨èº«ä»½ä¿¡æ¯
+·µ»ØÕËºÅµÄÈ«²¿Éí·İĞÅÏ¢
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | ç™»å½•å‡­è¯ |
+| `credential` | `Credential` | µÇÂ¼Æ¾Ö¤ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -162,14 +162,14 @@ sale_end (str): å¼€å”®ç»“æŸæ—¶é—´
 
 ## async def get_all_buyer_info_obj()
 
-ä»¥BuyerInfoå¯¹è±¡è¿”å›è´¦å·çš„å…¨éƒ¨èº«ä»½ä¿¡æ¯
+ÒÔBuyerInfo¶ÔÏó·µ»ØÕËºÅµÄÈ«²¿Éí·İĞÅÏ¢
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | ç™»å½•å‡­è¯ |
+| `credential` | `Credential` | µÇÂ¼Æ¾Ö¤ |
 
-**Returns:** `list[BuyerInfo]`:  BuyerInfoå¯¹è±¡åˆ—è¡¨
+**Returns:** `list[BuyerInfo]`:  BuyerInfo¶ÔÏóÁĞ±í
 
 
 
@@ -178,14 +178,14 @@ sale_end (str): å¼€å”®ç»“æŸæ—¶é—´
 
 ## async def get_available_sessions()
 
-è¿”å›è¯¥é¡¹ç›®çš„æ‰€æœ‰å¯ç”¨åœºæ¬¡
+·µ»Ø¸ÃÏîÄ¿µÄËùÓĞ¿ÉÓÃ³¡´Î
 
 
 | name | type | description |
 | - | - | - |
-| `project_id` | `int` | é¡¹ç›®id |
+| `project_id` | `int` | ÏîÄ¿id |
 
-**Returns:** `list[Session]`:  å­˜æ”¾åœºæ¬¡å¯¹è±¡çš„list
+**Returns:** `list[Session]`:  ´æ·Å³¡´Î¶ÔÏóµÄlist
 
 
 
@@ -194,14 +194,14 @@ sale_end (str): å¼€å”®ç»“æŸæ—¶é—´
 
 ## async def get_project_info()
 
-è¿”å›é¡¹ç›®å…¨éƒ¨ä¿¡æ¯
+·µ»ØÏîÄ¿È«²¿ĞÅÏ¢
 
 
 | name | type | description |
 | - | - | - |
-| `project_id` | `int` | é¡¹ç›®id |
+| `project_id` | `int` | ÏîÄ¿id |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

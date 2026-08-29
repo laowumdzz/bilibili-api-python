@@ -3,7 +3,7 @@
 
 bilibili_api.rank
 
-å’Œå“”å“©å“”å“©è§†é¢‘æ’è¡Œæ¦œç›¸å…³çš„ API
+ºÍßÙÁ¨ßÙÁ¨ÊÓÆµÅÅĞĞ°ñÏà¹ØµÄ API
 
 
 ``` python
@@ -38,10 +38,10 @@ from bilibili_api import rank
 
 **Extend: enum.Enum**
 
-ç›´æ’­è¶…èƒ½ç”¨æˆ·æ¦œç±»å‹
+Ö±²¥³¬ÄÜÓÃ»§°ñÀàĞÍ
 
-- MONTH: æœ¬æœˆ
-- PRE_MONTH: ä¸Šæœˆ
+- MONTH: ±¾ÔÂ
+- PRE_MONTH: ÉÏÔÂ
 
 
 
@@ -52,13 +52,13 @@ from bilibili_api import rank
 
 **Extend: enum.Enum**
 
-ç›´æ’­é€šç”¨æ¦œç±»å‹
+Ö±²¥Í¨ÓÃ°ñÀàĞÍ
 
-- SAIL_BOAT_VALUE: ä¸»æ’­èˆ°é˜Ÿæ¦œ
-- SAIL_BOAT_TICKET: èˆ¹å‘˜ä»·å€¼æ¦œ
-- SAIL_BOAT_NUMBER: èˆ°èˆ¹äººæ•°æ¦œ
-- MASTER_LEVEL: ä¸»æ’­ç­‰çº§æ¦œ
-- USER_LEVEL: ç”¨æˆ·ç­‰çº§æ¦œ
+- SAIL_BOAT_VALUE: Ö÷²¥½¢¶Ó°ñ
+- SAIL_BOAT_TICKET: ´¬Ô±¼ÛÖµ°ñ
+- SAIL_BOAT_NUMBER: ½¢´¬ÈËÊı°ñ
+- MASTER_LEVEL: Ö÷²¥µÈ¼¶°ñ
+- USER_LEVEL: ÓÃ»§µÈ¼¶°ñ
 
 
 
@@ -69,16 +69,16 @@ from bilibili_api import rank
 
 **Extend: enum.Enum**
 
-æ¼«ç”»æ’è¡Œæ¦œç±»å‹
+Âş»­ÅÅĞĞ°ñÀàĞÍ
 
-- NEW: æ–°ä½œ
-- BOY: ç”·ç”Ÿ
-- GRIL: å¥³ç”Ÿ
-- GUOCHUANG: å›½æ¼«
-- JAPAN: æ—¥æ¼«
-- SOUTHKOREA: éŸ©æ¼«
-- OFFICAL: å®è—
-- FINISH: å®Œç»“
+- NEW: ĞÂ×÷
+- BOY: ÄĞÉú
+- GRIL: Å®Éú
+- GUOCHUANG: ¹úÂş
+- JAPAN: ÈÕÂş
+- SOUTHKOREA: º«Âş
+- OFFICAL: ±¦²Ø
+- FINISH: Íê½á
 
 
 
@@ -89,7 +89,7 @@ from bilibili_api import rank
 
 **Extend: enum.Enum**
 
-æ’è¡Œæ¦œ API æ¥å£ç±»å‹
+ÅÅĞĞ°ñ API ½Ó¿ÚÀàĞÍ
 
 - PGC: https://api.bilibili.com/pgc/web/rank/list
 - V2: https://api.bilibili.com/x/web-interface/ranking/v2
@@ -103,10 +103,10 @@ from bilibili_api import rank
 
 **Extend: enum.Enum**
 
-RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
+RankAPIType.PGC ÅÅĞĞ°ñÊ±¼äÀàĞÍ
 
-- THREE_DAY: ä¸‰æ—¥æ’è¡Œ
-- WEEK: å‘¨æ’è¡Œ
+- THREE_DAY: ÈıÈÕÅÅĞĞ
+- WEEK: ÖÜÅÅĞĞ
 
 
 
@@ -117,33 +117,33 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 **Extend: enum.Enum**
 
-æ’è¡Œæ¦œç±»å‹
+ÅÅĞĞ°ñÀàĞÍ
 
-- All: å…¨éƒ¨
-- Bangumi: ç•ªå‰§
-- GuochuangAnime: å›½äº§åŠ¨ç”»
-- Guochuang: å›½åˆ›ç›¸å…³
-- Documentary: çºªå½•ç‰‡
-- Douga: åŠ¨ç”»
-- Music: éŸ³ä¹
-- Dance: èˆè¹ˆ
-- Game: æ¸¸æˆ
-- Knowledge: çŸ¥è¯†
-- Technology: ç§‘æŠ€æ•°ç 
-- Sports: è¿åŠ¨
-- Car: æ±½è½¦
-- Life: ç”Ÿæ´»
-- Food: ç¾é£Ÿ
-- Animal: åŠ¨ç‰©åœˆ
-- Kitchen: é¬¼ç•œ
-- Fashion: æ—¶å°šç¾å¦†
-- Ent: å¨±ä¹
-- Cinephile: å½±è§†
-- Movie: ç”µå½±
-- TV: ç”µè§†å‰§
-- Variety: ç»¼è‰º
-- Original: åŸåˆ›
-- Rookie: æ–°äºº
+- All: È«²¿
+- Bangumi: ·¬¾ç
+- GuochuangAnime: ¹ú²ú¶¯»­
+- Guochuang: ¹ú´´Ïà¹Ø
+- Documentary: ¼ÍÂ¼Æ¬
+- Douga: ¶¯»­
+- Music: ÒôÀÖ
+- Dance: Îèµ¸
+- Game: ÓÎÏ·
+- Knowledge: ÖªÊ¶
+- Technology: ¿Æ¼¼ÊıÂë
+- Sports: ÔË¶¯
+- Car: Æû³µ
+- Life: Éú»î
+- Food: ÃÀÊ³
+- Animal: ¶¯ÎïÈ¦
+- Kitchen: ¹íĞó
+- Fashion: Ê±ÉĞÃÀ×±
+- Ent: ÓéÀÖ
+- Cinephile: Ó°ÊÓ
+- Movie: µçÓ°
+- TV: µçÊÓ¾ç
+- Variety: ×ÛÒÕ
+- Original: Ô­´´
+- Rookie: ĞÂÈË
 
 
 
@@ -154,15 +154,15 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 **Extend: enum.Enum**
 
-å¤§ä¼šå‘˜ä¸­å¿ƒçƒ­æ’­æ¦œå•ç±»å‹ï¼Œå³ rank_id
+´ó»áÔ±ÖĞĞÄÈÈ²¥°ñµ¥ÀàĞÍ£¬¼´ rank_id
 
-- VIP: ä¼šå‘˜
-- BANGUMI: ç•ªå‰§
-- GUOCHUANG: å›½åˆ›
-- MOVIE: ç”µå½±
-- DOCUMENTARY: çºªå½•ç‰‡
-- TV: ç”µè§†å‰§
-- VARIETY: ç»¼è‰º
+- VIP: »áÔ±
+- BANGUMI: ·¬¾ç
+- GUOCHUANG: ¹ú´´
+- MOVIE: µçÓ°
+- DOCUMENTARY: ¼ÍÂ¼Æ¬
+- TV: µçÊÓ¾ç
+- VARIETY: ×ÛÒÕ
 
 
 
@@ -171,16 +171,16 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_live_energy_user_rank()
 
-è·å–ç›´æ’­è¶…èƒ½ç”¨æˆ·æ¦œ
+»ñÈ¡Ö±²¥³¬ÄÜÓÃ»§°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `date` | `LiveEnergyRankType` | æœˆä»½. Defaults to LiveEnergyRankType.MONTH |
-| `pn` | `int` | é¡µç . Defaults to 1 |
-| `ps` | `int` | æ¯é¡µæ•°é‡. Defaults to 20 |
+| `date` | `LiveEnergyRankType` | ÔÂ·İ. Defaults to LiveEnergyRankType.MONTH |
+| `pn` | `int` | Ò³Âë. Defaults to 1 |
+| `ps` | `int` | Ã¿Ò³ÊıÁ¿. Defaults to 20 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -189,11 +189,11 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_live_hot_rank()
 
-è·å–ç›´æ’­é¦–é¡µäººæ°”æ’è¡Œæ¦œ
+»ñÈ¡Ö±²¥Ê×Ò³ÈËÆøÅÅĞĞ°ñ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -202,16 +202,16 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_live_rank()
 
-è·å–ç›´æ’­é€šç”¨æ¦œå•
+»ñÈ¡Ö±²¥Í¨ÓÃ°ñµ¥
 
 
 | name | type | description |
 | - | - | - |
-| `_type` | `LiveRankType` | æ¦œå•ç±»å‹. Defaults to LiveRankType.VALUE |
-| `pn` | `int` | é¡µç . Defaults to 1 |
-| `ps` | `int` | æ¯é¡µæ•°é‡. Defaults to 20 |
+| `_type` | `LiveRankType` | °ñµ¥ÀàĞÍ. Defaults to LiveRankType.VALUE |
+| `pn` | `int` | Ò³Âë. Defaults to 1 |
+| `ps` | `int` | Ã¿Ò³ÊıÁ¿. Defaults to 20 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -220,11 +220,11 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_live_sailing_rank()
 
-è·å–é¦–é¡µç›´æ’­å¤§èˆªæµ·æ’è¡Œæ¦œ
+»ñÈ¡Ê×Ò³Ö±²¥´óº½º£ÅÅĞĞ°ñ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -233,15 +233,15 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_live_user_medal_rank()
 
-è·å–ç›´æ’­ç”¨æˆ·å‹‹ç« æ¦œ
+»ñÈ¡Ö±²¥ÓÃ»§Ñ«ÕÂ°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | é¡µç . Defaults to 1 |
-| `ps` | `int` | æ¯é¡µæ•°é‡. Defaults to 20 |
+| `pn` | `int` | Ò³Âë. Defaults to 1 |
+| `ps` | `int` | Ã¿Ò³ÊıÁ¿. Defaults to 20 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -250,14 +250,14 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_manga_rank()
 
-è·å–æ¼«ç”»ä¸“å±æ’è¡Œæ¦œ
+»ñÈ¡Âş»­×¨ÊôÅÅĞĞ°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -266,11 +266,11 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_music_rank_list()
 
-è·å–å…¨ç«™éŸ³ä¹æ¦œæ¯å‘¨ä¿¡æ¯(ä¸åŒ…æ‹¬å…·ä½“çš„éŸ³é¢‘åˆ—è¡¨)
+»ñÈ¡È«Õ¾ÒôÀÖ°ñÃ¿ÖÜĞÅÏ¢(²»°üÀ¨¾ßÌåµÄÒôÆµÁĞ±í)
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -279,14 +279,14 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_music_rank_weekly_detail()
 
-è·å–å…¨ç«™éŸ³ä¹æ¦œä¸€å‘¨çš„è¯¦ç»†ä¿¡æ¯(ä¸åŒ…æ‹¬å…·ä½“çš„éŸ³é¢‘åˆ—è¡¨)
+»ñÈ¡È«Õ¾ÒôÀÖ°ñÒ»ÖÜµÄÏêÏ¸ĞÅÏ¢(²»°üÀ¨¾ßÌåµÄÒôÆµÁĞ±í)
 
 
 | name | type | description |
 | - | - | - |
-| `week` | `int` | ç¬¬å‡ å‘¨. Defaults to 1. |
+| `week` | `int` | µÚ¼¸ÖÜ. Defaults to 1. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -295,14 +295,14 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_music_rank_weekly_musics()
 
-è·å–å…¨ç«™éŸ³ä¹æ¦œä¸€å‘¨çš„éŸ³é¢‘åˆ—è¡¨(è¿”å›çš„éŸ³ä¹çš„ id å¯¹åº”äº† music.Music ç±»åˆ›å»ºå®ä¾‹ä¼ å…¥çš„ id)
+»ñÈ¡È«Õ¾ÒôÀÖ°ñÒ»ÖÜµÄÒôÆµÁĞ±í(·µ»ØµÄÒôÀÖµÄ id ¶ÔÓ¦ÁË music.Music Àà´´½¨ÊµÀı´«ÈëµÄ id)
 
 
 | name | type | description |
 | - | - | - |
-| `week` | `int` | ç¬¬å‡ å‘¨. Defaults to 1. |
+| `week` | `int` | µÚ¼¸ÖÜ. Defaults to 1. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -311,16 +311,16 @@ RankAPIType.PGC æ’è¡Œæ¦œæ—¶é—´ç±»å‹
 
 ## async def get_playlet_rank_info()
 
-è·å–å…¨ç«™çŸ­å‰§æ¦œ
+»ñÈ¡È«Õ¾¶Ì¾ç°ñ
 
 https://www.bilibili.com/v/popular/drama/
 
 
 | name | type | description |
 | - | - | - |
-| `phase_id` | `int` | æœŸæ•°ï¼Œä» get_playlet_rank_phase è·å– |
+| `phase_id` | `int` | ÆÚÊı£¬´Ó get_playlet_rank_phase »ñÈ¡ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -329,11 +329,11 @@ https://www.bilibili.com/v/popular/drama/
 
 ## async def get_playlet_rank_phases()
 
-è·å–å…¨ç«™çŸ­å‰§æ¦œæœŸæ•°
+»ñÈ¡È«Õ¾¶Ì¾ç°ñÆÚÊı
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -342,15 +342,15 @@ https://www.bilibili.com/v/popular/drama/
 
 ## async def get_rank()
 
-è·å–è§†é¢‘æ’è¡Œæ¦œ
+»ñÈ¡ÊÓÆµÅÅĞĞ°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `RankType` | æ’è¡Œæ¦œç±»å‹. Defaults to RankType.All |
-| `day` | `RankDayType` | æ’è¡Œæ¦œæ—¶é—´. Defaults to RankDayType.THREE_DAY. ä»…å¯¹ api_type ä¸º RankAPIType.PGC æœ‰æ•ˆ |
+| `type_` | `RankType` | ÅÅĞĞ°ñÀàĞÍ. Defaults to RankType.All |
+| `day` | `RankDayType` | ÅÅĞĞ°ñÊ±¼ä. Defaults to RankDayType.THREE_DAY. ½ö¶Ô api_type Îª RankAPIType.PGC ÓĞĞ§ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -359,14 +359,14 @@ https://www.bilibili.com/v/popular/drama/
 
 ## async def get_vip_rank()
 
-è·å–å¤§ä¼šå‘˜ä¸­å¿ƒçš„æ’è¡Œæ¦œ
+»ñÈ¡´ó»áÔ±ÖĞĞÄµÄÅÅĞĞ°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `VIPRankType` | æ’è¡Œæ¦œç±»å‹. Defaults to VIPRankType.VIP |
+| `type_` | `VIPRankType` | ÅÅĞĞ°ñÀàĞÍ. Defaults to VIPRankType.VIP |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -375,13 +375,13 @@ https://www.bilibili.com/v/popular/drama/
 
 ## async def subscribe_music_rank()
 
-è®¾ç½®å…³æ³¨å…¨ç«™éŸ³ä¹æ¦œ
+ÉèÖÃ¹Ø×¢È«Õ¾ÒôÀÖ°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool` | å…³æ³¨çŠ¶æ€. Defaults to True. |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `status` | `bool` | ¹Ø×¢×´Ì¬. Defaults to True. |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
 
 

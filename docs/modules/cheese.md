@@ -3,15 +3,15 @@
 
 bilibili_api.cheese
 
-æœ‰å…³ bilibili è¯¾ç¨‹çš„ apiã€‚
+ÓĞ¹Ø bilibili ¿Î³ÌµÄ api¡£
 
-æ³¨æ„ï¼Œæ³¨æ„ï¼è¯¾ç¨‹ä¸­çš„è§†é¢‘å’Œå…¶ä»–è§†é¢‘å‡ ä¹æ²¡æœ‰ä»»ä½•ç›¸é€šçš„ APIï¼
+×¢Òâ£¬×¢Òâ£¡¿Î³ÌÖĞµÄÊÓÆµºÍÆäËûÊÓÆµ¼¸ºõÃ»ÓĞÈÎºÎÏàÍ¨µÄ API£¡
 
-ä¸èƒ½å°† CheeseVideo æ¢æˆ Video ç±»ã€‚(CheeseVideo ç±»ä¿ç•™äº†æ‰€æœ‰çš„é€šç”¨çš„ API)
+²»ÄÜ½« CheeseVideo »»³É Video Àà¡£(CheeseVideo Àà±£ÁôÁËËùÓĞµÄÍ¨ÓÃµÄ API)
 
-è·å–ä¸‹è½½é“¾æ¥éœ€è¦ä½¿ç”¨ bilibili_api.cheese.get_download_urlï¼Œvideo.get_download_url ä¸é€‚ç”¨ã€‚
+»ñÈ¡ÏÂÔØÁ´½ÓĞèÒªÊ¹ÓÃ bilibili_api.cheese.get_download_url£¬video.get_download_url ²»ÊÊÓÃ¡£
 
-è¿˜æœ‰ï¼Œè¯¾ç¨‹çš„ season_id å’Œ ep_id ä¸ä¸ç•ªå‰§ç›¸é€šï¼Œäº•æ°´ä¸çŠ¯æ²³æ°´ï¼Œè¯·ä¸è¦é”™ç”¨!
+»¹ÓĞ£¬¿Î³ÌµÄ season_id ºÍ ep_id ²»Óë·¬¾çÏàÍ¨£¬¾®Ë®²»·¸ºÓË®£¬Çë²»Òª´íÓÃ!
 
 
 ``` python
@@ -53,74 +53,74 @@ from bilibili_api import cheese
 
 ## class CheeseList()
 
-è¯¾ç¨‹ç±»
+¿Î³ÌÀà
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
 
-æ³¨æ„ï¼šseason_id å’Œ ep_id ä»»é€‰ä¸€ä¸ªå³å¯ï¼Œä¸¤ä¸ªéƒ½é€‰çš„è¯
-ä»¥ season_id ä¸ºä¸»
+×¢Òâ£ºseason_id ºÍ ep_id ÈÎÑ¡Ò»¸ö¼´¿É£¬Á½¸ö¶¼Ñ¡µÄ»°
+ÒÔ season_id ÎªÖ÷
 
 
 | name | type | description |
 | - | - | - |
 | `season_id` | `int` | ssid |
-| `ep_id` | `int` | å•é›† ep_id |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `ep_id` | `int` | µ¥¼¯ ep_id |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### async def get_list()
 
-è·å–æ•™ç¨‹æ‰€æœ‰è§†é¢‘
+»ñÈ¡½Ì³ÌËùÓĞÊÓÆµ
 
 
 
-**Returns:** `List[CheeseVideo]`:  è¯¾ç¨‹è§†é¢‘åˆ—è¡¨
+**Returns:** `List[CheeseVideo]`:  ¿Î³ÌÊÓÆµÁĞ±í
 
 
 
 
 ### async def get_list_raw()
 
-è·å–æ•™ç¨‹æ‰€æœ‰è§†é¢‘ (è¿”å›åŸå§‹æ•°æ®)
+»ñÈ¡½Ì³ÌËùÓĞÊÓÆµ (·µ»ØÔ­Ê¼Êı¾İ)
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_meta()
 
-è·å–æ•™ç¨‹å…ƒæ•°æ®
+»ñÈ¡½Ì³ÌÔªÊı¾İ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_season_id()
 
-è·å–å­£åº¦ id
+»ñÈ¡¼¾¶È id
 
 
 
-**Returns:** `int`:  å­£åº¦ id
+**Returns:** `int`:  ¼¾¶È id
 
 
 
 
 ### async def set_ep_id()
 
-è®¾ç½® epid å¹¶é€šè¿‡ epid æ‰¾åˆ°è¯¾ç¨‹
+ÉèÖÃ epid ²¢Í¨¹ı epid ÕÒµ½¿Î³Ì
 
 
 | name | type | description |
@@ -132,12 +132,12 @@ from bilibili_api import cheese
 
 ### async def set_season_id()
 
-è®¾ç½®å­£åº¦ id
+ÉèÖÃ¼¾¶È id
 
 
 | name | type | description |
 | - | - | - |
-| `season_id` | `int` | å­£åº¦ id |
+| `season_id` | `int` | ¼¾¶È id |
 
 
 
@@ -146,14 +146,14 @@ from bilibili_api import cheese
 
 ## class CheeseVideo()
 
-æ•™ç¨‹è§†é¢‘ç±»
-å› ä¸ºä¸å’Œå…¶ä»–è§†é¢‘ç›¸é€šï¼Œæ‰€ä»¥è¿™é‡Œæ˜¯ä¸€ä¸ªæ–°çš„ç±»ï¼Œæ— ç»§æ‰¿
+½Ì³ÌÊÓÆµÀà
+ÒòÎª²»ºÍÆäËûÊÓÆµÏàÍ¨£¬ËùÒÔÕâÀïÊÇÒ»¸öĞÂµÄÀà£¬ÎŞ¼Ì³Ğ
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
-| `cheese` | `CheeseList` | æ‰€å±çš„è¯¾ç¨‹ |
+| `credential` | `Credential` | Æ¾¾İÀà |
+| `cheese` | `CheeseList` | ËùÊôµÄ¿Î³Ì |
 
 
 ### def \_\_init\_\_()
@@ -161,13 +161,13 @@ from bilibili_api import cheese
 
 | name | type | description |
 | - | - | - |
-| `epid` | `int` | å•é›† ep_id |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `epid` | `int` | µ¥¼¯ ep_id |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### async def get_aid()
 
-è·å– aid
+»ñÈ¡ aid
 
 
 
@@ -178,18 +178,18 @@ from bilibili_api import cheese
 
 ### async def get_cheese()
 
-è·å–æ‰€å±è¯¾ç¨‹
+»ñÈ¡ËùÊô¿Î³Ì
 
 
 
-**Returns:** `CheeseList`:  æ‰€å±è¯¾ç¨‹
+**Returns:** `CheeseList`:  ËùÊô¿Î³Ì
 
 
 
 
 ### async def get_cid()
 
-è·å– cid
+»ñÈ¡ cid
 
 
 
@@ -200,61 +200,61 @@ from bilibili_api import cheese
 
 ### async def get_danmaku_view()
 
-è·å–å¼¹å¹•è®¾ç½®ã€ç‰¹æ®Šå¼¹å¹•ã€å¼¹å¹•æ•°é‡ã€å¼¹å¹•åˆ†æ®µç­‰ä¿¡æ¯ã€‚
+»ñÈ¡µ¯Ä»ÉèÖÃ¡¢ÌØÊâµ¯Ä»¡¢µ¯Ä»ÊıÁ¿¡¢µ¯Ä»·Ö¶ÎµÈĞÅÏ¢¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def get_danmaku_xml()
 
-è·å–æ‰€æœ‰å¼¹å¹•çš„ xml æºæ–‡ä»¶ï¼ˆéè£…å¡«ï¼‰
+»ñÈ¡ËùÓĞµ¯Ä»µÄ xml Ô´ÎÄ¼ş£¨·Ç×°Ìî£©
 
 
 
-**Returns:** `str`:  æ–‡ä»¶æº
+**Returns:** `str`:  ÎÄ¼şÔ´
 
 
 
 
 ### async def get_danmakus()
 
-è·å–å¼¹å¹•ã€‚
+»ñÈ¡µ¯Ä»¡£
 
 
 | name | type | description |
 | - | - | - |
-| `date` | `datetime.Date \| None, optional` | æŒ‡å®šæ—¥æœŸåä¸ºè·å–å†å²å¼¹å¹•ï¼Œç²¾ç¡®åˆ°å¹´æœˆæ—¥ã€‚Defaults to None. |
-| `from_seg` | `int, optional` | ä»ç¬¬å‡ æ®µå¼€å§‹(0 å¼€å§‹ç¼–å·ï¼ŒNone ä¸ºä»ç¬¬ä¸€æ®µå¼€å§‹ï¼Œä¸€æ®µ 6 åˆ†é’Ÿ). Defaults to None. |
-| `to_seg` | `int, optional` | åˆ°ç¬¬å‡ æ®µç»“æŸ(0 å¼€å§‹ç¼–å·ï¼ŒNone ä¸ºåˆ°æœ€åä¸€æ®µï¼ŒåŒ…å«ç¼–å·çš„æ®µï¼Œä¸€æ®µ 6 åˆ†é’Ÿ). Defaults to None. |
+| `date` | `datetime.Date \| None, optional` | Ö¸¶¨ÈÕÆÚºóÎª»ñÈ¡ÀúÊ·µ¯Ä»£¬¾«È·µ½ÄêÔÂÈÕ¡£Defaults to None. |
+| `from_seg` | `int, optional` | ´ÓµÚ¼¸¶Î¿ªÊ¼(0 ¿ªÊ¼±àºÅ£¬None Îª´ÓµÚÒ»¶Î¿ªÊ¼£¬Ò»¶Î 6 ·ÖÖÓ). Defaults to None. |
+| `to_seg` | `int, optional` | µ½µÚ¼¸¶Î½áÊø(0 ¿ªÊ¼±àºÅ£¬None Îªµ½×îºóÒ»¶Î£¬°üº¬±àºÅµÄ¶Î£¬Ò»¶Î 6 ·ÖÖÓ). Defaults to None. |
 
-**Returns:** `List[Danmaku]`:  Danmaku ç±»çš„åˆ—è¡¨ã€‚
+**Returns:** `List[Danmaku]`:  Danmaku ÀàµÄÁĞ±í¡£
 
 
-æ³¨æ„ï¼š
-- 1. æ®µæ•°å¯ä»¥é€šè¿‡è§†é¢‘æ—¶é•¿è®¡ç®—ã€‚6åˆ†é’Ÿä¸ºä¸€æ®µã€‚
-- 2. `from_seg` å’Œ `to_seg` ä»…å¯¹ `date == None` çš„æ—¶å€™æœ‰æ•ˆæœã€‚
-- 3. ä¾‹ï¼šå–å‰ `12` åˆ†é’Ÿçš„å¼¹å¹•ï¼š`from_seg=0, to_seg=1`
+×¢Òâ£º
+- 1. ¶ÎÊı¿ÉÒÔÍ¨¹ıÊÓÆµÊ±³¤¼ÆËã¡£6·ÖÖÓÎªÒ»¶Î¡£
+- 2. `from_seg` ºÍ `to_seg` ½ö¶Ô `date == None` µÄÊ±ºòÓĞĞ§¹û¡£
+- 3. Àı£ºÈ¡Ç° `12` ·ÖÖÓµÄµ¯Ä»£º`from_seg=0, to_seg=1`
 
 
 
 ### async def get_download_url()
 
-è·å–ä¸‹è½½é“¾æ¥
+»ñÈ¡ÏÂÔØÁ´½Ó
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### def get_epid()
 
-è·å– epid
+»ñÈ¡ epid
 
 
 
@@ -265,127 +265,127 @@ from bilibili_api import cheese
 
 ### async def get_meta()
 
-è·å–è¯¾ç¨‹å…ƒæ•°æ®
+»ñÈ¡¿Î³ÌÔªÊı¾İ
 
 
 
-**Returns:** `dict`:  è§†é¢‘å…ƒæ•°æ®
+**Returns:** `dict`:  ÊÓÆµÔªÊı¾İ
 
 
 
 
 ### async def get_pages()
 
-è·å–åˆ† P ä¿¡æ¯ã€‚
+»ñÈ¡·Ö P ĞÅÏ¢¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def get_pay_coins()
 
-è·å–è§†é¢‘å·²æŠ•å¸æ•°é‡ã€‚
+»ñÈ¡ÊÓÆµÒÑÍ¶±ÒÊıÁ¿¡£
 
 
 
-**Returns:** `int`:  è§†é¢‘å·²æŠ•å¸æ•°é‡ã€‚
+**Returns:** `int`:  ÊÓÆµÒÑÍ¶±ÒÊıÁ¿¡£
 
 
 
 
 ### async def get_pbp()
 
-è·å–é«˜èƒ½è¿›åº¦æ¡
+»ñÈ¡¸ßÄÜ½ø¶ÈÌõ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_stat()
 
-è·å–è§†é¢‘ç»Ÿè®¡æ•°æ®ï¼ˆæ’­æ”¾é‡ï¼Œç‚¹èµæ•°ç­‰ï¼‰ã€‚
+»ñÈ¡ÊÓÆµÍ³¼ÆÊı¾İ£¨²¥·ÅÁ¿£¬µãÔŞÊıµÈ£©¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def has_favoured()
 
-æ˜¯å¦å·²æ”¶è—ã€‚
+ÊÇ·ñÒÑÊÕ²Ø¡£
 
 
 
-**Returns:** `bool`:  è§†é¢‘æ˜¯å¦å·²æ”¶è—ã€‚
+**Returns:** `bool`:  ÊÓÆµÊÇ·ñÒÑÊÕ²Ø¡£
 
 
 
 
 ### async def has_liked()
 
-è§†é¢‘æ˜¯å¦ç‚¹èµè¿‡ã€‚
+ÊÓÆµÊÇ·ñµãÔŞ¹ı¡£
 
 
 
-**Returns:** `bool`:  è§†é¢‘æ˜¯å¦ç‚¹èµè¿‡ã€‚
+**Returns:** `bool`:  ÊÓÆµÊÇ·ñµãÔŞ¹ı¡£
 
 
 
 
 ### async def like()
 
-ç‚¹èµè§†é¢‘ã€‚
+µãÔŞÊÓÆµ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | ç‚¹èµçŠ¶æ€ã€‚Defaults to True. |
+| `status` | `bool, optional` | µãÔŞ×´Ì¬¡£Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def pay_coin()
 
-æŠ•å¸ã€‚
+Í¶±Ò¡£
 
 
 | name | type | description |
 | - | - | - |
-| `num` | `int, optional` | ç¡¬å¸æ•°é‡ï¼Œä¸º 1 ~ 2 ä¸ªã€‚Defaults to 1. |
-| `like` | `bool, optional` | æ˜¯å¦åŒæ—¶ç‚¹èµã€‚Defaults to False. |
+| `num` | `int, optional` | Ó²±ÒÊıÁ¿£¬Îª 1 ~ 2 ¸ö¡£Defaults to 1. |
+| `like` | `bool, optional` | ÊÇ·ñÍ¬Ê±µãÔŞ¡£Defaults to False. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def send_danmaku()
 
-å‘é€å¼¹å¹•ã€‚
+·¢ËÍµ¯Ä»¡£
 
 
 | name | type | description |
 | - | - | - |
-| `danmaku` | `Danmaku \| None` | Danmaku ç±»ã€‚Defaults to None. |
+| `danmaku` | `Danmaku \| None` | Danmaku Àà¡£Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def set_epid()
 
-è®¾ç½® epid
+ÉèÖÃ epid
 
 
 | name | type | description |
@@ -397,15 +397,15 @@ from bilibili_api import cheese
 
 ### async def set_favorite()
 
-è®¾ç½®è§†é¢‘æ”¶è—çŠ¶å†µã€‚
+ÉèÖÃÊÓÆµÊÕ²Ø×´¿ö¡£
 
 
 | name | type | description |
 | - | - | - |
-| `add_media_ids` | `List[int], optional` | è¦æ·»åŠ åˆ°çš„æ”¶è—å¤¹ ID. Defaults to []. |
-| `del_media_ids` | `List[int], optional` | è¦ç§»å‡ºçš„æ”¶è—å¤¹ ID. Defaults to []. |
+| `add_media_ids` | `List[int] \| None, optional` | ÒªÌí¼Óµ½µÄÊÕ²Ø¼Ğ ID. Defaults to None£¨µÈ¼ÛÓÚ []£©. |
+| `del_media_ids` | `List[int] \| None, optional` | ÒªÒÆ³öµÄÊÕ²Ø¼Ğ ID. Defaults to None£¨µÈ¼ÛÓÚ []£©. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û¡£
 
 
 

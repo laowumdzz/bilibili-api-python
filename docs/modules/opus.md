@@ -3,7 +3,7 @@
 
 bilibili_api.opus
 
-å›¾æ–‡ç›¸å…³
+Í¼ÎÄÏà¹Ø
 
 
 ``` python
@@ -30,12 +30,12 @@ from bilibili_api import opus
 
 ## class Opus()
 
-å›¾æ–‡ç±»ã€‚
+Í¼ÎÄÀà¡£
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -46,76 +46,76 @@ from bilibili_api import opus
 
 ### async def add_coins()
 
-ç»™ä¸“æ æŠ•å¸ï¼Œç›®å‰åªèƒ½æŠ•ä¸€ä¸ª
+¸ø×¨À¸Í¶±Ò£¬Ä¿Ç°Ö»ÄÜÍ¶Ò»¸ö
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_images()
 
-è·å–å›¾æ–‡æ‰€æœ‰å›¾ç‰‡å¹¶è½¬ä¸º Picture ç±»
+»ñÈ¡Í¼ÎÄËùÓĞÍ¼Æ¬²¢×ªÎª Picture Àà
 
 
 
-**Returns:** `list`:  å›¾ç‰‡ä¿¡æ¯
+**Returns:** `list`:  Í¼Æ¬ĞÅÏ¢
 
 
 
 
 ### async def get_images_raw_info()
 
-è·å–å›¾æ–‡æ‰€æœ‰å›¾ç‰‡åŸå§‹ä¿¡æ¯
+»ñÈ¡Í¼ÎÄËùÓĞÍ¼Æ¬Ô­Ê¼ĞÅÏ¢
 
 
 
-**Returns:** `list`:  å›¾ç‰‡ä¿¡æ¯
+**Returns:** `list`:  Í¼Æ¬ĞÅÏ¢
 
 
 
 
 ### async def get_info()
 
-è·å–å›¾æ–‡åŸºæœ¬ä¿¡æ¯
+»ñÈ¡Í¼ÎÄ»ù±¾ĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_opus_id()
 
-è·å–å›¾æ–‡ id
+»ñÈ¡Í¼ÎÄ id
 
 
 
-**Returns:** `int`:  å›¾æ–‡ idd
+**Returns:** `int`:  Í¼ÎÄ idd
 
 
 
 
 ### async def get_reaction()
 
-è·å–ç‚¹èµã€è½¬å‘
+»ñÈ¡µãÔŞ¡¢×ª·¢
 
 
 | name | type | description |
 | - | - | - |
-| `offset` | `str, optional` | åç§»å€¼ï¼ˆä¸‹ä¸€é¡µçš„ç¬¬ä¸€ä¸ªåŠ¨æ€ IDï¼Œä¸ºè¯¥è¯·æ±‚ç»“æœä¸­çš„ offset é”®å¯¹åº”çš„å€¼ï¼‰ï¼Œç±»ä¼¼å•å‘é“¾è¡¨. Defaults to "" |
+| `offset` | `str, optional` | Æ«ÒÆÖµ£¨ÏÂÒ»Ò³µÄµÚÒ»¸ö¶¯Ì¬ ID£¬Îª¸ÃÇëÇó½á¹ûÖĞµÄ offset ¼ü¶ÔÓ¦µÄÖµ£©£¬ÀàËÆµ¥ÏòÁ´±í. Defaults to "" |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_rid()
 
-è·å– ridï¼Œä»¥ä¼ å…¥ `comment.get_comments_lazy` ç­‰å‡½æ•° oid å‚æ•°å¯¹è¯„è®ºåŒºè¿›è¡Œæ“ä½œ
+»ñÈ¡ rid£¬ÒÔ´«Èë `comment.get_comments_lazy` µÈº¯Êı oid ²ÎÊı¶ÔÆÀÂÛÇø½øĞĞ²Ù×÷
 
 
 
@@ -126,78 +126,78 @@ from bilibili_api import opus
 
 ### async def is_article()
 
-è·å–å›¾æ–‡æ˜¯å¦åŒæ—¶ä¸ºä¸“æ 
+»ñÈ¡Í¼ÎÄÊÇ·ñÍ¬Ê±Îª×¨À¸
 
-å¦‚æœæ˜¯ï¼Œåˆ™ä¸“æ /å›¾æ–‡/åŠ¨æ€æ•°æ®å…±äº«ï¼Œå¯ä»¥æŠ•å¸
+Èç¹ûÊÇ£¬Ôò×¨À¸/Í¼ÎÄ/¶¯Ì¬Êı¾İ¹²Ïí£¬¿ÉÒÔÍ¶±Ò
 
 
 
-**Returns:** `bool`:  æ˜¯å¦åŒæ—¶ä¸ºä¸“æ 
+**Returns:** `bool`:  ÊÇ·ñÍ¬Ê±Îª×¨À¸
 
 
 
 
 ### async def markdown()
 
-å°†å›¾æ–‡è½¬ä¸º markdown
+½«Í¼ÎÄ×ªÎª markdown
 
 
 
-**Returns:** `str`:  markdown å†…å®¹
+**Returns:** `str`:  markdown ÄÚÈİ
 
 
 
 
 ### async def set_favorite()
 
-è®¾ç½®å›¾æ–‡æ”¶è—çŠ¶æ€
+ÉèÖÃÍ¼ÎÄÊÕ²Ø×´Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | æ”¶è—çŠ¶æ€. Defaults to True |
+| `status` | `bool, optional` | ÊÕ²Ø×´Ì¬. Defaults to True |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def set_like()
 
-è®¾ç½®å›¾æ–‡ç‚¹èµçŠ¶æ€
+ÉèÖÃÍ¼ÎÄµãÔŞ×´Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | ç‚¹èµçŠ¶æ€. Defaults to True. |
+| `status` | `bool, optional` | µãÔŞ×´Ì¬. Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def turn_to_article()
 
-å¯¹ä¸“æ å›¾æ–‡ï¼Œè½¬æ¢ä¸ºä¸“æ ï¼ˆè¯„è®ºã€ç‚¹èµç­‰æ•°æ®ä¸“æ /åŠ¨æ€/å›¾æ–‡å…±äº«ï¼‰
+¶Ô×¨À¸Í¼ÎÄ£¬×ª»»Îª×¨À¸£¨ÆÀÂÛ¡¢µãÔŞµÈÊı¾İ×¨À¸/¶¯Ì¬/Í¼ÎÄ¹²Ïí£©
 
-å¦‚å›¾æ–‡æ— å¯¹åº”ä¸“æ å°†æŠ¥é”™ã€‚
+ÈçÍ¼ÎÄÎŞ¶ÔÓ¦×¨À¸½«±¨´í¡£
 
 
 
-**Returns:** `article.Article`:  ä¸“æ ç±»
+**Returns:** `article.Article`:  ×¨À¸Àà
 
 
 
 
 ### def turn_to_dynamic()
 
-è½¬ä¸ºåŠ¨æ€
+×ªÎª¶¯Ì¬
 
-å›¾æ–‡å®Œå…¨åŒ…å«äºåŠ¨æ€ï¼Œä¸”å›¾æ–‡ä¸ä¸“æ  id æ•°å€¼ä¸Šä¸€è‡´ï¼Œå› æ­¤æ­¤å‡½æ•°ç»å¯¹æˆåŠŸã€‚
+Í¼ÎÄÍêÈ«°üº¬ÓÚ¶¯Ì¬£¬ÇÒÍ¼ÎÄÓë×¨À¸ id ÊıÖµÉÏÒ»ÖÂ£¬Òò´Ë´Ëº¯Êı¾ø¶Ô³É¹¦¡£
 
 
 
-**Returns:** `dynamic.Dynamic`:  å¯¹åº”çš„åŠ¨æ€ç±»
+**Returns:** `dynamic.Dynamic`:  ¶ÔÓ¦µÄ¶¯Ì¬Àà
 
 
 

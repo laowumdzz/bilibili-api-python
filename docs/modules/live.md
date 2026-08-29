@@ -3,7 +3,7 @@
 
 bilibili_api.live
 
-ç›´æ’­ç›¸å…³
+Ö±²¥Ïà¹Ø
 
 
 ``` python
@@ -71,12 +71,12 @@ from bilibili_api import live
 
 **Extend: enum.Enum**
 
-ç›´æ’­æºè§†é¢‘ç¼–ç 
+Ö±²¥Ô´ÊÓÆµ±àÂë
 
-è§†é¢‘ç¼–ç ï¼Œ0 ä¸º avc ç¼–ç ï¼Œ1 ä¸º hevc ç¼–ç ã€‚é»˜è®¤ï¼š0,1
-+ AVC   : 0ã€‚
-+ HEVC  : 1ã€‚
-+ DEFAULT   : 0,1ã€‚
+ÊÓÆµ±àÂë£¬0 Îª avc ±àÂë£¬1 Îª hevc ±àÂë¡£Ä¬ÈÏ£º0,1
++ AVC   : 0¡£
++ HEVC  : 1¡£
++ DEFAULT   : 0,1¡£
 
 
 
@@ -87,97 +87,97 @@ from bilibili_api import live
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-Websocket å®æ—¶è·å–ç›´æ’­å¼¹å¹•
+Websocket ÊµÊ±»ñÈ¡Ö±²¥µ¯Ä»
 
 Extends: AsyncEvent
 
 Logger: LiveDanmaku().logger
 
 Events:
-+ DANMU_MSG: ç”¨æˆ·å‘é€å¼¹å¹•
-+ SEND_GIFT: ç¤¼ç‰©
-+ COMBO_SEND: ç¤¼ç‰©è¿å‡»
-+ GUARD_BUY: ç»­è´¹å¤§èˆªæµ·
-+ SUPER_CHAT_MESSAGE: é†’ç›®ç•™è¨€(SC)
-+ SUPER_CHAT_MESSAGE_JPN: é†’ç›®ç•™è¨€(å¸¦æ—¥è¯­ç¿»è¯‘?)
-+ SUPER_CHAT_MESSAGE_DELETE: é†’ç›®ç•™è¨€åˆ é™¤
-+ WELCOME: è€çˆ·è¿›å…¥æˆ¿é—´
-+ WELCOME_GUARD: æˆ¿ç®¡è¿›å…¥æˆ¿é—´
-+ NOTICE_MSG: ç³»ç»Ÿé€šçŸ¥ï¼ˆå…¨é¢‘é“å¹¿æ’­ä¹‹ç±»çš„ï¼‰
-+ PREPARING: ç›´æ’­å‡†å¤‡ä¸­
-+ LIVE: ç›´æ’­å¼€å§‹
-+ ROOM_REAL_TIME_MESSAGE_UPDATE: ç²‰ä¸æ•°ç­‰æ›´æ–°
-+ ENTRY_EFFECT: è¿›åœºç‰¹æ•ˆ
-+ ROOM_RANK: æˆ¿é—´æ’åæ›´æ–°
-+ INTERACT_WORD_V2: ç”¨æˆ·è¿›å…¥ç›´æ’­é—´ (*)
-+ ACTIVITY_BANNER_UPDATE_V2: å¥½åƒæ˜¯æˆ¿é—´åæ—è¾¹é‚£ä¸ª xx å°æ—¶æ¦œ
-+ DM_INTERACTION: äº¤äº’ä¿¡æ¯åˆå¹¶
-+ USER_TOAST_MSG: ç”¨æˆ·åº†ç¥æ¶ˆæ¯
-+ GIFT_STAR_PROCESS: ç¤¼ç‰©æ˜Ÿçƒç‚¹äº®
-+ SPECIAL_GIFT: ç‰¹æ®Šç¤¼ç‰©
-+ ONLINE_RANK_V3: ç›´æ’­é—´é«˜èƒ½æ¦œ (*)
-+ LOG_IN_NOTICE: æœªç™»å½•é€šçŸ¥
-+ ONLINE_RANK_TOP3: ç”¨æˆ·åˆ°è¾¾ç›´æ’­é—´é«˜èƒ½æ¦œå‰ä¸‰åçš„æ¶ˆæ¯
-+ POPULAR_RANK_CHANGED: ç›´æ’­é—´åœ¨äººæ°”æ¦œçš„æ’åæ”¹å˜
-+ HOT_RANK_CHANGED / HOT_RANK_CHANGED_V2: ç›´æ’­é—´é™æ—¶çƒ­é—¨æ¦œæ’åæ”¹å˜
-+ HOT_RANK_SETTLEMENT / HOT_RANK_SETTLEMENT_V2: é™æ—¶çƒ­é—¨æ¦œä¸Šæ¦œä¿¡æ¯
-+ LIKE_INFO_V3_CLICK: ç›´æ’­é—´ç”¨æˆ·ç‚¹èµ
-+ LIKE_INFO_V3_UPDATE: ç›´æ’­é—´ç‚¹èµæ•°æ›´æ–°
-+ POPULARITY_RED_POCKET_START: ç›´æ’­é—´å‘çº¢åŒ…å¼¹å¹•
-+ POPULARITY_RED_POCKET_NEW: ç›´æ’­é—´çº¢åŒ…
-+ POPULARITY_RED_POCKET_WINNER_LIST: ç›´æ’­é—´æŠ¢åˆ°çº¢åŒ…çš„ç”¨æˆ·
-+ WATCHED_CHANGE: ç›´æ’­é—´çœ‹è¿‡äººæ•°
-+ ENTRY_EFFECT_MUST_RECEIVE: å¿…é¡»æ¥å—çš„ç”¨æˆ·è¿›åœºç‰¹æ•ˆ
-+ FULL_SCREEN_SPECIAL_EFFECT: å…¨å±ç‰¹æ•ˆ
-+ AREA_RANK_CHANGED: ç›´æ’­é—´åœ¨æ‰€å±åˆ†åŒºçš„æ’åæ”¹å˜
-+ COMMON_NOTICE_DANMAKU: å¹¿æ’­é€šçŸ¥å¼¹å¹•ä¿¡æ¯
-+ ROOM_CHANGE: ç›´æ’­é—´ä¿¡æ¯æ›´æ”¹
-+ ROOM_CONTENT_AUDIT_REPORT: ç›´æ’­é—´å†…å®¹å®¡æ ¸æŠ¥å‘Š
-+ SUPER_CHAT_ENTRANCE: é†’ç›®ç•™è¨€æŒ‰é’®
-+ WIDGET_BANNER: é¡¶éƒ¨æ¨ªå¹…
-+ WIDGET_WISH_LIST: ç¤¼ç‰©å¿ƒæ„¿å•è¿›åº¦
-+ WIDGET_WISH_INFO: ç¤¼ç‰©æ˜Ÿçƒä¿¡æ¯
-+ STOP_LIVE_ROOM_LIST: ä¸‹æ’­çš„ç›´æ’­é—´
-+ SYS_MSG: ç³»ç»Ÿä¿¡æ¯
-+ WARNING: è­¦å‘Š
-+ CUT_OFF: åˆ‡æ–­
-+ CUT_OFF_V2: åˆ‡æ–­V2
-+ ANCHOR_ECOLOGY_LIVING_DIALOG: ç›´æ’­å¯¹è¯æ¡†
-+ CHANGE_ROOM_INFO: ç›´æ’­é—´èƒŒæ™¯å›¾ç‰‡ä¿®æ”¹
-+ ROOM_SKIN_MSG: ç›´æ’­é—´çš®è‚¤å˜æ›´
-+ ROOM_SILENT_ON: å¼€å¯ç­‰çº§ç¦è¨€
-+ ROOM_SILENT_OFF: å…³é—­ç­‰çº§ç¦è¨€
-+ ROOM_BLOCK_MSG: æŒ‡å®šè§‚ä¼—ç¦è¨€
-+ ROOM_ADMINS: æˆ¿ç®¡åˆ—è¡¨
-+ room_admin_entrance: è®¾ç«‹æˆ¿ç®¡
-+ ROOM_ADMIN_REVOKE: æ’¤é”€æˆ¿ç®¡
-+ ANCHOR_LOT_CHECKSTATUS: å¤©é€‰æ—¶åˆ»åˆæ³•æ£€æŸ¥
-+ ANCHOR_LOT_START: å¤©é€‰æ—¶åˆ»å¼€å§‹
-+ ANCHOR_LOT_END: å¤©é€‰æ—¶åˆ»ç»“æŸ
-+ ANCHOR_LOT_AWARD: å¤©é€‰æ—¶åˆ»ä¸­å¥–è€…
-+ ANCHOR_LOT_NOTICE: å¤©é€‰æ—¶åˆ»é€šçŸ¥
-+ VOICE_JOIN_SWITCH: è¯­éŸ³è¿éº¦å¼€å…³
-+ VIDEO_CONNECTION_JOIN_START: é‚€è¯·è§†é¢‘è¿çº¿
-+ VIDEO_CONNECTION_MSG: è§†é¢‘è¿çº¿ä¿¡æ¯
-+ VIDEO_CONNECTION_JOIN_END: ç»“æŸè§†é¢‘è¿çº¿
-+ PLAY_TAG: ç›´æ’­è¿›åº¦æ¡èŠ‚ç‚¹æ ‡ç­¾
-+ OTHER_SLICE_LOADING_RESULT: ç›´æ’­å‰ªè¾‘
-+ GOTO_BUY_FLOW: æœ‰äººè´­ä¹°ä¸»æ’­æ¨èå•†å“
-+ HOT_BUY_NUM: çƒ­æŠ¢æç¤º
-+ WEALTH_NOTIFY: è£è€€ç­‰çº§é€šçŸ¥
-+ MESSAGEBOX_USER_MEDAL_CHANGE: ç²‰ä¸å‹‹ç« æ›´æ–°
-+ MESSAGEBOX_USER_GAIN_MEDAL: è·å¾—ç²‰ä¸å‹‹ç« 
-+ FANS_CLUB_POKE_GIFT_NOTICE: ç²‰ä¸å›¢æˆ³ä¸€æˆ³ç¤¼ç‰©é€šçŸ¥
++ DANMU_MSG: ÓÃ»§·¢ËÍµ¯Ä»
++ SEND_GIFT: ÀñÎï
++ COMBO_SEND: ÀñÎïÁ¬»÷
++ GUARD_BUY: Ğø·Ñ´óº½º£
++ SUPER_CHAT_MESSAGE: ĞÑÄ¿ÁôÑÔ(SC)
++ SUPER_CHAT_MESSAGE_JPN: ĞÑÄ¿ÁôÑÔ(´øÈÕÓï·­Òë?)
++ SUPER_CHAT_MESSAGE_DELETE: ĞÑÄ¿ÁôÑÔÉ¾³ı
++ WELCOME: ÀÏÒ¯½øÈë·¿¼ä
++ WELCOME_GUARD: ·¿¹Ü½øÈë·¿¼ä
++ NOTICE_MSG: ÏµÍ³Í¨Öª£¨È«ÆµµÀ¹ã²¥Ö®ÀàµÄ£©
++ PREPARING: Ö±²¥×¼±¸ÖĞ
++ LIVE: Ö±²¥¿ªÊ¼
++ ROOM_REAL_TIME_MESSAGE_UPDATE: ·ÛË¿ÊıµÈ¸üĞÂ
++ ENTRY_EFFECT: ½ø³¡ÌØĞ§
++ ROOM_RANK: ·¿¼äÅÅÃû¸üĞÂ
++ INTERACT_WORD_V2: ÓÃ»§½øÈëÖ±²¥¼ä (*)
++ ACTIVITY_BANNER_UPDATE_V2: ºÃÏñÊÇ·¿¼äÃûÅÔ±ßÄÇ¸ö xx Ğ¡Ê±°ñ
++ DM_INTERACTION: ½»»¥ĞÅÏ¢ºÏ²¢
++ USER_TOAST_MSG: ÓÃ»§Çì×£ÏûÏ¢
++ GIFT_STAR_PROCESS: ÀñÎïĞÇÇòµãÁÁ
++ SPECIAL_GIFT: ÌØÊâÀñÎï
++ ONLINE_RANK_V3: Ö±²¥¼ä¸ßÄÜ°ñ (*)
++ LOG_IN_NOTICE: Î´µÇÂ¼Í¨Öª
++ ONLINE_RANK_TOP3: ÓÃ»§µ½´ïÖ±²¥¼ä¸ßÄÜ°ñÇ°ÈıÃûµÄÏûÏ¢
++ POPULAR_RANK_CHANGED: Ö±²¥¼äÔÚÈËÆø°ñµÄÅÅÃû¸Ä±ä
++ HOT_RANK_CHANGED / HOT_RANK_CHANGED_V2: Ö±²¥¼äÏŞÊ±ÈÈÃÅ°ñÅÅÃû¸Ä±ä
++ HOT_RANK_SETTLEMENT / HOT_RANK_SETTLEMENT_V2: ÏŞÊ±ÈÈÃÅ°ñÉÏ°ñĞÅÏ¢
++ LIKE_INFO_V3_CLICK: Ö±²¥¼äÓÃ»§µãÔŞ
++ LIKE_INFO_V3_UPDATE: Ö±²¥¼äµãÔŞÊı¸üĞÂ
++ POPULARITY_RED_POCKET_START: Ö±²¥¼ä·¢ºì°üµ¯Ä»
++ POPULARITY_RED_POCKET_NEW: Ö±²¥¼äºì°ü
++ POPULARITY_RED_POCKET_WINNER_LIST: Ö±²¥¼äÇÀµ½ºì°üµÄÓÃ»§
++ WATCHED_CHANGE: Ö±²¥¼ä¿´¹ıÈËÊı
++ ENTRY_EFFECT_MUST_RECEIVE: ±ØĞë½ÓÊÜµÄÓÃ»§½ø³¡ÌØĞ§
++ FULL_SCREEN_SPECIAL_EFFECT: È«ÆÁÌØĞ§
++ AREA_RANK_CHANGED: Ö±²¥¼äÔÚËùÊô·ÖÇøµÄÅÅÃû¸Ä±ä
++ COMMON_NOTICE_DANMAKU: ¹ã²¥Í¨Öªµ¯Ä»ĞÅÏ¢
++ ROOM_CHANGE: Ö±²¥¼äĞÅÏ¢¸ü¸Ä
++ ROOM_CONTENT_AUDIT_REPORT: Ö±²¥¼äÄÚÈİÉóºË±¨¸æ
++ SUPER_CHAT_ENTRANCE: ĞÑÄ¿ÁôÑÔ°´Å¥
++ WIDGET_BANNER: ¶¥²¿ºá·ù
++ WIDGET_WISH_LIST: ÀñÎïĞÄÔ¸µ¥½ø¶È
++ WIDGET_WISH_INFO: ÀñÎïĞÇÇòĞÅÏ¢
++ STOP_LIVE_ROOM_LIST: ÏÂ²¥µÄÖ±²¥¼ä
++ SYS_MSG: ÏµÍ³ĞÅÏ¢
++ WARNING: ¾¯¸æ
++ CUT_OFF: ÇĞ¶Ï
++ CUT_OFF_V2: ÇĞ¶ÏV2
++ ANCHOR_ECOLOGY_LIVING_DIALOG: Ö±²¥¶Ô»°¿ò
++ CHANGE_ROOM_INFO: Ö±²¥¼ä±³¾°Í¼Æ¬ĞŞ¸Ä
++ ROOM_SKIN_MSG: Ö±²¥¼äÆ¤·ô±ä¸ü
++ ROOM_SILENT_ON: ¿ªÆôµÈ¼¶½ûÑÔ
++ ROOM_SILENT_OFF: ¹Ø±ÕµÈ¼¶½ûÑÔ
++ ROOM_BLOCK_MSG: Ö¸¶¨¹ÛÖÚ½ûÑÔ
++ ROOM_ADMINS: ·¿¹ÜÁĞ±í
++ room_admin_entrance: ÉèÁ¢·¿¹Ü
++ ROOM_ADMIN_REVOKE: ³·Ïú·¿¹Ü
++ ANCHOR_LOT_CHECKSTATUS: ÌìÑ¡Ê±¿ÌºÏ·¨¼ì²é
++ ANCHOR_LOT_START: ÌìÑ¡Ê±¿Ì¿ªÊ¼
++ ANCHOR_LOT_END: ÌìÑ¡Ê±¿Ì½áÊø
++ ANCHOR_LOT_AWARD: ÌìÑ¡Ê±¿ÌÖĞ½±Õß
++ ANCHOR_LOT_NOTICE: ÌìÑ¡Ê±¿ÌÍ¨Öª
++ VOICE_JOIN_SWITCH: ÓïÒôÁ¬Âó¿ª¹Ø
++ VIDEO_CONNECTION_JOIN_START: ÑûÇëÊÓÆµÁ¬Ïß
++ VIDEO_CONNECTION_MSG: ÊÓÆµÁ¬ÏßĞÅÏ¢
++ VIDEO_CONNECTION_JOIN_END: ½áÊøÊÓÆµÁ¬Ïß
++ PLAY_TAG: Ö±²¥½ø¶ÈÌõ½Úµã±êÇ©
++ OTHER_SLICE_LOADING_RESULT: Ö±²¥¼ô¼­
++ GOTO_BUY_FLOW: ÓĞÈË¹ºÂòÖ÷²¥ÍÆ¼öÉÌÆ·
++ HOT_BUY_NUM: ÈÈÇÀÌáÊ¾
++ WEALTH_NOTIFY: ÈÙÒ«µÈ¼¶Í¨Öª
++ MESSAGEBOX_USER_MEDAL_CHANGE: ·ÛË¿Ñ«ÕÂ¸üĞÂ
++ MESSAGEBOX_USER_GAIN_MEDAL: »ñµÃ·ÛË¿Ñ«ÕÂ
++ FANS_CLUB_POKE_GIFT_NOTICE: ·ÛË¿ÍÅ´ÁÒ»´ÁÀñÎïÍ¨Öª
 + ===========================
-+ æœ¬æ¨¡å—è‡ªå®šä¹‰äº‹ä»¶ï¼š
++ ±¾Ä£¿é×Ô¶¨ÒåÊÂ¼ş£º
 + ==========================
-+ VIEW: ç›´æ’­é—´äººæ°”æ›´æ–°
-+ ALL: æ‰€æœ‰äº‹ä»¶
-+ DISCONNECT: æ–­å¼€è¿æ¥ï¼ˆä¼ å…¥è¿æ¥çŠ¶æ€ç å‚æ•°ï¼‰
-+ TIMEOUT: å¿ƒè·³å“åº”è¶…æ—¶
-+ VERIFICATION_SUCCESSFUL: è®¤è¯æˆåŠŸ
++ VIEW: Ö±²¥¼äÈËÆø¸üĞÂ
++ ALL: ËùÓĞÊÂ¼ş
++ DISCONNECT: ¶Ï¿ªÁ¬½Ó£¨´«ÈëÁ¬½Ó×´Ì¬Âë²ÎÊı£©
++ TIMEOUT: ĞÄÌøÏìÓ¦³¬Ê±
++ VERIFICATION_SUCCESSFUL: ÈÏÖ¤³É¹¦
 
-(*: åŒ…å« protobuf æ ¼å¼æ•°æ®çš„äº‹ä»¶ï¼Œæ¨¡å—å°†è‡ªåŠ¨è§£æ protobuf æ•°æ®æ ¼å¼å¹¶è¿åŒåŸæ•°æ®ä¸€åŒè¿”å›)
+(*: °üº¬ protobuf ¸ñÊ½Êı¾İµÄÊÂ¼ş£¬Ä£¿é½«×Ô¶¯½âÎö protobuf Êı¾İ¸ñÊ½²¢Á¬Í¬Ô­Êı¾İÒ»Í¬·µ»Ø)
 
 
 
@@ -187,17 +187,17 @@ Events:
 
 | name | type | description |
 | - | - | - |
-| `room_display_id` | `int` | æˆ¿é—´å±•ç¤º ID |
-| `debug` | `bool, optional` | è°ƒè¯•æ¨¡å¼ï¼Œå°†è¾“å‡ºæ›´å¤šä¿¡æ¯ã€‚. Defaults to False. |
-| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
-| `max_retry` | `int, optional` | è¿æ¥å‡ºé”™åæœ€å¤§é‡è¯•æ¬¡æ•°. Defaults to 5 |
-| `retry_after` | `int, optional` | è¿æ¥å‡ºé”™åé‡è¯•é—´éš”æ—¶é—´ï¼ˆç§’ï¼‰. Defaults to 1 |
-| `max_retry_for_credential` | `int, optional` | è·å–ç”¨æˆ·ä¿¡æ¯æœ€å¤§é‡è¯•æ¬¡æ•°. Defaults to 5 |
+| `room_display_id` | `int` | ·¿¼äÕ¹Ê¾ ID |
+| `debug` | `bool, optional` | µ÷ÊÔÄ£Ê½£¬½«Êä³ö¸ü¶àĞÅÏ¢¡£. Defaults to False. |
+| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
+| `max_retry` | `int, optional` | Á¬½Ó³ö´íºó×î´óÖØÊÔ´ÎÊı. Defaults to 5 |
+| `retry_after` | `int, optional` | Á¬½Ó³ö´íºóÖØÊÔ¼ä¸ôÊ±¼ä£¨Ãë£©. Defaults to 1 |
+| `max_retry_for_credential` | `int, optional` | »ñÈ¡ÓÃ»§ĞÅÏ¢×î´óÖØÊÔ´ÎÊı. Defaults to 5 |
 
 
 ### async def connect()
 
-è¿æ¥ç›´æ’­é—´
+Á¬½ÓÖ±²¥¼ä
 
 
 
@@ -206,7 +206,7 @@ Events:
 
 ### async def disconnect()
 
-æ–­å¼€è¿æ¥
+¶Ï¿ªÁ¬½Ó
 
 
 
@@ -215,22 +215,22 @@ Events:
 
 ### def get_live_room()
 
-è·å–å¯¹åº”ç›´æ’­é—´å¯¹è±¡
+»ñÈ¡¶ÔÓ¦Ö±²¥¼ä¶ÔÏó
 
 
 
-**Returns:** `LiveRoom`:  ç›´æ’­é—´å¯¹è±¡
+**Returns:** `LiveRoom`:  Ö±²¥¼ä¶ÔÏó
 
 
 
 
 ### def get_status()
 
-è·å–è¿æ¥çŠ¶æ€
+»ñÈ¡Á¬½Ó×´Ì¬
 
 
 
-**Returns:** `int`:  0 åˆå§‹åŒ–ï¼Œ1 è¿æ¥å»ºç«‹ä¸­ï¼Œ2 å·²è¿æ¥ï¼Œ3 æ–­å¼€è¿æ¥ä¸­ï¼Œ4 å·²æ–­å¼€ï¼Œ5 é”™è¯¯
+**Returns:** `int`:  0 ³õÊ¼»¯£¬1 Á¬½Ó½¨Á¢ÖĞ£¬2 ÒÑÁ¬½Ó£¬3 ¶Ï¿ªÁ¬½ÓÖĞ£¬4 ÒÑ¶Ï¿ª£¬5 ´íÎó
 
 
 
@@ -241,13 +241,13 @@ Events:
 
 **Extend: enum.Enum**
 
-ç›´æ’­æºå®¹å™¨æ ¼å¼
+Ö±²¥Ô´ÈİÆ÷¸ñÊ½
 
-å®¹å™¨æ ¼å¼ï¼Œ0 ä¸º flv æ ¼å¼ï¼›1 ä¸º ts æ ¼å¼ï¼ˆä»…é™ hls æµï¼‰ï¼›2 ä¸º fmp4 æ ¼å¼ï¼ˆä»…é™ hls æµï¼‰ã€‚é»˜è®¤ï¼š0,2
-+ FLV   : 0ã€‚
-+ TS: 1ã€‚
-+ FMP4  : 2ã€‚
-+ DEFAULT   : 2ã€‚
+ÈİÆ÷¸ñÊ½£¬0 Îª flv ¸ñÊ½£»1 Îª ts ¸ñÊ½£¨½öÏŞ hls Á÷£©£»2 Îª fmp4 ¸ñÊ½£¨½öÏŞ hls Á÷£©¡£Ä¬ÈÏ£º0,2
++ FLV   : 0¡£
++ TS: 1¡£
++ FMP4  : 2¡£
++ DEFAULT   : 2¡£
 
 
 
@@ -258,11 +258,11 @@ Events:
 
 **Extend: enum.Enum**
 
-ç›´æ’­æºæµåè®®ã€‚
+Ö±²¥Ô´Á÷Ğ­Òé¡£
 
-æµåè®®ï¼Œ0 ä¸º FLV æµï¼Œ1 ä¸º HLS æµã€‚é»˜è®¤ï¼š0,1
-+ FLV : 0ã€‚
-+ HLS : 1ã€‚
+Á÷Ğ­Òé£¬0 Îª FLV Á÷£¬1 Îª HLS Á÷¡£Ä¬ÈÏ£º0,1
++ FLV : 0¡£
++ HLS : 1¡£
 + DEFAULT : 0,1
 
 
@@ -272,13 +272,13 @@ Events:
 
 ## class LiveRoom()
 
-ç›´æ’­ç±»ï¼Œè·å–å„ç§ç›´æ’­é—´çš„æ“ä½œå‡åœ¨é‡Œè¾¹ã€‚
+Ö±²¥Àà£¬»ñÈ¡¸÷ÖÖÖ±²¥¼äµÄ²Ù×÷¾ùÔÚÀï±ß¡£
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
-| `room_display_id` | `int` | æˆ¿é—´å±•ç¤º id |
+| `credential` | `Credential` | Æ¾¾İÀà |
+| `room_display_id` | `int` | ·¿¼äÕ¹Ê¾ id |
 
 
 ### def \_\_init\_\_()
@@ -286,236 +286,236 @@ Events:
 
 | name | type | description |
 | - | - | - |
-| `room_display_id` | `int` | æˆ¿é—´å±•ç¤º IDï¼ˆå³ URL ä¸­çš„ IDï¼‰ |
-| `credential` | `Credential, optional` | å‡­æ®. Defaults to None. |
+| `room_display_id` | `int` | ·¿¼äÕ¹Ê¾ ID£¨¼´ URL ÖĞµÄ ID£© |
+| `credential` | `Credential, optional` | Æ¾¾İ. Defaults to None. |
 
 
 ### async def ban_user()
 
-å°ç¦ç”¨æˆ·
+·â½ûÓÃ»§
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ· UID |
-| `hour` | `int` | ç¦è¨€æ—¶é•¿ï¼Œ-1ä¸ºæ°¸ä¹…ï¼Œ0ä¸ºç›´åˆ°æœ¬åœºç»“æŸ |
+| `uid` | `int` | ÓÃ»§ UID |
+| `hour` | `int` | ½ûÑÔÊ±³¤£¬-1ÎªÓÀ¾Ã£¬0ÎªÖ±µ½±¾³¡½áÊø |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_black_list()
 
-è·å–é»‘åå•åˆ—è¡¨
+»ñÈ¡ºÚÃûµ¥ÁĞ±í
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_dahanghai()
 
-è·å–å¤§èˆªæµ·åˆ—è¡¨
+»ñÈ¡´óº½º£ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1. |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_danmu_info()
 
-è·å–èŠå¤©å¼¹å¹•æœåŠ¡å™¨é…ç½®ä¿¡æ¯(websocket)
+»ñÈ¡ÁÄÌìµ¯Ä»·şÎñÆ÷ÅäÖÃĞÅÏ¢(websocket)
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_emoticons()
 
-è·å–æœ¬æˆ¿é—´å¯ç”¨è¡¨æƒ…åŒ…
+»ñÈ¡±¾·¿¼ä¿ÉÓÃ±íÇé°ü
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_fan_model()
 
-è·å–è‡ªå·±çš„ç²‰ä¸å‹‹ç« ä¿¡æ¯
+»ñÈ¡×Ô¼ºµÄ·ÛË¿Ñ«ÕÂĞÅÏ¢
 
-å¦‚æœå¸¦æœ‰æˆ¿é—´å·å°±è¿”å›æ˜¯å¦å…·æœ‰çš„åˆ¤æ–­ has_medal
+Èç¹û´øÓĞ·¿¼äºÅ¾Í·µ»ØÊÇ·ñ¾ßÓĞµÄÅĞ¶Ï has_medal
 
-å¦‚æœå¸¦æœ‰ä¸»æ’­ id ï¼Œå°±è¿”å›ä¸»æ’­çš„ç²‰ä¸ç‰Œï¼Œæ²¡æœ‰å°±è¿”å› null
+Èç¹û´øÓĞÖ÷²¥ id £¬¾Í·µ»ØÖ÷²¥µÄ·ÛË¿ÅÆ£¬Ã»ÓĞ¾Í·µ»Ø null
 
 
 | name | type | description |
 | - | - | - |
-| `roomId` | `int, optional` | æŒ‡å®šæˆ¿é—´ï¼ŒæŸ¥è¯¢æ˜¯å¦æ‹¥æœ‰æ­¤æˆ¿é—´çš„ç²‰ä¸ç‰Œ |
-| `target_id` | `int \| None, optional` | æŒ‡å®šè¿”å›ä¸€ä¸ªä¸»æ’­çš„ç²‰ä¸ç‰Œï¼Œç•™ç©ºå°±ä¸è¿”å› |
-| `page_num` | `int \| None, optional` | ç²‰ä¸ç‰Œåˆ—è¡¨ï¼Œé»˜è®¤ 1 |
+| `roomId` | `int, optional` | Ö¸¶¨·¿¼ä£¬²éÑ¯ÊÇ·ñÓµÓĞ´Ë·¿¼äµÄ·ÛË¿ÅÆ |
+| `target_id` | `int \| None, optional` | Ö¸¶¨·µ»ØÒ»¸öÖ÷²¥µÄ·ÛË¿ÅÆ£¬Áô¿Õ¾Í²»·µ»Ø |
+| `page_num` | `int \| None, optional` | ·ÛË¿ÅÆÁĞ±í£¬Ä¬ÈÏ 1 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_fans_medal_rank()
 
-è·å–ç²‰ä¸å‹‹ç« æ’è¡Œ
+»ñÈ¡·ÛË¿Ñ«ÕÂÅÅĞĞ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_gaonengbang()
 
-è·å–é«˜èƒ½æ¦œåˆ—è¡¨
+»ñÈ¡¸ßÄÜ°ñÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç . Defaults to 1 |
+| `page` | `int, optional` | Ò³Âë. Defaults to 1 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_general_info()
 
-è·å–è‡ªå·±åœ¨è¯¥æˆ¿é—´çš„å¤§èˆªæµ·ä¿¡æ¯, æ¯”å¦‚æ˜¯å¦å¼€é€š, ç­‰çº§ç­‰
+»ñÈ¡×Ô¼ºÔÚ¸Ã·¿¼äµÄ´óº½º£ĞÅÏ¢, ±ÈÈçÊÇ·ñ¿ªÍ¨, µÈ¼¶µÈ
 
 
 | name | type | description |
 | - | - | - |
-| `act_id` | `int, optional` | æœªçŸ¥ï¼ŒDefaults to 100061 |
+| `act_id` | `int, optional` | Î´Öª£¬Defaults to 100061 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_gift_common()
 
-è·å–å½“å‰ç›´æ’­é—´å†…çš„æ™®é€šç¤¼ç‰©åˆ—è¡¨
+»ñÈ¡µ±Ç°Ö±²¥¼äÄÚµÄÆÕÍ¨ÀñÎïÁĞ±í
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_gift_special()
 
-æ³¨ï¼šæ­¤ API å·²å¤±æ•ˆï¼Œè¯·ä½¿ç”¨ live.get_gift_config
+×¢£º´Ë API ÒÑÊ§Ğ§£¬ÇëÊ¹ÓÃ live.get_gift_config
 
-è·å–å½“å‰ç›´æ’­é—´å†…çš„ç‰¹æ®Šç¤¼ç‰©åˆ—è¡¨
+»ñÈ¡µ±Ç°Ö±²¥¼äÄÚµÄÌØÊâÀñÎïÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `tab_id` | `int` | 2ï¼šç‰¹æƒç¤¼ç‰©ï¼Œ3ï¼šå®šåˆ¶ç¤¼ç‰© |
+| `tab_id` | `int` | 2£ºÌØÈ¨ÀñÎï£¬3£º¶¨ÖÆÀñÎï |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_popular_ticket_num()
 
-è·å–è‡ªå·±åœ¨ç›´æ’­é—´çš„äººæ°”ç¥¨æ•°é‡ï¼ˆä»˜è´¹äººæ°”ç¥¨å·²èµ é€çš„é‡ï¼Œå…è´¹äººæ°”ç¥¨çš„æŒæœ‰é‡ï¼‰
+»ñÈ¡×Ô¼ºÔÚÖ±²¥¼äµÄÈËÆøÆ±ÊıÁ¿£¨¸¶·ÑÈËÆøÆ±ÒÑÔùËÍµÄÁ¿£¬Ãâ·ÑÈËÆøÆ±µÄ³ÖÓĞÁ¿£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_room_id()
 
-è·å–ç›´æ’­é—´çœŸå® id
+»ñÈ¡Ö±²¥¼äÕæÊµ id
 
 
 
-**Returns:** `int`:  ç›´æ’­é—´ id
+**Returns:** `int`:  Ö±²¥¼ä id
 
 
 
 
 ### async def get_room_info()
 
-è·å–ç›´æ’­é—´ä¿¡æ¯ï¼ˆæ ‡é¢˜ï¼Œç®€ä»‹ç­‰ï¼‰
+»ñÈ¡Ö±²¥¼äĞÅÏ¢£¨±êÌâ£¬¼ò½éµÈ£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_room_play_info()
 
-è·å–æˆ¿é—´ä¿¡æ¯ï¼ˆçœŸå®æˆ¿é—´å·ï¼Œå°ç¦æƒ…å†µç­‰ï¼‰
+»ñÈ¡·¿¼äĞÅÏ¢£¨ÕæÊµ·¿¼äºÅ£¬·â½ûÇé¿öµÈ£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_room_play_info_v2()
 
-è·å–æˆ¿é—´ä¿¡æ¯åŠå¯ç”¨æ¸…æ™°åº¦åˆ—è¡¨
+»ñÈ¡·¿¼äĞÅÏ¢¼°¿ÉÓÃÇåÎú¶ÈÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `live_protocol` | `LiveProtocol, optional` | ç›´æ’­æºæµåè®®. Defaults to LiveProtocol.DEFAULT. |
-| `live_format` | `LiveFormat, optional` | ç›´æ’­æºå®¹å™¨æ ¼å¼. Defaults to LiveFormat.DEFAULT. |
-| `live_codec` | `LiveCodec, optional` | ç›´æ’­æºè§†é¢‘ç¼–ç . Defaults to LiveCodec.DEFAULT. |
-| `live_qn` | `ScreenResolution, optional` | ç›´æ’­æºæ¸…æ™°åº¦. Defaults to ScreenResolution.ORIGINAL. |
+| `live_protocol` | `LiveProtocol, optional` | Ö±²¥Ô´Á÷Ğ­Òé. Defaults to LiveProtocol.DEFAULT. |
+| `live_format` | `LiveFormat, optional` | Ö±²¥Ô´ÈİÆ÷¸ñÊ½. Defaults to LiveFormat.DEFAULT. |
+| `live_codec` | `LiveCodec, optional` | Ö±²¥Ô´ÊÓÆµ±àÂë. Defaults to LiveCodec.DEFAULT. |
+| `live_qn` | `ScreenResolution, optional` | Ö±²¥Ô´ÇåÎú¶È. Defaults to ScreenResolution.ORIGINAL. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_room_play_url()
 
-è·å–æˆ¿é—´ç›´æ’­æµåˆ—è¡¨
+»ñÈ¡·¿¼äÖ±²¥Á÷ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `screen_resolution` | `ScreenResolution, optional` | æ¸…æ™°åº¦. Defaults to ScreenResolution.ORIGINAL |
+| `screen_resolution` | `ScreenResolution, optional` | ÇåÎú¶È. Defaults to ScreenResolution.ORIGINAL |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_ruid()
 
-è·å–ç›´æ’­çš„ up çš„ uid (ruid)
+»ñÈ¡Ö±²¥µÄ up µÄ uid (ruid)
 
 
 
@@ -526,198 +526,198 @@ Events:
 
 ### async def get_seven_rank()
 
-è·å–ä¸ƒæ—¥æ¦œ
+»ñÈ¡ÆßÈÕ°ñ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_user_info_in_room()
 
-è·å–è‡ªå·±åœ¨ç›´æ’­é—´çš„ä¿¡æ¯ï¼ˆç²‰ä¸å‹‹ç« ç­‰çº§ï¼Œç›´æ’­ç”¨æˆ·ç­‰çº§ç­‰ï¼‰
+»ñÈ¡×Ô¼ºÔÚÖ±²¥¼äµÄĞÅÏ¢£¨·ÛË¿Ñ«ÕÂµÈ¼¶£¬Ö±²¥ÓÃ»§µÈ¼¶µÈ£©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def receive_reward()
 
-é¢†å–è‡ªå·±åœ¨æŸä¸ªç›´æ’­é—´çš„èˆªæµ·æ—¥å¿—å¥–åŠ±
+ÁìÈ¡×Ô¼ºÔÚÄ³¸öÖ±²¥¼äµÄº½º£ÈÕÖ¾½±Àø
 
 
 | name | type | description |
 | - | - | - |
-| `receive_type` | `int` | é¢†å–ç±»å‹ï¼ŒDefaults to 2. |
+| `receive_type` | `int` | ÁìÈ¡ÀàĞÍ£¬Defaults to 2. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_danmaku()
 
-ç›´æ’­é—´å‘é€å¼¹å¹•
+Ö±²¥¼ä·¢ËÍµ¯Ä»
 
 
 | name | type | description |
 | - | - | - |
-| `danmaku` | `Danmaku` | å¼¹å¹•ç±» |
-| `reply_mid` | `int, optional` | @çš„ UID. Defaults to None. |
+| `danmaku` | `Danmaku` | µ¯Ä»Àà |
+| `reply_mid` | `int, optional` | @µÄ UID. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_emoticon()
 
-ç›´æ’­é—´å‘é€è¡¨æƒ…åŒ…
+Ö±²¥¼ä·¢ËÍ±íÇé°ü
 
 
 | name | type | description |
 | - | - | - |
-| `emoticon` | `Danmaku` | textä¸ºè¡¨æƒ…åŒ…ä»£å· |
+| `emoticon` | `Danmaku` | textÎª±íÇé°ü´úºÅ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_gift_from_bag()
 
-èµ é€åŒ…è£¹ä¸­çš„ç¤¼ç‰©ï¼Œè·å–åŒ…è£¹ä¿¡æ¯å¯ä»¥ä½¿ç”¨ get_self_bag æ–¹æ³•
+ÔùËÍ°ü¹üÖĞµÄÀñÎï£¬»ñÈ¡°ü¹üĞÅÏ¢¿ÉÒÔÊ¹ÓÃ get_self_bag ·½·¨
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | èµ é€ç”¨æˆ·çš„ UID |
-| `bag_id` | `int` | ç¤¼ç‰©èƒŒåŒ… ID |
-| `gift_id` | `int` | ç¤¼ç‰© ID |
-| `gift_num` | `int` | ç¤¼ç‰©æ•°é‡ |
-| `storm_beat_id` | `int, optional` | æœªçŸ¥ï¼Œ Defaults to 0 |
-| `price` | `int, optional` | ç¤¼ç‰©å•ä»·ï¼ŒDefaults to 0 |
+| `uid` | `int` | ÔùËÍÓÃ»§µÄ UID |
+| `bag_id` | `int` | ÀñÎï±³°ü ID |
+| `gift_id` | `int` | ÀñÎï ID |
+| `gift_num` | `int` | ÀñÎïÊıÁ¿ |
+| `storm_beat_id` | `int, optional` | Î´Öª£¬ Defaults to 0 |
+| `price` | `int, optional` | ÀñÎïµ¥¼Û£¬Defaults to 0 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_gift_gold()
 
-èµ é€é‡‘ç“œå­ç¤¼ç‰©
+ÔùËÍ½ğ¹Ï×ÓÀñÎï
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | èµ é€ç”¨æˆ·çš„ UID |
-| `gift_id` | `int` | ç¤¼ç‰© ID (å¯ä»¥é€šè¿‡ get_gift_common æˆ– get_gift_special æˆ– get_gift_config è·å–) |
-| `gift_num` | `int` | èµ é€ç¤¼ç‰©æ•°é‡ |
-| `price` | `int` | ç¤¼ç‰©å•ä»· |
-| `storm_beat_id` | `int, Optional` | æœªçŸ¥ï¼ŒDefaults to 0 |
+| `uid` | `int` | ÔùËÍÓÃ»§µÄ UID |
+| `gift_id` | `int` | ÀñÎï ID (¿ÉÒÔÍ¨¹ı get_gift_common »ò get_gift_special »ò get_gift_config »ñÈ¡) |
+| `gift_num` | `int` | ÔùËÍÀñÎïÊıÁ¿ |
+| `price` | `int` | ÀñÎïµ¥¼Û |
+| `storm_beat_id` | `int, Optional` | Î´Öª£¬Defaults to 0 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_gift_silver()
 
-èµ é€é“¶ç“œå­ç¤¼ç‰©
+ÔùËÍÒø¹Ï×ÓÀñÎï
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | èµ é€ç”¨æˆ·çš„ UID |
-| `gift_id` | `int` | ç¤¼ç‰© ID (å¯ä»¥é€šè¿‡ get_gift_common æˆ– get_gift_special æˆ– get_gift_config è·å–) |
-| `gift_num` | `int` | èµ é€ç¤¼ç‰©æ•°é‡ |
-| `price` | `int` | ç¤¼ç‰©å•ä»· |
-| `storm_beat_id` | `int, Optional` | æœªçŸ¥, Defaults to 0 |
+| `uid` | `int` | ÔùËÍÓÃ»§µÄ UID |
+| `gift_id` | `int` | ÀñÎï ID (¿ÉÒÔÍ¨¹ı get_gift_common »ò get_gift_special »ò get_gift_config »ñÈ¡) |
+| `gift_num` | `int` | ÔùËÍÀñÎïÊıÁ¿ |
+| `price` | `int` | ÀñÎïµ¥¼Û |
+| `storm_beat_id` | `int, Optional` | Î´Öª, Defaults to 0 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_popular_ticket()
 
-èµ é€è‡ªå·±åœ¨ç›´æ’­é—´çš„æ‰€æœ‰å…è´¹äººæ°”ç¥¨
+ÔùËÍ×Ô¼ºÔÚÖ±²¥¼äµÄËùÓĞÃâ·ÑÈËÆøÆ±
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def sign_up_dahanghai()
 
-å¤§èˆªæµ·ç­¾åˆ°
+´óº½º£Ç©µ½
 
 
 | name | type | description |
 | - | - | - |
-| `task_id` | `int, optional` | ç­¾åˆ°ä»»åŠ¡ ID. Defaults to 1447 |
+| `task_id` | `int, optional` | Ç©µ½ÈÎÎñ ID. Defaults to 1447 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def start()
 
-å¼€å§‹ç›´æ’­
+¿ªÊ¼Ö±²¥
 
 
 | name | type | description |
 | - | - | - |
-| `area_id` | `int` | ç›´æ’­åˆ†åŒºidï¼ˆå­åˆ†åŒºidï¼‰ã€‚å¯ä½¿ç”¨ live_area æ¨¡å—æŸ¥è¯¢ã€‚ |
+| `area_id` | `int` | Ö±²¥·ÖÇøid£¨×Ó·ÖÇøid£©¡£¿ÉÊ¹ÓÃ live_area Ä£¿é²éÑ¯¡£ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def stop()
 
-å…³é—­ç›´æ’­
+¹Ø±ÕÖ±²¥
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def unban_user()
 
-è§£å°ç”¨æˆ·
+½â·âÓÃ»§
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ· UID |
+| `uid` | `int` | ÓÃ»§ UID |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def update_news()
 
-æ›´æ–°å…¬å‘Š
+¸üĞÂ¹«¸æ
 
 
 | name | type | description |
 | - | - | - |
-| `content` | `str` | æœ€å¤š 60 å­—ç¬¦ |
+| `content` | `str` | ×î¶à 60 ×Ö·û |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -728,16 +728,16 @@ Events:
 
 **Extend: enum.Enum**
 
-ç›´æ’­æºæ¸…æ™°åº¦ã€‚
+Ö±²¥Ô´ÇåÎú¶È¡£
 
-æ¸…æ™°åº¦ç¼–å·ï¼Œ4K 20000ï¼ŒåŸç”» 10000ï¼Œè“å…‰ï¼ˆæœæ¯”ï¼‰401ï¼Œè“å…‰ 400ï¼Œè¶…æ¸… 250ï¼Œé«˜æ¸… 150ï¼Œæµç•… 80
-+ FOUR_K: 4Kã€‚
-+ ORIGINAL  : åŸç”»ã€‚
-+ BLU_RAY_DOLBY : è“å…‰ï¼ˆæœæ¯”ï¼‰ã€‚
-+ BLU_RAY   : è“å…‰ã€‚
-+ ULTRA_HD  : è¶…æ¸…ã€‚
-+ HD: é«˜æ¸…ã€‚
-+ FLUENCY   : æµç•…ã€‚
+ÇåÎú¶È±àºÅ£¬4K 20000£¬Ô­»­ 10000£¬À¶¹â£¨¶Å±È£©401£¬À¶¹â 400£¬³¬Çå 250£¬¸ßÇå 150£¬Á÷³© 80
++ FOUR_K: 4K¡£
++ ORIGINAL  : Ô­»­¡£
++ BLU_RAY_DOLBY : À¶¹â£¨¶Å±È£©¡£
++ BLU_RAY   : À¶¹â¡£
++ ULTRA_HD  : ³¬Çå¡£
++ HD: ¸ßÇå¡£
++ FLUENCY   : Á÷³©¡£
 
 
 
@@ -746,15 +746,15 @@ Events:
 
 ## async def create_live_reserve()
 
-åˆ›å»ºç›´æ’­é¢„çº¦
+´´½¨Ö±²¥Ô¤Ô¼
 
 
 | name | type | description |
 | - | - | - |
-| `title` | `str` | ç›´æ’­é—´æ ‡é¢˜ |
-| `start_time` | `int` | å¼€æ’­æ—¶é—´æˆ³ |
+| `title` | `str` | Ö±²¥¼ä±êÌâ |
+| `start_time` | `int` | ¿ª²¥Ê±¼ä´Á |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -763,11 +763,11 @@ Events:
 
 ## async def get_area_info()
 
-è·å–æ‰€æœ‰åˆ†åŒºä¿¡æ¯
+»ñÈ¡ËùÓĞ·ÖÇøĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -776,20 +776,20 @@ Events:
 
 ## async def get_gift_config()
 
-è·å–æ‰€æœ‰ç¤¼ç‰©çš„ä¿¡æ¯ï¼ŒåŒ…æ‹¬ç¤¼ç‰© idã€åç§°ã€ä»·æ ¼ã€ç­‰çº§ç­‰ã€‚
+»ñÈ¡ËùÓĞÀñÎïµÄĞÅÏ¢£¬°üÀ¨ÀñÎï id¡¢Ãû³Æ¡¢¼Û¸ñ¡¢µÈ¼¶µÈ¡£
 
-åŒæ—¶å¡«äº† room_idã€area_idã€area_parent_idï¼Œåˆ™è¿”å›ä¸€ä¸ªè¾ƒå°çš„ jsonï¼ŒåªåŒ…å«è¯¥æˆ¿é—´ã€è¯¥å­åŒºåŸŸã€çˆ¶åŒºåŸŸçš„ç¤¼ç‰©ã€‚
+Í¬Ê±ÌîÁË room_id¡¢area_id¡¢area_parent_id£¬Ôò·µ»ØÒ»¸ö½ÏĞ¡µÄ json£¬Ö»°üº¬¸Ã·¿¼ä¡¢¸Ã×ÓÇøÓò¡¢¸¸ÇøÓòµÄÀñÎï¡£
 
-ä½†å³ä½¿é™å®šäº†ä¸‰ä¸ªæ¡ä»¶ï¼Œä»ç„¶ä¼šè¿”å›çº¦ 1.5w è¡Œçš„ jsonã€‚ä¸åŠ é™å®šåˆ™æ˜¯ 2.8w è¡Œã€‚
+µ«¼´Ê¹ÏŞ¶¨ÁËÈı¸öÌõ¼ş£¬ÈÔÈ»»á·µ»ØÔ¼ 1.5w ĞĞµÄ json¡£²»¼ÓÏŞ¶¨ÔòÊÇ 2.8w ĞĞ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `room_id` | `int, optional` | æˆ¿é—´æ˜¾ç¤º ID. Defaults to None. |
-| `area_id` | `int, optional` | å­åˆ†åŒº ID. Defaults to None. |
-| `area_parent_id` | `int, optional` | çˆ¶åˆ†åŒº ID. Defaults to None. |
+| `room_id` | `int, optional` | ·¿¼äÏÔÊ¾ ID. Defaults to None. |
+| `area_id` | `int, optional` | ×Ó·ÖÇø ID. Defaults to None. |
+| `area_parent_id` | `int, optional` | ¸¸·ÖÇø ID. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -798,14 +798,14 @@ Events:
 
 ## async def get_live_followers_info()
 
-è·å–å…³æ³¨åˆ—è¡¨ä¸­æ­£åœ¨ç›´æ’­çš„ç›´æ’­é—´ä¿¡æ¯ï¼ŒåŒ…æ‹¬æˆ¿é—´ç›´æ’­çƒ­åº¦ï¼Œæˆ¿é—´åç§°åŠæ ‡é¢˜ï¼Œæ¸…æ™°åº¦ï¼Œæ˜¯å¦å®˜æ–¹è®¤è¯ç­‰ä¿¡æ¯ã€‚
+»ñÈ¡¹Ø×¢ÁĞ±íÖĞÕıÔÚÖ±²¥µÄÖ±²¥¼äĞÅÏ¢£¬°üÀ¨·¿¼äÖ±²¥ÈÈ¶È£¬·¿¼äÃû³Æ¼°±êÌâ£¬ÇåÎú¶È£¬ÊÇ·ñ¹Ù·½ÈÏÖ¤µÈĞÅÏ¢¡£
 
 
 | name | type | description |
 | - | - | - |
-| `need_recommend` | `bool, optional` | æ˜¯å¦æ¥å—æ¨èç›´æ’­é—´ï¼ŒDefaults to True |
+| `need_recommend` | `bool, optional` | ÊÇ·ñ½ÓÊÜÍÆ¼öÖ±²¥¼ä£¬Defaults to True |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -814,11 +814,11 @@ Events:
 
 ## async def get_self_bag()
 
-è·å–è‡ªå·±çš„ç›´æ’­ç¤¼ç‰©åŒ…è£¹ä¿¡æ¯
+»ñÈ¡×Ô¼ºµÄÖ±²¥ÀñÎï°ü¹üĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -827,18 +827,18 @@ Events:
 
 ## async def get_self_dahanghai_info()
 
-è·å–è‡ªå·±å¼€é€šçš„å¤§èˆªæµ·ä¿¡æ¯
+»ñÈ¡×Ô¼º¿ªÍ¨µÄ´óº½º£ĞÅÏ¢
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µæ•°. Defaults to 1. |
-| `page_size` | `int, optional` | æ¯é¡µæ•°é‡. Defaults to 10. |
+| `page` | `int, optional` | Ò³Êı. Defaults to 1. |
+| `page_size` | `int, optional` | Ã¿Ò³ÊıÁ¿. Defaults to 10. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
-æ€»é¡µæ•°å–å¾—æ–¹æ³•:
+×ÜÒ³ÊıÈ¡µÃ·½·¨:
 
 ```python
 import math
@@ -853,11 +853,11 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 ## async def get_self_info()
 
-è·å–è‡ªå·±ç›´æ’­ç­‰çº§ã€æ’è¡Œç­‰ä¿¡æ¯
+»ñÈ¡×Ô¼ºÖ±²¥µÈ¼¶¡¢ÅÅĞĞµÈĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -866,11 +866,11 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 ## async def get_self_live_info()
 
-è·å–è‡ªå·±çš„ç²‰ä¸ç‰Œã€å¤§èˆªæµ·ç­‰ä¿¡æ¯
+»ñÈ¡×Ô¼ºµÄ·ÛË¿ÅÆ¡¢´óº½º£µÈĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -879,14 +879,14 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 ## async def get_self_live_watching_history()
 
-è·å–ç”¨æˆ·ç›´æ’­è§‚çœ‹è®°å½•
+»ñÈ¡ÓÃ»§Ö±²¥¹Û¿´¼ÇÂ¼
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -895,15 +895,15 @@ pages = math.ceil(info['data']['guards'] / 10)
 
 ## async def get_unlive_followers_info()
 
-è·å–å…³æ³¨åˆ—è¡¨ä¸­æœªåœ¨ç›´æ’­çš„ç›´æ’­é—´ä¿¡æ¯ï¼ŒåŒ…æ‹¬ä¸Šæ¬¡å¼€æ’­æ—¶é—´ï¼Œä¸Šæ¬¡å¼€æ’­çš„ç±»åˆ«ï¼Œç›´æ’­é—´å…¬å‘Šï¼Œæ˜¯å¦æœ‰å½•æ’­ç­‰ã€‚
+»ñÈ¡¹Ø×¢ÁĞ±íÖĞÎ´ÔÚÖ±²¥µÄÖ±²¥¼äĞÅÏ¢£¬°üÀ¨ÉÏ´Î¿ª²¥Ê±¼ä£¬ÉÏ´Î¿ª²¥µÄÀà±ğ£¬Ö±²¥¼ä¹«¸æ£¬ÊÇ·ñÓĞÂ¼²¥µÈ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page` | `int, optional` | é¡µç , Defaults to 1. |
-| `page_size` | `int, optional` | æ¯é¡µæ•°é‡ Defaults to 30. |
+| `page` | `int, optional` | Ò³Âë, Defaults to 1. |
+| `page_size` | `int, optional` | Ã¿Ò³ÊıÁ¿ Defaults to 30. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

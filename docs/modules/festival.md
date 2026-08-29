@@ -3,7 +3,7 @@
 
 bilibili_api.festival
 
-èŠ‚æ—¥ä¸“é—¨é¡µç›¸å…³
+½ÚÈÕ×¨ÃÅÒ³Ïà¹Ø
 
 
 ``` python
@@ -18,13 +18,13 @@ from bilibili_api import festival
 
 ## class Festival()
 
-èŠ‚æ—¥ä¸“é—¨é¡µ
+½ÚÈÕ×¨ÃÅÒ³
 
 
 | name | type | description |
 | - | - | - |
-| `fes_id` | `str` | èŠ‚æ—¥ä¸“é—¨é¡µç¼–å· |
-| `credential` | `Credential` | å‡­è¯ç±» |
+| `fes_id` | `str` | ½ÚÈÕ×¨ÃÅÒ³±àºÅ |
+| `credential` | `Credential` | Æ¾Ö¤Àà |
 
 
 ### def \_\_init\_\_()
@@ -32,17 +32,17 @@ from bilibili_api import festival
 
 | name | type | description |
 | - | - | - |
-| `fes_id` | `str` | èŠ‚æ—¥ä¸“é—¨é¡µç¼–å· |
-| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
+| `fes_id` | `str` | ½ÚÈÕ×¨ÃÅÒ³±àºÅ |
+| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### async def get_info()
 
-è·å–èŠ‚æ—¥ä¿¡æ¯
+»ñÈ¡½ÚÈÕĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

@@ -3,19 +3,19 @@
 
 bilibili_api.comment
 
-è¯„è®ºç›¸å…³ã€‚
+ÆÀÂÛÏà¹Ø¡£
 
-å…³äºèµ„æº IDï¼ˆoidï¼‰çš„ä¸€äº›ç¤ºä¾‹ï¼ˆ{}éƒ¨åˆ†ä¸ºåº”è¯¥ä¼ å…¥çš„å‚æ•°ï¼‰ã€‚
+¹ØÓÚ×ÊÔ´ ID£¨oid£©µÄÒ»Ğ©Ê¾Àı£¨{}²¿·ÖÎªÓ¦¸Ã´«ÈëµÄ²ÎÊı£©¡£
 
-+ è§†é¢‘ï¼šAV å·ï¼šav{170001} `get_aid() / await get_aid() # for Episode`ã€‚
-+ ä¸“æ ï¼šcv{9762979} `get_cvid()`ã€‚
-+ åŠ¨æ€/å›¾æ–‡ï¼š{116859542} `await get_rid()`ã€‚
-+ è¯¾ç¨‹ï¼šep{5556} `get_epid()`
-+ éŸ³é¢‘ï¼šau{13998} `get_auid()`
-+ æ­Œå•ï¼šam{26241} `get_amid()`
-+ å°é»‘å±‹: ban/{2600321} `get_id()`
-+ æ¼«ç”»ï¼šmc{32749} `get_manga_id()`
-+ æ´»åŠ¨: {16279} `await get_activity_aid()`
++ ÊÓÆµ£ºAV ºÅ£ºav{170001} `get_aid() / await get_aid() # for Episode`¡£
++ ×¨À¸£ºcv{9762979} `get_cvid()`¡£
++ ¶¯Ì¬/Í¼ÎÄ£º{116859542} `await get_rid()`¡£
++ ¿Î³Ì£ºep{5556} `get_epid()`
++ ÒôÆµ£ºau{13998} `get_auid()`
++ ¸èµ¥£ºam{26241} `get_amid()`
++ Ğ¡ºÚÎİ: ban/{2600321} `get_id()`
++ Âş»­£ºmc{32749} `get_manga_id()`
++ »î¶¯: {16279} `await get_activity_aid()`
 
 
 ``` python
@@ -44,12 +44,12 @@ from bilibili_api import comment
 
 ## class Comment()
 
-å¯¹å•æ¡è¯„è®ºçš„ç›¸å…³æ“ä½œã€‚
+¶Ôµ¥ÌõÆÀÂÛµÄÏà¹Ø²Ù×÷¡£
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -57,26 +57,26 @@ from bilibili_api import comment
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | è¯„è®ºæ‰€åœ¨èµ„æº IDã€‚ |
-| `type_` | `ResourceType` | è¯„è®ºæ‰€åœ¨èµ„æºç±»å‹æšä¸¾ã€‚ |
-| `rpid` | `int` | è¯„è®º IDã€‚ |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `oid` | `int` | ÆÀÂÛËùÔÚ×ÊÔ´ ID¡£ |
+| `type_` | `ResourceType` | ÆÀÂÛËùÔÚ×ÊÔ´ÀàĞÍÃ¶¾Ù¡£ |
+| `rpid` | `int` | ÆÀÂÛ ID¡£ |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### async def delete()
 
-åˆ é™¤è¯„è®ºã€‚
+É¾³ıÆÀÂÛ¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_oid()
 
-è·å–è¯„è®ºå¯¹åº” oid
+»ñÈ¡ÆÀÂÛ¶ÔÓ¦ oid
 
 
 
@@ -87,7 +87,7 @@ from bilibili_api import comment
 
 ### def get_rpid()
 
-è·å–è¯„è®º rpid
+»ñÈ¡ÆÀÂÛ rpid
 
 
 
@@ -98,101 +98,101 @@ from bilibili_api import comment
 
 ### async def get_sub_comments()
 
-è·å–å­è¯„è®ºã€‚å³è¯„è®ºä¸‹çš„è¯„è®ºã€‚
+»ñÈ¡×ÓÆÀÂÛ¡£¼´ÆÀÂÛÏÂµÄÆÀÂÛ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int, optional` | é¡µç ç´¢å¼•ï¼Œä» 1 å¼€å§‹ã€‚Defaults to 1. |
-| `page_size` | `int, optional` | æ¯é¡µè¯„è®ºæ•°ã€‚è®¾ç½®å¤§äº20çš„æ•°å€¼ä¸ä¼šèµ·ä½œç”¨ã€‚Defaults to 10. |
+| `page_index` | `int, optional` | Ò³ÂëË÷Òı£¬´Ó 1 ¿ªÊ¼¡£Defaults to 1. |
+| `page_size` | `int, optional` | Ã¿Ò³ÆÀÂÛÊı¡£ÉèÖÃ´óÓÚ20µÄÊıÖµ²»»áÆğ×÷ÓÃ¡£Defaults to 10. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_type()
 
-è·å–è¯„è®ºèµ„æºç±»å‹
+»ñÈ¡ÆÀÂÛ×ÊÔ´ÀàĞÍ
 
 
 
-**Returns:** `CommentResourceType`:  èµ„æºç±»å‹
+**Returns:** `CommentResourceType`:  ×ÊÔ´ÀàĞÍ
 
 
 
 
 ### async def hate()
 
-ç‚¹è¸©è¯„è®ºã€‚
+µã²ÈÆÀÂÛ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | çŠ¶æ€, Defaults to True. |
+| `status` | `bool, optional` | ×´Ì¬, Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def like()
 
-ç‚¹èµè¯„è®ºã€‚
+µãÔŞÆÀÂÛ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | çŠ¶æ€, Defaults to True. |
+| `status` | `bool, optional` | ×´Ì¬, Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def pin()
 
-ç½®é¡¶è¯„è®ºã€‚
+ÖÃ¶¥ÆÀÂÛ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | çŠ¶æ€, Defaults to True. |
+| `status` | `bool, optional` | ×´Ì¬, Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def report()
 
-ä¸¾æŠ¥è¯„è®º
+¾Ù±¨ÆÀÂÛ
 
 
 | name | type | description |
 | - | - | - |
-| `report_reason` | `ReportReason` | ä¸¾æŠ¥ç±»å‹æšä¸¾ |
-| `content` | `str, optional` | å…¶ä»–ä¸¾æŠ¥å¤‡æ³¨å†…å®¹ä»… reason=ReportReason.OTHER å¯ç”¨ä¸”ä¸èƒ½ä¸º None. |
+| `report_reason` | `ReportReason` | ¾Ù±¨ÀàĞÍÃ¶¾Ù |
+| `content` | `str, optional` | ÆäËû¾Ù±¨±¸×¢ÄÚÈİ½ö reason=ReportReason.OTHER ¿ÉÓÃÇÒ²»ÄÜÎª None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 Error Code:
-0: æˆåŠŸ
--101: è´¦å·æœªç™»å½•
--102: è´¦å·è¢«å°åœ
--111: csrfæ ¡éªŒå¤±è´¥
--400: è¯·æ±‚é”™è¯¯
--403: æƒé™ä¸è¶³
--404: æ— æ­¤é¡¹
--500: æœåŠ¡å™¨é”™è¯¯
--509: è¯·æ±‚è¿‡äºé¢‘ç¹
-12002: è¯„è®ºåŒºå·²å…³é—­
-12006: æ²¡æœ‰è¯¥è¯„è®º
-12008: å·²ç»ä¸¾æŠ¥è¿‡äº†
-12009: è¯„è®ºä¸»ä½“çš„typeä¸åˆæ³•
-12019: ä¸¾æŠ¥è¿‡äºé¢‘ç¹
-12077: ä¸¾æŠ¥ç†ç”±è¿‡é•¿æˆ–è¿‡çŸ­
+0: ³É¹¦
+-101: ÕËºÅÎ´µÇÂ¼
+-102: ÕËºÅ±»·âÍ£
+-111: csrfĞ£ÑéÊ§°Ü
+-400: ÇëÇó´íÎó
+-403: È¨ÏŞ²»×ã
+-404: ÎŞ´ËÏî
+-500: ·şÎñÆ÷´íÎó
+-509: ÇëÇó¹ıÓÚÆµ·±
+12002: ÆÀÂÛÇøÒÑ¹Ø±Õ
+12006: Ã»ÓĞ¸ÃÆÀÂÛ
+12008: ÒÑ¾­¾Ù±¨¹ıÁË
+12009: ÆÀÂÛÖ÷ÌåµÄtype²»ºÏ·¨
+12019: ¾Ù±¨¹ıÓÚÆµ·±
+12077: ¾Ù±¨ÀíÓÉ¹ı³¤»ò¹ı¶Ì
 
 
 
@@ -202,18 +202,18 @@ Error Code:
 
 **Extend: enum.Enum**
 
-èµ„æºç±»å‹æšä¸¾ã€‚
+×ÊÔ´ÀàĞÍÃ¶¾Ù¡£
 
-+ VIDEO: è§†é¢‘ã€‚
-+ ARTICLE: ä¸“æ ã€‚
-+ DYNAMIC_DRAW: ç”»å†Œï¼ˆå›¾æ–‡ï¼‰ã€‚
-+ DYNAMIC: åŠ¨æ€ï¼ˆç”»å†Œä¹Ÿå±äºåŠ¨æ€çš„ä¸€ç§ï¼Œåªä¸è¿‡ç”»å†Œè¿˜æœ‰ä¸€ä¸ªä¸“é—¨çš„ IDï¼‰ã€‚
-+ AUDIOï¼šéŸ³é¢‘ã€‚
-+ AUDIO_LISTï¼šæ­Œå•ã€‚
-+ CHEESE: è¯¾ç¨‹
-+ BLACK_ROOM: å°é»‘å±‹
-+ MANGA: æ¼«ç”»
-+ ACTIVITY: æ´»åŠ¨
++ VIDEO: ÊÓÆµ¡£
++ ARTICLE: ×¨À¸¡£
++ DYNAMIC_DRAW: »­²á£¨Í¼ÎÄ£©¡£
++ DYNAMIC: ¶¯Ì¬£¨»­²áÒ²ÊôÓÚ¶¯Ì¬µÄÒ»ÖÖ£¬Ö»²»¹ı»­²á»¹ÓĞÒ»¸ö×¨ÃÅµÄ ID£©¡£
++ AUDIO£ºÒôÆµ¡£
++ AUDIO_LIST£º¸èµ¥¡£
++ CHEESE: ¿Î³Ì
++ BLACK_ROOM: Ğ¡ºÚÎİ
++ MANGA: Âş»­
++ ACTIVITY: »î¶¯
 
 
 
@@ -224,10 +224,10 @@ Error Code:
 
 **Extend: enum.Enum**
 
-è¯„è®ºæ’åºæ–¹å¼æšä¸¾ã€‚
+ÆÀÂÛÅÅĞò·½Ê½Ã¶¾Ù¡£
 
-+ LIKEï¼šæŒ‰ç‚¹èµæ•°å€’åºã€‚
-+ TIMEï¼šæŒ‰å‘å¸ƒæ—¶é—´å€’åºã€‚
++ LIKE£º°´µãÔŞÊıµ¹Ğò¡£
++ TIME£º°´·¢²¼Ê±¼äµ¹Ğò¡£
 
 
 
@@ -238,26 +238,26 @@ Error Code:
 
 **Extend: enum.Enum**
 
-ä¸¾æŠ¥ç±»å‹æšä¸¾
+¾Ù±¨ÀàĞÍÃ¶¾Ù
 
-+ OTHER: å…¶ä»–
-+ SPAM_AD: åƒåœ¾å¹¿å‘Š
-+ PORNOGRAPHY: è‰²æƒ…
-+ FLOOD: åˆ·å±
-+ PROVOCATION: å¼•æˆ˜
-+ SPOILER: å‰§é€
-+ POLITICS: æ”¿æ²»
-+ PERSONAL_ATTACK: äººèº«æ”»å‡»
-+ IRRELEVANT_CONTENT: å†…å®¹ä¸ç›¸å…³
-+ ILLEGAL: è¿æ³•è¿è§„
-+ VULGAR: ä½ä¿—
-+ ILLEGAL_WEBSITE: éæ³•ç½‘ç«™
-+ GAMBLING_FRAUD: èµŒåšè¯ˆéª—
-+ SPREADING_FALSE_INFORMATION: ä¼ æ’­ä¸å®ä¿¡æ¯
-+ INCITING_INFORMATION: æ€‚æ¿æ•™å”†ä¿¡æ¯
-+ PRIVACY_VIOLATION: ä¾µçŠ¯éšç§
-+ FLOOR_TAKING: æŠ¢æ¥¼
-+ INAPPROPRIATE_CONTENT_FOR_MINORS: é’å°‘å¹´ä¸è‰¯ä¿¡æ¯
++ OTHER: ÆäËû
++ SPAM_AD: À¬»ø¹ã¸æ
++ PORNOGRAPHY: É«Çé
++ FLOOD: Ë¢ÆÁ
++ PROVOCATION: ÒıÕ½
++ SPOILER: ¾çÍ¸
++ POLITICS: ÕşÖÎ
++ PERSONAL_ATTACK: ÈËÉí¹¥»÷
++ IRRELEVANT_CONTENT: ÄÚÈİ²»Ïà¹Ø
++ ILLEGAL: Î¥·¨Î¥¹æ
++ VULGAR: µÍË×
++ ILLEGAL_WEBSITE: ·Ç·¨ÍøÕ¾
++ GAMBLING_FRAUD: ¶Ä²©Õ©Æ­
++ SPREADING_FALSE_INFORMATION: ´«²¥²»ÊµĞÅÏ¢
++ INCITING_INFORMATION: ËËÓÁ½ÌËôĞÅÏ¢
++ PRIVACY_VIOLATION: ÇÖ·¸ÒşË½
++ FLOOR_TAKING: ÇÀÂ¥
++ INAPPROPRIATE_CONTENT_FOR_MINORS: ÇàÉÙÄê²»Á¼ĞÅÏ¢
 
 
 
@@ -266,20 +266,20 @@ Error Code:
 
 ## async def get_comments()
 
-è·å–èµ„æºè¯„è®ºåˆ—è¡¨ã€‚
+»ñÈ¡×ÊÔ´ÆÀÂÛÁĞ±í¡£
 
-ç¬¬äºŒé¡µä»¥åŠå¾€åéœ€è¦æä¾› `credential` å‚æ•°ã€‚
+µÚ¶şÒ³ÒÔ¼°ÍùºóĞèÒªÌá¹© `credential` ²ÎÊı¡£
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | èµ„æº IDã€‚ |
-| `type_` | `CommentsResourceType` | èµ„æºç±»æšä¸¾ã€‚ |
-| `page_index` | `int, optional` | é¡µç . Defaults to 1. |
-| `order` | `OrderType, optional` | æ’åºæ–¹å¼æšä¸¾. Defaults to OrderType.TIME. |
-| `credential` | `Credential, optional` | å‡­æ®ã€‚Defaults to None. |
+| `oid` | `int` | ×ÊÔ´ ID¡£ |
+| `type_` | `CommentsResourceType` | ×ÊÔ´ÀàÃ¶¾Ù¡£ |
+| `page_index` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `order` | `OrderType, optional` | ÅÅĞò·½Ê½Ã¶¾Ù. Defaults to OrderType.TIME. |
+| `credential` | `Credential, optional` | Æ¾¾İ¡£Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -288,20 +288,20 @@ Error Code:
 
 ## async def get_comments_lazy()
 
-æ–°ç‰ˆè·å–èµ„æºè¯„è®ºåˆ—è¡¨ã€‚
+ĞÂ°æ»ñÈ¡×ÊÔ´ÆÀÂÛÁĞ±í¡£
 
-ç¬¬äºŒæ¬¡ä»¥åŠå¾€åéœ€è¦æä¾› `credential` å‚æ•°ã€‚
+µÚ¶ş´ÎÒÔ¼°ÍùºóĞèÒªÌá¹© `credential` ²ÎÊı¡£
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | èµ„æº IDã€‚ |
-| `type_` | `CommentsResourceType` | èµ„æºç±»æšä¸¾ã€‚ |
-| `offset` | `str, optional` | åç§»é‡ã€‚æ¯æ¬¡è¯·æ±‚å¯è·å–ä¸‹æ¬¡è¯·æ±‚å¯¹åº”çš„åç§»é‡ï¼Œç±»ä¼¼å•å‘é“¾è¡¨ã€‚å¯¹åº”è¿”å›ç»“æœçš„ `["cursor"]["pagination_reply"]["next_offset"]` |
-| `order` | `OrderType, optional` | æ’åºæ–¹å¼æšä¸¾. Defaults to OrderType.TIME. |
-| `credential` | `Credential, optional` | å‡­æ®ã€‚Defaults to None. |
+| `oid` | `int` | ×ÊÔ´ ID¡£ |
+| `type_` | `CommentsResourceType` | ×ÊÔ´ÀàÃ¶¾Ù¡£ |
+| `offset` | `str, optional` | Æ«ÒÆÁ¿¡£Ã¿´ÎÇëÇó¿É»ñÈ¡ÏÂ´ÎÇëÇó¶ÔÓ¦µÄÆ«ÒÆÁ¿£¬ÀàËÆµ¥ÏòÁ´±í¡£¶ÔÓ¦·µ»Ø½á¹ûµÄ `["cursor"]["pagination_reply"]["next_offset"]` |
+| `order` | `OrderType, optional` | ÅÅĞò·½Ê½Ã¶¾Ù. Defaults to OrderType.TIME. |
+| `credential` | `Credential, optional` | Æ¾¾İ¡£Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -310,28 +310,28 @@ Error Code:
 
 ## async def send_comment()
 
-é€šç”¨å‘é€è¯„è®º APIã€‚
+Í¨ÓÃ·¢ËÍÆÀÂÛ API¡£
 
-è¯´æ˜ `root` å’Œ `parent`ï¼Œå‡è®¾è¯„è®ºçš„æ˜¯è§†é¢‘ï¼Œå¸¸è§çš„è¯„è®ºæœ‰ä¸‰ç§æƒ…å†µï¼š
+ËµÃ÷ `root` ºÍ `parent`£¬¼ÙÉèÆÀÂÛµÄÊÇÊÓÆµ£¬³£¼ûµÄÆÀÂÛÓĞÈıÖÖÇé¿ö£º
 
-1. åªåœ¨è§†é¢‘ä¸‹é¢å‘é€è¯„è®ºï¼šroot=None, parent=Noneï¼›
-2. å›å¤è§†é¢‘ä¸‹é¢çš„è¯„è®ºï¼šroot=è¯„è®º ID, parent=Noneï¼›
-3. å›å¤è§†é¢‘ä¸‹é¢çš„è¯„è®ºä¸­çš„è¯„è®ºï¼šroot=åœ¨å“ªæ¡è¯„è®ºä¸‹è¯„è®ºçš„ ID, parent=å›å¤å“ªæ¡è¯„è®ºçš„ IDã€‚
+1. Ö»ÔÚÊÓÆµÏÂÃæ·¢ËÍÆÀÂÛ£ºroot=None, parent=None£»
+2. »Ø¸´ÊÓÆµÏÂÃæµÄÆÀÂÛ£ºroot=ÆÀÂÛ ID, parent=None£»
+3. »Ø¸´ÊÓÆµÏÂÃæµÄÆÀÂÛÖĞµÄÆÀÂÛ£ºroot=ÔÚÄÄÌõÆÀÂÛÏÂÆÀÂÛµÄ ID, parent=»Ø¸´ÄÄÌõÆÀÂÛµÄ ID¡£
 
-å½“ root ä¸ºç©ºæ—¶ï¼Œparent å¿…é¡»ä¸ºç©ºã€‚
+µ± root Îª¿ÕÊ±£¬parent ±ØĞëÎª¿Õ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `text` | `str` | è¯„è®ºå†…å®¹ã€‚ |
-| `oid` | `str` | èµ„æº IDã€‚ |
-| `type_` | `CommentsResourceType` | èµ„æºç±»å‹æšä¸¾ã€‚ |
-| `root` | `int, optional` | æ ¹è¯„è®º ID, Defaults to None. |
-| `parent` | `int, optional` | çˆ¶è¯„è®º ID, Defaults to None. |
-| `pic` | `Union[Picture, List[Picture]], optional` | å›¾ç‰‡, Defaults to None. |
-| `credential` | `Credential` | å‡­æ® |
+| `text` | `str` | ÆÀÂÛÄÚÈİ¡£ |
+| `oid` | `str` | ×ÊÔ´ ID¡£ |
+| `type_` | `CommentsResourceType` | ×ÊÔ´ÀàĞÍÃ¶¾Ù¡£ |
+| `root` | `int, optional` | ¸ùÆÀÂÛ ID, Defaults to None. |
+| `parent` | `int, optional` | ¸¸ÆÀÂÛ ID, Defaults to None. |
+| `pic` | `Union[Picture, List[Picture]], optional` | Í¼Æ¬, Defaults to None. |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

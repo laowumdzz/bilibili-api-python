@@ -3,7 +3,7 @@
 
 bilibili_api.dynamic
 
-åŠ¨æ€ç›¸å…³
+¶¯Ì¬Ïà¹Ø
 
 
 ``` python
@@ -68,15 +68,15 @@ from bilibili_api import dynamic
 
 ## class BuildDynamic()
 
-æ„å»ºåŠ¨æ€å†…å®¹. æä¾›ä¸¤ç§ API.
+¹¹½¨¶¯Ì¬ÄÚÈİ. Ìá¹©Á½ÖÖ API.
 
-- 1. é“¾å¼è°ƒç”¨æ„å»º
+- 1. Á´Ê½µ÷ÓÃ¹¹½¨
 
 ``` python
 BuildDynamic.empty().add_plain_text("114514").add_image(await Picture.load_url("https://www.bilibili.com/favicon.ico"))
 ```
 
-- 2. å‚æ•°æ„å»º
+- 2. ²ÎÊı¹¹½¨
 
 ``` python
 BuildDynamic.create_by_args(text="114514", topic_id=114514)
@@ -87,80 +87,80 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ### def \_\_init\_\_()
 
-æ„å»ºåŠ¨æ€å†…å®¹
+¹¹½¨¶¯Ì¬ÄÚÈİ
 
 
 
 
 ### def add_at()
 
-æ·»åŠ @ç”¨æˆ·ï¼Œæ”¯æŒä¼ å…¥ ç”¨æˆ·åæˆ– UID
+Ìí¼Ó@ÓÃ»§£¬Ö§³Ö´«Èë ÓÃ»§Ãû»ò UID
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ç”¨æˆ·ID |
-| `uname` | `str` | ç”¨æˆ·åç§°. Defaults to "". |
+| `uid` | `int` | ÓÃ»§ID |
+| `uname` | `str` | ÓÃ»§Ãû³Æ. Defaults to "". |
 
 
 
 
 ### def add_emoji()
 
-æ·»åŠ è¡¨æƒ…
+Ìí¼Ó±íÇé
 
 
 | name | type | description |
 | - | - | - |
-| `emoji` | `str` | è¡¨æƒ…æ–‡å­— |
+| `emoji` | `str` | ±íÇéÎÄ×Ö |
 
 
 
 
 ### def add_image()
 
-æ·»åŠ å›¾ç‰‡
+Ìí¼ÓÍ¼Æ¬
 
 
 | name | type | description |
 | - | - | - |
-| `image` | `Picture \| List[Picture]` | å›¾ç‰‡ç±» |
+| `image` | `Picture \| List[Picture]` | Í¼Æ¬Àà |
 
 
 
 
 ### def add_plain_text()
 
-æ·»åŠ çº¯æ–‡æœ¬
+Ìí¼Ó´¿ÎÄ±¾
 
 
 | name | type | description |
 | - | - | - |
-| `text` | `str` | æ–‡æœ¬å†…å®¹ |
+| `text` | `str` | ÎÄ±¾ÄÚÈİ |
 
 
 
 
 ### def add_text()
 
-æ·»åŠ æ–‡æœ¬ (å¯åŒ…æ‹¬ at, è¡¨æƒ…åŒ…)
+Ìí¼ÓÎÄ±¾ (¿É°üÀ¨ at, ±íÇé°ü)
 
 
 | name | type | description |
 | - | - | - |
-| `text` | `str` | æ–‡æœ¬å†…å®¹ |
+| `text` | `str` | ÎÄ±¾ÄÚÈİ |
 
 
 
 
 ### def add_vote()
 
-æ·»åŠ æŠ•ç¥¨
+Ìí¼ÓÍ¶Æ±
 
 
 | name | type | description |
 | - | - | - |
-| `vote_id` | `int` | æŠ•ç¥¨å¯¹è±¡ |
+| `vote_id` | `int` | Í¶Æ±¶ÔÏó |
 
 
 
@@ -169,17 +169,17 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ### def create_by_args()
 
-é€šè¿‡å‚æ•°æ„å»ºåŠ¨æ€
+Í¨¹ı²ÎÊı¹¹½¨¶¯Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `text` | `str, optional` | åŠ¨æ€æ–‡å­—. Defaults to "". |
-| `pics` | `List[Picture]  , optional` | åŠ¨æ€å›¾ç‰‡åˆ—è¡¨. Defaults to []. |
-| `topic_id` | `int, optional` | åŠ¨æ€è¯é¢˜ id. Defaults to -1. |
-| `vote_id` | `int, optional` | åŠ¨æ€ä¸­çš„æŠ•ç¥¨çš„ id. å°†æ”¾åœ¨æ•´ä¸ªåŠ¨æ€çš„æœ€åé¢. Defaults to -1. |
-| `live_reserve_id` | `int, optional` | ç›´æ’­é¢„çº¦ oid. é€šè¿‡ `live.create_live_reserve` è·å–. Defaults to -1. |
-| `send_time` | `datetime \| None, optional` | å‘é€æ—¶é—´. Defaults to None. |
+| `text` | `str, optional` | ¶¯Ì¬ÎÄ×Ö. Defaults to "". |
+| `pics` | `List[Picture] \| None, optional` | ¶¯Ì¬Í¼Æ¬ÁĞ±í. Defaults to None£¨µÈ¼ÛÓÚ []£©¡£ |
+| `topic_id` | `int, optional` | ¶¯Ì¬»°Ìâ id. Defaults to -1. |
+| `vote_id` | `int, optional` | ¶¯Ì¬ÖĞµÄÍ¶Æ±µÄ id. ½«·ÅÔÚÕû¸ö¶¯Ì¬µÄ×îºóÃæ. Defaults to -1. |
+| `live_reserve_id` | `int, optional` | Ö±²¥Ô¤Ô¼ oid. Í¨¹ı `live.create_live_reserve` »ñÈ¡. Defaults to -1. |
+| `send_time` | `datetime \| None, optional` | ·¢ËÍÊ±¼ä. Defaults to None. |
 
 
 
@@ -188,7 +188,7 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ### def empty()
 
-æ–°å»ºç©ºçš„åŠ¨æ€ä»¥é“¾å¼é€æ­¥æ„å»º
+ĞÂ½¨¿ÕµÄ¶¯Ì¬ÒÔÁ´Ê½Öğ²½¹¹½¨
 
 
 
@@ -197,120 +197,120 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ### def get_attach_card()
 
-è·å–åŠ¨æ€é¢„çº¦
+»ñÈ¡¶¯Ì¬Ô¤Ô¼
 
 
 
-**Returns:** `Optional[dict]`:  åŠ¨æ€é¢„çº¦
+**Returns:** `Optional[dict]`:  ¶¯Ì¬Ô¤Ô¼
 
 
 
 
 ### async def get_contents()
 
-è·å–åŠ¨æ€å†…å®¹ï¼Œé€šè¿‡è¯·æ±‚å®Œå–„å­—æ®µåè¿”å›
+»ñÈ¡¶¯Ì¬ÄÚÈİ£¬Í¨¹ıÇëÇóÍêÉÆ×Ö¶Îºó·µ»Ø
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±»ã€‚å¿…éœ€ã€‚ |
+| `credential` | `Credential` | Æ¾¾İÀà¡£±ØĞè¡£ |
 
-**Returns:** `list`:  åŠ¨æ€å†…å®¹
+**Returns:** `list`:  ¶¯Ì¬ÄÚÈİ
 
 
 
 
 ### def get_dynamic_type()
 
-è·å–åŠ¨æ€ç±»å‹
+»ñÈ¡¶¯Ì¬ÀàĞÍ
 
 
 
-**Returns:** `SendDynamicType`:  åŠ¨æ€ç±»å‹
+**Returns:** `SendDynamicType`:  ¶¯Ì¬ÀàĞÍ
 
 
 
 
 ### def get_options()
 
-è·å–åŠ¨æ€é€‰é¡¹
+»ñÈ¡¶¯Ì¬Ñ¡Ïî
 
 
 
-**Returns:** `dict`:  åŠ¨æ€é€‰é¡¹
+**Returns:** `dict`:  ¶¯Ì¬Ñ¡Ïî
 
 
 
 
 ### def get_pics()
 
-è·å–åŠ¨æ€å›¾ç‰‡
+»ñÈ¡¶¯Ì¬Í¼Æ¬
 
 
 
-**Returns:** `list`:  åŠ¨æ€å›¾ç‰‡
+**Returns:** `list`:  ¶¯Ì¬Í¼Æ¬
 
 
 
 
 ### def get_topic()
 
-è·å–åŠ¨æ€è¯é¢˜
+»ñÈ¡¶¯Ì¬»°Ìâ
 
 
 
-**Returns:** `Optional[dict]`:  åŠ¨æ€è¯é¢˜
+**Returns:** `Optional[dict]`:  ¶¯Ì¬»°Ìâ
 
 
 
 
 ### def set_attach_card()
 
-è®¾ç½®ç›´æ’­é¢„çº¦
+ÉèÖÃÖ±²¥Ô¤Ô¼
 
-åœ¨ live.create_live_reserve ä¸­è·å– oid
+ÔÚ live.create_live_reserve ÖĞ»ñÈ¡ oid
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | å¡ç‰‡oid |
+| `oid` | `int` | ¿¨Æ¬oid |
 
 
 
 
 ### def set_options()
 
-è®¾ç½®é€‰é¡¹
+ÉèÖÃÑ¡Ïî
 
 
 | name | type | description |
 | - | - | - |
-| `up_choose_comment` | `bool` | ç²¾é€‰è¯„è®ºflag |
-| `close_comment` | `bool` | å…³é—­è¯„è®ºflag |
+| `up_choose_comment` | `bool` | ¾«Ñ¡ÆÀÂÛflag |
+| `close_comment` | `bool` | ¹Ø±ÕÆÀÂÛflag |
 
 
 
 
 ### def set_send_time()
 
-è®¾ç½®å‘é€æ—¶é—´
+ÉèÖÃ·¢ËÍÊ±¼ä
 
 
 | name | type | description |
 | - | - | - |
-| `time` | `datetime` | å‘é€æ—¶é—´ |
+| `time` | `datetime` | ·¢ËÍÊ±¼ä |
 
 
 
 
 ### def set_topic()
 
-è®¾ç½®è¯é¢˜
+ÉèÖÃ»°Ìâ
 
 
 | name | type | description |
 | - | - | - |
-| `topic_id` | `int` | è¯é¢˜ID |
+| `topic_id` | `int` | »°ÌâID |
 
 
 
@@ -319,12 +319,12 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ## class Dynamic()
 
-åŠ¨æ€ç±»
+¶¯Ì¬Àà
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -332,100 +332,100 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 | name | type | description |
 | - | - | - |
-| `dynamic_id` | `int` | åŠ¨æ€ ID |
-| `credential` | `Credential \| None, optional` | å‡­æ®ç±». Defaults to None. |
+| `dynamic_id` | `int` | ¶¯Ì¬ ID |
+| `credential` | `Credential \| None, optional` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### async def delete()
 
-åˆ é™¤åŠ¨æ€
+É¾³ı¶¯Ì¬
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_dynamic_id()
 
-è·å– åŠ¨æ€ IDã€‚
+»ñÈ¡ ¶¯Ì¬ ID¡£
 
 
 
-**Returns:** `int`:  åŠ¨æ€ IDã€‚
+**Returns:** `int`:  ¶¯Ì¬ ID¡£
 
 
 
 
 ### async def get_info()
 
-è·å–åŠ¨æ€ä¿¡æ¯
+»ñÈ¡¶¯Ì¬ĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_likes()
 
-è·å–åŠ¨æ€ç‚¹èµåˆ—è¡¨
+»ñÈ¡¶¯Ì¬µãÔŞÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µç ï¼Œdefaults to 1 |
-| `ps` | `int, optional` | æ¯é¡µå¤§å°ï¼Œdefaults to 30 |
+| `pn` | `int, optional` | Ò³Âë£¬defaults to 1 |
+| `ps` | `int, optional` | Ã¿Ò³´óĞ¡£¬defaults to 30 |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_lottery_info()
 
-è·å–åŠ¨æ€æŠ½å¥–ä¿¡æ¯
+»ñÈ¡¶¯Ì¬³é½±ĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_reaction()
 
-è·å–ç‚¹èµã€è½¬å‘
+»ñÈ¡µãÔŞ¡¢×ª·¢
 
 
 | name | type | description |
 | - | - | - |
-| `offset` | `str, optional` | åç§»å€¼ï¼ˆä¸‹ä¸€é¡µçš„ç¬¬ä¸€ä¸ªåŠ¨æ€ IDï¼Œä¸ºè¯¥è¯·æ±‚ç»“æœä¸­çš„ offset é”®å¯¹åº”çš„å€¼ï¼‰ï¼Œç±»ä¼¼å•å‘é“¾è¡¨. Defaults to "" |
+| `offset` | `str, optional` | Æ«ÒÆÖµ£¨ÏÂÒ»Ò³µÄµÚÒ»¸ö¶¯Ì¬ ID£¬Îª¸ÃÇëÇó½á¹ûÖĞµÄ offset ¼ü¶ÔÓ¦µÄÖµ£©£¬ÀàËÆµ¥ÏòÁ´±í. Defaults to "" |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_reposts()
 
-è·å–åŠ¨æ€è½¬å‘åˆ—è¡¨
+»ñÈ¡¶¯Ì¬×ª·¢ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `offset` | `str, optional` | åç§»å€¼ï¼ˆä¸‹ä¸€é¡µçš„ç¬¬ä¸€ä¸ªåŠ¨æ€ IDï¼Œä¸ºè¯¥è¯·æ±‚ç»“æœä¸­çš„ offset é”®å¯¹åº”çš„å€¼ï¼‰ï¼Œç±»ä¼¼å•å‘é“¾è¡¨. Defaults to "0" |
+| `offset` | `str, optional` | Æ«ÒÆÖµ£¨ÏÂÒ»Ò³µÄµÚÒ»¸ö¶¯Ì¬ ID£¬Îª¸ÃÇëÇó½á¹ûÖĞµÄ offset ¼ü¶ÔÓ¦µÄÖµ£©£¬ÀàËÆµ¥ÏòÁ´±í. Defaults to "0" |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_rid()
 
-è·å– ridï¼Œä»¥ä¼ å…¥ `comment.get_comments_lazy` ç­‰å‡½æ•° oid å‚æ•°å¯¹è¯„è®ºåŒºè¿›è¡Œæ“ä½œ
+»ñÈ¡ rid£¬ÒÔ´«Èë `comment.get_comments_lazy` µÈº¯Êı oid ²ÎÊı¶ÔÆÀÂÛÇø½øĞĞ²Ù×÷
 
 
 
@@ -436,31 +436,31 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ### async def is_article()
 
-åˆ¤æ–­åŠ¨æ€æ˜¯å¦ä¸ºä¸“æ å‘å¸ƒåŠ¨æ€ï¼ˆè¯„è®ºã€ç‚¹èµç­‰æ•°æ®ä¸“æ /åŠ¨æ€/å›¾æ–‡å…±äº«ï¼‰
+ÅĞ¶Ï¶¯Ì¬ÊÇ·ñÎª×¨À¸·¢²¼¶¯Ì¬£¨ÆÀÂÛ¡¢µãÔŞµÈÊı¾İ×¨À¸/¶¯Ì¬/Í¼ÎÄ¹²Ïí£©
 
 
 
-**Returns:** `bool`:  æ˜¯å¦ä¸ºä¸“æ 
+**Returns:** `bool`:  ÊÇ·ñÎª×¨À¸
 
 
 
 
 ### async def is_opus()
 
-åˆ¤æ–­åŠ¨æ€æ˜¯å¦ä¸ºå›¾æ–‡
+ÅĞ¶Ï¶¯Ì¬ÊÇ·ñÎªÍ¼ÎÄ
 
-å¦‚æœæ˜¯å›¾æ–‡ï¼Œåˆ™åŠ¨æ€/å›¾æ–‡è¯„è®º/ç‚¹èµ/è½¬å‘æ•°æ®å…±äº«
+Èç¹ûÊÇÍ¼ÎÄ£¬Ôò¶¯Ì¬/Í¼ÎÄÆÀÂÛ/µãÔŞ/×ª·¢Êı¾İ¹²Ïí
 
 
 
-**Returns:** `bool`:  æ˜¯å¦ä¸ºå›¾æ–‡
+**Returns:** `bool`:  ÊÇ·ñÎªÍ¼ÎÄ
 
 
 
 
 ### async def markdown()
 
-ç”ŸæˆåŠ¨æ€å¯Œæ–‡æœ¬å¯¹åº” markdown
+Éú³É¶¯Ì¬¸»ÎÄ±¾¶ÔÓ¦ markdown
 
 
 
@@ -471,92 +471,92 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 ### async def remove_top()
 
-å–æ¶ˆç½®é¡¶åŠ¨æ€
+È¡ÏûÖÃ¶¥¶¯Ì¬
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def repost()
 
-è½¬å‘åŠ¨æ€
+×ª·¢¶¯Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `text` | `str, optional` | è½¬å‘åŠ¨æ€æ—¶çš„æ–‡æœ¬å†…å®¹. Defaults to "è½¬å‘åŠ¨æ€" |
+| `text` | `str, optional` | ×ª·¢¶¯Ì¬Ê±µÄÎÄ±¾ÄÚÈİ. Defaults to "×ª·¢¶¯Ì¬" |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def set_favorite()
 
-è®¾ç½®åŠ¨æ€ï¼ˆå›¾æ–‡ï¼‰æ”¶è—çŠ¶æ€
+ÉèÖÃ¶¯Ì¬£¨Í¼ÎÄ£©ÊÕ²Ø×´Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | æ”¶è—çŠ¶æ€. Defaults to True |
+| `status` | `bool, optional` | ÊÕ²Ø×´Ì¬. Defaults to True |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def set_like()
 
-è®¾ç½®åŠ¨æ€ç‚¹èµçŠ¶æ€
+ÉèÖÃ¶¯Ì¬µãÔŞ×´Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | ç‚¹èµçŠ¶æ€. Defaults to True. |
+| `status` | `bool, optional` | µãÔŞ×´Ì¬. Defaults to True. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def set_top()
 
-ç½®é¡¶åŠ¨æ€
+ÖÃ¶¥¶¯Ì¬
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def turn_to_article()
 
-å°†ä¸“æ å‘å¸ƒåŠ¨æ€è½¬ä¸ºå¯¹åº”ä¸“æ ï¼ˆè¯„è®ºã€ç‚¹èµç­‰æ•°æ®ä¸“æ /åŠ¨æ€/å›¾æ–‡å…±äº«ï¼‰
+½«×¨À¸·¢²¼¶¯Ì¬×ªÎª¶ÔÓ¦×¨À¸£¨ÆÀÂÛ¡¢µãÔŞµÈÊı¾İ×¨À¸/¶¯Ì¬/Í¼ÎÄ¹²Ïí£©
 
-å¦‚åŠ¨æ€æ— å¯¹åº”ä¸“æ å°†æŠ¥é”™ã€‚
+Èç¶¯Ì¬ÎŞ¶ÔÓ¦×¨À¸½«±¨´í¡£
 
-è½¬æ¢åå¯æŠ•å¸ã€‚
+×ª»»ºó¿ÉÍ¶±Ò¡£
 
 
 
-**Returns:** `Article`:  ä¸“æ å®ä¾‹
+**Returns:** `Article`:  ×¨À¸ÊµÀı
 
 
 
 
 ### def turn_to_opus()
 
-å¯¹å›¾æ–‡åŠ¨æ€ï¼Œè½¬æ¢ä¸ºå›¾æ–‡
+¶ÔÍ¼ÎÄ¶¯Ì¬£¬×ª»»ÎªÍ¼ÎÄ
 
-æ­¤å‡½æ•°ä¸ä¼šæ ¸éªŒåŠ¨æ€æ˜¯å¦ä¸ºå›¾æ–‡
+´Ëº¯Êı²»»áºËÑé¶¯Ì¬ÊÇ·ñÎªÍ¼ÎÄ
 
 
 
-**Returns:** `Opus`:  å›¾æ–‡å¯¹è±¡
+**Returns:** `Opus`:  Í¼ÎÄ¶ÔÏó
 
 
 
@@ -567,12 +567,12 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 **Extend: enum.Enum**
 
-åŠ¨æ€å†…å®¹ç±»å‹
+¶¯Ì¬ÄÚÈİÀàĞÍ
 
-+ TEXT: æ–‡æœ¬
-+ EMOJI: è¡¨æƒ…
++ TEXT: ÎÄ±¾
++ EMOJI: ±íÇé
 + AT: @User
-+ VOTE: æŠ•ç¥¨
++ VOTE: Í¶Æ±
 
 
 
@@ -583,12 +583,12 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 **Extend: enum.Enum**
 
-åŠ¨æ€ç±»å‹
+¶¯Ì¬ÀàĞÍ
 
-+ ALL: æ‰€æœ‰åŠ¨æ€
-+ ANIME: è¿½ç•ªè¿½å‰§
-+ ARTICLE: æ–‡ç« 
-+ VIDEO: è§†é¢‘æŠ•ç¨¿
++ ALL: ËùÓĞ¶¯Ì¬
++ ANIME: ×··¬×·¾ç
++ ARTICLE: ÎÄÕÂ
++ VIDEO: ÊÓÆµÍ¶¸å
 
 
 
@@ -599,11 +599,11 @@ BuildDynamic.create_by_args(text="114514", topic_id=114514)
 
 **Extend: enum.Enum**
 
-å‘é€åŠ¨æ€ç±»å‹
-scene å‚æ•°
+·¢ËÍ¶¯Ì¬ÀàĞÍ
+scene ²ÎÊı
 
-+ TEXT: çº¯æ–‡æœ¬
-+ IMAGE: å›¾ç‰‡
++ TEXT: ´¿ÎÄ±¾
++ IMAGE: Í¼Æ¬
 
 
 
@@ -612,15 +612,15 @@ scene å‚æ•°
 
 ## async def delete_schedule()
 
-åˆ é™¤å®šæ—¶åŠ¨æ€
+É¾³ı¶¨Ê±¶¯Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `draft_id` | `int` | å®šæ—¶åŠ¨æ€ ID |
-| `credential` | `Credential` | å‡­æ® |
+| `draft_id` | `int` | ¶¨Ê±¶¯Ì¬ ID |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -629,14 +629,14 @@ scene å‚æ•°
 
 ## async def get_dynamic_page_UPs_info()
 
-è·å–åŠ¨æ€é¡µ UP ä¸»åˆ—è¡¨
+»ñÈ¡¶¯Ì¬Ò³ UP Ö÷ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±». |
+| `credential` | `Credential` | Æ¾¾İÀà. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -645,23 +645,23 @@ scene å‚æ•°
 
 ## async def get_dynamic_page_info()
 
-è·å–åŠ¨æ€é¡µåŠ¨æ€ä¿¡æ¯
+»ñÈ¡¶¯Ì¬Ò³¶¯Ì¬ĞÅÏ¢
 
-è·å–å…¨éƒ¨åŠ¨æ€æˆ–è€…ç›¸åº”ç±»å‹éœ€ä¼ å…¥ _type
+»ñÈ¡È«²¿¶¯Ì¬»òÕßÏàÓ¦ÀàĞÍĞè´«Èë _type
 
-è·å–æŒ‡å®š UP ä¸»åŠ¨æ€éœ€ä¼ å…¥ host_mid
+»ñÈ¡Ö¸¶¨ UP Ö÷¶¯Ì¬Ğè´«Èë host_mid
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±». |
-| `_type` | `DynamicType, optional` | åŠ¨æ€ç±»å‹. Defaults to DynamicType.ALL. |
-| `host_mid` | `int, optional` | è·å–å¯¹åº” UP ä¸»åŠ¨æ€çš„ mid. Defaults to None. |
-| `features` | `str, optional` | é»˜è®¤ itemOpusStyle. |
-| `pn` | `int, optional` | é¡µç . Defaults to 1. |
-| `offset` | `int, optional` | åç§»å€¼ï¼ˆä¸‹ä¸€é¡µçš„ç¬¬ä¸€ä¸ªåŠ¨æ€ IDï¼Œä¸ºè¯¥è¯·æ±‚ç»“æœä¸­çš„ offset é”®å¯¹åº”çš„å€¼ï¼‰ï¼Œç±»ä¼¼å•å‘é“¾è¡¨. Defaults to None. |
+| `credential` | `Credential` | Æ¾¾İÀà. |
+| `_type` | `DynamicType, optional` | ¶¯Ì¬ÀàĞÍ. Defaults to DynamicType.ALL. |
+| `host_mid` | `int, optional` | »ñÈ¡¶ÔÓ¦ UP Ö÷¶¯Ì¬µÄ mid. Defaults to None. |
+| `features` | `str, optional` | Ä¬ÈÏ itemOpusStyle. |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `offset` | `int, optional` | Æ«ÒÆÖµ£¨ÏÂÒ»Ò³µÄµÚÒ»¸ö¶¯Ì¬ ID£¬Îª¸ÃÇëÇó½á¹ûÖĞµÄ offset ¼ü¶ÔÓ¦µÄÖµ£©£¬ÀàËÆµ¥ÏòÁ´±í. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -670,23 +670,23 @@ scene å‚æ•°
 
 ## async def get_dynamic_page_list()
 
-è·å–åŠ¨æ€é¡µåŠ¨æ€åˆ—è¡¨
+»ñÈ¡¶¯Ì¬Ò³¶¯Ì¬ÁĞ±í
 
-è·å–å…¨éƒ¨åŠ¨æ€æˆ–è€…ç›¸åº”ç±»å‹éœ€ä¼ å…¥ _type
+»ñÈ¡È«²¿¶¯Ì¬»òÕßÏàÓ¦ÀàĞÍĞè´«Èë _type
 
-è·å–æŒ‡å®š UP ä¸»åŠ¨æ€éœ€ä¼ å…¥ host_mid
+»ñÈ¡Ö¸¶¨ UP Ö÷¶¯Ì¬Ğè´«Èë host_mid
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±». |
-| `_type` | `DynamicType, optional` | åŠ¨æ€ç±»å‹. Defaults to DynamicType.ALL. |
-| `host_mid` | `int, optional` | è·å–å¯¹åº” UP ä¸»åŠ¨æ€çš„ mid. Defaults to None. |
-| `features` | `str, optional` | é»˜è®¤ itemOpusStyle. |
-| `pn` | `int, optional` | é¡µç . Defaults to 1. |
-| `offset` | `int, optional` | åç§»å€¼ï¼ˆä¸‹ä¸€é¡µçš„ç¬¬ä¸€ä¸ªåŠ¨æ€ IDï¼Œä¸ºè¯¥è¯·æ±‚ç»“æœä¸­çš„ offset é”®å¯¹åº”çš„å€¼ï¼‰ï¼Œç±»ä¼¼å•å‘é“¾è¡¨. Defaults to None. |
+| `credential` | `Credential` | Æ¾¾İÀà. |
+| `_type` | `DynamicType, optional` | ¶¯Ì¬ÀàĞÍ. Defaults to DynamicType.ALL. |
+| `host_mid` | `int, optional` | »ñÈ¡¶ÔÓ¦ UP Ö÷¶¯Ì¬µÄ mid. Defaults to None. |
+| `features` | `str, optional` | Ä¬ÈÏ itemOpusStyle. |
+| `pn` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `offset` | `int, optional` | Æ«ÒÆÖµ£¨ÏÂÒ»Ò³µÄµÚÒ»¸ö¶¯Ì¬ ID£¬Îª¸ÃÇëÇó½á¹ûÖĞµÄ offset ¼ü¶ÔÓ¦µÄÖµ£©£¬ÀàËÆµ¥ÏòÁ´±í. Defaults to None. |
 
-**Returns:** `list[Dynamic]`:  åŠ¨æ€ç±»åˆ—è¡¨
+**Returns:** `list[Dynamic]`:  ¶¯Ì¬ÀàÁĞ±í
 
 
 
@@ -695,15 +695,15 @@ scene å‚æ•°
 
 ## async def get_live_users()
 
-è·å–æ­£åœ¨ç›´æ’­çš„å…³æ³¨è€…
+»ñÈ¡ÕıÔÚÖ±²¥µÄ¹Ø×¢Õß
 
 
 | name | type | description |
 | - | - | - |
-| `size` | `int` | è·å–çš„æ•°æ®æ•°é‡. Defaults to 10. |
-| `credential` | `Credential \| None` | å‡­æ®ç±». Defaults to None. |
+| `size` | `int` | »ñÈ¡µÄÊı¾İÊıÁ¿. Defaults to 10. |
+| `credential` | `Credential \| None` | Æ¾¾İÀà. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -712,14 +712,14 @@ scene å‚æ•°
 
 ## async def get_new_dynamic_users()
 
-è·å–æ›´æ–°åŠ¨æ€çš„å…³æ³¨è€…
+»ñÈ¡¸üĞÂ¶¯Ì¬µÄ¹Ø×¢Õß
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None` | å‡­æ®ç±». Defaults to None. |
+| `credential` | `Credential \| None` | Æ¾¾İÀà. Defaults to None. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -728,14 +728,14 @@ scene å‚æ•°
 
 ## async def get_schedules_list()
 
-è·å–å¾…å‘é€å®šæ—¶åŠ¨æ€åˆ—è¡¨
+»ñÈ¡´ı·¢ËÍ¶¨Ê±¶¯Ì¬ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ® |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -744,15 +744,15 @@ scene å‚æ•°
 
 ## async def send_dynamic()
 
-å‘é€åŠ¨æ€
+·¢ËÍ¶¯Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `info` | `BuildDynamic` | åŠ¨æ€å†…å®¹ |
-| `credential` | `Credential` | å‡­æ® |
+| `info` | `BuildDynamic` | ¶¯Ì¬ÄÚÈİ |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -761,15 +761,15 @@ scene å‚æ•°
 
 ## async def send_schedule_now()
 
-ç«‹å³å‘é€å®šæ—¶åŠ¨æ€
+Á¢¼´·¢ËÍ¶¨Ê±¶¯Ì¬
 
 
 | name | type | description |
 | - | - | - |
-| `draft_id` | `int` | å®šæ—¶åŠ¨æ€ ID |
-| `credential` | `Credential` | å‡­æ® |
+| `draft_id` | `int` | ¶¨Ê±¶¯Ì¬ ID |
+| `credential` | `Credential` | Æ¾¾İ |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -778,16 +778,16 @@ scene å‚æ•°
 
 ## async def upload_image()
 
-ä¸Šä¼ åŠ¨æ€å›¾ç‰‡
+ÉÏ´«¶¯Ì¬Í¼Æ¬
 
 
 | name | type | description |
 | - | - | - |
-| `image` | `Picture` | å›¾ç‰‡æµ. æœ‰æ ¼å¼è¦æ±‚. |
-| `credential` | `Credential` | å‡­æ® |
-| `data` | `Dict` | è‡ªå®šä¹‰è¯·æ±‚ä½“ |
+| `image` | `Picture` | Í¼Æ¬Á÷. ÓĞ¸ñÊ½ÒªÇó. |
+| `credential` | `Credential` | Æ¾¾İ |
+| `data` | `Dict` | ×Ô¶¨ÒåÇëÇóÌå |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

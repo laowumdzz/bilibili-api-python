@@ -3,7 +3,7 @@
 
 bilibili_api.video_tag
 
-è§†é¢‘æ ‡ç­¾ç›¸å…³ï¼Œéƒ¨åˆ†çš„æ ‡ç­¾çš„ id ä¸åŒåçš„é¢‘é“çš„ id ä¸€æ¨¡ä¸€æ ·ã€‚
+ÊÓÆµ±êÇ©Ïà¹Ø£¬²¿·ÖµÄ±êÇ©µÄ id ÓëÍ¬ÃûµÄÆµµÀµÄ id Ò»Ä£Ò»Ñù¡£
 
 
 ``` python
@@ -23,85 +23,85 @@ from bilibili_api import video_tag
 
 ## class Tag()
 
-æ ‡ç­¾ç±»
+±êÇ©Àà
 
 
 
 
 ### def \_\_init\_\_()
 
-æ³¨æ„ï¼štag_name å’Œ tag_id ä»»é€‰ä¸€ä¸ªä¼ å…¥å³å¯ã€‚tag_id ä¼˜å…ˆã€‚
+×¢Òâ£ºtag_name ºÍ tag_id ÈÎÑ¡Ò»¸ö´«Èë¼´¿É¡£tag_id ÓÅÏÈ¡£
 
 
 | name | type | description |
 | - | - | - |
-| `tag_name` | `str \| None` | æ ‡ç­¾å. Defaults to None. |
-| `tag_id` | `int \| None` | æ ‡ç­¾ id. Defaults to None. |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `tag_name` | `str \| None` | ±êÇ©Ãû. Defaults to None. |
+| `tag_id` | `int \| None` | ±êÇ© id. Defaults to None. |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### async def get_similar_tags()
 
-è·å–ç›¸å…³çš„æ ‡ç­¾
+»ñÈ¡Ïà¹ØµÄ±êÇ©
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_tag_id()
 
-è·å–æ ‡ç­¾ id
+»ñÈ¡±êÇ© id
 
 
 
-**Returns:** `int`:  æ ‡ç­¾ id
+**Returns:** `int`:  ±êÇ© id
 
 
 
 
 ### async def get_tag_info()
 
-è·å–æ ‡ç­¾ä¿¡æ¯ã€‚
+»ñÈ¡±êÇ©ĞÅÏ¢¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_tag_name()
 
-è·å–æ ‡ç­¾å
+»ñÈ¡±êÇ©Ãû
 
 
 
-**Returns:** `str`:  æ ‡ç­¾å
+**Returns:** `str`:  ±êÇ©Ãû
 
 
 
 
 ### async def subscribe_tag()
 
-å…³æ³¨æ ‡ç­¾ã€‚
+¹Ø×¢±êÇ©¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 
 
 ### async def unsubscribe_tag()
 
-å–å…³æ ‡ç­¾ã€‚
+È¡¹Ø±êÇ©¡£
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
 
 
 

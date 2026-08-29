@@ -3,7 +3,7 @@
 
 bilibili_api.activity
 
-æ´»åŠ¨ç›¸å…³
+»î¶¯Ïà¹Ø
 
 
 ``` python
@@ -18,14 +18,14 @@ from bilibili_api import activity
 
 ## async def get_activity_aid()
 
-è·å–éƒ¨åˆ†æ´»åŠ¨å­˜åœ¨çš„ aidï¼Œå¯ç”¨äºè·å–è¯„è®º
+»ñÈ¡²¿·Ö»î¶¯´æÔÚµÄ aid£¬¿ÉÓÃÓÚ»ñÈ¡ÆÀÂÛ
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | æ´»åŠ¨é“¾æ¥ |
+| `url` | `str` | »î¶¯Á´½Ó |
 
-**Returns:** `int`:  æ´»åŠ¨ aidï¼Œè‹¥æ´»åŠ¨æ—  aid è¿”å› -1
+**Returns:** `int`:  »î¶¯ aid£¬Èô»î¶¯ÎŞ aid ·µ»Ø -1
 
 
 
@@ -34,14 +34,14 @@ from bilibili_api import activity
 
 ## async def get_activity_info()
 
-è·å–æ´»åŠ¨è¯¦æƒ…
+»ñÈ¡»î¶¯ÏêÇé
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | æ´»åŠ¨é“¾æ¥ |
+| `url` | `str` | »î¶¯Á´½Ó |
 
-**Returns:** `dict`:  æ´»åŠ¨è¯¦æƒ…
+**Returns:** `dict`:  »î¶¯ÏêÇé
 
 
 
@@ -50,15 +50,15 @@ from bilibili_api import activity
 
 ## async def get_activity_list()
 
-è·å–æ´»åŠ¨åˆ—è¡¨
+»ñÈ¡»î¶¯ÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | é¡µæ•°. Defaults to 1. |
-| `ps` | `int, optional` | æ¯é¡µæ•°é‡. Defaults to 15. |
+| `pn` | `int, optional` | Ò³Êı. Defaults to 1. |
+| `ps` | `int, optional` | Ã¿Ò³ÊıÁ¿. Defaults to 15. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 

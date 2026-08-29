@@ -3,7 +3,7 @@
 
 bilibili_api.login_v2
 
-ç™»å½•
+µÇÂ¼
 
 
 ``` python
@@ -42,7 +42,7 @@ from bilibili_api import login_v2
 
 ## class LoginCheck()
 
-éªŒè¯ç±»ï¼Œå¦‚æœå¯†ç ç™»å½•éœ€è¦éªŒè¯ä¼šè¿”å›æ­¤ç±»
+ÑéÖ¤Àà£¬Èç¹ûÃÜÂëµÇÂ¼ĞèÒªÑéÖ¤»á·µ»Ø´ËÀà
 
 
 
@@ -52,42 +52,42 @@ from bilibili_api import login_v2
 
 | name | type | description |
 | - | - | - |
-| `check_url` | `str` | éªŒè¯é“¾æ¥ |
+| `check_url` | `str` | ÑéÖ¤Á´½Ó |
 
 
 ### async def complete_check()
 
-å®ŒæˆéªŒè¯
+Íê³ÉÑéÖ¤
 
 
 | name | type | description |
 | - | - | - |
-| `code` | `str` | éªŒè¯ç  |
+| `code` | `str` | ÑéÖ¤Âë |
 
-**Returns:** `Credential`:  å‡­æ®ç±»
+**Returns:** `Credential`:  Æ¾¾İÀà
 
 
 
 
 ### async def fetch_info()
 
-è·å–éªŒè¯ä¿¡æ¯
+»ñÈ¡ÑéÖ¤ĞÅÏ¢
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def send_sms()
 
-å‘é€éªŒè¯ç 
+·¢ËÍÑéÖ¤Âë
 
 
 | name | type | description |
 | - | - | - |
-| `geetest` | `Geetest` | æéªŒéªŒè¯ç å®ä¾‹ï¼Œé¡»å®Œæˆã€‚éªŒè¯ç ç±»å‹åº”ä¸º `GeetestType.VERIFY` |
+| `geetest` | `Geetest` | ¼«ÑéÑéÖ¤ÂëÊµÀı£¬ĞëÍê³É¡£ÑéÖ¤ÂëÀàĞÍÓ¦Îª `GeetestType.VERIFY` |
 
 
 
@@ -96,7 +96,7 @@ from bilibili_api import login_v2
 
 ## class PhoneNumber()
 
-æ‰‹æœºå·ç±»
+ÊÖ»úºÅÀà
 
 
 
@@ -106,17 +106,17 @@ from bilibili_api import login_v2
 
 | name | type | description |
 | - | - | - |
-| `number` | `str` | æ‰‹æœºå· |
-| `country` | `str` | åœ°åŒº/åœ°åŒºç ï¼Œå¦‚ +86 |
+| `number` | `str` | ÊÖ»úºÅ |
+| `country` | `str` | µØÇø/µØÇøÂë£¬Èç +86 |
 
 
 ---
 
 ## class QrCodeLogin()
 
-äºŒç»´ç ç™»å½•ç±»
+¶şÎ¬ÂëµÇÂ¼Àà
 
-æ”¯æŒç½‘é¡µç«¯/TVç«¯
+Ö§³ÖÍøÒ³¶Ë/TV¶Ë
 
 
 
@@ -126,23 +126,23 @@ from bilibili_api import login_v2
 
 | name | type | description |
 | - | - | - |
-| `platform` | `QrCodeLoginChannel, optional` | å¹³å°. (web/tv) Defaults to QrCodeLoginChannel.WEB. |
+| `platform` | `QrCodeLoginChannel, optional` | Æ½Ì¨. (web/tv) Defaults to QrCodeLoginChannel.WEB. |
 
 
 ### async def check_state()
 
-æ£€æŸ¥äºŒç»´ç ç™»å½•çŠ¶æ€
+¼ì²é¶şÎ¬ÂëµÇÂ¼×´Ì¬
 
 
 
-**Returns:** `QrCodeLoginEvents`:  äºŒç»´ç ç™»å½•çŠ¶æ€
+**Returns:** `QrCodeLoginEvents`:  ¶şÎ¬ÂëµÇÂ¼×´Ì¬
 
 
 
 
 ### async def generate_qrcode()
 
-ç”ŸæˆäºŒç»´ç 
+Éú³É¶şÎ¬Âë
 
 
 
@@ -151,55 +151,55 @@ from bilibili_api import login_v2
 
 ### def get_credential()
 
-è·å–ç™»å½•æˆåŠŸåå¾—åˆ°çš„å‡­æ®
+»ñÈ¡µÇÂ¼³É¹¦ºóµÃµ½µÄÆ¾¾İ
 
 
 
-**Returns:** `Credential`:  å‡­æ®
+**Returns:** `Credential`:  Æ¾¾İ
 
 
 
 
 ### def get_qrcode_picture()
 
-è·å–äºŒç»´ç çš„ Picture ç±»
+»ñÈ¡¶şÎ¬ÂëµÄ Picture Àà
 
 
 
-**Returns:** `Picture`:  äºŒç»´ç 
+**Returns:** `Picture`:  ¶şÎ¬Âë
 
 
 
 
 ### def get_qrcode_terminal()
 
-è·å–äºŒç»´ç çš„ç»ˆç«¯å­—ç¬¦ä¸²
+»ñÈ¡¶şÎ¬ÂëµÄÖÕ¶Ë×Ö·û´®
 
 
 
-**Returns:** `str`:  äºŒç»´ç çš„ç»ˆç«¯å­—ç¬¦ä¸²
+**Returns:** `str`:  ¶şÎ¬ÂëµÄÖÕ¶Ë×Ö·û´®
 
 
 
 
 ### def has_done()
 
-æ˜¯å¦å·²ç»æˆåŠŸç™»å½•
+ÊÇ·ñÒÑ¾­³É¹¦µÇÂ¼
 
 
 
-**Returns:** `bool`:  æ˜¯å¦å·²ç»æˆåŠŸç™»å½•
+**Returns:** `bool`:  ÊÇ·ñÒÑ¾­³É¹¦µÇÂ¼
 
 
 
 
 ### def has_qrcode()
 
-æ˜¯å¦å·²æœ‰å·²ç”Ÿæˆçš„äºŒç»´ç 
+ÊÇ·ñÒÑÓĞÒÑÉú³ÉµÄ¶şÎ¬Âë
 
 
 
-**Returns:** `bool`:  æ˜¯å¦å·²æœ‰äºŒç»´ç 
+**Returns:** `bool`:  ÊÇ·ñÒÑÓĞ¶şÎ¬Âë
 
 
 
@@ -210,9 +210,9 @@ from bilibili_api import login_v2
 
 **Extend: enum.Enum**
 
-äºŒç»´ç ç™»å½•æ¸ é“
+¶şÎ¬ÂëµÇÂ¼ÇşµÀ
 
-- WEB: ç½‘é¡µç«¯
+- WEB: ÍøÒ³¶Ë
 - TV: TV
 
 
@@ -224,12 +224,12 @@ from bilibili_api import login_v2
 
 **Extend: enum.Enum**
 
-äºŒç»´ç ç™»å½•çŠ¶æ€æšä¸¾
+¶şÎ¬ÂëµÇÂ¼×´Ì¬Ã¶¾Ù
 
-+ SCAN: æœªæ‰«æäºŒç»´ç 
-+ CONF: æœªç¡®è®¤ç™»å½•
-+ TIMEOUT: äºŒç»´ç è¿‡æœŸ
-+ DONE: æˆåŠŸ
++ SCAN: Î´É¨Ãè¶şÎ¬Âë
++ CONF: Î´È·ÈÏµÇÂ¼
++ TIMEOUT: ¶şÎ¬Âë¹ıÆÚ
++ DONE: ³É¹¦
 
 
 
@@ -238,14 +238,14 @@ from bilibili_api import login_v2
 
 ## def get_code_by_country()
 
-è·å–åœ°åŒºå¯¹åº”ä»£ç 
+»ñÈ¡µØÇø¶ÔÓ¦´úÂë
 
 
 | name | type | description |
 | - | - | - |
-| `country` | `str` | åœ°åŒºå |
+| `country` | `str` | µØÇøÃû |
 
-**Returns:** `int`:  å¯¹åº”çš„ä»£ç ï¼Œæ²¡æœ‰è¿”å› -1
+**Returns:** `int`:  ¶ÔÓ¦µÄ´úÂë£¬Ã»ÓĞ·µ»Ø -1
 
 
 
@@ -254,11 +254,11 @@ from bilibili_api import login_v2
 
 ## def get_countries_list()
 
-è·å–å›½é™…åœ°åŒºä»£ç åˆ—è¡¨
+»ñÈ¡¹ú¼ÊµØÇø´úÂëÁĞ±í
 
 
 
-**Returns:** `List[dict]`:  åœ°åŒºåˆ—è¡¨
+**Returns:** `List[dict]`:  µØÇøÁĞ±í
 
 
 
@@ -267,14 +267,14 @@ from bilibili_api import login_v2
 
 ## def get_id_by_code()
 
-è·å–åœ°åŒºç å¯¹åº”çš„åœ°åŒº id
+»ñÈ¡µØÇøÂë¶ÔÓ¦µÄµØÇø id
 
 
 | name | type | description |
 | - | - | - |
-| `code` | `int` | åœ°åŒºå— |
+| `code` | `int` | µØÇøÂğ |
 
-**Returns:** `int`:  å¯¹åº”çš„ä»£ç ï¼Œæ²¡æœ‰è¿”å› -1
+**Returns:** `int`:  ¶ÔÓ¦µÄ´úÂë£¬Ã»ÓĞ·µ»Ø -1
 
 
 
@@ -283,14 +283,14 @@ from bilibili_api import login_v2
 
 ## def have_code()
 
-æ˜¯å¦å­˜åœ¨åœ°åŒºä»£ç 
+ÊÇ·ñ´æÔÚµØÇø´úÂë
 
 
 | name | type | description |
 | - | - | - |
-| `code` | `Union[str, int]` | ä»£ç  |
+| `code` | `Union[str, int]` | ´úÂë |
 
-**Returns:** `bool`:  æ˜¯å¦å­˜åœ¨
+**Returns:** `bool`:  ÊÇ·ñ´æÔÚ
 
 
 
@@ -299,14 +299,14 @@ from bilibili_api import login_v2
 
 ## def have_country()
 
-æ˜¯å¦æœ‰åœ°åŒº
+ÊÇ·ñÓĞµØÇø
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | å…³é”®è¯ |
+| `keyword` | `str` | ¹Ø¼ü´Ê |
 
-**Returns:** `bool`:  æ˜¯å¦å­˜åœ¨
+**Returns:** `bool`:  ÊÇ·ñ´æÔÚ
 
 
 
@@ -315,16 +315,16 @@ from bilibili_api import login_v2
 
 ## async def login_with_password()
 
-å¯†ç ç™»å½•ã€‚
+ÃÜÂëµÇÂ¼¡£
 
 
 | name | type | description |
 | - | - | - |
-| `username` | `str` | ç”¨æˆ·æ‰‹æœºå·ã€é‚®ç®± |
-| `password` | `str` | å¯†ç  |
-| `geetest` | `Geetest` | æéªŒéªŒè¯ç å®ä¾‹ï¼Œé¡»å®Œæˆã€‚éªŒè¯ç ç±»å‹åº”ä¸º `GeetestType.LOGIN` |
+| `username` | `str` | ÓÃ»§ÊÖ»úºÅ¡¢ÓÊÏä |
+| `password` | `str` | ÃÜÂë |
+| `geetest` | `Geetest` | ¼«ÑéÑéÖ¤ÂëÊµÀı£¬ĞëÍê³É¡£ÑéÖ¤ÂëÀàĞÍÓ¦Îª `GeetestType.LOGIN` |
 
-**Returns:** `Union[Credential, LoginCheck]`:  å¦‚æœéœ€è¦éªŒè¯ï¼Œä¼šè¿”å› `LoginCheck` ç±»ï¼Œå¦åˆ™è¿”å› `Credential` ç±»ã€‚
+**Returns:** `Union[Credential, LoginCheck]`:  Èç¹ûĞèÒªÑéÖ¤£¬»á·µ»Ø `LoginCheck` Àà£¬·ñÔò·µ»Ø `Credential` Àà¡£
 
 
 
@@ -333,16 +333,16 @@ from bilibili_api import login_v2
 
 ## async def login_with_sms()
 
-éªŒè¯ç ç™»å½•
+ÑéÖ¤ÂëµÇÂ¼
 
 
 | name | type | description |
 | - | - | - |
-| `phonenumber` | `str` | æ‰‹æœºå·ç±» |
-| `code` | `str` | éªŒè¯ç  |
-| `captcha_id` | `str` | captcha_idï¼Œä¸º `send_sms` è°ƒç”¨è¿”å›ç»“æœ |
+| `phonenumber` | `str` | ÊÖ»úºÅÀà |
+| `code` | `str` | ÑéÖ¤Âë |
+| `captcha_id` | `str` | captcha_id£¬Îª `send_sms` µ÷ÓÃ·µ»Ø½á¹û |
 
-**Returns:** `Union[Credential, LoginCheck]`:  å¦‚æœéœ€è¦éªŒè¯ï¼Œä¼šè¿”å› `LoginCheck` ç±»ï¼Œå¦åˆ™è¿”å› `Credential` ç±»ã€‚
+**Returns:** `Union[Credential, LoginCheck]`:  Èç¹ûĞèÒªÑéÖ¤£¬»á·µ»Ø `LoginCheck` Àà£¬·ñÔò·µ»Ø `Credential` Àà¡£
 
 
 
@@ -351,14 +351,14 @@ from bilibili_api import login_v2
 
 ## def search_countries()
 
-æœç´¢ä¸€ä¸ªåœ°åŒºåŠå…¶å›½é™…åœ°åŒºä»£ç 
+ËÑË÷Ò»¸öµØÇø¼°Æä¹ú¼ÊµØÇø´úÂë
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | å…³é”®è¯ |
+| `keyword` | `str` | ¹Ø¼ü´Ê |
 
-**Returns:** `List[dict]`:  åœ°åŒºåˆ—è¡¨
+**Returns:** `List[dict]`:  µØÇøÁĞ±í
 
 
 
@@ -367,15 +367,15 @@ from bilibili_api import login_v2
 
 ## async def send_sms()
 
-å‘é€éªŒè¯ç 
+·¢ËÍÑéÖ¤Âë
 
 
 | name | type | description |
 | - | - | - |
-| `phonenumber` | `PhoneNumber` | æ‰‹æœºå·ç±» |
-| `geetest` | `Geetest` | æéªŒéªŒè¯ç å®ä¾‹ï¼Œé¡»å®Œæˆã€‚éªŒè¯ç ç±»å‹åº”ä¸º `GeetestType.LOGIN` |
+| `phonenumber` | `PhoneNumber` | ÊÖ»úºÅÀà |
+| `geetest` | `Geetest` | ¼«ÑéÑéÖ¤ÂëÊµÀı£¬ĞëÍê³É¡£ÑéÖ¤ÂëÀàĞÍÓ¦Îª `GeetestType.LOGIN` |
 
-**Returns:** `str`:  captcha_idï¼Œéœ€ä¼ å…¥ `login_with_sms`
+**Returns:** `str`:  captcha_id£¬Ğè´«Èë `login_with_sms`
 
 
 

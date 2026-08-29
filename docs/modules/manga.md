@@ -3,7 +3,7 @@
 
 bilibili_api.manga
 
-æ¼«ç”»ç›¸å…³æ“ä½œ
+Âş»­Ïà¹Ø²Ù×÷
 
 
 ``` python
@@ -29,12 +29,12 @@ from bilibili_api import manga
 
 ## class Manga()
 
-æ¼«ç”»ç±»
+Âş»­Àà
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
+| `credential` | `Credential` | Æ¾¾İÀà¡£ |
 
 
 ### def \_\_init\_\_()
@@ -42,17 +42,17 @@ from bilibili_api import manga
 
 | name | type | description |
 | - | - | - |
-| `manga_id` | `int` | æ¼«ç”» id |
-| `credential` | `Credential \| None` | å‡­æ®ç±». Defaults to None. |
+| `manga_id` | `int` | Âş»­ id |
+| `credential` | `Credential \| None` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### def get_manga_id()
 
-è·å–æ¼«ç”»çš„ id
+»ñÈ¡Âş»­µÄ id
 
 
 
-**Returns:** `int`:  æ¼«ç”»çš„ id
+**Returns:** `int`:  Âş»­µÄ id
 
 
 
@@ -61,7 +61,7 @@ from bilibili_api import manga
 
 ## class MangaIndexFilter()
 
-æ¼«ç”»ç´¢å¼•ç­›é€‰å™¨ç±»ã€‚
+Âş»­Ë÷ÒıÉ¸Ñ¡Æ÷Àà¡£
 
 
 
@@ -70,13 +70,13 @@ from bilibili_api import manga
 
 **Extend: enum.Enum**
 
-æ¼«ç”»ç´¢å¼•ç­›é€‰å™¨çš„åœ°åŒºæšä¸¾ç±»ã€‚
+Âş»­Ë÷ÒıÉ¸Ñ¡Æ÷µÄµØÇøÃ¶¾ÙÀà¡£
 
-- ALL: å…¨éƒ¨
-- CHINA: å¤§é™†
-- JAPAN: æ—¥æœ¬
-- SOUTHKOREA: éŸ©å›½
-- OTHER: å…¶ä»–
+- ALL: È«²¿
+- CHINA: ´óÂ½
+- JAPAN: ÈÕ±¾
+- SOUTHKOREA: º«¹ú
+- OTHER: ÆäËû
 
 
 
@@ -85,11 +85,11 @@ from bilibili_api import manga
 
 **Extend: enum.Enum**
 
-æ¼«ç”»ç´¢å¼•ç­›é€‰å™¨çš„æ’åºæšä¸¾ç±»ã€‚
+Âş»­Ë÷ÒıÉ¸Ñ¡Æ÷µÄÅÅĞòÃ¶¾ÙÀà¡£
 
-- HOT: äººæ°”æ¨è
-- UPDATE: æ›´æ–°æ—¶é—´
-- RELEASE_DATE: ä¸Šæ¶æ—¶é—´
+- HOT: ÈËÆøÍÆ¼ö
+- UPDATE: ¸üĞÂÊ±¼ä
+- RELEASE_DATE: ÉÏ¼ÜÊ±¼ä
 
 
 
@@ -98,12 +98,12 @@ from bilibili_api import manga
 
 **Extend: enum.Enum**
 
-æ¼«ç”»ç´¢å¼•ç­›é€‰å™¨çš„ä»˜è´¹æšä¸¾ç±»ã€‚
+Âş»­Ë÷ÒıÉ¸Ñ¡Æ÷µÄ¸¶·ÑÃ¶¾ÙÀà¡£
 
-- ALL: å…¨éƒ¨
-- FREE: å…è´¹
-- PAID: ä»˜è´¹
-- WILL_BE_FREE: ç­‰å°±å…è´¹
+- ALL: È«²¿
+- FREE: Ãâ·Ñ
+- PAID: ¸¶·Ñ
+- WILL_BE_FREE: µÈ¾ÍÃâ·Ñ
 
 
 
@@ -112,11 +112,11 @@ from bilibili_api import manga
 
 **Extend: enum.Enum**
 
-æ¼«ç”»ç´¢å¼•ç­›é€‰å™¨çš„çŠ¶æ€æšä¸¾ç±»ã€‚
+Âş»­Ë÷ÒıÉ¸Ñ¡Æ÷µÄ×´Ì¬Ã¶¾ÙÀà¡£
 
-- ALL: å…¨éƒ¨
-- FINISHED: å®Œç»“
-- UNFINISHED: è¿è½½
+- ALL: È«²¿
+- FINISHED: Íê½á
+- UNFINISHED: Á¬ÔØ
 
 
 
@@ -125,25 +125,25 @@ from bilibili_api import manga
 
 **Extend: enum.Enum**
 
-æ¼«ç”»ç´¢å¼•ç­›é€‰å™¨çš„é£æ ¼æšä¸¾ç±»ã€‚
+Âş»­Ë÷ÒıÉ¸Ñ¡Æ÷µÄ·ç¸ñÃ¶¾ÙÀà¡£
 
-- ALL: å…¨éƒ¨
-- WARM: çƒ­è¡€
-- ANCIENT: å¤é£
-- FANTASY: ç„å¹»
-- IMAGING: å¥‡å¹»
-- SUSPENSE: æ‚¬ç–‘
-- CITY: éƒ½å¸‚
-- HISTORY: å†å²
-- WUXIA: æ­¦ä¾ ä»™ä¾ 
-- GAME: æ¸¸æˆç«æŠ€
-- PARANORMAL: æ‚¬ç–‘çµå¼‚
-- ALTERNATE: æ¶ç©º
-- YOUTH: é’æ˜¥
-- WEST_MAGIC: è¥¿å¹»
-- MORDEN: ç°ä»£
-- POSITIVE: æ­£èƒ½é‡
-- SCIENCE_FICTION: ç§‘å¹»
+- ALL: È«²¿
+- WARM: ÈÈÑª
+- ANCIENT: ¹Å·ç
+- FANTASY: Ğş»Ã
+- IMAGING: Ææ»Ã
+- SUSPENSE: ĞüÒÉ
+- CITY: ¶¼ÊĞ
+- HISTORY: ÀúÊ·
+- WUXIA: ÎäÏÀÏÉÏÀ
+- GAME: ÓÎÏ·¾º¼¼
+- PARANORMAL: ĞüÒÉÁéÒì
+- ALTERNATE: ¼Ü¿Õ
+- YOUTH: Çà´º
+- WEST_MAGIC: Î÷»Ã
+- MORDEN: ÏÖ´ú
+- POSITIVE: ÕıÄÜÁ¿
+- SCIENCE_FICTION: ¿Æ»Ã
 
 
 
@@ -154,12 +154,12 @@ from bilibili_api import manga
 
 **Extend: enum.Enum**
 
-æ¼«ç”»æ’åºæ–¹å¼
+Âş»­ÅÅĞò·½Ê½
 
-- FOLLOW: è¿½æ¼«é¡ºåº
-- UPDATE: æ›´æ–°æ—¶é—´
-- READING: æœ€è¿‘é˜…è¯»
-- FREE: ç­‰å…
+- FOLLOW: ×·ÂşË³Ğò
+- UPDATE: ¸üĞÂÊ±¼ä
+- READING: ×î½üÔÄ¶Á
+- FREE: µÈÃâ
 
 
 
@@ -168,17 +168,17 @@ from bilibili_api import manga
 
 ## async def get_followed_manga()
 
-è·å–è¿½æ¼«åˆ—è¡¨
+»ñÈ¡×·ÂşÁĞ±í
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | é¡µç ã€‚Defaults to 1. |
-| `ps` | `int` | æ¯é¡µæ•°é‡ã€‚Defaults to 18. |
-| `order` | `MangaOrderType` | æ’åºæ–¹å¼ã€‚Defaults to MangaOrderType.FOLLOW. |
-| `credential` | `Credential` | å‡­æ®ç±». |
+| `pn` | `int` | Ò³Âë¡£Defaults to 1. |
+| `ps` | `int` | Ã¿Ò³ÊıÁ¿¡£Defaults to 18. |
+| `order` | `MangaOrderType` | ÅÅĞò·½Ê½¡£Defaults to MangaOrderType.FOLLOW. |
+| `credential` | `Credential` | Æ¾¾İÀà. |
 
-**Returns:** `List[Manga]`:  è¿½æ¼«åˆ—è¡¨
+**Returns:** `List[Manga]`:  ×·ÂşÁĞ±í
 
 
 
@@ -187,16 +187,16 @@ from bilibili_api import manga
 
 ## async def get_manga_home_recommend()
 
-è·å–é¦–é¡µæ¨èçš„æ¼«ç”»
+»ñÈ¡Ê×Ò³ÍÆ¼öµÄÂş»­
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | é¡µç ã€‚Defaults to 1. |
-| `seed` | `Optional, str` | Unknown paramï¼Œæ— éœ€ä¼ å…¥. |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `pn` | `int` | Ò³Âë¡£Defaults to 1. |
+| `seed` | `Optional, str` | Unknown param£¬ÎŞĞè´«Èë. |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
-**Returns:** `List[Manga]`:  æ¼«ç”»åˆ—è¡¨
+**Returns:** `List[Manga]`:  Âş»­ÁĞ±í
 
 
 
@@ -205,17 +205,17 @@ from bilibili_api import manga
 
 ## async def get_manga_update()
 
-è·å–æ›´æ–°æ¨èçš„æ¼«ç”»
+»ñÈ¡¸üĞÂÍÆ¼öµÄÂş»­
 
 
 | name | type | description |
 | - | - | - |
-| `date` | `Union[str, datetime.datetime]` | æ—¥æœŸï¼Œé»˜è®¤ä¸ºä»Šæ—¥ã€‚ |
-| `pn` | `int` | é¡µç ã€‚Defaults to 1. |
-| `ps` | `int` | æ¯é¡µæ•°é‡ã€‚Defaults to 8. |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `date` | `Union[str, datetime.datetime] \| None` | ÈÕÆÚ£¬Ä¬ÈÏÎª½ñÈÕ¡£ |
+| `pn` | `int` | Ò³Âë¡£Defaults to 1. |
+| `ps` | `int` | Ã¿Ò³ÊıÁ¿¡£Defaults to 8. |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
-**Returns:** `List[Manga]`:  æ¼«ç”»åˆ—è¡¨
+**Returns:** `List[Manga]`:  Âş»­ÁĞ±í
 
 
 
@@ -224,14 +224,14 @@ from bilibili_api import manga
 
 ## async def set_follow_manga()
 
-è®¾ç½®è¿½æ¼«
+ÉèÖÃ×·Âş
 
 
 | name | type | description |
 | - | - | - |
-| `manga` | `Manga` | æ¼«ç”»ç±»ã€‚ |
-| `status` | `bool` | è®¾ç½®æ˜¯å¦è¿½æ¼«ã€‚æ˜¯ä¸º Trueï¼Œå¦ä¸º Falseã€‚Defaults to True. |
-| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
+| `manga` | `Manga` | Âş»­Àà¡£ |
+| `status` | `bool` | ÉèÖÃÊÇ·ñ×·Âş¡£ÊÇÎª True£¬·ñÎª False¡£Defaults to True. |
+| `credential` | `Credential` | Æ¾¾İÀà¡£ |
 
 
 

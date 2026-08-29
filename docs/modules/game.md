@@ -3,7 +3,7 @@
 
 bilibili_api.game
 
-æ¸¸æˆç›¸å…³
+ÓÎÏ·Ïà¹Ø
 
 
 ``` python
@@ -28,12 +28,12 @@ from bilibili_api import game
 
 ## class Game()
 
-æ¸¸æˆç±»
+ÓÎÏ·Àà
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | å‡­æ®ç±» |
+| `credential` | `Credential` | Æ¾¾İÀà |
 
 
 ### def \_\_init\_\_()
@@ -41,72 +41,72 @@ from bilibili_api import game
 
 | name | type | description |
 | - | - | - |
-| `game_id` | `int` | æ¸¸æˆ id |
-| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
+| `game_id` | `int` | ÓÎÏ· id |
+| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
 
 
 ### async def get_detail()
 
-è·å–æ¸¸æˆè¯¦æƒ…
+»ñÈ¡ÓÎÏ·ÏêÇé
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### def get_game_id()
 
-è·å–æ¸¸æˆ id
+»ñÈ¡ÓÎÏ· id
 
 
 
-**Returns:** `int`:  æ¸¸æˆ id
+**Returns:** `int`:  ÓÎÏ· id
 
 
 
 
 ### async def get_info()
 
-è·å–æ¸¸æˆç®€ä»‹
+»ñÈ¡ÓÎÏ·¼ò½é
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_up_info()
 
-è·å–æ¸¸æˆå®˜æ–¹è´¦å·
+»ñÈ¡ÓÎÏ·¹Ù·½ÕËºÅ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_videos()
 
-è·å–æ¸¸æˆä»‹ç»è§†é¢‘
+»ñÈ¡ÓÎÏ·½éÉÜÊÓÆµ
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
 
 ### async def get_wiki()
 
-è·å–æ¸¸æˆæ•™ç¨‹(wiki)
+»ñÈ¡ÓÎÏ·½Ì³Ì(wiki)
 
 
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -117,14 +117,14 @@ from bilibili_api import game
 
 **Extend: enum.Enum**
 
-æ¸¸æˆæ’è¡Œæ¦œç±»å‹æšä¸¾
+ÓÎÏ·ÅÅĞĞ°ñÀàĞÍÃ¶¾Ù
 
-- HOT: çƒ­åº¦æ¦œ
-- SUBSCRIBE: é¢„çº¦æ¦œ
-- NEW: æ–°æ¸¸æ¦œ
-- REPUTATION: å£ç¢‘æ¦œ
-- BILIBILI: BæŒ‡æ¦œ
-- CLIENT: ç«¯æ¸¸æ¦œ
+- HOT: ÈÈ¶È°ñ
+- SUBSCRIBE: Ô¤Ô¼°ñ
+- NEW: ĞÂÓÎ°ñ
+- REPUTATION: ¿Ú±®°ñ
+- BILIBILI: BÖ¸°ñ
+- CLIENT: ¶ËÓÎ°ñ
 
 
 
@@ -133,14 +133,14 @@ from bilibili_api import game
 
 ## async def game_name2id()
 
-å°†æ¸¸æˆåè½¬æ¢ä¸ºæ¸¸æˆçš„ç¼–ç 
+½«ÓÎÏ·Ãû×ª»»ÎªÓÎÏ·µÄ±àÂë
 
 
 | name | type | description |
 | - | - | - |
-| `game_name` | `str` | æ¸¸æˆå |
+| `game_name` | `str` | ÓÎÏ·Ãû |
 
-**Returns:** `str`:  æ¸¸æˆç¼–ç 
+**Returns:** `str`:  ÓÎÏ·±àÂë
 
 
 
@@ -149,16 +149,16 @@ from bilibili_api import game
 
 ## async def get_game_rank()
 
-è·å–æ¸¸æˆæ’è¡Œæ¦œ
+»ñÈ¡ÓÎÏ·ÅÅĞĞ°ñ
 
 
 | name | type | description |
 | - | - | - |
-| `rank_type` | `GameRankType` | æ¸¸æˆæ’è¡Œæ¦œç±»å‹ |
-| `page_num` | `int, optional` | é¡µç . Defaults to 1. |
-| `page_size` | `int, optional` | æ¯é¡µæ¸¸æˆæ•°é‡. Defaults to 20. |
+| `rank_type` | `GameRankType` | ÓÎÏ·ÅÅĞĞ°ñÀàĞÍ |
+| `page_num` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `page_size` | `int, optional` | Ã¿Ò³ÓÎÏ·ÊıÁ¿. Defaults to 20. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -167,15 +167,15 @@ from bilibili_api import game
 
 ## async def get_start_test_list()
 
-è·å–æ¸¸æˆå…¬æµ‹æ—¶é—´çº¿
+»ñÈ¡ÓÎÏ·¹«²âÊ±¼äÏß
 
 
 | name | type | description |
 | - | - | - |
-| `page_num` | `int, optional` | é¡µç . Defaults to 1. |
-| `page_size` | `int, optional` | æ¯é¡µæ¸¸æˆæ•°é‡. Defaults to 20. |
+| `page_num` | `int, optional` | Ò³Âë. Defaults to 1. |
+| `page_size` | `int, optional` | Ã¿Ò³ÓÎÏ·ÊıÁ¿. Defaults to 20. |
 
-**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
+**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
 
 
 
@@ -184,14 +184,14 @@ from bilibili_api import game
 
 ## def get_wiki_api_root()
 
-è·å–æ¸¸æˆ WIKI å¯¹åº”çš„ api é“¾æ¥ï¼Œä»¥ä¾¿ä¼ å…¥ç¬¬ä¸‰æ–¹åº“è¿›è¡Œå…¶ä»–è§£ææ“ä½œã€‚
+»ñÈ¡ÓÎÏ· WIKI ¶ÔÓ¦µÄ api Á´½Ó£¬ÒÔ±ã´«ÈëµÚÈı·½¿â½øĞĞÆäËû½âÎö²Ù×÷¡£
 
 
 | name | type | description |
 | - | - | - |
-| `game_id` | `str` | æ¸¸æˆç¼–ç  |
+| `game_id` | `str` | ÓÎÏ·±àÂë |
 
-**Returns:** `str`:  æ¸¸æˆ WIKI å¯¹åº”çš„ api é“¾æ¥
+**Returns:** `str`:  ÓÎÏ· WIKI ¶ÔÓ¦µÄ api Á´½Ó
 
 
 
