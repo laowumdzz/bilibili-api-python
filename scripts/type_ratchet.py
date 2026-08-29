@@ -54,8 +54,8 @@ KNOWN_RESIDUAL = {"bad-override-mutable-attribute", "bad-override-param-name"}
 ERROR_LINE = re.compile(r"^ERROR .+\[([a-z][a-z\-]*)\]\s*$")
 
 
-def run_pyrefly() -> str:
-    """以强制启用全部豁免错误码的方式运行 pyrefly，返回 min-text 输出。"""
+def run_pyrefly() -> tuple[int, str]:
+    """以强制启用全部豁免错误码的方式运行 pyrefly，返回（进程返回码, min-text 输出）。"""
     codes = ",".join(sorted(BASELINE))
     cmd = [
         "pyrefly",
@@ -72,31 +72,41 @@ def run_pyrefly() -> str:
         proc = subprocess.run(["uv", "run", *cmd], capture_output=True, text=True)
     else:
         proc = subprocess.run([sys.executable, "-m", *cmd], capture_output=True, text=True)
-    return proc.stdout + proc.stderr
+    return proc.returncode, proc.stdout + proc.stderr
 
 
-def count_errors(output: str) -> dict[str, int]:
-    """统计输出中各错误码的出现次数。"""
-    counts: dict[str, int] = {}
+def collect_error_lines(output: str) -> dict[str, list[str]]:
+    """按错误码收集输出中的错误行（保留含文件路径与行号的原始行）。"""
+    lines: dict[str, list[str]] = {}
     for line in output.splitlines():
         m = ERROR_LINE.match(line)
         if m:
-            code = m.group(1)
-            counts[code] = counts.get(code, 0) + 1
-    return counts
+            lines.setdefault(m.group(1), []).append(line)
+    return lines
 
 
 def main() -> int:
-    output = run_pyrefly()
-    counts = count_errors(output)
+    returncode, output = run_pyrefly()
+    error_lines = collect_error_lines(output)
+    counts = {code: len(lines) for code, lines in error_lines.items()}
+
+    # pyrefly 报错时返回码为 1，因此仅当“返回码非零且没有任何可解析的错误行”时，
+    # 才判定为检查本身未完成（命令缺失、运行异常等）：此时零计数不代表存量清零，
+    # 不能按“全部低于基线”放行，打印原始输出并以非零退出码阻断。
+    if returncode != 0 and not counts:
+        print(f"类型存量棘轮校验失败：pyrefly 检查未正常完成（返回码 {returncode}），原始输出如下：")
+        print(output.strip() or "（无输出）")
+        return 1
 
     regressions: list[str] = []
+    regressed_codes: list[str] = []
     improvements: list[str] = []
     for code in sorted(BASELINE):
         actual = counts.get(code, 0)
         limit = BASELINE[code]
         if actual > limit:
             regressions.append(f"  {code}: 存量 {actual} > 基线 {limit}")
+            regressed_codes.append(code)
         elif actual < limit:
             improvements.append(f"  {code}: 存量 {actual} < 基线 {limit}，请下调 BASELINE")
     unexpected = sorted(code for code in counts if code not in BASELINE and code not in KNOWN_RESIDUAL)
@@ -104,6 +114,10 @@ def main() -> int:
     if regressions:
         print("类型存量棘轮校验失败：以下豁免错误码出现新增类型错误（存量只减不增）：")
         print("\n".join(regressions))
+        print("回归错误码对应的错误行（含文件路径与行号）：")
+        for code in regressed_codes:
+            for line in error_lines[code]:
+                print(f"  {line}")
         print("请修复新增的类型错误；基线不允许上调。")
         return 1
     if unexpected:
