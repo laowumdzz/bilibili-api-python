@@ -1329,8 +1329,9 @@ class LiveDanmaku(AsyncEvent):
         self.__ws = None
         self.__tasks = []
         self.__debug = debug
-        self.__heartbeat_timer = 60.0
-        self.__heartbeat_timer_web = 60.0
+        # 最近一次收到心跳响应的事件循环时刻（loop.time()），截止时间式心跳定时据此判定超时与重置发送节奏；
+        # 0.0 表示尚未收到过响应（loop.time() 基于单调时钟，恒非负且随时间递增）
+        self.__last_heartbeat_response_time = 0.0
         self.err_reason: str = ""
         self.room = None
 
@@ -1430,9 +1431,8 @@ class LiveDanmaku(AsyncEvent):
 
         while True:
             self.err_reason = ""
-            # 重置心跳计时器
-            self.__heartbeat_timer = 0
-            self.__heartbeat_timer_web = 0
+            # 重置心跳计时：清除历史响应时刻，新连接的心跳任务启动后会立即发送首次心跳包
+            self.__last_heartbeat_response_time = 0.0
             if not available_hosts:
                 self.err_reason = "已尝试所有主机但仍无法连接"
                 break
@@ -1529,8 +1529,8 @@ class LiveDanmaku(AsyncEvent):
             elif info["datapack_type"] == LiveDanmaku.DATAPACK_TYPE_HEARTBEAT_RESPONSE:
                 # 心跳包反馈，返回直播间人气
                 self.logger.debug("收到心跳包反馈")
-                # 重置心跳计时器
-                self.__heartbeat_timer = 30.0
+                # 重置心跳计时：记录本次响应时刻，心跳任务据此取消超时判定并在 30 秒后发送下一次心跳包
+                self.__last_heartbeat_response_time = asyncio.get_running_loop().time()
                 callback_info["type"] = "VIEW"
                 callback_info["data"] = info["data"]["view"]
                 self.dispatch("VIEW", callback_info)
@@ -1632,43 +1632,71 @@ class LiveDanmaku(AsyncEvent):
 
     async def __heartbeat_web(self) -> None:
         """
-        定时发送心跳包
+        定时发送心跳包。
+
+        采用截止时间式定时：按剩余秒数一次性 asyncio.sleep，
+        而非每秒唤醒一次递减计数器，以大幅降低事件循环唤醒次数。
+        发送节奏与原实现一致：连接后立即发送首次心跳包，此后每 60 秒发送一次。
         """
+        loop = asyncio.get_running_loop()
+        # 首次立即发送（等价于原实现连接时计数器重置为 0）
+        next_send_at = loop.time()
         while True:
-            if self.__heartbeat_timer_web == 0:
-                self.logger.debug("发送 Web 端心跳包")
-                api = API["operate"]["heartbeat_web"]
-                params = {
-                    "pf": "web",
-                    "hb": str(
-                        base64.b64encode(f"60|{self.__room_real_id}|1|0".encode()),
-                        "utf-8",
-                    ),
-                }
-                await Api(**api, credential=self.credential).update_params(**params).result
-                self.__heartbeat_timer_web = 60
-            await asyncio.sleep(1.0)
-            self.__heartbeat_timer_web -= 1
+            now = loop.time()
+            if now < next_send_at:
+                await asyncio.sleep(next_send_at - now)
+                continue
+            self.logger.debug("发送 Web 端心跳包")
+            api = API["operate"]["heartbeat_web"]
+            params = {
+                "pf": "web",
+                "hb": str(
+                    base64.b64encode(f"60|{self.__room_real_id}|1|0".encode()),
+                    "utf-8",
+                ),
+            }
+            await Api(**api, credential=self.credential).update_params(**params).result
+            next_send_at = loop.time() + 60.0
 
     async def __heartbeat(self) -> None:
         """
-        定时发送心跳包
+        定时发送心跳包，并在超时窗口内无响应时触发 TIMEOUT 事件。
+
+        采用截止时间式定时：按剩余秒数一次性 asyncio.sleep，
+        而非每秒唤醒一次递减计数器，以大幅降低事件循环唤醒次数。
+        语义与原实现一致：连接后立即发送首次心跳包；发出后开启 30 秒超时窗口，
+        窗口内收到心跳响应则取消超时判定并在响应后 30 秒发送下一次心跳包，
+        窗口内无响应则视为已异常断开连接，发布 TIMEOUT 事件并退出。
         """
         HEARTBEAT = self.__pack(
             b"[object Object]",
             self.PROTOCOL_VERSION_HEARTBEAT,
             self.DATAPACK_TYPE_HEARTBEAT,
         )
+        loop = asyncio.get_running_loop()
+        # 首次立即发送（等价于原实现连接时计数器重置为 0）
+        next_send_at = loop.time()
+        timeout_at: float | None = None  # 超时判定的截止时间，仅在等待心跳响应期间非 None
         while True:
-            if self.__heartbeat_timer == 0:
+            now = loop.time()
+            if timeout_at is not None:
+                if self.__last_heartbeat_response_time >= timeout_at - 30.0:
+                    # 窗口内收到心跳响应，取消超时判定，下一次心跳在响应后 30 秒发送（等价于原实现计数器重置为 30）
+                    next_send_at = self.__last_heartbeat_response_time + 30.0
+                    timeout_at = None
+                elif now >= timeout_at:
+                    # 视为已异常断开连接，发布 TIMEOUT 事件（等价于原实现计数器递减到 -30）
+                    self.dispatch("TIMEOUT")
+                    break
+            if timeout_at is None and now >= next_send_at:
                 self.logger.debug("发送 WebSocket 心跳包")
                 await self.__client.ws_send(self.__ws, HEARTBEAT)
-            elif self.__heartbeat_timer <= -30:
-                # 视为已异常断开连接，发布 TIMEOUT 事件
-                self.dispatch("TIMEOUT")
-                break
-            await asyncio.sleep(1.0)
-            self.__heartbeat_timer -= 1
+                sent_at = loop.time()
+                timeout_at = sent_at + 30.0
+                next_send_at = float("inf")  # 收到响应前不再发送下一次心跳包（等价于原实现计数器进入负值区间）
+                continue
+            wake_at = next_send_at if timeout_at is None else min(next_send_at, timeout_at)
+            await asyncio.sleep(max(0.0, wake_at - now))
 
     async def __send(
         self,
