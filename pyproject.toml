@@ -22,7 +22,6 @@ classifiers = [
 scripts = { "ivitools" = "bilibili_api.tools.ivitools.__main__:main" }
 dependencies = [
     "beautifulsoup4",
-    "colorama",
     "lxml",
     "pyyaml",
     "brotli",
@@ -127,11 +126,6 @@ ignore = [
 # E501 已全局忽略，此处条目冗余可先行移除），差异快照见 temp/ruff-suppressed-2026-08-05.txt。
 # 处理计划：违规清零后移除本豁免，无固定到期日，随清理任务推进。
 "bilibili_api/utils/danmaku2ass.py" = ["E501", "F821", "F841", "E722", "UP031", "PYI056"]
-# dynamic.py:813 在赋值前读取 jump_url（F821，上游真实 bug，应先取值再判断前缀）；F841 为预防性豁免（当前 0 处违规）。
-# 追踪锚点：EXEMPT-dynamic（待建追踪 issue，获授权创建后将锚点替换为 issue 编号）
-# 2026-08-05 审计：隔离配置复扫确认压制 1 处违规，差异快照见 temp/ruff-suppressed-2026-08-05.txt。
-# 处理计划：修复 813 行赋值顺序后移除本豁免，无固定到期日，随清理任务推进。
-"bilibili_api/dynamic.py" = ["F821", "F841"]
 # ivitools 为命令行工具，允许 print；PyQt6 探测导入
 "bilibili_api/tools/**" = ["T201", "F401", "E722"]
 # install.py 为命令行安装脚本，允许 print
