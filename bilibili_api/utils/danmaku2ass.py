@@ -1034,7 +1034,8 @@ __all__: list[str] = []
 
 
 def export(func):
-    __all__.append(func.__name__)
+    global __all__
+    __all__ += [func.__name__]
     return func
 
 
