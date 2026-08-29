@@ -130,8 +130,9 @@ def search_countries(keyword: str) -> list[dict]:
     """
     list_ = get_countries_list()
     countries = []
+    code_keyword = keyword.lstrip("+")
     for country in list_:
-        if keyword in country["name"] or keyword.lstrip("+") in country["code"]:
+        if keyword in country["name"] or (code_keyword and str(country["code"]).startswith(code_keyword)):
             countries.append(country)
     return countries
 

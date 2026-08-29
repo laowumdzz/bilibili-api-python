@@ -43,12 +43,6 @@ def test_get_countries_list_shape():
         assert isinstance(country["code"], int)
 
 
-@pytest.mark.xfail(
-    raises=TypeError,
-    strict=False,
-    reason="疑似库 bug（已在任务报告记录）：search_countries 用 `in` 判断 int 类型的 code，"
-    "只要存在名称不含关键词的地区就会抛 TypeError，修复后本用例应转为通过",
-)
 def test_search_countries_by_name_and_code():
     """按名称与按区号（含 + 前缀）都能搜索到地区。"""
     by_name = search_countries("中国")
@@ -56,6 +50,11 @@ def test_search_countries_by_name_and_code():
 
     by_code = search_countries("+86")
     assert any(country["code"] == 86 for country in by_code)
+    # 去前导 + 后与 code 做前缀匹配，不应命中无关地区名分支的副作用
+    by_code_plain = search_countries("86")
+    assert any(country["code"] == 86 for country in by_code_plain)
+    # 不存在的区号/名称应返回空列表且不抛异常
+    assert search_countries("+99999-离线测试") == []
 
 
 def test_have_country_and_have_code():
