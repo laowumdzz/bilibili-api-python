@@ -211,7 +211,7 @@ async def game_name2id(game_name: str) -> str:
                 url=f"https://wiki.biligame.com/wiki/api.php?action=opensearch&format=json&formatversion=2&search={game_name}&namespace=0&limit=10",
                 method="GET",
             ).request(raw=True)
-        )[3][0].lstrip("https://wiki.biligame.com/wiki/")
+        )[3][0].removeprefix("https://wiki.biligame.com/wiki/")
     except IndexError:
         raise ApiException("未找到游戏")
     wiki_page_content = (
@@ -228,4 +228,4 @@ async def game_name2id(game_name: str) -> str:
     wiki_page_template_content = wiki_page_template_content.encode("ascii").decode("unicode-escape")
     for prop in wiki_page_template_content.split("|"):
         if prop.startswith("WIKI域名="):
-            return prop.lstrip("WIKI域名=").rstrip()
+            return prop.removeprefix("WIKI域名=").rstrip()

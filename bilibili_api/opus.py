@@ -155,7 +155,7 @@ class Opus:
                     pic["height"]
                     para_raw += f"![]({url}) \n"
             elif para["para_type"] == 7:
-                lang = para["code"]["lang"].lstrip("language-")
+                lang = para["code"]["lang"].removeprefix("language-")
                 content = para["code"]["content"]
                 content = html.unescape(content)
                 para_raw = f"``` {lang}\n{content}\n```\n\n"

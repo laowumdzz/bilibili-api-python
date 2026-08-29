@@ -870,7 +870,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         if self.__out == "":
             self.__out = self.__video.get_bvid() + ".ivi"
         if self.__out.endswith(".ivi"):
-            self.__out = self.__out.rstrip(".ivi")
+            self.__out = self.__out.removesuffix(".ivi")
         if os.path.exists(self.__out + ".ivi"):
             os.remove(self.__out + ".ivi")
         tmp_dir_name = self.__out + ".tmp"
