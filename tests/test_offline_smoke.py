@@ -87,3 +87,48 @@ def test_to_form_urlencoded():
     """to_form_urlencoded 应输出表单编码字符串并转义特殊字符。"""
     assert to_form_urlencoded({"a": 1, "b": "x y"}) == "a=1&b=x%20y"
     assert to_form_urlencoded({"url": "a/b"}) == "url=a%2Fb"
+
+
+def test_live_import_compatibility():
+    """live.py 拆分后，关键公开符号仍可从 bilibili_api.live 导入且指向实际定义。"""
+    from bilibili_api import _live_danmaku
+    from bilibili_api import live
+    from bilibili_api.live import (
+        LiveCodec,
+        LiveDanmaku,
+        LiveFormat,
+        LiveProtocol,
+        LiveRoom,
+        ScreenResolution,
+        get_area_info,
+        get_gift_config,
+        get_self_info,
+        parse_interact_word_v2,
+        parse_online_rank_v3,
+        parse_user_info,
+    )
+
+    # re-export 符号应与 _live_danmaku 中的定义同一对象（而非重复定义）
+    assert LiveDanmaku is _live_danmaku.LiveDanmaku
+    assert parse_user_info is _live_danmaku.parse_user_info
+    assert parse_interact_word_v2 is _live_danmaku.parse_interact_word_v2
+    assert parse_online_rank_v3 is _live_danmaku.parse_online_rank_v3
+
+    # 模块属性访问路径（bilibili_api.live.X）同样可用
+    for name in [
+        "LiveCodec",
+        "LiveDanmaku",
+        "LiveFormat",
+        "LiveProtocol",
+        "LiveRoom",
+        "ScreenResolution",
+        "get_area_info",
+        "get_gift_config",
+        "get_self_info",
+        "parse_interact_word_v2",
+        "parse_online_rank_v3",
+        "parse_user_info",
+    ]:
+        assert getattr(live, name) is not None
+
+    assert LiveCodec and LiveFormat and LiveProtocol and ScreenResolution and LiveRoom

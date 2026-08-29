@@ -15,7 +15,7 @@ import struct
 
 import pytest
 
-from bilibili_api import live as live_module
+from bilibili_api import _live_danmaku as danmaku_module
 from bilibili_api.live import LiveDanmaku
 
 
@@ -248,7 +248,8 @@ async def test_web_heartbeat_sent_immediately_and_every_60s(clock, monkeypatch):
     """Web 端心跳连接后立即发送，此后每 60 秒发送一次。"""
     FakeApi.call_times = []
     FakeApi._clock = clock
-    monkeypatch.setattr(live_module, "Api", FakeApi)
+    # LiveDanmaku 已迁至 _live_danmaku 模块，Api 需打补丁到其实际定义模块的命名空间（live.py 仅 re-export）
+    monkeypatch.setattr(danmaku_module, "Api", FakeApi)
 
     danmaku = make_danmaku(clock)
     danmaku._LiveDanmaku__heartbeat_timer_web = 0  # type: ignore[attr-defined]

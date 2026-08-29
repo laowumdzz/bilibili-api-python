@@ -408,7 +408,7 @@ def parse_docstring1(doc: str):
 
 import bilibili_api  # noqa: F401  # eval() 动态引用，不可删除
 
-# _video_* 为本仓库内部私有模块，不对外暴露，不生成文档（与现有 docs 产物保持一致）
+# _video_* / _live_danmaku 为本仓库内部私有模块，不对外暴露，不生成文档（与现有 docs 产物保持一致）
 for module in all_funcs:
     if module[0][0] in [
         "_pyinstaller",
@@ -418,6 +418,7 @@ for module in all_funcs:
         "_video_appeal",
         "_video_download",
         "_video_monitor",
+        "_live_danmaku",
     ]:
         continue
     docs_dir = "./docs/modules/" + module[0][0] + ".md"
