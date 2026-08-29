@@ -95,6 +95,7 @@ select = [
     "I", # isort
     "UP", # pyupgrade
     "ASYNC", # flake8-async
+    "B", # flake8-bugbear（可变默认参数 B006 等，2026-08-29 启用防回归）
     "C4", # flake8-comprehensions
     "T10", # flake8-debugger
     "T20", # flake8-print
@@ -124,8 +125,9 @@ ignore = [
 # 追踪锚点：EXEMPT-danmaku2ass（待建追踪 issue，获授权创建后将锚点替换为 issue 编号）
 # 2026-08-05 审计：隔离配置复扫确认压制 53 处违规（F821 `_` 未导入 gettext ×41、UP031 ×10、E722 ×1、PYI056 ×1；
 # E501 已全局忽略，此处条目冗余可先行移除），差异快照见 temp/ruff-suppressed-2026-08-05.txt。
+# 2026-08-29：启用 B 规则后新增 B008 ×1、B904 ×2 属同批预存在问题（B008/B904 待豁免清零任务处理）。
 # 处理计划：违规清零后移除本豁免，无固定到期日，随清理任务推进。
-"bilibili_api/utils/danmaku2ass.py" = ["E501", "F821", "F841", "E722", "UP031", "PYI056"]
+"bilibili_api/utils/danmaku2ass.py" = ["E501", "F821", "F841", "E722", "UP031", "PYI056", "B008", "B904"]
 # ivitools 为命令行工具，允许 print；PyQt6 探测导入
 "bilibili_api/tools/**" = ["T201", "F401", "E722"]
 # install.py 为命令行安装脚本，允许 print

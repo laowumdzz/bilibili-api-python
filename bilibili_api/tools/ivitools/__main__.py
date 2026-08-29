@@ -33,7 +33,8 @@ def run_args(command: str, args: list[str]):
             import PyQt6
         except ImportError:
             warnings.warn(
-                "IVITools Built-in Player require PyQt6 but IVITools can't find it. \nYou can install it by `pip3 install PyQt6`. "
+                "IVITools Built-in Player require PyQt6 but IVITools can't find it. \nYou can install it by `pip3 install PyQt6`. ",
+                stacklevel=2,
             )
             return
         from .player import main, prepopen

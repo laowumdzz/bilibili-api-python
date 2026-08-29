@@ -57,7 +57,7 @@ def _parse_detected_content(detected_content: str) -> dict:
 
 
 async def get_initial_state(
-    url: str, credential: Credential = Credential(), strict: bool = True
+    url: str, credential: Credential | None = None, strict: bool = True
 ) -> tuple[dict, InitialDataType]:
     """
     异步获取初始化信息
@@ -65,10 +65,11 @@ async def get_initial_state(
     Args:
         url (str): 链接
 
-        credential (Credential, optional): 用户凭证. Defaults to Credential().
+        credential (Credential | None, optional): 用户凭证. Defaults to None（新建空凭证）.
 
         strict (bool): 无结果时报错。Defaults to True.
     """
+    credential = credential if credential else Credential()
     resp = await Api(url=url, method="GET", credential=credential, comment="[获取初始化信息]").request(byte=True)
     content = resp.decode("utf-8")
     pos, content_type = find_json(content)

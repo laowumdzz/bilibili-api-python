@@ -355,7 +355,7 @@ def _eval_safe_node(node: ast.AST):
         raise ApiException(f"拒绝求值运算符 {type(node.op).__name__}")
     if isinstance(node, ast.Compare):
         left = _eval_safe_node(node.left)
-        for op, comparator in zip(node.ops, node.comparators):
+        for op, comparator in zip(node.ops, node.comparators, strict=True):
             right = _eval_safe_node(comparator)
             if isinstance(op, ast.Eq):
                 passed = left == right

@@ -342,7 +342,7 @@ class BuildDynamic:
                 names.append(match.group())
             data = []
             last_index = 0
-            for i, name in enumerate(names):
+            for _, name in enumerate(names):
                 index = text.index(f"@{name}", last_index)
                 last_index = index + 1
                 length = 2 + len(name)
@@ -366,7 +366,7 @@ class BuildDynamic:
                 emotes.append(f"[{emote}]")
             data = []
             last_index = 0
-            for i, emoji in enumerate(emotes):
+            for _, emoji in enumerate(emotes):
                 index = text.index(emoji, last_index)
                 last_index = index + 1
                 length = len(emoji)
@@ -521,7 +521,7 @@ class BuildDynamic:
                     contents[idx]["raw_text"] = "@" + await _uid2name(content["biz_id"], credential=credential)
             if content["type"] == DynamicContentType.VOTE.value:
                 contents[idx]["raw_text"] = (await vote.Vote(vote_id=content["biz_id"]).get_info())["info"]["title"]
-        for idx, content in enumerate(contents):
+        for idx, _ in enumerate(contents):
             contents[idx]["biz_id"] = str(contents[idx]["biz_id"])
         return contents
 

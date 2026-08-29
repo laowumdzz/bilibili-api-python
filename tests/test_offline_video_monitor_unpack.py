@@ -76,7 +76,7 @@ def test_unpack_multi_packet_sticky_stream():
     result = _unpack(stream)
 
     assert len(result) == len(cases)
-    for item, (data_type, number, payload) in zip(result, cases):
+    for item, (data_type, number, payload) in zip(result, cases, strict=True):
         assert item["type"] == data_type.value
         assert item["number"] == number
         assert item["data"] == payload

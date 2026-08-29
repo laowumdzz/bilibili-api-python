@@ -354,8 +354,8 @@ class InteractiveNode:
         cid: int,
         vars: list[InteractiveVariable],
         button: InteractiveButton | None = None,
-        condition: InteractiveJumpingCondition = InteractiveJumpingCondition(),
-        native_command: InteractiveJumpingCommand = InteractiveJumpingCommand(),
+        condition: InteractiveJumpingCondition | None = None,
+        native_command: InteractiveJumpingCommand | None = None,
         is_default: bool = False,
     ):
         """
@@ -370,12 +370,14 @@ class InteractiveNode:
 
             button         (InteractiveButton)          : 对应的按钮
 
-            condition      (InteractiveJumpingCondition): 跳转公式
+            condition      (InteractiveJumpingCondition | None): 跳转公式. Defaults to None（新建空公式）
 
-            native_command (InteractiveJumpingCommand)  : 跳转时变量操作
+            native_command (InteractiveJumpingCommand | None)  : 跳转时对变量的操作. Defaults to None（新建空操作）
 
             is_default     (bool)                       : 是不是默认的跳转的节点
         """
+        condition = InteractiveJumpingCondition() if condition is None else condition
+        native_command = InteractiveJumpingCommand() if native_command is None else native_command
         self.__parent = video
         self.__id = node_id
         self.__cid = cid
@@ -990,7 +992,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         )
 
         cid_set = set()
-        for key, item in edges_info.items():
+        for item in edges_info.values():
             cid = item["cid"]
             if cid not in cid_set:
                 self.dispatch("PREPARE_DOWNLOAD", {"cid": item["cid"]})
@@ -1010,7 +1012,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         zip = zipfile.ZipFile(
             open(self.__out + ".ivi", "wb+"), mode="w", compression=zipfile.ZIP_DEFLATED
         )  # outFullName为压缩文件的完整路径
-        for path, dirnames, filenames in os.walk(tmp_dir_name):
+        for path, _, filenames in os.walk(tmp_dir_name):
             # 去掉目标跟路径，只对目标文件夹下边的文件及文件夹进行压缩
             fpath = path.replace(tmp_dir_name, "")
 
@@ -1113,7 +1115,7 @@ class InteractiveVideoDownloader(AsyncEvent):
                 queue.insert(0, n)
 
         cid_set = set()
-        for key, item in edges_info.items():
+        for item in edges_info.values():
             cid = item["cid"]
             if cid not in cid_set:
                 self.dispatch("PREPARE_DOWNLOAD", {"cid": item["cid"]})
@@ -1363,7 +1365,7 @@ class InteractiveVideoDownloader(AsyncEvent):
         )
 
         cid_set = set()
-        for key, item in edges_info.items():
+        for item in edges_info.values():
             cid = item["cid"]
             if cid not in cid_set:
                 self.dispatch("PREPARE_DOWNLOAD", {"cid": item["cid"]})

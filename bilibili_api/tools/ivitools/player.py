@@ -478,7 +478,7 @@ class MPlayer:
                                     self.choice_labels.append(lbl)
                                     pass
                             add_space = int((800 - cnt * 200) / 2)
-                            for idx, lbl in enumerate(self.choice_labels):
+                            for lbl in self.choice_labels:
                                 lbl.setGeometry(
                                     QtCore.QRect(
                                         lbl.geometry().left() + add_space,

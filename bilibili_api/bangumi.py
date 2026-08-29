@@ -938,7 +938,7 @@ class IndexFilterMeta:
 
 
 async def get_index_info(
-    filters: IndexFilterMeta = IndexFilterMeta.Anime(),
+    filters: IndexFilterMeta | None = None,
     order: IndexFilter.Order = IndexFilter.Order.SCORE,
     sort: IndexFilter.Sort = IndexFilter.Sort.DESC,
     pn: int = 1,
@@ -950,7 +950,7 @@ async def get_index_info(
     请先通过 `IndexFilterMeta` 构造 filters
 
     Args:
-        filters (Index_Filter_Meta, optional): 筛选条件元数据. Defaults to Anime.
+        filters (Index_Filter_Meta | None, optional): 筛选条件元数据. Defaults to None（等价于 Anime）.
 
         order (BANGUMI_INDEX.ORDER, optional): 排序字段. Defaults to SCORE.
 
@@ -963,10 +963,11 @@ async def get_index_info(
     Returns:
         dict: 调用 API 返回的结果
     """
+    meta = IndexFilterMeta.Anime() if filters is None else filters
     api = API["info"]["index"]
     params = {}
 
-    for key, value in filters.__dict__.items():
+    for key, value in meta.__dict__.items():
         if value is not None:
             if isinstance(value, Enum):
                 params[key] = value.value
