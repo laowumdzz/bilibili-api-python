@@ -399,7 +399,8 @@ class CurlCFFIClient(BiliAPIClient):
             return (b"", BiliWsMsgType.CLOSED)
         chunks = []
         flags = 0
-        sock_fd = ws.curl.getinfo(curl_cffi.CurlInfo.ACTIVESOCKET)
+        # ACTIVESOCKET 返回套接字句柄（int），getinfo 的联合返回类型需收窄为 int 才能传入 select()
+        sock_fd = int(ws.curl.getinfo(curl_cffi.CurlInfo.ACTIVESOCKET))
         if sock_fd == curl_cffi.aio.CURL_SOCKET_BAD:
             raise curl_cffi.WebSocketError("Invalid active socket", curl_cffi.CurlECode.NO_CONNECTION_AVAILABLE)
         while True:

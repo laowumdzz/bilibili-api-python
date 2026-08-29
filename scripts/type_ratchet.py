@@ -31,7 +31,6 @@ BASELINE: dict[str, int] = {
     "bad-index": 288,
     "bad-override": 20,
     "bad-return": 391,
-    "bad-specialization": 1,
     "missing-attribute": 46,
     "missing-import": 4,
     "not-iterable": 13,

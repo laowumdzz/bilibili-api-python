@@ -175,7 +175,6 @@ bad-function-definition = false # 存量 18
 bad-index = false # 存量 288
 bad-override = false # 存量 20
 bad-return = false # 存量 391
-bad-specialization = false # 存量 1
 missing-attribute = false # 存量 46
 missing-import = false # 存量 4
 not-iterable = false # 存量 13
