@@ -190,11 +190,12 @@ def generate_clickPosition() -> dict:
         dict: 点击坐标和时间
     """
     # 生成随机的 x 和 y 坐标，以下范围大概是1920x1080屏幕下可能的坐标
-    x = random.randint(1320, 1330)
-    y = random.randint(880, 890)
+    x = random.randint(1320, 1330)  # mimosa-ignore
+    y = random.randint(880, 890)  # mimosa-ignore
     # 生成随机的起始时间和结束时间（或当前时间）
     origin_timestamp = int(time.time() * 1000)
     # 添加一些随机时间差 (5s ~ 10s)
+    # mimosa-ignore
     now_timestamp = origin_timestamp + random.randint(5000, 10000)
     return {"x": x, "y": y, "origin": origin_timestamp, "now": now_timestamp}
 

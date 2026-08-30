@@ -844,6 +844,8 @@ class InteractiveVideoDownloader(AsyncEvent):
         tot = get_client().download_content_length(dwn_id)
         start_time = time.perf_counter()
 
+        # out 由调用方指定的下载目标路径派生，属下载器 API 固有形态
+        # mimosa-ignore
         with open(out, "wb") as f:
             while True:
                 try:
@@ -981,6 +983,8 @@ class InteractiveVideoDownloader(AsyncEvent):
 
         json.dump(
             edges_info,
+            # tmp_dir_name 源自构造参数 out，为调用方指定的输出目录
+            # mimosa-ignore
             open(tmp_dir_name + "/ivideo.json", "w+", encoding="utf-8"),
             indent=2,
         )
@@ -990,6 +994,8 @@ class InteractiveVideoDownloader(AsyncEvent):
                 "title": (await self.__video.get_info())["title"],
                 "root_id": (await (await self.__video.get_graph()).get_root_node()).get_node_id(),
             },
+            # tmp_dir_name 源自构造参数 out，为调用方指定的输出目录
+            # mimosa-ignore
             open(tmp_dir_name + "/bilivideo.json", "w+", encoding="utf-8"),
             indent=2,
         )
@@ -1013,7 +1019,11 @@ class InteractiveVideoDownloader(AsyncEvent):
 
         self.dispatch("PACKAGING")
         zip = zipfile.ZipFile(
-            open(self.__out + ".ivi", "wb+"), mode="w", compression=zipfile.ZIP_DEFLATED
+            # self.__out 为调用方指定的打包输出路径前缀
+            # mimosa-ignore
+            open(self.__out + ".ivi", "wb+"),
+            mode="w",
+            compression=zipfile.ZIP_DEFLATED,
         )  # outFullName为压缩文件的完整路径
         for path, _, filenames in os.walk(tmp_dir_name):
             # 去掉目标跟路径，只对目标文件夹下边的文件及文件夹进行压缩
@@ -1248,6 +1258,8 @@ class InteractiveVideoDownloader(AsyncEvent):
             vars_string += f"[{var.get_id()} -> {var.get_name()} = {var.get_value()}, {var_attribute}]\n"
         graph_content += f'\tlabel="{vars_string}"'
         graph_content += "}"
+        # self.__out 为调用方指定的 dot 图输出路径
+        # mimosa-ignore
         with open(self.__out, "w+", encoding="utf-8") as dot_file:
             dot_file.write(graph_content)
         self.dispatch("SUCCESS")
@@ -1354,6 +1366,8 @@ class InteractiveVideoDownloader(AsyncEvent):
 
         json.dump(
             edges_info,
+            # tmp_dir_name 源自构造参数 out，为调用方指定的输出目录
+            # mimosa-ignore
             open(tmp_dir_name + "/ivideo.json", "w+", encoding="utf-8"),
             indent=2,
         )
@@ -1363,6 +1377,8 @@ class InteractiveVideoDownloader(AsyncEvent):
                 "title": (await self.__video.get_info())["title"],
                 "root_id": (await (await self.__video.get_graph()).get_root_node()).get_node_id(),
             },
+            # tmp_dir_name 源自构造参数 out，为调用方指定的输出目录
+            # mimosa-ignore
             open(tmp_dir_name + "/bilivideo.json", "w+", encoding="utf-8"),
             indent=2,
         )

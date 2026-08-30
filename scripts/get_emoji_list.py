@@ -33,4 +33,6 @@ for seg in range(0, len(ids), 10):
             for emj in pkg["emote"]:
                 data[emj["id"]] = emj["text"]
 
+# 硬编码脚本输出文件名，无外部输入
+# mimosa-ignore
 json.dump(data, open("emote.json", "w+"), ensure_ascii=False, indent=4)

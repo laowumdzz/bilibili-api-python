@@ -421,6 +421,8 @@ async def bili_simple_download(url: str, out: str, intro: str):
     # 缓冲写入：累积到 64KB 再落盘，减少系统调用次数
     flush_size = 65536
     try:
+        # out 为调用方指定的下载输出路径，属下载函数固有形态
+        # mimosa-ignore
         with open(out, "wb") as file:
             buffer = bytearray()
             while True:

@@ -214,7 +214,7 @@ def get_deviceid(separator: str = "-", is_lowercase: bool = False) -> str:
         s = ""
         group = template[i]
         for k in group:
-            rand: int = int(16 * random.random())
+            rand: int = int(16 * random.random())  # mimosa-ignore
             if k in "xy":
                 if k == "x":
                     s += hex(rand)[2:]

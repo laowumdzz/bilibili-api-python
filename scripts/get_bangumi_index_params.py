@@ -17,5 +17,7 @@ async def main() -> dict:
 
 if __name__ == "__main__":
     # 异步函数内不使用阻塞式 open，改为同步侧写入（ASYNC230）
+    # 硬编码脚本输出文件名，无外部输入
+    # mimosa-ignore
     with open("bangumi_index_params.json", "w", encoding="UTF-8") as f:
         json.dump(sync(main()), f, ensure_ascii=False, indent=4)

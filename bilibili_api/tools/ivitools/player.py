@@ -568,7 +568,10 @@ class MPlayer:
             pos = [pos.x(), pos.y()]
             for var in self.variables:
                 if var.is_random():
-                    var._InteractiveVariable__var_value = random.random() * 100
+                    var._InteractiveVariable__var_value = (
+                        # mimosa-ignore
+                        random.random() * 100
+                    )
             for btn in self.choice_buttons:
                 if (
                     (pos[0] - btn.pos[0] <= 200)

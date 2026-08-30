@@ -135,7 +135,7 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
 
         def gen_part(x):
             """从字符表中随机取 x 个字符组成一段。"""
-            return "".join([random.choice(mp) for _ in range(x)])
+            return "".join([random.choice(mp) for _ in range(x)])  # mimosa-ignore
 
         return "-".join([gen_part(size) for size in pck]) + str(t).ljust(5, "0") + "infoc"
 
@@ -143,7 +143,7 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
         """生成 b_lsid cookie：8 位大写十六进制随机数 + 下划线 + 毫秒时间戳十六进制。"""
         ret = ""
         for _ in range(8):
-            ret += hex(random.randint(0, 15))[2:].upper()
+            ret += hex(random.randint(0, 15))[2:].upper()  # mimosa-ignore
         ret = f"{ret}_{hex(get_time_milli())[2:].upper()}"
         return ret
 
@@ -446,8 +446,8 @@ def _enc_dm(params: dict) -> dict:
     params.update(
         {
             "dm_img_list": "[]",  # 鼠标/键盘操作记录
-            "dm_img_str": "".join(random.sample(dm_rand, 2)),
-            "dm_cover_img_str": "".join(random.sample(dm_rand, 2)),
+            "dm_img_str": "".join(random.sample(dm_rand, 2)),  # mimosa-ignore
+            "dm_cover_img_str": "".join(random.sample(dm_rand, 2)),  # mimosa-ignore
             "dm_img_inter": '{"ds":[],"wh":[0,0,0],"of":[0,0,0]}',
         }
     )
