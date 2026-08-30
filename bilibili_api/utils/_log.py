@@ -92,14 +92,25 @@ class RequestLog(AsyncEvent):
         evt = data["name"]
         desc, real_data = data["data"]
         if self.__on and evt in self.get_on_events() and evt not in self.get_ignore_events():
+            # 注意：real_data 与具名事件监听器共享同一 dict 对象（异步监听器更以 task 延后执行），
+            # 此处不得 pop/原地修改，否则异步监听器将读不到 id 等键。
             if evt.startswith("WS_"):
-                ws_id = real_data.pop("id")
-                self.logger.info(f"WS #{ws_id} {desc}: {real_data}")
+                ws_id = real_data.get("id")
+                payload = {k: v for k, v in real_data.items() if k != "id"}
+                self.logger.info(f"WS #{ws_id} {desc}: {payload}")
             elif evt.startswith("DWN_"):
-                dwn_id = real_data.pop("id")
-                self.logger.info(f"DWN #{dwn_id} {desc}: {real_data}")
+                dwn_id = real_data.get("id")
+                payload = {k: v for k, v in real_data.items() if k != "id"}
+                self.logger.info(f"DWN #{dwn_id} {desc}: {payload}")
+            elif evt.startswith("API_"):
+                api_id = real_data.get("id")
+                payload = {k: v for k, v in real_data.items() if k != "id"}
+                self.logger.info(f"API #{api_id} {desc}: {payload}")
             elif evt == "ANTI_SPIDER":
-                self.logger.info(f"{real_data['msg']}")
+                msg = f"{real_data['msg']}"
+                if "id" in real_data:
+                    msg = f"{msg}（API #{real_data['id']}）"
+                self.logger.info(msg)
             else:
                 self.logger.info(f"{desc}: {real_data}")
 

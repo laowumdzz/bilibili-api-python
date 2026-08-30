@@ -5,6 +5,7 @@ bilibili_api.utils._api — API 请求核心。
 import asyncio
 from dataclasses import dataclass, field
 from inspect import Parameter, signature
+import itertools
 import json
 import re
 
@@ -23,6 +24,13 @@ from ._log import request_log
 from ._session import BiliAPIClient, get_client
 from ._types import HEADERS, BiliAPIFile, BiliAPIResponse, request_settings
 from ._wbi import WbiManager
+
+_api_request_id = itertools.count(1)
+"""API_REQUEST / API_RESPONSE 事件共用的请求编号计数器（与 WS_ / DWN_ 事件的 id 模式一致）。
+
+同一逻辑请求的所有 -403 重试尝试共享同一 id；API_REQUEST 事件的 payload 为
+发起时刻的快照拷贝（含新增 id 键），不再是 Api 实例 __dict__ 的活引用。
+"""
 
 
 def refresh_buvid() -> None:
@@ -324,11 +332,14 @@ class Api:
                 real_data = resp_data.get("result")
         return real_data
 
-    async def _request(self, raw: bool = False, byte: bool = False) -> int | str | dict | bytes | None:
+    async def _request(
+        self, raw: bool = False, byte: bool = False, request_id: int | None = None
+    ) -> int | str | dict | bytes | None:
+        api_id = request_id if request_id is not None else next(_api_request_id)
         request_log.dispatch(
             "API_REQUEST",
             "Api 发起请求",
-            self.__dict__,
+            {**self.__dict__, "id": api_id},
         )
         config: dict = await self._prepare_request()
         client: BiliAPIClient = get_client()
@@ -344,7 +355,7 @@ class Api:
         request_log.dispatch(
             "API_RESPONSE",
             "Api 获得响应",
-            {"result": ret},
+            {"id": api_id, "result": ret},
         )
         return ret
 
@@ -361,16 +372,18 @@ class Api:
         """
         times = request_settings.get_wbi_retry_times()
         loop = times
+        # 同一逻辑请求的所有重试尝试共享同一请求 id，便于日志按 id 关联配对
+        request_id = next(_api_request_id)
         while loop != 0:
             if loop != times:
                 request_log.dispatch(
                     "ANTI_SPIDER",
                     "反爬虫",
-                    {"msg": f"wbi 第 {times - loop} 次重试"},
+                    {"msg": f"wbi 第 {times - loop} 次重试", "id": request_id},
                 )
             loop -= 1
             try:
-                return await self._request(raw=raw, byte=byte)
+                return await self._request(raw=raw, byte=byte, request_id=request_id)
             except ResponseCodeException as e:
                 # -403 时尝试重新获取 wbi_mixin_key 可能过期了
                 if e.code == -403 and self.wbi:

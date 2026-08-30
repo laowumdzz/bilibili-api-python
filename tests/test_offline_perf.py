@@ -8,11 +8,12 @@
 import asyncio
 import hashlib
 import json
+import logging
 import subprocess
 import sys
 import time
 
-from bilibili_api.utils._log import RequestLog
+from bilibili_api.utils._log import RequestLog, request_log
 from bilibili_api.utils.AsyncEvent import AsyncEvent
 from bilibili_api.utils.cache_pool import TTLCache, cached_async
 from bilibili_api.utils.utils import _CRC_TABLE, _api_cache, get_api
@@ -211,6 +212,118 @@ def test_request_log_user_listener_independent():
 
     log.dispatch("REQUEST", "发起请求", {"url": "x"})
     assert received == ["发起请求"]
+
+
+def test_request_log_api_events_id_rendering():
+    """API_REQUEST / API_RESPONSE 日志行按 #id 风格输出同一请求 id，并发日志可按 id 配对。"""
+    log = RequestLog()
+
+    class _ListHandler(logging.Handler):
+        def __init__(self) -> None:
+            super().__init__()
+            self.messages: list[str] = []
+
+        def emit(self, record: logging.LogRecord) -> None:
+            self.messages.append(record.getMessage())
+
+    handler = _ListHandler()
+    log.logger.addHandler(handler)
+    try:
+        log.set_on(True)
+        log.dispatch("API_REQUEST", "Api 发起请求", {"id": 42, "url": "https://example.com"})
+        log.dispatch("API_RESPONSE", "Api 获得响应", {"id": 42, "result": {"code": 0}})
+    finally:
+        log.set_on(False)
+        log.logger.removeHandler(handler)
+
+    assert len(handler.messages) == 2
+    req_line, resp_line = handler.messages
+    assert req_line == "API #42 Api 发起请求: {'url': 'https://example.com'}"
+    assert resp_line == "API #42 Api 获得响应: {'result': {'code': 0}}"
+
+
+async def test_api_request_response_events_share_id(monkeypatch):
+    """Api._request 发出的 API_REQUEST 与 API_RESPONSE 应携带同一请求 id（离线 mock 客户端）。"""
+    from bilibili_api.utils import _api
+    from bilibili_api.utils._types import BiliAPIResponse
+
+    captured: list[tuple[str, int | None]] = []
+
+    @request_log.on("API_REQUEST")
+    def on_request(desc: str, data: dict) -> None:
+        captured.append(("API_REQUEST", data.get("id")))
+
+    @request_log.on("API_RESPONSE")
+    def on_response(desc: str, data: dict) -> None:
+        captured.append(("API_RESPONSE", data.get("id")))
+
+    class _FakeClient:
+        async def request(self, **kwargs) -> BiliAPIResponse:
+            return BiliAPIResponse(
+                code=200,
+                headers={"content-type": "application/json"},
+                cookies={},
+                raw=b'{"code": 0, "data": {}}',
+                url=kwargs.get("url", ""),
+            )
+
+    async def _fake_prepare_request(self) -> dict:
+        return {
+            "method": self.method,
+            "url": self.url,
+            "params": {},
+            "data": {},
+            "files": {},
+            "cookies": {},
+            "headers": {},
+            "proxy": None,
+        }
+
+    monkeypatch.setattr(_api, "get_client", lambda: _FakeClient())
+    monkeypatch.setattr(_api.Api, "_prepare_request", _fake_prepare_request)
+    try:
+        assert await _api.Api(url="https://example.com", method="GET")._request() == {}
+        assert await _api.Api(url="https://example.com/2", method="GET")._request() == {}
+    finally:
+        request_log.remove_event_listener("API_REQUEST", on_request)
+        request_log.remove_event_listener("API_RESPONSE", on_response)
+
+    assert [evt for evt, _ in captured] == [
+        "API_REQUEST",
+        "API_RESPONSE",
+        "API_REQUEST",
+        "API_RESPONSE",
+    ]
+    ids = [rid for _, rid in captured]
+    # 同一请求的 API_REQUEST / API_RESPONSE id 相同，不同请求 id 递增
+    assert ids[0] == ids[1]
+    assert ids[2] == ids[3]
+    assert ids[0] != ids[2]
+    assert all(isinstance(rid, int) for rid in ids)
+
+
+async def test_request_log_api_events_id_visible_to_async_listener_when_log_on():
+    """日志开启时内部处理器不得变异共享 payload：异步监听器仍能读到 id。"""
+    log = RequestLog()
+    received: list[int | None] = []
+
+    @log.on("API_REQUEST")
+    async def handler(desc: str, data: dict) -> None:
+        received.append(data.get("id"))
+
+    log.set_on(True)
+    try:
+        log.dispatch("API_REQUEST", "Api 发起请求", {"id": 7, "url": "x"})
+        # 异步监听器以 task 延后执行，轮询等待其完成
+        for _ in range(50):
+            if received:
+                break
+            await asyncio.sleep(0.01)
+    finally:
+        log.set_on(False)
+        log.remove_event_listener("API_REQUEST", handler)
+
+    assert received == [7]
 
 
 async def test_anti_spider_cache_invalidate_state():
