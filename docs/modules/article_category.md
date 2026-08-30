@@ -3,7 +3,7 @@
 
 bilibili_api.article_category
 
-×¨À¸·ÖÀàÏà¹Ø
+ä¸“æ åˆ†ç±»ç›¸å…³
 
 
 ``` python
@@ -23,13 +23,13 @@ from bilibili_api import article_category
 
 **Extend: enum.Enum**
 
-×¨À¸ÅÅĞò·½Ê½.
+ä¸“æ æ’åºæ–¹å¼.
 
-+ DEFAULT: Ä¬ÈÏ
-+ TIME: Í¶¸åÊ±¼äÅÅĞò
-+ LIKE: µãÔŞÊı×î¶à
-+ COMMENTS: ÆÀÂÛÊı×î¶à
-+ FAVORITES: ÊÕ²ØÊı×î¶à
++ DEFAULT: é»˜è®¤
++ TIME: æŠ•ç¨¿æ—¶é—´æ’åº
++ LIKE: ç‚¹èµæ•°æœ€å¤š
++ COMMENTS: è¯„è®ºæ•°æœ€å¤š
++ FAVORITES: æ”¶è—æ•°æœ€å¤š
 
 
 
@@ -38,11 +38,11 @@ from bilibili_api import article_category
 
 ## def get_categories_list()
 
-»ñÈ¡ËùÓĞµÄ·ÖÀàµÄÊı¾İ
+è·å–æ‰€æœ‰çš„åˆ†ç±»çš„æ•°æ®
 
 
 
-**Returns:** `List[dict]`:  ËùÓĞ·ÖÇøµÄÊı¾İ
+**Returns:** `List[dict]`:  æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
 
 
 
@@ -51,13 +51,13 @@ from bilibili_api import article_category
 
 ## def get_categories_list_sub()
 
-»ñÈ¡ËùÓĞ·ÖÇøµÄÊı¾İ
+è·å–æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
 
-º¬¸¸×Ó¹ØÏµ£¨¼´Ò»²ã´ÎÖ»ÓĞÖ÷·ÖÇø£©
+å«çˆ¶å­å…³ç³»ï¼ˆå³ä¸€å±‚æ¬¡åªæœ‰ä¸»åˆ†åŒºï¼‰
 
 
 
-**Returns:** `dict`:  ËùÓĞ·ÖÇøµÄÊı¾İ
+**Returns:** `dict`:  æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
 
 
 
@@ -66,14 +66,14 @@ from bilibili_api import article_category
 
 ## def get_category_info_by_id()
 
-»ñÈ¡×¨À¸·ÖÀàĞÅÏ¢
+è·å–ä¸“æ åˆ†ç±»ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
 | `id` | `int` | id |
 
-**Returns:** `Tuple[dict | None, dict | None]`:  µÚÒ»¸öÊÇÖ÷·ÖÇø£¬µÚ¶ş¸öÊÇ×Ö·ÖÇø¡£Ã»ÓĞÕÒµ½ÔòÎª (None, None)
+**Returns:** `Tuple[dict | None, dict | None]`:  ç¬¬ä¸€ä¸ªæ˜¯ä¸»åˆ†åŒºï¼Œç¬¬äºŒä¸ªæ˜¯å­—åˆ†åŒºã€‚æ²¡æœ‰æ‰¾åˆ°åˆ™ä¸º (None, None)
 
 
 
@@ -82,14 +82,14 @@ from bilibili_api import article_category
 
 ## def get_category_info_by_name()
 
-»ñÈ¡×¨À¸·ÖÀàĞÅÏ¢
+è·å–ä¸“æ åˆ†ç±»ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ·ÖÀàÃû |
+| `name` | `str` | åˆ†ç±»å |
 
-**Returns:** `Tuple[dict | None, dict | None]`:  µÚÒ»¸öÊÇÖ÷·ÖÇø£¬µÚ¶ş¸öÊÇ×Ö·ÖÇø¡£Ã»ÓĞÕÒµ½ÔòÎª (None, None)
+**Returns:** `Tuple[dict | None, dict | None]`:  ç¬¬ä¸€ä¸ªæ˜¯ä¸»åˆ†åŒºï¼Œç¬¬äºŒä¸ªæ˜¯å­—åˆ†åŒºã€‚æ²¡æœ‰æ‰¾åˆ°åˆ™ä¸º (None, None)
 
 
 
@@ -98,17 +98,17 @@ from bilibili_api import article_category
 
 ## async def get_category_recommend_articles()
 
-»ñÈ¡Ö¸¶¨·ÖÇøµÄÍÆ¼öÎÄÕÂ
+è·å–æŒ‡å®šåˆ†åŒºçš„æ¨èæ–‡ç« 
 
 
 | name | type | description |
 | - | - | - |
-| `category_id` | `int` | ×¨À¸·ÖÀàµÄ id, 0 ÎªÈ«²¿. Defaults to 0. |
-| `order` | `ArticleOrder` | ÅÅĞò·½Ê½. Defaults to ArticleOrder.DEFAULT. |
-| `page_num` | `int` | Ò³Âë. Defaults to 1. |
-| `page_size` | `int` | Ã¿Ò»Ò³Êı¾İ´óĞ¡. Defaults to 20. |
+| `category_id` | `int` | ä¸“æ åˆ†ç±»çš„ id, 0 ä¸ºå…¨éƒ¨. Defaults to 0. |
+| `order` | `ArticleOrder` | æ’åºæ–¹å¼. Defaults to ArticleOrder.DEFAULT. |
+| `page_num` | `int` | é¡µç . Defaults to 1. |
+| `page_size` | `int` | æ¯ä¸€é¡µæ•°æ®å¤§å°. Defaults to 20. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

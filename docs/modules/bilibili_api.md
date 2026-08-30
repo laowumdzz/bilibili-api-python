@@ -3,9 +3,9 @@
 
 bilibili_api
 
-ßÙÁ¨ßÙÁ¨µÄ¸÷ÖÖ API µ÷ÓÃ±ã½İÕûºÏ£¨ÊÓÆµ¡¢¶¯Ì¬¡¢Ö±²¥µÈ£©£¬ÁíÍâ¸½¼ÓÒ»Ğ©³£ÓÃµÄ¹¦ÄÜ¡£
+å“”å“©å“”å“©çš„å„ç§ API è°ƒç”¨ä¾¿æ·æ•´åˆï¼ˆè§†é¢‘ã€åŠ¨æ€ã€ç›´æ’­ç­‰ï¼‰ï¼Œå¦å¤–é™„åŠ ä¸€äº›å¸¸ç”¨çš„åŠŸèƒ½ã€‚
 
-£¨¹¦ÄÜ×ÓÄ£¿éÈç `bilibili_api.video`¡¢`bilibili_api.user` Îª¶èĞÔµ¼Èë£¬Ê×´Î·ÃÎÊÊ±¼ÓÔØ£©
+ï¼ˆåŠŸèƒ½å­æ¨¡å—å¦‚ `bilibili_api.video`ã€`bilibili_api.user` ä¸ºæƒ°æ€§å¯¼å…¥ï¼Œé¦–æ¬¡è®¿é—®æ—¶åŠ è½½ï¼‰
 
 
 ``` python
@@ -161,83 +161,83 @@ from bilibili_api import ...
 
 ## class Api()
 
-ÓÃÓÚÇëÇóµÄ Api Àà£¬¼¸ºõËùÓĞ http ÇëÇó½ÔÓÉ´Ë·¢³ö¡£
+ç”¨äºè¯·æ±‚çš„ Api ç±»ï¼Œå‡ ä¹æ‰€æœ‰ http è¯·æ±‚çš†ç”±æ­¤å‘å‡ºã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | ÇëÇóµØÖ· |
-| `method` | `str` | ÇëÇó·½·¨ |
-| `comment` | `str, optional` | ×¢ÊÍ. Defaults to "". |
-| `wbi` | `bool, optional` | ÊÇ·ñÊ¹ÓÃ wbi ¼øÈ¨ (`w_rid` / `wts`). Defaults to False. |
-| `dm` | `bool, optional` | ÊÇ·ñÊ¹ÓÃ²ÎÊı½øÒ»²½µÄ wbi ¼øÈ¨ (`dm_xxx`)£¬ÓĞ¹ØÊó±ê/¼üÅÌ²Ù×÷¼ÇÂ¼. Defaults to False. |
-| `verify` | `bool, optional` | ÊÇ·ñÑéÖ¤Æ¾¾İ. Defaults to False. |
-| `no_csrf` | `bool, optional` | ÊÇ·ñ²»Ê¹ÓÃ csrf. Defaults to False. |
-| `json_body` | `bool, optional` | ÊÇ·ñÊ¹ÓÃ json ×÷ÎªÔØºÉ. Defaults to False. |
-| `ignore_code` | `bool, optional` | ÊÇ·ñºöÂÔ·µ»ØÖµ code µÄ¼ìÑé. Defaults to False. |
-| `sign` | `bool, optional` | ÊÇ·ñÊ¹ÓÃ APP ¼øÈ¨. Defaults to False. |
-| `data` | `Dict, optional` | ÇëÇóÔØºÉ. Defaults to {}. |
-| `params` | `Dict, optional` | ÇëÇó²ÎÊı. Defaults to {}. |
-| `files` | `Dict[str, BiliAPIFile], optional` | ¸½´øÎÄ¼ş. Defaults to {}. |
-| `headers` | `Dict, optional` | ×Ô¶¨ÒåµÄÇëÇóÍ·. Defaults to {}. |
-| `credential` | `Credential, optional` | Æ¾¾İ. Defaults to Credential(). |
+| `url` | `str` | è¯·æ±‚åœ°å€ |
+| `method` | `str` | è¯·æ±‚æ–¹æ³• |
+| `comment` | `str, optional` | æ³¨é‡Š. Defaults to "". |
+| `wbi` | `bool, optional` | æ˜¯å¦ä½¿ç”¨ wbi é‰´æƒ (`w_rid` / `wts`). Defaults to False. |
+| `dm` | `bool, optional` | æ˜¯å¦ä½¿ç”¨å‚æ•°è¿›ä¸€æ­¥çš„ wbi é‰´æƒ (`dm_xxx`)ï¼Œæœ‰å…³é¼ æ ‡/é”®ç›˜æ“ä½œè®°å½•. Defaults to False. |
+| `verify` | `bool, optional` | æ˜¯å¦éªŒè¯å‡­æ®. Defaults to False. |
+| `no_csrf` | `bool, optional` | æ˜¯å¦ä¸ä½¿ç”¨ csrf. Defaults to False. |
+| `json_body` | `bool, optional` | æ˜¯å¦ä½¿ç”¨ json ä½œä¸ºè½½è·. Defaults to False. |
+| `ignore_code` | `bool, optional` | æ˜¯å¦å¿½ç•¥è¿”å›å€¼ code çš„æ£€éªŒ. Defaults to False. |
+| `sign` | `bool, optional` | æ˜¯å¦ä½¿ç”¨ APP é‰´æƒ. Defaults to False. |
+| `data` | `Dict, optional` | è¯·æ±‚è½½è·. Defaults to {}. |
+| `params` | `Dict, optional` | è¯·æ±‚å‚æ•°. Defaults to {}. |
+| `files` | `Dict[str, BiliAPIFile], optional` | é™„å¸¦æ–‡ä»¶. Defaults to {}. |
+| `headers` | `Dict, optional` | è‡ªå®šä¹‰çš„è¯·æ±‚å¤´. Defaults to {}. |
+| `credential` | `Credential, optional` | å‡­æ®. Defaults to Credential(). |
 
 
 ### async def request()
 
-Ïò½Ó¿Ú·¢ËÍÇëÇó¡£
+å‘æ¥å£å‘é€è¯·æ±‚ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `raw` | `bool` | ÊÇ·ñ²»ÌáÈ¡ data »ò result ×Ö¶Î¡£ Defaults to False. |
-| `byte` | `bool` | ÊÇ·ñÖ±½Ó·µ»Ø×Ö½ÚÊı¾İ¡£ Defaults to False. |
+| `raw` | `bool` | æ˜¯å¦ä¸æå– data æˆ– result å­—æ®µã€‚ Defaults to False. |
+| `byte` | `bool` | æ˜¯å¦ç›´æ¥è¿”å›å­—èŠ‚æ•°æ®ã€‚ Defaults to False. |
 
-**Returns:** `int | str | dict | bytes | None`:  ½Ó¿ÚÎ´·µ»ØÊı¾İÊ±£¬·µ»Ø None£¬·ñÔò·µ»Ø¸Ã½Ó¿ÚÌá¹©µÄ data »ò result ×Ö¶ÎµÄÊı¾İ¡£
+**Returns:** `int | str | dict | bytes | None`:  æ¥å£æœªè¿”å›æ•°æ®æ—¶ï¼Œè¿”å› Noneï¼Œå¦åˆ™è¿”å›è¯¥æ¥å£æä¾›çš„ data æˆ– result å­—æ®µçš„æ•°æ®ã€‚
 
 
 
 
 ### def update_data()
 
-¸üĞÂ data
+æ›´æ–° data
 
 
 
-**Returns:** `Api`:  ·µ»Ø×ÔÉí
+**Returns:** `Api`:  è¿”å›è‡ªèº«
 
 
 
 
 ### def update_files()
 
-¸üĞÂ files
+æ›´æ–° files
 
 
 
-**Returns:** `Api`:  ·µ»Ø×ÔÉí
+**Returns:** `Api`:  è¿”å›è‡ªèº«
 
 
 
 
 ### def update_headers()
 
-¸üĞÂ headers
+æ›´æ–° headers
 
 
 
-**Returns:** `Api`:  ·µ»Ø×ÔÉí
+**Returns:** `Api`:  è¿”å›è‡ªèº«
 
 
 
 
 ### def update_params()
 
-¸üĞÂ params
+æ›´æ–° params
 
 
 
-**Returns:** `Api`:  ·µ»Ø×ÔÉí
+**Returns:** `Api`:  è¿”å›è‡ªèº«
 
 
 
@@ -248,7 +248,7 @@ from bilibili_api import ...
 
 **Extend: builtins.Exception**
 
-API »ùÀàÒì³£¡£
+API åŸºç±»å¼‚å¸¸ã€‚
 
 
 
@@ -259,7 +259,7 @@ API »ùÀàÒì³£¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-µ÷ÓÃ²ÎÊı´íÎóÊ±Å×³ö£¨ÈçÈ±ÉÙ±ØÒª²ÎÊı¡¢²ÎÊı×éºÏ²»ºÏ·¨£©¡£
+è°ƒç”¨å‚æ•°é”™è¯¯æ—¶æŠ›å‡ºï¼ˆå¦‚ç¼ºå°‘å¿…è¦å‚æ•°ã€å‚æ•°ç»„åˆä¸åˆæ³•ï¼‰ã€‚
 
 
 
@@ -267,9 +267,9 @@ API »ùÀàÒì³£¡£
 
 ## class AsyncEvent()
 
-·¢²¼-¶©ÔÄÄ£Ê½Òì²½ÊÂ¼şÀàÖ§³Ö¡£
+å‘å¸ƒ-è®¢é˜…æ¨¡å¼å¼‚æ­¥äº‹ä»¶ç±»æ”¯æŒã€‚
 
-ÌØÊâÊÂ¼ş£º__ALL__ ËùÓĞÊÂ¼ş¾ù´¥·¢
+ç‰¹æ®Šäº‹ä»¶ï¼š__ALL__ æ‰€æœ‰äº‹ä»¶å‡è§¦å‘
 
 
 
@@ -282,57 +282,57 @@ API »ùÀàÒì³£¡£
 
 ### def add_event_listener()
 
-×¢²áÊÂ¼ş¼àÌıÆ÷¡£
+æ³¨å†Œäº‹ä»¶ç›‘å¬å™¨ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÊÂ¼şÃû¡£ |
-| `handler` | `Union[Callable, Coroutine]` | »Øµ÷º¯Êı¡£ |
+| `name` | `str` | äº‹ä»¶åã€‚ |
+| `handler` | `Union[Callable, Coroutine]` | å›è°ƒå‡½æ•°ã€‚ |
 
 
 
 
 ### def dispatch()
 
-Òì²½·¢²¼ÊÂ¼ş¡£
+å¼‚æ­¥å‘å¸ƒäº‹ä»¶ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÊÂ¼şÃû¡£ |
-| `*args, **kwargs` | `Any` | Òª´«µİ¸øº¯ÊıµÄ²ÎÊı¡£ |
+| `name` | `str` | äº‹ä»¶åã€‚ |
+| `*args, **kwargs` | `Any` | è¦ä¼ é€’ç»™å‡½æ•°çš„å‚æ•°ã€‚ |
 
 
 
 
 ### def ignore_event()
 
-ºöÂÔÖ¸¶¨ÊÂ¼ş
+å¿½ç•¥æŒ‡å®šäº‹ä»¶
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÊÂ¼şÃû¡£ |
+| `name` | `str` | äº‹ä»¶åã€‚ |
 
 
 
 
 ### def on()
 
-×°ÊÎÆ÷×¢²áÊÂ¼ş¼àÌıÆ÷¡£
+è£…é¥°å™¨æ³¨å†Œäº‹ä»¶ç›‘å¬å™¨ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `event_name` | `str` | ÊÂ¼şÃû¡£ |
+| `event_name` | `str` | äº‹ä»¶åã€‚ |
 
 
 
 
 ### def remove_all_event_listener()
 
-ÒÆ³ıËùÓĞÊÂ¼ş¼àÌıº¯Êı
+ç§»é™¤æ‰€æœ‰äº‹ä»¶ç›‘å¬å‡½æ•°
 
 
 
@@ -341,22 +341,22 @@ API »ùÀàÒì³£¡£
 
 ### def remove_event_listener()
 
-ÒÆ³ıÊÂ¼ş¼àÌıº¯Êı¡£
+ç§»é™¤äº‹ä»¶ç›‘å¬å‡½æ•°ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÊÂ¼şÃû¡£ |
-| `handler` | `Union[Callable, Coroutine]` | ÒªÒÆ³ıµÄº¯Êı¡£ |
+| `name` | `str` | äº‹ä»¶åã€‚ |
+| `handler` | `Union[Callable, Coroutine]` | è¦ç§»é™¤çš„å‡½æ•°ã€‚ |
 
-**Returns:** `bool`:  ÊÇ·ñÒÆ³ı³É¹¦¡£
+**Returns:** `bool`:  æ˜¯å¦ç§»é™¤æˆåŠŸã€‚
 
 
 
 
 ### def remove_ignore_events()
 
-ÒÆ³ıËùÓĞºöÂÔÊÂ¼ş
+ç§»é™¤æ‰€æœ‰å¿½ç•¥äº‹ä»¶
 
 
 
@@ -370,7 +370,7 @@ API »ùÀàÒì³£¡£
 **Extend: abc.ABC**
 
 
-ÇëÇó¿Í»§¶Ë³éÏóÀà¡£Í¨¹ı¶ÔµÚÈı·½Ä£¿éÇëÇó¿Í»§¶ËµÄ·â×°ÁîÄ£¿é¿É¶ÔÆä½øĞĞµ÷ÓÃ¡£
+è¯·æ±‚å®¢æˆ·ç«¯æŠ½è±¡ç±»ã€‚é€šè¿‡å¯¹ç¬¬ä¸‰æ–¹æ¨¡å—è¯·æ±‚å®¢æˆ·ç«¯çš„å°è£…ä»¤æ¨¡å—å¯å¯¹å…¶è¿›è¡Œè°ƒç”¨ã€‚
 
 
 
@@ -380,13 +380,13 @@ API »ùÀàÒì³£¡£
 
 ## class BiliAPIFile()
 
-ÉÏ´«ÎÄ¼şÀà¡£
+ä¸Šä¼ æ–‡ä»¶ç±»ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `path` | `str` | ÎÄ¼şµØÖ· |
-| `mime_type` | `str` | ÎÄ¼şÀàĞÍ |
+| `path` | `str` | æ–‡ä»¶åœ°å€ |
+| `mime_type` | `str` | æ–‡ä»¶ç±»å‹ |
 
 
 ### def \_\_init\_\_()
@@ -397,22 +397,22 @@ API »ùÀàÒì³£¡£
 
 ### def json()
 
-½âÎö json
+è§£æ json
 
 
 
-**Returns:** `object`:  ½âÎöºóµÄ json
+**Returns:** `object`:  è§£æåçš„ json
 
 
 
 
 ### def utf8_text()
 
-×ªÎª utf8 ÎÄ×Ö
+è½¬ä¸º utf8 æ–‡å­—
 
 
 
-**Returns:** `str`:  utf8 ÎÄ×Ö
+**Returns:** `str`:  utf8 æ–‡å­—
 
 
 
@@ -423,17 +423,17 @@ API »ùÀàÒì³£¡£
 
 **Extend: enum.Enum**
 
-WebSocket ×´Ì¬Ã¶¾Ù
+WebSocket çŠ¶æ€æšä¸¾
 
-- CONTINUATION: ÑÓĞø
-- TEXT: ÎÄ×Ö
-- BINARY: ×Ö½Ú
+- CONTINUATION: å»¶ç»­
+- TEXT: æ–‡å­—
+- BINARY: å­—èŠ‚
 - PING: ping
 - PONG: pong
-- CLOSE: ¹Ø±Õ
+- CLOSE: å…³é—­
 
-- CLOSING: ÕıÔÚ¹Ø±Õ
-- CLOSED: ÒÑ¹Ø±Õ
+- CLOSING: æ­£åœ¨å…³é—­
+- CLOSED: å·²å…³é—­
 
 
 
@@ -444,7 +444,7 @@ WebSocket ×´Ì¬Ã¶¾Ù
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Cookies Ë¢ĞÂ´íÎó¡£
+Cookies åˆ·æ–°é”™è¯¯ã€‚
 
 
 
@@ -453,45 +453,45 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ## class Credential()
 
-Æ¾¾İÀà£¬ÓÃÓÚ¸÷ÖÖÇëÇó²Ù×÷µÄÑéÖ¤¡£
+å‡­æ®ç±»ï¼Œç”¨äºå„ç§è¯·æ±‚æ“ä½œçš„éªŒè¯ã€‚
 
 
 
 
 ### def \_\_init\_\_()
 
-¸÷×Ö¶Î»ñÈ¡·½Ê½²é¿´£ºhttps://nemo2011.github.io/bilibili-api/#/get-credential.md
+å„å­—æ®µè·å–æ–¹å¼æŸ¥çœ‹ï¼šhttps://nemo2011.github.io/bilibili-api/#/get-credential.md
 
 
 | name | type | description |
 | - | - | - |
-| `sessdata` | `str \| None, optional` | ä¯ÀÀÆ÷ Cookies ÖĞµÄ SESSDATA ×Ö¶ÎÖµ. Defaults to None. |
-| `bili_jct` | `str \| None, optional` | ä¯ÀÀÆ÷ Cookies ÖĞµÄ bili_jct ×Ö¶ÎÖµ. Defaults to None. |
-| `buvid3` | `str \| None, optional` | ä¯ÀÀÆ÷ Cookies ÖĞµÄ BUVID3 ×Ö¶ÎÖµ. Defaults to None. |
-| `buvid4` | `str \| None, optional` | ä¯ÀÀÆ÷ Cookies ÖĞµÄ BUVID4 ×Ö¶ÎÖµ. Defaults to None. |
-| `dedeuserid` | `str \| None, optional` | ä¯ÀÀÆ÷ Cookies ÖĞµÄ DedeUserID ×Ö¶ÎÖµ. Defaults to None. |
-| `ac_time_value` | `str \| None, optional` | ä¯ÀÀÆ÷ Cookies ÖĞµÄ ac_time_value ×Ö¶ÎÖµ. Defaults to None. |
-| `proxy` | `str \| None, optional` | Æ¾¾İÀà¿ÉÑ¡ÔñĞ¯´øµÄ´úÀí. Defaults to None. |
+| `sessdata` | `str \| None, optional` | æµè§ˆå™¨ Cookies ä¸­çš„ SESSDATA å­—æ®µå€¼. Defaults to None. |
+| `bili_jct` | `str \| None, optional` | æµè§ˆå™¨ Cookies ä¸­çš„ bili_jct å­—æ®µå€¼. Defaults to None. |
+| `buvid3` | `str \| None, optional` | æµè§ˆå™¨ Cookies ä¸­çš„ BUVID3 å­—æ®µå€¼. Defaults to None. |
+| `buvid4` | `str \| None, optional` | æµè§ˆå™¨ Cookies ä¸­çš„ BUVID4 å­—æ®µå€¼. Defaults to None. |
+| `dedeuserid` | `str \| None, optional` | æµè§ˆå™¨ Cookies ä¸­çš„ DedeUserID å­—æ®µå€¼. Defaults to None. |
+| `ac_time_value` | `str \| None, optional` | æµè§ˆå™¨ Cookies ä¸­çš„ ac_time_value å­—æ®µå€¼. Defaults to None. |
+| `proxy` | `str \| None, optional` | å‡­æ®ç±»å¯é€‰æ‹©æºå¸¦çš„ä»£ç†. Defaults to None. |
 
 
 ### async def check_refresh()
 
-¼ì²éÊÇ·ñĞèÒªË¢ĞÂ cookies
+æ£€æŸ¥æ˜¯å¦éœ€è¦åˆ·æ–° cookies
 
 
 
-**Returns:** `bool`:  cookies ÊÇ·ñĞèÒªË¢ĞÂ
+**Returns:** `bool`:  cookies æ˜¯å¦éœ€è¦åˆ·æ–°
 
 
 
 
 ### async def check_valid()
 
-¼ì²é cookies ÊÇ·ñÓĞĞ§
+æ£€æŸ¥ cookies æ˜¯å¦æœ‰æ•ˆ
 
 
 
-**Returns:** `bool`:  cookies ÊÇ·ñÓĞĞ§
+**Returns:** `bool`:  cookies æ˜¯å¦æœ‰æ•ˆ
 
 
 
@@ -500,109 +500,109 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### def from_cookies()
 
-´Ó cookies ĞÂ½¨ Credential
+ä» cookies æ–°å»º Credential
 
 
 | name | type | description |
 | - | - | - |
-| `cookies` | `Dict \| None, optional` | Cookies. Defaults to None£¨µÈ¼ÛÓÚ {}£©. |
+| `cookies` | `Dict \| None, optional` | Cookies. Defaults to Noneï¼ˆç­‰ä»·äº {}ï¼‰. |
 
-**Returns:** `Credential`:  Æ¾¾İÀà
+**Returns:** `Credential`:  å‡­æ®ç±»
 
 
 
 
 ### async def get_buvid_cookies()
 
-»ñÈ¡ÇëÇó Cookies ×Öµä£¬×Ô¶¯²¹³ä buvid ×Ö¶Î
+è·å–è¯·æ±‚ Cookies å­—å…¸ï¼Œè‡ªåŠ¨è¡¥å…… buvid å­—æ®µ
 
 
 
-**Returns:** `dict`:  ÇëÇó Cookies ×Öµä
+**Returns:** `dict`:  è¯·æ±‚ Cookies å­—å…¸
 
 
 
 
 ### def get_cookies()
 
-»ñÈ¡ÇëÇó Cookies ×Öµä
+è·å–è¯·æ±‚ Cookies å­—å…¸
 
 
 
-**Returns:** `dict`:  ÇëÇó Cookies ×Öµä
+**Returns:** `dict`:  è¯·æ±‚ Cookies å­—å…¸
 
 
 
 
 ### def has_ac_time_value()
 
-ÊÇ·ñÌá¹© ac_time_value
+æ˜¯å¦æä¾› ac_time_value
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÌá¹© ac_time_value
+**Returns:** `bool`:  æ˜¯å¦æä¾› ac_time_value
 
 
 
 
 ### def has_bili_jct()
 
-ÊÇ·ñÌá¹© bili_jct¡£
+æ˜¯å¦æä¾› bili_jctã€‚
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÌá¹© bili_jct¡£
+**Returns:** `bool`:  æ˜¯å¦æä¾› bili_jctã€‚
 
 
 
 
 ### def has_buvid3()
 
-ÊÇ·ñÌá¹© buvid3
+æ˜¯å¦æä¾› buvid3
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÌá¹© buvid3
+**Returns:** `bool`:  æ˜¯å¦æä¾› buvid3
 
 
 
 
 ### def has_buvid4()
 
-ÊÇ·ñÌá¹© buvid4
+æ˜¯å¦æä¾› buvid4
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÌá¹© buvid4
+**Returns:** `bool`:  æ˜¯å¦æä¾› buvid4
 
 
 
 
 ### def has_dedeuserid()
 
-ÊÇ·ñÌá¹© dedeuserid¡£
+æ˜¯å¦æä¾› dedeuseridã€‚
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÌá¹© dedeuserid¡£
+**Returns:** `bool`:  æ˜¯å¦æä¾› dedeuseridã€‚
 
 
 
 
 ### def has_sessdata()
 
-ÊÇ·ñÌá¹© sessdata¡£
+æ˜¯å¦æä¾› sessdataã€‚
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÌá¹© sessdata¡£
+**Returns:** `bool`:  æ˜¯å¦æä¾› sessdataã€‚
 
 
 
 
 ### def raise_for_no_ac_time_value()
 
-Ã»ÓĞÌá¹© ac_time_value Ê±Å×³öÒì³£¡£
+æ²¡æœ‰æä¾› ac_time_value æ—¶æŠ›å‡ºå¼‚å¸¸ã€‚
 
 
 
@@ -611,7 +611,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### def raise_for_no_bili_jct()
 
-Ã»ÓĞÌá¹© bili_jct ÔòÅ×³öÒì³£¡£
+æ²¡æœ‰æä¾› bili_jct åˆ™æŠ›å‡ºå¼‚å¸¸ã€‚
 
 
 
@@ -620,7 +620,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### def raise_for_no_buvid3()
 
-Ã»ÓĞÌá¹© buvid3 Ê±Å×³öÒì³£¡£
+æ²¡æœ‰æä¾› buvid3 æ—¶æŠ›å‡ºå¼‚å¸¸ã€‚
 
 
 
@@ -629,7 +629,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### def raise_for_no_buvid4()
 
-Ã»ÓĞÌá¹© buvid3 Ê±Å×³öÒì³£¡£
+æ²¡æœ‰æä¾› buvid3 æ—¶æŠ›å‡ºå¼‚å¸¸ã€‚
 
 
 
@@ -638,7 +638,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### def raise_for_no_dedeuserid()
 
-Ã»ÓĞÌá¹© DedeUserID Ê±Å×³öÒì³£¡£
+æ²¡æœ‰æä¾› DedeUserID æ—¶æŠ›å‡ºå¼‚å¸¸ã€‚
 
 
 
@@ -647,7 +647,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### def raise_for_no_sessdata()
 
-Ã»ÓĞÌá¹© sessdata ÔòÅ×³öÒì³£¡£
+æ²¡æœ‰æä¾› sessdata åˆ™æŠ›å‡ºå¼‚å¸¸ã€‚
 
 
 
@@ -656,7 +656,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ### async def refresh()
 
-Ë¢ĞÂ cookies
+åˆ·æ–° cookies
 
 
 
@@ -669,7 +669,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Æ¾¾İÈ±ÉÙÓĞĞ§µÄ ac_time_value Ê±Å×³ö£¨Ë¢ĞÂ cookies ĞèÒª¸Ã×Ö¶Î£©¡£
+å‡­æ®ç¼ºå°‘æœ‰æ•ˆçš„ ac_time_value æ—¶æŠ›å‡ºï¼ˆåˆ·æ–° cookies éœ€è¦è¯¥å­—æ®µï¼‰ã€‚
 
 
 
@@ -679,7 +679,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Æ¾¾İÈ±ÉÙÓĞĞ§µÄ bili_jct£¨csrf token£©Ê±Å×³ö£¬Ğ´²Ù×÷¾ùĞèÒª¸Ã×Ö¶Î¡£
+å‡­æ®ç¼ºå°‘æœ‰æ•ˆçš„ bili_jctï¼ˆcsrf tokenï¼‰æ—¶æŠ›å‡ºï¼Œå†™æ“ä½œå‡éœ€è¦è¯¥å­—æ®µã€‚
 
 
 
@@ -689,7 +689,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Æ¾¾İÈ±ÉÙÓĞĞ§µÄ buvid3£¨Éè±¸Ö¸ÎÆ£©Ê±Å×³ö¡£
+å‡­æ®ç¼ºå°‘æœ‰æ•ˆçš„ buvid3ï¼ˆè®¾å¤‡æŒ‡çº¹ï¼‰æ—¶æŠ›å‡ºã€‚
 
 
 
@@ -699,7 +699,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Æ¾¾İÈ±ÉÙÓĞĞ§µÄ buvid4£¨Éè±¸Ö¸ÎÆ£©Ê±Å×³ö¡£
+å‡­æ®ç¼ºå°‘æœ‰æ•ˆçš„ buvid4ï¼ˆè®¾å¤‡æŒ‡çº¹ï¼‰æ—¶æŠ›å‡ºã€‚
 
 
 
@@ -709,7 +709,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Æ¾¾İÈ±ÉÙÓĞĞ§µÄ dedeuserid£¨µ±Ç°µÇÂ¼ÓÃ»§ ID£©Ê±Å×³ö¡£
+å‡­æ®ç¼ºå°‘æœ‰æ•ˆçš„ dedeuseridï¼ˆå½“å‰ç™»å½•ç”¨æˆ· IDï¼‰æ—¶æŠ›å‡ºã€‚
 
 
 
@@ -719,7 +719,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Æ¾¾İÈ±ÉÙÓĞĞ§µÄ sessdata£¨µÇÂ¼»á»°£©Ê±Å×³ö£¬µÇÂ¼Ì¬²Ù×÷¾ùĞèÒª¸Ã×Ö¶Î¡£
+å‡­æ®ç¼ºå°‘æœ‰æ•ˆçš„ sessdataï¼ˆç™»å½•ä¼šè¯ï¼‰æ—¶æŠ›å‡ºï¼Œç™»å½•æ€æ“ä½œå‡éœ€è¦è¯¥å­—æ®µã€‚
 
 
 
@@ -727,35 +727,35 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 ## class Danmaku()
 
-µ¯Ä»Àà¡£
+å¼¹å¹•ç±»ã€‚
 
 
 
 
 ### def \_\_init\_\_()
 
-´ó»áÔ±×¨ÊôÑÕÉ«ÎÄ×ÖÌî³ä£ºhttp://i0.hdslb.com/bfs/dm/9dcd329e617035b45d2041ac889c49cb5edd3e44.png
+å¤§ä¼šå‘˜ä¸“å±é¢œè‰²æ–‡å­—å¡«å……ï¼šhttp://i0.hdslb.com/bfs/dm/9dcd329e617035b45d2041ac889c49cb5edd3e44.png
 
-´ó»áÔ±×¨ÊôÑÕÉ«±³¾°Ìî³ä£ºhttp://i0.hdslb.com/bfs/dm/ba8e32ae03a0a3f70f4e51975a965a9ddce39d50.png
+å¤§ä¼šå‘˜ä¸“å±é¢œè‰²èƒŒæ™¯å¡«å……ï¼šhttp://i0.hdslb.com/bfs/dm/ba8e32ae03a0a3f70f4e51975a965a9ddce39d50.png
 
 
 | name | type | description |
 | - | - | - |
-| `text` | `str` | µ¯Ä»ÎÄ±¾¡£ |
-| `dm_time` | `float, optional` | µ¯Ä»ÔÚÊÓÆµÖĞµÄÎ»ÖÃ£¬µ¥Î»ÎªÃë¡£Defaults to 0.0. |
-| `send_time` | `float, optional` | µ¯Ä»·¢ËÍµÄÊ±¼ä¡£Defaults to time.time(). |
-| `crc32_id` | `str, optional` | µ¯Ä»·¢ËÍÕß UID ¾­ CRC32 Ëã·¨È¡ÕªÒªºóµÄÖµ¡£Defaults to "". |
-| `color` | `str, optional` | µ¯Ä»Ê®Áù½øÖÆÑÕÉ«¡£Defaults to "ffffff" (Èç¹ûÎª´ó»áÔ±×¨ÊôµÄÑÕÉ«ÔòÎª"special"). |
-| `weight` | `int, optional` | µ¯Ä»ÔÚµ¯Ä»ÁĞ±íÏÔÊ¾µÄÈ¨ÖØ¡£Defaults to -1. |
-| `id_` | `int, optional` | µ¯Ä» ID¡£Defaults to -1. |
-| `id_str` | `str, optional` | µ¯Ä»×Ö·û´® ID¡£Defaults to "". |
-| `action` | `str, optional` | Ôİ²»Çå³ş¡£Defaults to "". |
-| `mode` | `Union[DmMode, int], optional` | µ¯Ä»Ä£Ê½¡£Defaults to Mode.FLY. |
-| `font_size` | `Union[DmFontSize, int], optional` | µ¯Ä»×ÖÌå´óĞ¡¡£Defaults to FontSize.NORMAL. |
-| `is_sub` | `bool, optional` | ÊÇ·ñÎª×ÖÄ»µ¯Ä»¡£Defaults to False. |
-| `pool` | `int, optional` | ³Ø¡£Defaults to 0. |
-| `attr` | `int, optional` | Ôİ²»Çå³ş¡£ Defaults to -1. |
-| `uid` | `int, optional` | µ¯Ä»·¢ËÍÕß UID¡£Defaults to -1. |
+| `text` | `str` | å¼¹å¹•æ–‡æœ¬ã€‚ |
+| `dm_time` | `float, optional` | å¼¹å¹•åœ¨è§†é¢‘ä¸­çš„ä½ç½®ï¼Œå•ä½ä¸ºç§’ã€‚Defaults to 0.0. |
+| `send_time` | `float, optional` | å¼¹å¹•å‘é€çš„æ—¶é—´ã€‚Defaults to time.time(). |
+| `crc32_id` | `str, optional` | å¼¹å¹•å‘é€è€… UID ç» CRC32 ç®—æ³•å–æ‘˜è¦åçš„å€¼ã€‚Defaults to "". |
+| `color` | `str, optional` | å¼¹å¹•åå…­è¿›åˆ¶é¢œè‰²ã€‚Defaults to "ffffff" (å¦‚æœä¸ºå¤§ä¼šå‘˜ä¸“å±çš„é¢œè‰²åˆ™ä¸º"special"). |
+| `weight` | `int, optional` | å¼¹å¹•åœ¨å¼¹å¹•åˆ—è¡¨æ˜¾ç¤ºçš„æƒé‡ã€‚Defaults to -1. |
+| `id_` | `int, optional` | å¼¹å¹• IDã€‚Defaults to -1. |
+| `id_str` | `str, optional` | å¼¹å¹•å­—ç¬¦ä¸² IDã€‚Defaults to "". |
+| `action` | `str, optional` | æš‚ä¸æ¸…æ¥šã€‚Defaults to "". |
+| `mode` | `Union[DmMode, int], optional` | å¼¹å¹•æ¨¡å¼ã€‚Defaults to Mode.FLY. |
+| `font_size` | `Union[DmFontSize, int], optional` | å¼¹å¹•å­—ä½“å¤§å°ã€‚Defaults to FontSize.NORMAL. |
+| `is_sub` | `bool, optional` | æ˜¯å¦ä¸ºå­—å¹•å¼¹å¹•ã€‚Defaults to False. |
+| `pool` | `int, optional` | æ± ã€‚Defaults to 0. |
+| `attr` | `int, optional` | æš‚ä¸æ¸…æ¥šã€‚ Defaults to -1. |
+| `uid` | `int, optional` | å¼¹å¹•å‘é€è€… UIDã€‚Defaults to -1. |
 
 
 **@staticmethod** 
@@ -764,23 +764,23 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 (@staticmethod)
 
-±©Á¦ÆÆ½â UID£¬¿ÉÄÜ´æÔÚÎó²î£¬ÇëÉ÷ÖØÊ¹ÓÃ¡£
+æš´åŠ›ç ´è§£ UIDï¼Œå¯èƒ½å­˜åœ¨è¯¯å·®ï¼Œè¯·æ…é‡ä½¿ç”¨ã€‚
 
-¾«È·ÖÁ UID Ğ¡ÓÚ 10000000 µÄÆÆ½â¡£
+ç²¾ç¡®è‡³ UID å°äº 10000000 çš„ç ´è§£ã€‚
 
 
 | name | type | description |
 | - | - | - |
 | `crc32_id` | `str` | crc32 id |
 
-**Returns:** `int`:  ÕæÊµ UID¡£
+**Returns:** `int`:  çœŸå® UIDã€‚
 
 
 
 
 ### def to_xml()
 
-½«µ¯Ä»×ª»»Îª xml ¸ñÊ½µ¯Ä»
+å°†å¼¹å¹•è½¬æ¢ä¸º xml æ ¼å¼å¼¹å¹•
 
 
 
@@ -795,7 +795,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-µ¯Ä»¹¦ÄÜÒÑ¹Ø±ÕÊ±Å×³ö£¨Èç·¢ËÍµ¯Ä»½Ó¿Ú·µ»Øµ¯Ä»±»¹Ø±Õ£©¡£
+å¼¹å¹•åŠŸèƒ½å·²å…³é—­æ—¶æŠ›å‡ºï¼ˆå¦‚å‘é€å¼¹å¹•æ¥å£è¿”å›å¼¹å¹•è¢«å…³é—­ï¼‰ã€‚
 
 
 
@@ -805,7 +805,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: enum.Enum**
 
-×ÖÌå´óĞ¡Ã¶¾Ù¡£
+å­—ä½“å¤§å°æšä¸¾ã€‚
 
 - EXTREME_SMALL
 - SUPER_SMALL
@@ -824,15 +824,15 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: enum.Enum**
 
-µ¯Ä»Ä£Ê½Ã¶¾Ù¡£
+å¼¹å¹•æ¨¡å¼æšä¸¾ã€‚
 
-- FLY: ·ÉĞĞµ¯Ä»
-- TOP: ÖÃ¶¥µ¯Ä»
-- BOTTOM: µ×²¿µ¯Ä»
-- REVERSE: ·´Ïòµ¯Ä»
-- ADVANCE: ¸ß¼¶µ¯Ä»
-- CODE: ´úÂëµ¯Ä» (»ùÓÚ flash ÊµÏÖ)
-- SPECIAL: BAS µ¯Ä»
+- FLY: é£è¡Œå¼¹å¹•
+- TOP: ç½®é¡¶å¼¹å¹•
+- BOTTOM: åº•éƒ¨å¼¹å¹•
+- REVERSE: åå‘å¼¹å¹•
+- ADVANCE: é«˜çº§å¼¹å¹•
+- CODE: ä»£ç å¼¹å¹• (åŸºäº flash å®ç°)
+- SPECIAL: BAS å¼¹å¹•
 
 
 
@@ -843,7 +843,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-¶¯Ì¬Ğ¯´øµÄÍ¼Æ¬ÊıÁ¿³¬¹ıÉÏÏŞÊ±Å×³ö¡£
+åŠ¨æ€æºå¸¦çš„å›¾ç‰‡æ•°é‡è¶…è¿‡ä¸Šé™æ—¶æŠ›å‡ºã€‚
 
 
 
@@ -853,7 +853,7 @@ Cookies Ë¢ĞÂ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-ExClimbWuzhi Ê§°ÜÒì³£
+ExClimbWuzhi å¤±è´¥å¼‚å¸¸
 
 
 
@@ -862,7 +862,7 @@ ExClimbWuzhi Ê§°ÜÒì³£
 
 ## class Geetest()
 
-¼«ÑéÑéÖ¤Àà
+æéªŒéªŒè¯ç±»
 
 
 
@@ -875,7 +875,7 @@ ExClimbWuzhi Ê§°ÜÒì³£
 
 ### def close_geetest_server()
 
-¹Ø±Õ±¾µØ¼«ÑéÑéÖ¤Âë·şÎñ
+å…³é—­æœ¬åœ°æéªŒéªŒè¯ç æœåŠ¡
 
 
 
@@ -884,90 +884,90 @@ ExClimbWuzhi Ê§°ÜÒì³£
 
 ### def complete_test()
 
-×÷´ğ²âÊÔ
+ä½œç­”æµ‹è¯•
 
 
 | name | type | description |
 | - | - | - |
-| `validate` | `str` | ×÷´ğ½á¹ûµÄ validate |
-| `seccode` | `str` | ×÷´ğ½á¹ûµÄ seccode |
+| `validate` | `str` | ä½œç­”ç»“æœçš„ validate |
+| `seccode` | `str` | ä½œç­”ç»“æœçš„ seccode |
 
 
 
 
 ### async def generate_test()
 
-´´½¨ÑéÖ¤Âë
+åˆ›å»ºéªŒè¯ç 
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `GeetestType` | ¼«ÑéÑéÖ¤ÂëÀàĞÍ¡£µÇÂ¼Îª LOGIN£¬µÇÂ¼ÑéÖ¤Îª VERIFY. Defaults to GeetestType.LOGIN. |
+| `type_` | `GeetestType` | æéªŒéªŒè¯ç ç±»å‹ã€‚ç™»å½•ä¸º LOGINï¼Œç™»å½•éªŒè¯ä¸º VERIFY. Defaults to GeetestType.LOGIN. |
 
 
 
 
 ### def get_geetest_server_url()
 
-»ñÈ¡±¾µØ¼«ÑéÑéÖ¤Âë·şÎñÁ´½Ó
+è·å–æœ¬åœ°æéªŒéªŒè¯ç æœåŠ¡é“¾æ¥
 
 
 
-**Returns:** `str`:  Á´½Ó
+**Returns:** `str`:  é“¾æ¥
 
 
 Raises:
-GeetestException: Î´´´½¨ÑéÖ¤Âë·şÎñ£¨ÇëÏÈµ÷ÓÃ `start_geetest_server`£©
+GeetestException: æœªåˆ›å»ºéªŒè¯ç æœåŠ¡ï¼ˆè¯·å…ˆè°ƒç”¨ `start_geetest_server`ï¼‰
 
 
 
 ### def get_info()
 
-»ñÈ¡ÑéÖ¤ÂëĞÅÏ¢
+è·å–éªŒè¯ç ä¿¡æ¯
 
 
 
-**Returns:** `GeetestMeta`:  ÑéÖ¤ÂëĞÅÏ¢
+**Returns:** `GeetestMeta`:  éªŒè¯ç ä¿¡æ¯
 
 
 
 
 ### def get_result()
 
-»ñÈ¡½á¹û
+è·å–ç»“æœ
 
 
 
-**Returns:** `GeetestMeta`:  ÑéÖ¤½á¹û
+**Returns:** `GeetestMeta`:  éªŒè¯ç»“æœ
 
 
 
 
 ### def get_test_type()
 
-»ñÈ¡²âÊÔÀàĞÍ
+è·å–æµ‹è¯•ç±»å‹
 
 
 
-**Returns:** `GeetestType`:  ²âÊÔÀàĞÍ
+**Returns:** `GeetestType`:  æµ‹è¯•ç±»å‹
 
 
 
 
 ### def has_done()
 
-ÊÇ·ñÍê³É
+æ˜¯å¦å®Œæˆ
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÍê³É
+**Returns:** `bool`:  æ˜¯å¦å®Œæˆ
 
 
 
 
 ### def start_geetest_server()
 
-¿ªÆô±¾µØ¼«ÑéÑéÖ¤Âë·şÎñ
+å¼€å¯æœ¬åœ°æéªŒéªŒè¯ç æœåŠ¡
 
 
 
@@ -976,11 +976,11 @@ GeetestException: Î´´´½¨ÑéÖ¤Âë·şÎñ£¨ÇëÏÈµ÷ÓÃ `start_geetest_server`£©
 
 ### def test_generated()
 
-µ±Ç°ÊÇ·ñÓĞ´´½¨µÄ²âÊÔ
+å½“å‰æ˜¯å¦æœ‰åˆ›å»ºçš„æµ‹è¯•
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÓĞ´´½¨µÄ²âÊÔ
+**Returns:** `bool`:  æ˜¯å¦æœ‰åˆ›å»ºçš„æµ‹è¯•
 
 
 
@@ -991,7 +991,7 @@ GeetestException: Î´´´½¨ÑéÖ¤Âë·şÎñ£¨ÇëÏÈµ÷ÓÃ `start_geetest_server`£©
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-¼«ÑéÑéÖ¤Âë´¦Àí³ö´íÊ±Å×³ö£¨ÈçÑéÖ¤Ê§°Ü¡¢·şÎñ²»¿ÉÓÃ£©¡£
+æéªŒéªŒè¯ç å¤„ç†å‡ºé”™æ—¶æŠ›å‡ºï¼ˆå¦‚éªŒè¯å¤±è´¥ã€æœåŠ¡ä¸å¯ç”¨ï¼‰ã€‚
 
 
 
@@ -1001,9 +1001,9 @@ GeetestException: Î´´´½¨ÑéÖ¤Âë·şÎñ£¨ÇëÏÈµ÷ÓÃ `start_geetest_server`£©
 
 ## class GeetestMeta()
 
-¼«ÑéÑéÖ¤ÂëÍê³ÉĞÅÏ¢
+æéªŒéªŒè¯ç å®Œæˆä¿¡æ¯
 
-NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑéÖ¤Âëºó¿ÉµÃ×Ö¶Î¡£
+NOTE: `gt`, `challenge`, `token` ä¸ºéªŒè¯ç åŸºæœ¬å­—æ®µã€‚`seccode`, `validate` ä¸ºå®ŒæˆéªŒè¯ç åå¯å¾—å­—æ®µã€‚
 
 
 
@@ -1014,10 +1014,10 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 **Extend: enum.Enum**
 
-¼«ÑéÑéÖ¤ÂëÀàĞÍ
+æéªŒéªŒè¯ç ç±»å‹
 
-- LOGIN: µÇÂ¼
-- VERIFY: µÇÂ¼ÑéÖ¤
+- LOGIN: ç™»å½•
+- VERIFY: ç™»å½•éªŒè¯
 
 
 
@@ -1032,7 +1032,7 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-Ö±²¥Ïà¹Ø²Ù×÷³ö´íÊ±Å×³ö£¨ÈçÖ±²¥¼ä²»´æÔÚ¡¢²Ù×÷±»¾Ü¾ø£©¡£
+ç›´æ’­ç›¸å…³æ“ä½œå‡ºé”™æ—¶æŠ›å‡ºï¼ˆå¦‚ç›´æ’­é—´ä¸å­˜åœ¨ã€æ“ä½œè¢«æ‹’ç»ï¼‰ã€‚
 
 
 
@@ -1042,7 +1042,7 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-µÇÂ¼Á÷³Ì³ö´íÊ±Å×³ö£¨ÈçÃÜÂë´íÎó¡¢¶şÎ¬Âë¹ıÆÚ¡¢¶ÌĞÅÑéÖ¤Ê§°Ü£©¡£
+ç™»å½•æµç¨‹å‡ºé”™æ—¶æŠ›å‡ºï¼ˆå¦‚å¯†ç é”™è¯¯ã€äºŒç»´ç è¿‡æœŸã€çŸ­ä¿¡éªŒè¯å¤±è´¥ï¼‰ã€‚
 
 
 
@@ -1052,7 +1052,7 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-ÍøÂç´íÎó¡£
+ç½‘ç»œé”™è¯¯ã€‚
 
 
 
@@ -1065,29 +1065,29 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 (@dataclasses.dataclass)
 
-Í¼Æ¬Àà£¬°üº¬Í¼Æ¬Á´½Ó¡¢³ß´çÒÔ¼°ÏÂÔØ²Ù×÷¡£
+å›¾ç‰‡ç±»ï¼ŒåŒ…å«å›¾ç‰‡é“¾æ¥ã€å°ºå¯¸ä»¥åŠä¸‹è½½æ“ä½œã€‚
 
-¿ÉÒÔ²»ÊµÀı»¯£¬ÓÃ `load_url`, `from_content` »ò `from_file` ¼ÓÔØÍ¼Æ¬¡£
+å¯ä»¥ä¸å®ä¾‹åŒ–ï¼Œç”¨ `load_url`, `from_content` æˆ– `from_file` åŠ è½½å›¾ç‰‡ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `height` | `int` | ¸ß¶È |
-| `imageType` | `str` | ¸ñÊ½£¬ÀıÈç |
-| `size` | `Any` | ´óĞ¡¡£µ¥Î» KB |
-| `url` | `str` | Í¼Æ¬Á´½Ó |
-| `width` | `int` | ¿í¶È |
-| `content` | `bytes` | Í¼Æ¬ÄÚÈİ |
+| `height` | `int` | é«˜åº¦ |
+| `imageType` | `str` | æ ¼å¼ï¼Œä¾‹å¦‚ |
+| `size` | `Any` | å¤§å°ã€‚å•ä½ KB |
+| `url` | `str` | å›¾ç‰‡é“¾æ¥ |
+| `width` | `int` | å®½åº¦ |
+| `content` | `bytes` | å›¾ç‰‡å†…å®¹ |
 
 
 ### def convert_format()
 
-½«Í¼Æ¬×ª»»ÎªÁíÒ»ÖÖ¸ñÊ½¡£
+å°†å›¾ç‰‡è½¬æ¢ä¸ºå¦ä¸€ç§æ ¼å¼ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `new_format` | `str` | ĞÂµÄ¸ñÊ½¡£Àı£º`png`, `ico`, `webp`. |
+| `new_format` | `str` | æ–°çš„æ ¼å¼ã€‚ä¾‹ï¼š`png`, `ico`, `webp`. |
 
 **Returns:** `Picture`:  `self`
 
@@ -1098,15 +1098,15 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 ### def from_content()
 
-¼ÓÔØ×Ö½ÚÊı¾İ
+åŠ è½½å­—èŠ‚æ•°æ®
 
 
 | name | type | description |
 | - | - | - |
-| `content` | `str` | Í¼Æ¬ÄÚÈİ |
-| `format` | `str` | Í¼Æ¬ºó×ºÃû£¬Èç `webp`, `jpg`, `ico` |
+| `content` | `str` | å›¾ç‰‡å†…å®¹ |
+| `format` | `str` | å›¾ç‰‡åç¼€åï¼Œå¦‚ `webp`, `jpg`, `ico` |
 
-**Returns:** `Picture`:  ¼ÓÔØºóµÄÍ¼Æ¬¶ÔÏó
+**Returns:** `Picture`:  åŠ è½½åçš„å›¾ç‰‡å¯¹è±¡
 
 
 
@@ -1115,14 +1115,14 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 ### def from_file()
 
-¼ÓÔØ±¾µØÍ¼Æ¬¡£
+åŠ è½½æœ¬åœ°å›¾ç‰‡ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `path` | `str` | Í¼Æ¬µØÖ· |
+| `path` | `str` | å›¾ç‰‡åœ°å€ |
 
-**Returns:** `Picture`:  ¼ÓÔØºóµÄÍ¼Æ¬¶ÔÏó
+**Returns:** `Picture`:  åŠ è½½åçš„å›¾ç‰‡å¯¹è±¡
 
 
 
@@ -1131,27 +1131,27 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 ### async def load_url()
 
-¼ÓÔØÍøÂçÍ¼Æ¬¡£(async ·½·¨)
+åŠ è½½ç½‘ç»œå›¾ç‰‡ã€‚(async æ–¹æ³•)
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | Í¼Æ¬Á´½Ó |
+| `url` | `str` | å›¾ç‰‡é“¾æ¥ |
 
-**Returns:** `Picture`:  ¼ÓÔØºóµÄÍ¼Æ¬¶ÔÏó
+**Returns:** `Picture`:  åŠ è½½åçš„å›¾ç‰‡å¯¹è±¡
 
 
 
 
 ### def resize()
 
-µ÷Õû´óĞ¡
+è°ƒæ•´å¤§å°
 
 
 | name | type | description |
 | - | - | - |
-| `width` | `int` | ¿í¶È |
-| `height` | `int` | ¸ß¶È |
+| `width` | `int` | å®½åº¦ |
+| `height` | `int` | é«˜åº¦ |
 
 **Returns:** `Picture`:  `self`
 
@@ -1160,12 +1160,12 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 ### def to_file()
 
-ÏÂÔØÍ¼Æ¬ÖÁ±¾µØ¡£
+ä¸‹è½½å›¾ç‰‡è‡³æœ¬åœ°ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `path` | `str` | ÏÂÔØµØÖ·¡£ |
+| `path` | `str` | ä¸‹è½½åœ°å€ã€‚ |
 
 **Returns:** `Picture`:  `self`
 
@@ -1174,23 +1174,23 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 ### def to_json()
 
-×ª»»Îª bilibili api ÖĞµÄ json ¸ñÊ½£¬Ìá¹©Í¼Æ¬Á´½Ó/³¤¿í/´óĞ¡
+è½¬æ¢ä¸º bilibili api ä¸­çš„ json æ ¼å¼ï¼Œæä¾›å›¾ç‰‡é“¾æ¥/é•¿å®½/å¤§å°
 
 
 
-**Returns:** `dict`:  Í¼Æ¬Á´½Ó/³¤¿í/´óĞ¡
+**Returns:** `dict`:  å›¾ç‰‡é“¾æ¥/é•¿å®½/å¤§å°
 
 
 
 
 ### async def upload()
 
-ÉÏ´«Í¼Æ¬ÖÁ B Õ¾¡£
+ä¸Šä¼ å›¾ç‰‡è‡³ B ç«™ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
 **Returns:** `Picture`:  `self`
 
@@ -1199,12 +1199,12 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 ### async def upload_by_note()
 
-Í¨¹ı±Ê¼Ç½Ó¿ÚÉÏ´«Í¼Æ¬ÖÁ B Õ¾¡£
+é€šè¿‡ç¬”è®°æ¥å£ä¸Šä¼ å›¾ç‰‡è‡³ B ç«™ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
 **Returns:** `Picture`:  `self`
 
@@ -1217,28 +1217,28 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 **Extend: enum.Enum**
 
-Á´½ÓÀàĞÍÀà¡£
+é“¾æ¥ç±»å‹ç±»ã€‚
 
-+ VIDEO: ÊÓÆµ
-+ BANGUMI: ·¬¾ç
-+ EPISODE: ·¬¾ç¾ç¼¯
-+ FAVORITE_LIST: ÊÓÆµÊÕ²Ø¼Ğ
-+ CHEESE: ¿Î³Ì
-+ CHEESE_VIDEO: ¿Î³ÌÊÓÆµ
-+ AUDIO: ÒôÆµ
-+ AUDIO_LIST: ¸èµ¥
-+ ARTICLE: ×¨À¸
-+ USER: ÓÃ»§
-+ LIVE: Ö±²¥¼ä
-+ CHANNEL_SERIES: ºÏ¼¯ÓëÁĞ±í
-+ BLACK_ROOM: Ğ¡ºÚÎİ
-+ GAME: ÓÎÏ·
-+ TOPIC: »°Ìâ
-+ MANGA: Âş»­
-+ NOTE: ±Ê¼Ç
-+ OPUS: Í¼ÎÄ
-+ DLC: ÊÕ²Ø¼¯
-+ FAILED: ´íÎó
++ VIDEO: è§†é¢‘
++ BANGUMI: ç•ªå‰§
++ EPISODE: ç•ªå‰§å‰§é›†
++ FAVORITE_LIST: è§†é¢‘æ”¶è—å¤¹
++ CHEESE: è¯¾ç¨‹
++ CHEESE_VIDEO: è¯¾ç¨‹è§†é¢‘
++ AUDIO: éŸ³é¢‘
++ AUDIO_LIST: æ­Œå•
++ ARTICLE: ä¸“æ 
++ USER: ç”¨æˆ·
++ LIVE: ç›´æ’­é—´
++ CHANNEL_SERIES: åˆé›†ä¸åˆ—è¡¨
++ BLACK_ROOM: å°é»‘å±‹
++ GAME: æ¸¸æˆ
++ TOPIC: è¯é¢˜
++ MANGA: æ¼«ç”»
++ NOTE: ç¬”è®°
++ OPUS: å›¾æ–‡
++ DLC: æ”¶è—é›†
++ FAILED: é”™è¯¯
 
 
 
@@ -1249,7 +1249,7 @@ NOTE: `gt`, `challenge`, `token` ÎªÑéÖ¤Âë»ù±¾×Ö¶Î¡£`seccode`, `validate` ÎªÍê³ÉÑ
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-API ·µ»Ø code ´íÎó¡£
+API è¿”å› code é”™è¯¯ã€‚
 
 
 
@@ -1260,7 +1260,7 @@ API ·µ»Ø code ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-ÇëÇóÏìÓ¦²»·ûºÏÔ¤ÆÚÊ±Å×³ö£¨ÈçÎŞ·¨½âÎöÏìÓ¦ÄÚÈİ£©¡£
+è¯·æ±‚å“åº”ä¸ç¬¦åˆé¢„æœŸæ—¶æŠ›å‡ºï¼ˆå¦‚æ— æ³•è§£æå“åº”å†…å®¹ï¼‰ã€‚
 
 
 
@@ -1277,11 +1277,11 @@ API ·µ»Ø code ´íÎó¡£
 
 | name | type | description |
 | - | - | - |
-| `content` | `str` | µ¯Ä»ÄÚÈİ |
-| `id_` | `int` | µ¯Ä» id. Defaults to -1. |
-| `id_str` | `str` | µ¯Ä» id (string ÀàĞÍ). Defaults to "". |
-| `mode` | `Union[DmMode, int]` | µ¯Ä»ÀàĞÍ. Defaults to DmMode.SPECIAL. |
-| `pool` | `int` | µ¯Ä»³Ø. Defaults to 2. |
+| `content` | `str` | å¼¹å¹•å†…å®¹ |
+| `id_` | `int` | å¼¹å¹• id. Defaults to -1. |
+| `id_str` | `str` | å¼¹å¹• id (string ç±»å‹). Defaults to "". |
+| `mode` | `Union[DmMode, int]` | å¼¹å¹•ç±»å‹. Defaults to DmMode.SPECIAL. |
+| `pool` | `int` | å¼¹å¹•æ± . Defaults to 2. |
 
 
 ---
@@ -1290,7 +1290,7 @@ API ·µ»Ø code ´íÎó¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-API ¶¨ÒåÓï¾ä£¨data/api/*.json£©´íÎóÊ±Å×³ö¡£
+API å®šä¹‰è¯­å¥ï¼ˆdata/api/*.jsonï¼‰é”™è¯¯æ—¶æŠ›å‡ºã€‚
 
 
 
@@ -1300,7 +1300,7 @@ API ¶¨ÒåÓï¾ä£¨data/api/*.json£©´íÎóÊ±Å×³ö¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-ÊÓÆµÉÏ´«¹ı³Ì³ö´íÊ±Å×³ö£¨Èç·ÖÆ¬ÉÏ´«Ê§°Ü¡¢Ìá½»±»¾Ü¾ø£©¡£
+è§†é¢‘ä¸Šä¼ è¿‡ç¨‹å‡ºé”™æ—¶æŠ›å‡ºï¼ˆå¦‚åˆ†ç‰‡ä¸Šä¼ å¤±è´¥ã€æäº¤è¢«æ‹’ç»ï¼‰ã€‚
 
 
 
@@ -1310,7 +1310,7 @@ API ¶¨ÒåÓï¾ä£¨data/api/*.json£©´íÎóÊ±Å×³ö¡£
 
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
-WBI Ç©ÃûĞ£ÑéÊ§°ÜÖØÊÔ´ÎÊı³¬¹ıÉÏÏŞÊ±Å×³ö¡£
+WBI ç­¾åæ ¡éªŒå¤±è´¥é‡è¯•æ¬¡æ•°è¶…è¿‡ä¸Šé™æ—¶æŠ›å‡ºã€‚
 
 
 
@@ -1318,13 +1318,13 @@ WBI Ç©ÃûĞ£ÑéÊ§°ÜÖØÊÔ´ÎÊı³¬¹ıÉÏÏŞÊ±Å×³ö¡£
 
 ## def aid2bvid()
 
-AV ºÅ×ª BV ºÅ¡£
+AV å·è½¬ BV å·ã€‚
 
 | name | type | description |
 | - | - | - |
-| `aid` | `int` | AV ºÅ¡£ |
+| `aid` | `int` | AV å·ã€‚ |
 
-**Returns:** `str`:  BV ºÅ¡£
+**Returns:** `str`:  BV å·ã€‚
 
 
 
@@ -1333,18 +1333,18 @@ AV ºÅ×ª BV ºÅ¡£
 
 ## async def bili_simple_download()
 
-ÊÊÓÃÓÚÏÂÔØ bilibili Á´½ÓµÄ¼òÒ×ÖÕ¶ËÏÂÔØº¯Êı
+é€‚ç”¨äºä¸‹è½½ bilibili é“¾æ¥çš„ç®€æ˜“ç»ˆç«¯ä¸‹è½½å‡½æ•°
 
-Ä¬ÈÏ»áĞ¯´ø HEADERS ·ÃÎÊÁ´½Ó£¬±ÜÃâ 403
+é»˜è®¤ä¼šæºå¸¦ HEADERS è®¿é—®é“¾æ¥ï¼Œé¿å… 403
 
-ÓÃÍ¾¾ÙÀı£ºÏÂÔØ video.get_download_url ·µ»Ø½á¹ûÖĞµÄÁ´½Ó
+ç”¨é€”ä¸¾ä¾‹ï¼šä¸‹è½½ video.get_download_url è¿”å›ç»“æœä¸­çš„é“¾æ¥
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | Á´½Ó |
-| `out` | `str` | Êä³öµØÖ· |
-| `intro` | `str` | ÏÂÔØ¼òÊö |
+| `url` | `str` | é“¾æ¥ |
+| `out` | `str` | è¾“å‡ºåœ°å€ |
+| `intro` | `str` | ä¸‹è½½ç®€è¿° |
 
 
 
@@ -1353,13 +1353,13 @@ AV ºÅ×ª BV ºÅ¡£
 
 ## def bvid2aid()
 
-BV ºÅ×ª AV ºÅ¡£
+BV å·è½¬ AV å·ã€‚
 
 | name | type | description |
 | - | - | - |
-| `bvid` | `str` | BV ºÅ¡£ |
+| `bvid` | `str` | BV å·ã€‚ |
 
-**Returns:** `int`:  AV ºÅ¡£
+**Returns:** `int`:  AV å·ã€‚
 
 
 
@@ -1368,11 +1368,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def get_available_settings()
 
-»ñÈ¡µ±Ç°Ö§³ÖµÄÉèÖÃÏî
+è·å–å½“å‰æ”¯æŒçš„è®¾ç½®é¡¹
 
 
 
-**Returns:** `List[str]`:  Ö§³ÖµÄÉèÖÃÏîÃû³Æ
+**Returns:** `List[str]`:  æ”¯æŒçš„è®¾ç½®é¡¹åç§°
 
 
 
@@ -1381,12 +1381,12 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## async def get_bili_ticket()
 
-»ñÈ¡ bili_ticket
+è·å– bili_ticket
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential, optional` | Æ¾¾İ. Defaults to None. |
+| `credential` | `Credential, optional` | å‡­æ®. Defaults to None. |
 
 **Returns:** `Tuple[str, str]`:  bili_ticket, bili_ticket_expires
 
@@ -1397,11 +1397,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## async def get_buvid()
 
-»ñÈ¡ buvid3 ºÍ buvid4
+è·å– buvid3 å’Œ buvid4
 
 
 
-**Returns:** `Tuple[str, str]`:  µÚ 0 ÏîÎª buvid3£¬µÚ 1 ÏîÎª buvid4¡£
+**Returns:** `Tuple[str, str]`:  ç¬¬ 0 é¡¹ä¸º buvid3ï¼Œç¬¬ 1 é¡¹ä¸º buvid4ã€‚
 
 
 
@@ -1410,11 +1410,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def get_client()
 
-ÔÚµ±Ç°ÊÂ¼şÑ­»·ÏÂ»ñÈ¡Ä£¿éÕıÔÚÊ¹ÓÃµÄÇëÇó¿Í»§¶Ë
+åœ¨å½“å‰äº‹ä»¶å¾ªç¯ä¸‹è·å–æ¨¡å—æ­£åœ¨ä½¿ç”¨çš„è¯·æ±‚å®¢æˆ·ç«¯
 
 
 
-**Returns:** `BiliAPIClient`:  ÇëÇó¿Í»§¶Ë
+**Returns:** `BiliAPIClient`:  è¯·æ±‚å®¢æˆ·ç«¯
 
 
 
@@ -1423,15 +1423,15 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## async def get_real_url()
 
-»ñÈ¡¶ÌÁ´½ÓÌø×ªÄ¿±ê£¬ÒÔ½øĞĞ²Ù×÷¡£
+è·å–çŸ­é“¾æ¥è·³è½¬ç›®æ ‡ï¼Œä»¥è¿›è¡Œæ“ä½œã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `short_url` | `str` | ¶ÌÁ´½Ó¡£ |
-| `credential` | `Credential \| None` | Æ¾¾İÀà¡£ |
+| `short_url` | `str` | çŸ­é“¾æ¥ã€‚ |
+| `credential` | `Credential \| None` | å‡­æ®ç±»ã€‚ |
 
-**Returns:** `str`:  Ä¿±êÁ´½Ó£¨Èç¹û²»ÊÇÓĞĞ§µÄÁ´½Ó»á±¨´í£©
+**Returns:** `str`:  ç›®æ ‡é“¾æ¥ï¼ˆå¦‚æœä¸æ˜¯æœ‰æ•ˆçš„é“¾æ¥ä¼šæŠ¥é”™ï¼‰
 
 
 
@@ -1440,11 +1440,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def get_registered_available_settings()
 
-»ñÈ¡ËùÓĞ×¢²á¹ıµÄ BiliAPIClient ËùÖ§³ÖµÄÉèÖÃÏî
+è·å–æ‰€æœ‰æ³¨å†Œè¿‡çš„ BiliAPIClient æ‰€æ”¯æŒçš„è®¾ç½®é¡¹
 
 
 
-**Returns:** `Dict[str, List[str]]`:  ËùÓĞ×¢²á¹ıµÄ BiliAPIClient ËùÖ§³ÖµÄÉèÖÃÏî
+**Returns:** `Dict[str, List[str]]`:  æ‰€æœ‰æ³¨å†Œè¿‡çš„ BiliAPIClient æ‰€æ”¯æŒçš„è®¾ç½®é¡¹
 
 
 
@@ -1453,11 +1453,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def get_registered_clients()
 
-»ñÈ¡ËùÓĞ×¢²á¹ıµÄ BiliAPIClient
+è·å–æ‰€æœ‰æ³¨å†Œè¿‡çš„ BiliAPIClient
 
 
 
-**Returns:** `Dict[str, Type[BiliAPIClient]]`:  ×¢²á¹ıµÄ BiliAPIClient
+**Returns:** `Dict[str, Type[BiliAPIClient]]`:  æ³¨å†Œè¿‡çš„ BiliAPIClient
 
 
 
@@ -1466,11 +1466,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def get_selected_client()
 
-»ñÈ¡ÓÃ»§Ñ¡ÔñµÄÇëÇó¿Í»§¶ËÃû³ÆºÍ¶ÔÓ¦µÄÀà
+è·å–ç”¨æˆ·é€‰æ‹©çš„è¯·æ±‚å®¢æˆ·ç«¯åç§°å’Œå¯¹åº”çš„ç±»
 
 
 
-**Returns:** `Tuple[str, Type[BiliAPIClient]]`:  µÚ 0 ÏîÎª¿Í»§¶ËÃû³Æ£¬µÚ 1 ÏîÎª¶ÔÓ¦µÄÀà
+**Returns:** `Tuple[str, Type[BiliAPIClient]]`:  ç¬¬ 0 é¡¹ä¸ºå®¢æˆ·ç«¯åç§°ï¼Œç¬¬ 1 é¡¹ä¸ºå¯¹åº”çš„ç±»
 
 
 
@@ -1479,11 +1479,11 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def get_session()
 
-ÔÚµ±Ç°ÊÂ¼şÑ­»·ÏÂ»ñÈ¡ÇëÇó¿Í»§¶ËµÄ»á»°¶ÔÏó¡£
+åœ¨å½“å‰äº‹ä»¶å¾ªç¯ä¸‹è·å–è¯·æ±‚å®¢æˆ·ç«¯çš„ä¼šè¯å¯¹è±¡ã€‚
 
 
 
-**Returns:** `object`:  »á»°¶ÔÏó
+**Returns:** `object`:  ä¼šè¯å¯¹è±¡
 
 
 
@@ -1492,15 +1492,15 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## async def parse_link()
 
-µ÷ÓÃ yarl ½âÎö bilibili url µÄº¯Êı¡£
+è°ƒç”¨ yarl è§£æ bilibili url çš„å‡½æ•°ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | Á´½Ó |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `url` | `str` | é“¾æ¥ |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
-**Returns:** `Tuple[obj, ResourceType]`:  (¶ÔÏó£¬ÀàĞÍ) »ò -1,-1 ±íÊ¾³ö´í
+**Returns:** `Tuple[obj, ResourceType]`:  (å¯¹è±¡ï¼Œç±»å‹) æˆ– -1,-1 è¡¨ç¤ºå‡ºé”™
 
 
 
@@ -1509,7 +1509,7 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def recalculate_wbi()
 
-ÖØĞÂ¼ÆËã wbi µÄ²ÎÊı
+é‡æ–°è®¡ç®— wbi çš„å‚æ•°
 
 
 
@@ -1519,7 +1519,7 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def refresh_bili_ticket()
 
-Ë¢ĞÂ bili_ticket
+åˆ·æ–° bili_ticket
 
 
 
@@ -1529,7 +1529,7 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def refresh_buvid()
 
-Ë¢ĞÂÄ£¿é×Ô¶¯Éú³ÉµÄ buvid3 ºÍ buvid4
+åˆ·æ–°æ¨¡å—è‡ªåŠ¨ç”Ÿæˆçš„ buvid3 å’Œ buvid4
 
 
 
@@ -1539,14 +1539,14 @@ BV ºÅ×ª AV ºÅ¡£
 
 ## def register_client()
 
-×¢²áÇëÇó¿Í»§¶Ë²¢ÇĞ»»£¬¿ÉÓÃÓÚÓÃ»§×Ô¶¨ÒåÇëÇó¿Í»§¶Ë¡£
+æ³¨å†Œè¯·æ±‚å®¢æˆ·ç«¯å¹¶åˆ‡æ¢ï¼Œå¯ç”¨äºç”¨æˆ·è‡ªå®šä¹‰è¯·æ±‚å®¢æˆ·ç«¯ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÇëÇó¿Í»§¶ËÀàĞÍÃû³Æ£¬ÓÃ»§×Ô¶¨ÒåÃüÃû¡£ |
-| `cls` | `type` | »ùÓÚ BiliAPIClient ÖØĞ´ºóµÄÇëÇó¿Í»§¶ËÀà¡£ |
-| `settings` | `Dict \| None` | ÇëÇó¿Í»§¶ËÔÚ»ù´¡ÉèÖÃÍâµÄÆäËûÉèÖÃ£¬¼üÎªÉèÖÃÃû³Æ£¬ÖµÎªÉèÖÃÄ¬ÈÏÖµ¡£Defaults to None£¨µÈ¼ÛÓÚ {}£©. |
+| `name` | `str` | è¯·æ±‚å®¢æˆ·ç«¯ç±»å‹åç§°ï¼Œç”¨æˆ·è‡ªå®šä¹‰å‘½åã€‚ |
+| `cls` | `type` | åŸºäº BiliAPIClient é‡å†™åçš„è¯·æ±‚å®¢æˆ·ç«¯ç±»ã€‚ |
+| `settings` | `Dict \| None` | è¯·æ±‚å®¢æˆ·ç«¯åœ¨åŸºç¡€è®¾ç½®å¤–çš„å…¶ä»–è®¾ç½®ï¼Œé”®ä¸ºè®¾ç½®åç§°ï¼Œå€¼ä¸ºè®¾ç½®é»˜è®¤å€¼ã€‚Defaults to Noneï¼ˆç­‰ä»·äº {}ï¼‰. |
 
 
 
@@ -1558,9 +1558,9 @@ BV ºÅ×ª AV ºÅ¡£
 **Extend: AsyncEvent**
 
 
-ÇëÇóÈÕÖ¾Ö§³Ö£¬Ä¬ÈÏÖ§³ÖÊä³öµ½Ö¸¶¨ I/O ¶ÔÏó¡£
+è¯·æ±‚æ—¥å¿—æ”¯æŒï¼Œé»˜è®¤æ”¯æŒè¾“å‡ºåˆ°æŒ‡å®š I/O å¯¹è±¡ã€‚
 
-¿ÉÒÔÌí¼Ó¸ü¶à¼àÌıÆ÷´ïµ½¸ü¶àĞ§¹û¡£
+å¯ä»¥æ·»åŠ æ›´å¤šç›‘å¬å™¨è¾¾åˆ°æ›´å¤šæ•ˆæœã€‚
 
 Logger: request_log.logger
 
@@ -1568,25 +1568,25 @@ Extends: AsyncEvent
 
 Events:
 
-- (Ä£¿é×Ô´ø BiliAPIClient)
-- REQUEST:     HTTP ÇëÇó¡£
-- RESPONSE:    HTTP ÏìÓ¦¡£
-- WS_CREATE:   ĞÂ½¨µÄ Websocket ÇëÇó¡£
-- WS_RECV:     »ñµÃµ½ WebSocket ÇëÇó¡£
-- WS_SEND:     ·¢ËÍÁË WebSocket ÇëÇó¡£
-- WS_CLOSE:    ¹Ø±Õ WebSocket ÇëÇó¡£
-- DWN_CREATE:  ĞÂ½¨ÏÂÔØ¡£
-- DWN_PART:    ²¿·ÖÏÂÔØ¡£
-- DWN_CLOSE:   ½áÊøÏÂÔØ¡£
+- (æ¨¡å—è‡ªå¸¦ BiliAPIClient)
+- REQUEST:     HTTP è¯·æ±‚ã€‚
+- RESPONSE:    HTTP å“åº”ã€‚
+- WS_CREATE:   æ–°å»ºçš„ Websocket è¯·æ±‚ã€‚
+- WS_RECV:     è·å¾—åˆ° WebSocket è¯·æ±‚ã€‚
+- WS_SEND:     å‘é€äº† WebSocket è¯·æ±‚ã€‚
+- WS_CLOSE:    å…³é—­ WebSocket è¯·æ±‚ã€‚
+- DWN_CREATE:  æ–°å»ºä¸‹è½½ã€‚
+- DWN_PART:    éƒ¨åˆ†ä¸‹è½½ã€‚
+- DWN_CLOSE:   ç»“æŸä¸‹è½½ã€‚
 - (Api)
-- API_REQUEST: Api ÇëÇó¡£
-- API_RESPONSE: Api ÏìÓ¦¡£
-- (·´ÅÀ³æ)
-- ANTI_SPIDER: ·´ÅÀ³æÏà¹ØĞÅÏ¢¡£
+- API_REQUEST: Api è¯·æ±‚ã€‚
+- API_RESPONSE: Api å“åº”ã€‚
+- (åçˆ¬è™«)
+- ANTI_SPIDER: åçˆ¬è™«ç›¸å…³ä¿¡æ¯ã€‚
 
-CallbackData: ÃèÊö (str) Êı¾İ (dict)
+CallbackData: æè¿° (str) æ•°æ® (dict)
 
-Ê¾Àı£º
+ç¤ºä¾‹ï¼š
 
 ``` python
 @request_log.on("REQUEST")
@@ -1594,75 +1594,75 @@ async def handle(desc: str, data: dict) -> None:
     print(desc, data)
 ```
 
-Ä¬ÈÏÆôÓÃ Api ºÍ Anti-Spider Ïà¹ØĞÅÏ¢¡£
+é»˜è®¤å¯ç”¨ Api å’Œ Anti-Spider ç›¸å…³ä¿¡æ¯ã€‚
 
 
 
 ### def get_ignore_events()
 
-»ñÈ¡ÈÕÖ¾Êä³öÅÅ³ıµÄÊÂ¼şÀàĞÍ
+è·å–æ—¥å¿—è¾“å‡ºæ’é™¤çš„äº‹ä»¶ç±»å‹
 
 
 
-**Returns:** `List[str]`:  ÈÕÖ¾Êä³öÅÅ³ıµÄÊÂ¼şÀàĞÍ
+**Returns:** `List[str]`:  æ—¥å¿—è¾“å‡ºæ’é™¤çš„äº‹ä»¶ç±»å‹
 
 
 
 
 ### def get_on_events()
 
-»ñÈ¡ÈÕÖ¾Êä³öÖ§³ÖµÄÊÂ¼şÀàĞÍ
+è·å–æ—¥å¿—è¾“å‡ºæ”¯æŒçš„äº‹ä»¶ç±»å‹
 
 
 
-**Returns:** `List[str]`:  ÈÕÖ¾Êä³öÖ§³ÖµÄÊÂ¼şÀàĞÍ
+**Returns:** `List[str]`:  æ—¥å¿—è¾“å‡ºæ”¯æŒçš„äº‹ä»¶ç±»å‹
 
 
 
 
 ### def is_on()
 
-»ñÈ¡ÈÕÖ¾Êä³öÊÇ·ñÆôÓÃ
+è·å–æ—¥å¿—è¾“å‡ºæ˜¯å¦å¯ç”¨
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÆôÓÃ
+**Returns:** `bool`:  æ˜¯å¦å¯ç”¨
 
 
 
 
 ### def set_ignore_events()
 
-ÉèÖÃÈÕÖ¾Êä³öÅÅ³ıµÄÊÂ¼şÀàĞÍ
+è®¾ç½®æ—¥å¿—è¾“å‡ºæ’é™¤çš„äº‹ä»¶ç±»å‹
 
 
 | name | type | description |
 | - | - | - |
-| `events` | `List[str]` | ÈÕÖ¾Êä³öÅÅ³ıµÄÊÂ¼şÀàĞÍ |
+| `events` | `List[str]` | æ—¥å¿—è¾“å‡ºæ’é™¤çš„äº‹ä»¶ç±»å‹ |
 
 
 
 
 ### def set_on()
 
-ÉèÖÃÈÕÖ¾Êä³öÊÇ·ñÆôÓÃ
+è®¾ç½®æ—¥å¿—è¾“å‡ºæ˜¯å¦å¯ç”¨
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool` | ÊÇ·ñÆôÓÃ |
+| `status` | `bool` | æ˜¯å¦å¯ç”¨ |
 
 
 
 
 ### def set_on_events()
 
-ÉèÖÃÈÕÖ¾Êä³öÖ§³ÖµÄÊÂ¼şÀàĞÍ
+è®¾ç½®æ—¥å¿—è¾“å‡ºæ”¯æŒçš„äº‹ä»¶ç±»å‹
 
 
 | name | type | description |
 | - | - | - |
-| `events` | `List[str]` | ÈÕÖ¾Êä³öÖ§³ÖµÄÊÂ¼şÀàĞÍ |
+| `events` | `List[str]` | æ—¥å¿—è¾“å‡ºæ”¯æŒçš„äº‹ä»¶ç±»å‹ |
 
 
 
@@ -1671,88 +1671,88 @@ async def handle(desc: str, data: dict) -> None:
 
 ## var request_settings
 
-ÇëÇó²ÎÊıÉèÖÃ
+è¯·æ±‚å‚æ•°è®¾ç½®
 
 
 
 ### def get()
 
-»ñÈ¡Ä³ÏîÉèÖÃ
+è·å–æŸé¡¹è®¾ç½®
 
-²»¿ÉÓÃÓÚ `wbi_retry_times` `enable_auto_buvid` `enable_bili_ticket`
+ä¸å¯ç”¨äº `wbi_retry_times` `enable_auto_buvid` `enable_bili_ticket`
 
-Ä¬ÈÏÉèÖÃÃû³Æ£º`proxy` `timeout` `verify_ssl` `trust_env`
+é»˜è®¤è®¾ç½®åç§°ï¼š`proxy` `timeout` `verify_ssl` `trust_env`
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÉèÖÃÃû³Æ |
+| `name` | `str` | è®¾ç½®åç§° |
 
-**Returns:** `Any`:  ÉèÖÃµÄÖµ
+**Returns:** `Any`:  è®¾ç½®çš„å€¼
 
 
 
 
 ### def get_all()
 
-»ñÈ¡Ä¿Ç°ËùÓĞµÄÉèÖÃÏî
+è·å–ç›®å‰æ‰€æœ‰çš„è®¾ç½®é¡¹
 
-²»¿ÉÓÃÓÚ `wbi_retry_times` `enable_auto_buvid` `enable_bili_ticket`
+ä¸å¯ç”¨äº `wbi_retry_times` `enable_auto_buvid` `enable_bili_ticket`
 
 
 
-**Returns:** `dict`:  ËùÓĞµÄÉèÖÃÏî
+**Returns:** `dict`:  æ‰€æœ‰çš„è®¾ç½®é¡¹
 
 
 
 
 ### def get_enable_auto_buvid()
 
-»ñÈ¡ÉèÖÃµÄÊÇ·ñ×Ô¶¯Éú³É buvid
+è·å–è®¾ç½®çš„æ˜¯å¦è‡ªåŠ¨ç”Ÿæˆ buvid
 
 
 
-**Returns:** `bool`:  ÊÇ·ñ×Ô¶¯Éú³É buvid. Defaults to True.
+**Returns:** `bool`:  æ˜¯å¦è‡ªåŠ¨ç”Ÿæˆ buvid. Defaults to True.
 
 
 
 
 ### def get_enable_bili_ticket()
 
-»ñÈ¡ÉèÖÃµÄÊÇ·ñÊ¹ÓÃ bili_ticket
+è·å–è®¾ç½®çš„æ˜¯å¦ä½¿ç”¨ bili_ticket
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÊ¹ÓÃ bili_ticket. Defaults to True.
+**Returns:** `bool`:  æ˜¯å¦ä½¿ç”¨ bili_ticket. Defaults to True.
 
 
 
 
 ### def get_proxy()
 
-»ñÈ¡ÉèÖÃµÄ´úÀí
+è·å–è®¾ç½®çš„ä»£ç†
 
 
 
-**Returns:** `str`:  ´úÀíµØÖ·. Defaults to "".
+**Returns:** `str`:  ä»£ç†åœ°å€. Defaults to "".
 
 
 
 
 ### def get_timeout()
 
-»ñÈ¡ÉèÖÃµÄ web ÇëÇó³¬Ê±Ê±¼ä
+è·å–è®¾ç½®çš„ web è¯·æ±‚è¶…æ—¶æ—¶é—´
 
 
 
-**Returns:** `float`:  ³¬Ê±Ê±¼ä£¨Ãë£©£¬`<= 0` ±íÊ¾²»ÏŞÊ±. Defaults to 30.0.
+**Returns:** `float`:  è¶…æ—¶æ—¶é—´ï¼ˆç§’ï¼‰ï¼Œ`<= 0` è¡¨ç¤ºä¸é™æ—¶. Defaults to 30.0.
 
 
 
 
 ### def get_trust_env()
 
-»ñÈ¡ÉèÖÃµÄ `trust_env`
+è·å–è®¾ç½®çš„ `trust_env`
 
 
 
@@ -1763,96 +1763,96 @@ async def handle(desc: str, data: dict) -> None:
 
 ### def get_verify_ssl()
 
-»ñÈ¡ÉèÖÃµÄÊÇ·ñÑéÖ¤ SSL
+è·å–è®¾ç½®çš„æ˜¯å¦éªŒè¯ SSL
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÑéÖ¤ SSL. Defaults to True.
+**Returns:** `bool`:  æ˜¯å¦éªŒè¯ SSL. Defaults to True.
 
 
 
 
 ### def get_wbi_retry_times()
 
-»ñÈ¡ÉèÖÃµÄ wbi ÖØÊÔ´ÎÊı
+è·å–è®¾ç½®çš„ wbi é‡è¯•æ¬¡æ•°
 
 
 
-**Returns:** `int`:  wbi ÖØÊÔ´ÎÊı. Defaults to 3.
+**Returns:** `int`:  wbi é‡è¯•æ¬¡æ•°. Defaults to 3.
 
 
 
 
 ### def set()
 
-ÉèÖÃÄ³ÏîÉèÖÃ
+è®¾ç½®æŸé¡¹è®¾ç½®
 
-²»¿ÉÓÃÓÚ `wbi_retry_times` `enable_auto_buvid` `enable_bili_ticket`
+ä¸å¯ç”¨äº `wbi_retry_times` `enable_auto_buvid` `enable_bili_ticket`
 
-Ä¬ÈÏÉèÖÃÃû³Æ£º`proxy` `timeout` `verify_ssl` `trust_env`
+é»˜è®¤è®¾ç½®åç§°ï¼š`proxy` `timeout` `verify_ssl` `trust_env`
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÉèÖÃÃû³Æ |
-| `value` | `str` | ÉèÖÃµÄÖµ |
+| `name` | `str` | è®¾ç½®åç§° |
+| `value` | `str` | è®¾ç½®çš„å€¼ |
 
 
 
 
 ### def set_enable_auto_buvid()
 
-ÉèÖÃÊÇ·ñ×Ô¶¯Éú³É buvid
+è®¾ç½®æ˜¯å¦è‡ªåŠ¨ç”Ÿæˆ buvid
 
 
 | name | type | description |
 | - | - | - |
-| `enable_auto_buvid` | `bool` | ÊÇ·ñ×Ô¶¯Éú³É buvid. |
+| `enable_auto_buvid` | `bool` | æ˜¯å¦è‡ªåŠ¨ç”Ÿæˆ buvid. |
 
 
 
 
 ### def set_enable_bili_ticket()
 
-ÉèÖÃÊÇ·ñÊ¹ÓÃ bili_ticket
+è®¾ç½®æ˜¯å¦ä½¿ç”¨ bili_ticket
 
 
 | name | type | description |
 | - | - | - |
-| `enable_bili_ticket` | `bool` | ÊÇ·ñÊ¹ÓÃ bili_ticket. |
+| `enable_bili_ticket` | `bool` | æ˜¯å¦ä½¿ç”¨ bili_ticket. |
 
 
 
 
 ### def set_proxy()
 
-ĞŞ¸ÄÉèÖÃµÄ´úÀí
+ä¿®æ”¹è®¾ç½®çš„ä»£ç†
 
 
 | name | type | description |
 | - | - | - |
-| `proxy` | `str` | ´úÀíµØÖ· |
+| `proxy` | `str` | ä»£ç†åœ°å€ |
 
 
 
 
 ### def set_timeout()
 
-ĞŞ¸ÄÉèÖÃµÄ web ÇëÇó³¬Ê±Ê±¼ä£¨Ãë£©¡£
-`timeout <= 0` ±íÊ¾²»ÏŞÊ±£¨ÈıÖÖÇëÇó¿Í»§¶Ë¾ùÒÑ¹éÒ»»¯Îª¸÷×Ôµ×²ã¿âµÄÎŞÏŞÊ±±íÊ¾£©¡£
-Ä¬ÈÏÖµÎª 30.0¡£
+ä¿®æ”¹è®¾ç½®çš„ web è¯·æ±‚è¶…æ—¶æ—¶é—´ï¼ˆç§’ï¼‰ã€‚
+`timeout <= 0` è¡¨ç¤ºä¸é™æ—¶ï¼ˆä¸‰ç§è¯·æ±‚å®¢æˆ·ç«¯å‡å·²å½’ä¸€åŒ–ä¸ºå„è‡ªåº•å±‚åº“çš„æ— é™æ—¶è¡¨ç¤ºï¼‰ã€‚
+é»˜è®¤å€¼ä¸º 30.0ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `timeout` | `float` | ³¬Ê±Ê±¼ä£¨Ãë£©£¬`<= 0` ±íÊ¾²»ÏŞÊ± |
+| `timeout` | `float` | è¶…æ—¶æ—¶é—´ï¼ˆç§’ï¼‰ï¼Œ`<= 0` è¡¨ç¤ºä¸é™æ—¶ |
 
 
 
 
 ### def set_trust_env()
 
-ĞŞ¸ÄÉèÖÃµÄ `trust_env`
+ä¿®æ”¹è®¾ç½®çš„ `trust_env`
 
 
 | name | type | description |
@@ -1864,24 +1864,24 @@ async def handle(desc: str, data: dict) -> None:
 
 ### def set_verify_ssl()
 
-ĞŞ¸ÄÉèÖÃµÄÊÇ·ñÑéÖ¤ SSL
+ä¿®æ”¹è®¾ç½®çš„æ˜¯å¦éªŒè¯ SSL
 
 
 | name | type | description |
 | - | - | - |
-| `verify_ssl` | `bool` | ÊÇ·ñÑéÖ¤ SSL |
+| `verify_ssl` | `bool` | æ˜¯å¦éªŒè¯ SSL |
 
 
 
 
 ### def set_wbi_retry_times()
 
-ĞŞ¸ÄÉèÖÃµÄ wbi ÖØÊÔ´ÎÊı
+ä¿®æ”¹è®¾ç½®çš„ wbi é‡è¯•æ¬¡æ•°
 
 
 | name | type | description |
 | - | - | - |
-| `wbi_retry_times` | `int` | wbi ÖØÊÔ´ÎÊı. |
+| `wbi_retry_times` | `int` | wbi é‡è¯•æ¬¡æ•°. |
 
 
 
@@ -1890,12 +1890,12 @@ async def handle(desc: str, data: dict) -> None:
 
 ## def select_client()
 
-Ñ¡ÔñÄ£¿éÊ¹ÓÃµÄ×¢²á¹ıµÄÇëÇó¿Í»§¶Ë£¬¿ÉÓÃÓÚÓÃ»§×Ô¶¨ÒåÇëÇó¿Í»§¶Ë¡£
+é€‰æ‹©æ¨¡å—ä½¿ç”¨çš„æ³¨å†Œè¿‡çš„è¯·æ±‚å®¢æˆ·ç«¯ï¼Œå¯ç”¨äºç”¨æˆ·è‡ªå®šä¹‰è¯·æ±‚å®¢æˆ·ç«¯ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÇëÇó¿Í»§¶ËÀàĞÍÃû³Æ£¬ÓÃ»§×Ô¶¨ÒåÃüÃû¡£ |
+| `name` | `str` | è¯·æ±‚å®¢æˆ·ç«¯ç±»å‹åç§°ï¼Œç”¨æˆ·è‡ªå®šä¹‰å‘½åã€‚ |
 
 
 
@@ -1904,12 +1904,12 @@ async def handle(desc: str, data: dict) -> None:
 
 ## def set_session()
 
-ÔÚµ±Ç°ÊÂ¼şÑ­»·ÏÂÉèÖÃÇëÇó¿Í»§¶ËµÄ»á»°¶ÔÏó¡£
+åœ¨å½“å‰äº‹ä»¶å¾ªç¯ä¸‹è®¾ç½®è¯·æ±‚å®¢æˆ·ç«¯çš„ä¼šè¯å¯¹è±¡ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `session` | `object` | »á»°¶ÔÏó |
+| `session` | `object` | ä¼šè¯å¯¹è±¡ |
 
 
 
@@ -1918,14 +1918,14 @@ async def handle(desc: str, data: dict) -> None:
 
 ## def sync()
 
-Í¬²½Ö´ĞĞÒì²½º¯Êı£¬Ê¹ÓÃ¿É²Î¿¼ [Í¬²½Ö´ĞĞÒì²½´úÂë](https://nemo2011.github.io/bilibili-api/#/sync-executor)
+åŒæ­¥æ‰§è¡Œå¼‚æ­¥å‡½æ•°ï¼Œä½¿ç”¨å¯å‚è€ƒ [åŒæ­¥æ‰§è¡Œå¼‚æ­¥ä»£ç ](https://nemo2011.github.io/bilibili-api/#/sync-executor)
 
 
 | name | type | description |
 | - | - | - |
-| `obj` | `Coroutine \| Future` | Òì²½º¯Êı |
+| `obj` | `Coroutine \| Future` | å¼‚æ­¥å‡½æ•° |
 
-**Returns:** `Any`:  ¸ÃÒì²½º¯ÊıµÄ·µ»ØÖµ
+**Returns:** `Any`:  è¯¥å¼‚æ­¥å‡½æ•°çš„è¿”å›å€¼
 
 
 
@@ -1934,12 +1934,12 @@ async def handle(desc: str, data: dict) -> None:
 
 ## def unregister_client()
 
-È¡Ïû×¢²áÇëÇó¿Í»§¶Ë£¬¿ÉÓÃÓÚÓÃ»§×Ô¶¨ÒåÇëÇó¿Í»§¶Ë¡£
+å–æ¶ˆæ³¨å†Œè¯·æ±‚å®¢æˆ·ç«¯ï¼Œå¯ç”¨äºç”¨æˆ·è‡ªå®šä¹‰è¯·æ±‚å®¢æˆ·ç«¯ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÇëÇó¿Í»§¶ËÀàĞÍÃû³Æ£¬ÓÃ»§×Ô¶¨ÒåÃüÃû¡£ |
+| `name` | `str` | è¯·æ±‚å®¢æˆ·ç«¯ç±»å‹åç§°ï¼Œç”¨æˆ·è‡ªå®šä¹‰å‘½åã€‚ |
 
 
 

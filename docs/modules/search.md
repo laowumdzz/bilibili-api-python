@@ -3,7 +3,7 @@
 
 bilibili_api.search
 
-ËÑË÷
+æœç´¢
 
 
 ``` python
@@ -33,15 +33,15 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-ÎÄÕÂ·ÖÀà
-+ All È«²¿
-+ Anime ¶¯»­
-+ Game ÓÎÏ·
-+ TV µçÊÓ
-+ Life Éú»î
-+ Hobby ĞËÈ¤
-+ LightNovel ÇáĞ¡Ëµ
-+ Technology ¿Æ¼¼
+æ–‡ç« åˆ†ç±»
++ All å…¨éƒ¨
++ Anime åŠ¨ç”»
++ Game æ¸¸æˆ
++ TV ç”µè§†
++ Life ç”Ÿæ´»
++ Hobby å…´è¶£
++ LightNovel è½»å°è¯´
++ Technology ç§‘æŠ€
 
 
 
@@ -52,10 +52,10 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-Ïà²á·ÖÀà
-+ All È«²¿
-+ DrawFriend »­ÓÑ
-+ PhotoFriend ÉãÓ°
+ç›¸å†Œåˆ†ç±»
++ All å…¨éƒ¨
++ DrawFriend ç”»å‹
++ PhotoFriend æ‘„å½±
 
 
 
@@ -66,12 +66,12 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-ÎÄÕÂµÄÅÅĞòÀàĞÍ
-+ TOTALRANK : ×ÛºÏÅÅĞò
-+ CLICK : ×î¶àµã»÷
-+ PUBDATE : ×îĞÂ·¢²¼
-+ ATTENTION : ×î¶àÏ²»¶
-+ SCORES : ×î¶àÆÀÂÛ
+æ–‡ç« çš„æ’åºç±»å‹
++ TOTALRANK : ç»¼åˆæ’åº
++ CLICK : æœ€å¤šç‚¹å‡»
++ PUBDATE : æœ€æ–°å‘å¸ƒ
++ ATTENTION : æœ€å¤šå–œæ¬¢
++ SCORES : æœ€å¤šè¯„è®º
 
 
 
@@ -82,12 +82,12 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-¿Î³ÌËÑË÷ÅÅĞòÀàĞÍ
+è¯¾ç¨‹æœç´¢æ’åºç±»å‹
 
-+ RECOMMEND: ×ÛºÏ
-+ SELL : ÏúÁ¿×î¸ß
-+ NEW  : ×îĞÂÉÏ¼Ü
-+ CHEEP: ÊÛ¼Û×îµÍ
++ RECOMMEND: ç»¼åˆ
++ SELL : é”€é‡æœ€é«˜
++ NEW  : æœ€æ–°ä¸Šæ¶
++ CHEEP: å”®ä»·æœ€ä½
 
 
 
@@ -98,9 +98,9 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-Ö±²¥¼äËÑË÷ÀàĞÍ
-+ NEWLIVE ×îĞÂ¿ª²¥
-+ ONLINE ×ÛºÏÅÅĞò
+ç›´æ’­é—´æœç´¢ç±»å‹
++ NEWLIVE æœ€æ–°å¼€æ’­
++ ONLINE ç»¼åˆæ’åº
 
 
 
@@ -111,9 +111,9 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-ËÑË÷ÓÃ»§µÄÅÅĞòÀàĞÍ
-+ FANS : °´ÕÕ·ÛË¿ÊıÁ¿ÅÅĞò
-+ LEVEL : °´ÕÕµÈ¼¶ÅÅĞò
+æœç´¢ç”¨æˆ·çš„æ’åºç±»å‹
++ FANS : æŒ‰ç…§ç²‰ä¸æ•°é‡æ’åº
++ LEVEL : æŒ‰ç…§ç­‰çº§æ’åº
 
 
 
@@ -124,14 +124,14 @@ from bilibili_api import search
 
 **Extend: enum.Enum**
 
-ÊÓÆµËÑË÷ÀàĞÍ
-+ TOTALRANK : ×ÛºÏÅÅĞò
-+ CLICK : ×î¶àµã»÷
-+ PUBDATE : ×îĞÂ·¢²¼
-+ DM : ×î¶àµ¯Ä»
-+ STOW : ×î¶àÊÕ²Ø
-+ SCORES : ×î¶àÆÀÂÛ
-Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
+è§†é¢‘æœç´¢ç±»å‹
++ TOTALRANK : ç»¼åˆæ’åº
++ CLICK : æœ€å¤šç‚¹å‡»
++ PUBDATE : æœ€æ–°å‘å¸ƒ
++ DM : æœ€å¤šå¼¹å¹•
++ STOW : æœ€å¤šæ”¶è—
++ SCORES : æœ€å¤šè¯„è®º
+Ps: Api ä¸­ çš„ order_sort å­—æ®µå†³å®šé¡ºåºè¿˜æ˜¯å€’åº
 
 
 
@@ -143,15 +143,15 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 **Extend: enum.Enum**
 
-ËÑË÷¶ÔÏó¡£
-+ VIDEO : ÊÓÆµ
-+ BANGUMI : ·¬¾ç
-+ FT : Ó°ÊÓ
-+ LIVE : Ö±²¥
-+ ARTICLE : ×¨À¸
-+ TOPIC : »°Ìâ
-+ USER : ÓÃ»§
-+ LIVEUSER : Ö±²¥¼äÓÃ»§
+æœç´¢å¯¹è±¡ã€‚
++ VIDEO : è§†é¢‘
++ BANGUMI : ç•ªå‰§
++ FT : å½±è§†
++ LIVE : ç›´æ’­
++ ARTICLE : ä¸“æ 
++ TOPIC : è¯é¢˜
++ USER : ç”¨æˆ·
++ LIVEUSER : ç›´æ’­é—´ç”¨æˆ·
 
 
 
@@ -160,11 +160,11 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def get_default_search_keyword()
 
-»ñÈ¡Ä¬ÈÏµÄËÑË÷ÄÚÈİ
+è·å–é»˜è®¤çš„æœç´¢å†…å®¹
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -173,11 +173,11 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def get_hot_search_keywords()
 
-»ñÈ¡ÈÈËÑ
+è·å–çƒ­æœ
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -186,14 +186,14 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def get_suggest_keywords()
 
-Í¨¹ıÒ»Ğ©ÎÄ×ÖÊäÈë»ñÈ¡ËÑË÷½¨Òé¡£ÀàËÆËÑË÷´ÊµÄÁªÏë¡£
+é€šè¿‡ä¸€äº›æ–‡å­—è¾“å…¥è·å–æœç´¢å»ºè®®ã€‚ç±»ä¼¼æœç´¢è¯çš„è”æƒ³ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
 
-**Returns:** `List[str]`:  ¹Ø¼ü´ÊÁĞ±í
+**Returns:** `List[str]`:  å…³é”®è¯åˆ—è¡¨
 
 
 
@@ -202,15 +202,15 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def search()
 
-Ö»Ö¸¶¨¹Ø¼ü×ÖÔÚ web ½øĞĞËÑË÷£¬·µ»ØÎ´¾­´¦ÀíµÄ×Öµä
+åªæŒ‡å®šå…³é”®å­—åœ¨ web è¿›è¡Œæœç´¢ï¼Œè¿”å›æœªç»å¤„ç†çš„å­—å…¸
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
-| `page` | `int` | Ò³Âë. Defaults to 1. |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
+| `page` | `int` | é¡µç . Defaults to 1. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -219,26 +219,26 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def search_by_type()
 
-Ö¸¶¨·ÖÇø£¬ÀàĞÍ£¬ÊÓÆµ³¤¶ÈµÈ²ÎÊı½øĞĞËÑË÷£¬·µ»ØÎ´¾­´¦ÀíµÄ×Öµä
+æŒ‡å®šåˆ†åŒºï¼Œç±»å‹ï¼Œè§†é¢‘é•¿åº¦ç­‰å‚æ•°è¿›è¡Œæœç´¢ï¼Œè¿”å›æœªç»å¤„ç†çš„å­—å…¸
 
-ÀàĞÍ£ºÊÓÆµ(video)¡¢·¬¾ç(media_bangumi)¡¢Ó°ÊÓ(media_ft)¡¢Ö±²¥(live)¡¢Ö±²¥ÓÃ»§(liveuser)¡¢×¨À¸(article)¡¢»°Ìâ(topic)¡¢ÓÃ»§(bili_user)
+ç±»å‹ï¼šè§†é¢‘(video)ã€ç•ªå‰§(media_bangumi)ã€å½±è§†(media_ft)ã€ç›´æ’­(live)ã€ç›´æ’­ç”¨æˆ·(liveuser)ã€ä¸“æ (article)ã€è¯é¢˜(topic)ã€ç”¨æˆ·(bili_user)
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
-| `search_type` | `SearchObjectType \| None, optional` | ËÑË÷ÀàĞÍ |
-| `order_type` | `OrderUser \| OrderLiveRoom \| OrderArticle \| OrderVideo \| None, optional` | ÅÅĞò·ÖÀàÀàĞÍ |
-| `time_range` | `int, optional` | Ö¸¶¨Ê±¼ä£¬×Ô¶¯×ª»»µ½Ö¸¶¨Çø¼ä£¬Ö»ÔÚÊÓÆµÀàĞÍÏÂÉúĞ§ ÓĞËÄÖÖ£º10·ÖÖÓÒÔÏÂ£¬10-30·ÖÖÓ£¬30-60·ÖÖÓ£¬60·ÖÖÓÒÔÉÏ |
-| `video_zone_type` | `int \| ZoneTypes \| None, optional` | »°ÌâÀàĞÍ£¬Ö¸¶¨ tid (¿ÉÊ¹ÓÃ video_zone Ä£¿é²éÑ¯) |
-| `order_sort` | `int \| None, optional` | ÓÃ»§·ÛË¿Êı¼°µÈ¼¶ÅÅĞòË³Ğò Ä¬ÈÏÎª0 ÓÉ¸ßµ½µÍ£º0 ÓÉµÍµ½¸ß£º1 |
-| `category_id` | `CategoryTypeArticle \| CategoryTypePhoto \| int \| None, optional` | ×¨À¸/Ïà²¾·ÖÇøÉ¸Ñ¡£¬Ö¸¶¨·ÖÀà£¬Ö»ÔÚÏà²áºÍ×¨À¸ÀàĞÍÏÂÉúĞ§ |
-| `time_start` | `str, optional` | Ö¸¶¨¿ªÊ¼Ê±¼ä£¬Óë½áÊøÊ±¼ä´îÅäÊ¹ÓÃ£¬¸ñÊ½Îª£º"YYYY-MM-DD" |
-| `time_end` | `str, optional` | Ö¸¶¨½áÊøÊ±¼ä£¬Óë¿ªÊ¼Ê±¼ä´îÅäÊ¹ÓÃ£¬¸ñÊ½Îª£º"YYYY-MM-DD" |
-| `page` | `int, optional` | Ò³Âë |
-| `page_size` | `int, optional` | Ã¿Ò»Ò³µÄÊı¾İ´óĞ¡ |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
+| `search_type` | `SearchObjectType \| None, optional` | æœç´¢ç±»å‹ |
+| `order_type` | `OrderUser \| OrderLiveRoom \| OrderArticle \| OrderVideo \| None, optional` | æ’åºåˆ†ç±»ç±»å‹ |
+| `time_range` | `int, optional` | æŒ‡å®šæ—¶é—´ï¼Œè‡ªåŠ¨è½¬æ¢åˆ°æŒ‡å®šåŒºé—´ï¼Œåªåœ¨è§†é¢‘ç±»å‹ä¸‹ç”Ÿæ•ˆ æœ‰å››ç§ï¼š10åˆ†é’Ÿä»¥ä¸‹ï¼Œ10-30åˆ†é’Ÿï¼Œ30-60åˆ†é’Ÿï¼Œ60åˆ†é’Ÿä»¥ä¸Š |
+| `video_zone_type` | `int \| ZoneTypes \| None, optional` | è¯é¢˜ç±»å‹ï¼ŒæŒ‡å®š tid (å¯ä½¿ç”¨ video_zone æ¨¡å—æŸ¥è¯¢) |
+| `order_sort` | `int \| None, optional` | ç”¨æˆ·ç²‰ä¸æ•°åŠç­‰çº§æ’åºé¡ºåº é»˜è®¤ä¸º0 ç”±é«˜åˆ°ä½ï¼š0 ç”±ä½åˆ°é«˜ï¼š1 |
+| `category_id` | `CategoryTypeArticle \| CategoryTypePhoto \| int \| None, optional` | ä¸“æ /ç›¸ç°¿åˆ†åŒºç­›é€‰ï¼ŒæŒ‡å®šåˆ†ç±»ï¼Œåªåœ¨ç›¸å†Œå’Œä¸“æ ç±»å‹ä¸‹ç”Ÿæ•ˆ |
+| `time_start` | `str, optional` | æŒ‡å®šå¼€å§‹æ—¶é—´ï¼Œä¸ç»“æŸæ—¶é—´æ­é…ä½¿ç”¨ï¼Œæ ¼å¼ä¸ºï¼š"YYYY-MM-DD" |
+| `time_end` | `str, optional` | æŒ‡å®šç»“æŸæ—¶é—´ï¼Œä¸å¼€å§‹æ—¶é—´æ­é…ä½¿ç”¨ï¼Œæ ¼å¼ä¸ºï¼š"YYYY-MM-DD" |
+| `page` | `int, optional` | é¡µç  |
+| `page_size` | `int, optional` | æ¯ä¸€é¡µçš„æ•°æ®å¤§å° |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -247,17 +247,17 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def search_cheese()
 
-ËÑË÷¿Î³ÌÌØÓÃº¯Êı
+æœç´¢è¯¾ç¨‹ç‰¹ç”¨å‡½æ•°
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
-| `page_num` | `int` | Ò³Âë. Defaults to 1. |
-| `page_size` | `int` | Ã¿Ò»Ò³µÄÊı¾İ´óĞ¡. Defaults to 30. |
-| `order` | `OrderCheese` | ÅÅĞò·½Ê½. Defaults to OrderCheese.RECOMMEND |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
+| `page_num` | `int` | é¡µç . Defaults to 1. |
+| `page_size` | `int` | æ¯ä¸€é¡µçš„æ•°æ®å¤§å°. Defaults to 30. |
+| `order` | `OrderCheese` | æ’åºæ–¹å¼. Defaults to OrderCheese.RECOMMEND |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -266,14 +266,14 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def search_games()
 
-ËÑË÷ÓÎÏ·ÌØÓÃº¯Êı
+æœç´¢æ¸¸æˆç‰¹ç”¨å‡½æ•°
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -282,17 +282,17 @@ Ps: Api ÖĞ µÄ order_sort ×Ö¶Î¾ö¶¨Ë³Ğò»¹ÊÇµ¹Ğò
 
 ## async def search_manga()
 
-ËÑË÷Âş»­ÌØÓÃº¯Êı
+æœç´¢æ¼«ç”»ç‰¹ç”¨å‡½æ•°
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
-| `page_num` | `int` | Ò³Âë. Defaults to 1. |
-| `page_size` | `int` | Ã¿Ò»Ò³µÄÊı¾İ´óĞ¡. Defaults to 9. |
-| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
+| `page_num` | `int` | é¡µç . Defaults to 1. |
+| `page_size` | `int` | æ¯ä¸€é¡µçš„æ•°æ®å¤§å°. Defaults to 9. |
+| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

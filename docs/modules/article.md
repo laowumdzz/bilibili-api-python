@@ -3,7 +3,7 @@
 
 bilibili_api.article
 
-×¨À¸Ïà¹Ø
+ä¸“æ ç›¸å…³
 
 
 ``` python
@@ -37,12 +37,12 @@ from bilibili_api import article
 
 ## class Article()
 
-×¨À¸Àà
+ä¸“æ ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### def \_\_init\_\_()
@@ -50,26 +50,26 @@ from bilibili_api import article
 
 | name | type | description |
 | - | - | - |
-| `cvid` | `int` | cv ºÅ |
-| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
+| `cvid` | `int` | cv å· |
+| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
 
 
 ### async def add_coins()
 
-¸ø×¨À¸Í¶±Ò£¬Ä¿Ç°Ö»ÄÜÍ¶Ò»¸ö
+ç»™ä¸“æ æŠ•å¸ï¼Œç›®å‰åªèƒ½æŠ•ä¸€ä¸ª
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def fetch_content()
 
-»ñÈ¡²¢½âÎö×¨À¸ÄÚÈİ
+è·å–å¹¶è§£æä¸“æ å†…å®¹
 
-¸Ã·µ»Ø²»»á·µ»ØÈÎºÎÖµ£¬µ÷ÓÃ¸Ã·½·¨ºóÇëÔÙµ÷ÓÃ `self.markdown()` »ò `self.json()` À´»ñÈ¡ÄãĞèÒªµÄÖµ¡£
+è¯¥è¿”å›ä¸ä¼šè¿”å›ä»»ä½•å€¼ï¼Œè°ƒç”¨è¯¥æ–¹æ³•åè¯·å†è°ƒç”¨ `self.markdown()` æˆ– `self.json()` æ¥è·å–ä½ éœ€è¦çš„å€¼ã€‚
 
 
 
@@ -78,18 +78,18 @@ from bilibili_api import article
 
 ### async def get_all()
 
-Ò»´ÎĞÔ»ñÈ¡×¨À¸¾¡¿ÉÄÜÏêÏ¸Êı¾İ£¬°üÀ¨Ô­Ê¼ÄÚÈİ¡¢±êÇ©¡¢·¢²¼Ê±¼ä¡¢±êÌâ¡¢Ïà¹Ø×¨À¸ÍÆ¼öµÈ
+ä¸€æ¬¡æ€§è·å–ä¸“æ å°½å¯èƒ½è¯¦ç»†æ•°æ®ï¼ŒåŒ…æ‹¬åŸå§‹å†…å®¹ã€æ ‡ç­¾ã€å‘å¸ƒæ—¶é—´ã€æ ‡é¢˜ã€ç›¸å…³ä¸“æ æ¨èç­‰
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_cvid()
 
-»ñÈ¡ cvid
+è·å– cvid
 
 
 
@@ -100,128 +100,128 @@ from bilibili_api import article
 
 ### async def get_detail()
 
-»ñÈ¡×¨À¸ÏêÏ¸ĞÅÏ¢
+è·å–ä¸“æ è¯¦ç»†ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡×¨À¸ĞÅÏ¢
+è·å–ä¸“æ ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def is_note()
 
-ÅĞ¶Ï×¨À¸ÊÇ·ñÎª±Ê¼Ç
+åˆ¤æ–­ä¸“æ æ˜¯å¦ä¸ºç¬”è®°
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÎª±Ê¼Ç
+**Returns:** `bool`:  æ˜¯å¦ä¸ºç¬”è®°
 
 
 
 
 ### def json()
 
-×ª»»Îª JSON Êı¾İ
+è½¬æ¢ä¸º JSON æ•°æ®
 
-ÇëÏÈµ÷ÓÃ fetch_content()
+è¯·å…ˆè°ƒç”¨ fetch_content()
 
 
 
-**Returns:** `dict`:  JSON Êı¾İ
+**Returns:** `dict`:  JSON æ•°æ®
 
 
 
 
 ### def markdown()
 
-×ª»»Îª Markdown
+è½¬æ¢ä¸º Markdown
 
-ÇëÏÈµ÷ÓÃ fetch_content()
+è¯·å…ˆè°ƒç”¨ fetch_content()
 
 
 
-**Returns:** `str`:  Markdown ÄÚÈİ
+**Returns:** `str`:  Markdown å†…å®¹
 
 
 
 
 ### async def set_favorite()
 
-ÉèÖÃ×¨À¸ÊÕ²Ø×´Ì¬
+è®¾ç½®ä¸“æ æ”¶è—çŠ¶æ€
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | ÊÕ²Ø×´Ì¬. Defaults to True |
+| `status` | `bool, optional` | æ”¶è—çŠ¶æ€. Defaults to True |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def set_like()
 
-ÉèÖÃ×¨À¸µãÔŞ×´Ì¬
+è®¾ç½®ä¸“æ ç‚¹èµçŠ¶æ€
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | µãÔŞ×´Ì¬. Defaults to True |
+| `status` | `bool, optional` | ç‚¹èµçŠ¶æ€. Defaults to True |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def turn_to_dynamic()
 
-½«×¨À¸×ªÎª¶ÔÓ¦¶¯Ì¬£¨ÆÀÂÛ¡¢µãÔŞµÈÊı¾İ×¨À¸/¶¯Ì¬/Í¼ÎÄ¹²Ïí£©
+å°†ä¸“æ è½¬ä¸ºå¯¹åº”åŠ¨æ€ï¼ˆè¯„è®ºã€ç‚¹èµç­‰æ•°æ®ä¸“æ /åŠ¨æ€/å›¾æ–‡å…±äº«ï¼‰
 
-×¨À¸ÍêÈ«°üº¬ÓÚ¶¯Ì¬£¬Òò´Ë´Ëº¯Êı¾ø¶Ô³É¹¦¡£
+ä¸“æ å®Œå…¨åŒ…å«äºåŠ¨æ€ï¼Œå› æ­¤æ­¤å‡½æ•°ç»å¯¹æˆåŠŸã€‚
 
-×ª»»ºó¿É²é¿´¡°ÔŞºÍ×ª·¢¡±ÁĞ±í¡£
+è½¬æ¢åå¯æŸ¥çœ‹â€œèµå’Œè½¬å‘â€åˆ—è¡¨ã€‚
 
 
 
-**Returns:** `Dynamic`:  ¶¯Ì¬ÊµÀı
+**Returns:** `Dynamic`:  åŠ¨æ€å®ä¾‹
 
 
 
 
 ### def turn_to_note()
 
-½«×¨À¸×ªÎª±Ê¼Ç£¬²»»áºËÑé¡£ÈçĞèºËÑéÊ¹ÓÃ `await is_note()`
+å°†ä¸“æ è½¬ä¸ºç¬”è®°ï¼Œä¸ä¼šæ ¸éªŒã€‚å¦‚éœ€æ ¸éªŒä½¿ç”¨ `await is_note()`
 
 
 
-**Returns:** `Note`:  ±Ê¼ÇÊµÀı
+**Returns:** `Note`:  ç¬”è®°å®ä¾‹
 
 
 
 
 ### async def turn_to_opus()
 
-½«×¨À¸×ªÎª¶ÔÓ¦Í¼ÎÄ£¨ÆÀÂÛ¡¢µãÔŞµÈÊı¾İ×¨À¸/¶¯Ì¬/Í¼ÎÄ¹²Ïí£©
+å°†ä¸“æ è½¬ä¸ºå¯¹åº”å›¾æ–‡ï¼ˆè¯„è®ºã€ç‚¹èµç­‰æ•°æ®ä¸“æ /åŠ¨æ€/å›¾æ–‡å…±äº«ï¼‰
 
-×¨À¸ÍêÈ«°üº¬ÓÚÍ¼ÎÄ£¬Òò´Ë´Ëº¯Êı¾ø¶Ô³É¹¦¡£
+ä¸“æ å®Œå…¨åŒ…å«äºå›¾æ–‡ï¼Œå› æ­¤æ­¤å‡½æ•°ç»å¯¹æˆåŠŸã€‚
 
-×ª»»ºó¿É²é¿´¡°ÔŞºÍ×ª·¢¡±ÁĞ±í¡£
+è½¬æ¢åå¯æŸ¥çœ‹â€œèµå’Œè½¬å‘â€åˆ—è¡¨ã€‚
 
 
 
-**Returns:** `Opus`:  ¶¯Ì¬ÊµÀı
+**Returns:** `Opus`:  åŠ¨æ€å®ä¾‹
 
 
 
@@ -230,12 +230,12 @@ from bilibili_api import article
 
 ## class ArticleList()
 
-ÎÄ¼¯Àà
+æ–‡é›†ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### def \_\_init\_\_()
@@ -243,24 +243,24 @@ from bilibili_api import article
 
 | name | type | description |
 | - | - | - |
-| `rlid` | `int` | ÎÄ¼¯ id |
-| `credential` | `Credential \| None, optional` | Æ¾¾İÀà. Defaults to None. |
+| `rlid` | `int` | æ–‡é›† id |
+| `credential` | `Credential \| None, optional` | å‡­æ®ç±». Defaults to None. |
 
 
 ### async def get_content()
 
-»ñÈ¡×¨À¸ÎÄ¼¯ÎÄÕÂÁĞ±í
+è·å–ä¸“æ æ–‡é›†æ–‡ç« åˆ—è¡¨
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_rlid()
 
-»ñÈ¡ rlid
+è·å– rlid
 
 
 
@@ -275,12 +275,12 @@ from bilibili_api import article
 
 **Extend: enum.Enum**
 
-×¨À¸ÅÅĞĞ°ñÀàĞÍÃ¶¾Ù¡£
+ä¸“æ æ’è¡Œæ¦œç±»å‹æšä¸¾ã€‚
 
-+ MONTH: ÔÂ°ñ
-+ WEEK: ÖÜ°ñ
-+ DAY_BEFORE_YESTERDAY: Ç°ÈÕ°ñ
-+ YESTERDAY: ×òÈÕ°ñ
++ MONTH: æœˆæ¦œ
++ WEEK: å‘¨æ¦œ
++ DAY_BEFORE_YESTERDAY: å‰æ—¥æ¦œ
++ YESTERDAY: æ˜¨æ—¥æ¦œ
 
 
 
@@ -289,14 +289,14 @@ from bilibili_api import article
 
 ## async def get_article_rank()
 
-»ñÈ¡×¨À¸ÅÅĞĞ°ñ
+è·å–ä¸“æ æ’è¡Œæ¦œ
 
 
 | name | type | description |
 | - | - | - |
-| `rank_type` | `ArticleRankingType` | ÅÅĞĞ°ñÀà±ğ. Defaults to ArticleRankingType.YESTERDAY. |
+| `rank_type` | `ArticleRankingType` | æ’è¡Œæ¦œç±»åˆ«. Defaults to ArticleRankingType.YESTERDAY. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

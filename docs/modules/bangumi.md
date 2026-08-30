@@ -3,12 +3,12 @@
 
 bilibili_api.bangumi
 
-·¬¾çÏà¹Ø
+ç•ªå‰§ç›¸å…³
 
-¸ÅÄî£º
-+ media_id: ·¬¾ç±¾ÉíµÄ ID£¬ÓĞÊ±ºòÒ²ÊÇÃ¿¼¾¶ÈµÄ ID£¬Èç https://www.bilibili.com/bangumi/media/md28231846/
-+ season_id: Ã¿¼¾¶ÈµÄ ID
-+ episode_id: Ã¿¼¯µÄ ID£¬Èç https://www.bilibili.com/bangumi/play/ep374717
+æ¦‚å¿µï¼š
++ media_id: ç•ªå‰§æœ¬èº«çš„ IDï¼Œæœ‰æ—¶å€™ä¹Ÿæ˜¯æ¯å­£åº¦çš„ IDï¼Œå¦‚ https://www.bilibili.com/bangumi/media/md28231846/
++ season_id: æ¯å­£åº¦çš„ ID
++ episode_id: æ¯é›†çš„ IDï¼Œå¦‚ https://www.bilibili.com/bangumi/play/ep374717
 
 
 
@@ -99,12 +99,12 @@ from bilibili_api import bangumi
 
 ## class Bangumi()
 
-·¬¾çÀà
+ç•ªå‰§ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### def \_\_init\_\_()
@@ -112,27 +112,27 @@ from bilibili_api import bangumi
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int, optional` | ·¬¾ç±¾ÉíµÄ ID. Defaults to -1. |
-| `ssid` | `int, optional` | Ã¿¼¾¶ÈµÄ ID. Defaults to -1. |
-| `epid` | `int, optional` | Ã¿¼¯µÄ ID. Defaults to -1. |
-| `oversea` | `bool, optional` | ÊÇ·ñÒª²ÉÓÃ¼æÈİµÄ¸Û°ÄÌ¨Api,ÓÃÓÚ½öÏŞ¸Û°ÄÌ¨µØÇø·¬¾çµÄĞÅÏ¢ÇëÇó. Defaults to False. |
-| `credential` | `Credential \| None, optional` | Æ¾¾İÀà. Defaults to None. |
+| `media_id` | `int, optional` | ç•ªå‰§æœ¬èº«çš„ ID. Defaults to -1. |
+| `ssid` | `int, optional` | æ¯å­£åº¦çš„ ID. Defaults to -1. |
+| `epid` | `int, optional` | æ¯é›†çš„ ID. Defaults to -1. |
+| `oversea` | `bool, optional` | æ˜¯å¦è¦é‡‡ç”¨å…¼å®¹çš„æ¸¯æ¾³å°Api,ç”¨äºä»…é™æ¸¯æ¾³å°åœ°åŒºç•ªå‰§çš„ä¿¡æ¯è¯·æ±‚. Defaults to False. |
+| `credential` | `Credential \| None, optional` | å‡­æ®ç±». Defaults to None. |
 
 
 ### async def get_episode_list()
 
-»ñÈ¡¼¾¶È·Ö¼¯ÁĞ±í£¬×Ô¶¯×ª»»³öº£ApiµÄ×Ö¶Î£¬ÊÊÅä²¿·Ö£¬µ«ÊÇ¼ü»¹ÊÇÓĞ²»Í¬
+è·å–å­£åº¦åˆ†é›†åˆ—è¡¨ï¼Œè‡ªåŠ¨è½¬æ¢å‡ºæµ·Apiçš„å­—æ®µï¼Œé€‚é…éƒ¨åˆ†ï¼Œä½†æ˜¯é”®è¿˜æ˜¯æœ‰ä¸åŒ
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_episodes()
 
-»ñÈ¡·¬¾çËùÓĞµÄ¾ç¼¯£¬×Ô¶¯Éú³ÉÀà¡£
+è·å–ç•ªå‰§æ‰€æœ‰çš„å‰§é›†ï¼Œè‡ªåŠ¨ç”Ÿæˆç±»ã€‚
 
 
 
@@ -141,131 +141,131 @@ from bilibili_api import bangumi
 
 ### async def get_long_comment_list()
 
-»ñÈ¡³¤ÆÀÁĞ±í
+è·å–é•¿è¯„åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `order` | `BangumiCommentOrder, optional` | ÅÅĞò·½Ê½¡£Defaults to BangumiCommentOrder.DEFAULT |
-| `next` | `str \| None, optional` | µ÷ÓÃ·µ»Ø½á¹ûÖĞµÄ next ¼üÖµ£¬ÓÃÓÚ»ñÈ¡ÏÂÒ»Ò³Êı¾İ¡£Defaults to None |
+| `order` | `BangumiCommentOrder, optional` | æ’åºæ–¹å¼ã€‚Defaults to BangumiCommentOrder.DEFAULT |
+| `next` | `str \| None, optional` | è°ƒç”¨è¿”å›ç»“æœä¸­çš„ next é”®å€¼ï¼Œç”¨äºè·å–ä¸‹ä¸€é¡µæ•°æ®ã€‚Defaults to None |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_media_id()
 
-»ñÈ¡ media_id
+è·å– media_id
 
 
 
-**Returns:** `int`:  »ñÈ¡ media_id
+**Returns:** `int`:  è·å– media_id
 
 
 
 
 ### async def get_meta()
 
-»ñÈ¡·¬¾çÔªÊı¾İĞÅÏ¢£¨ÆÀ·Ö£¬·âÃæ URL£¬±êÌâµÈ£©
+è·å–ç•ªå‰§å…ƒæ•°æ®ä¿¡æ¯ï¼ˆè¯„åˆ†ï¼Œå°é¢ URLï¼Œæ ‡é¢˜ç­‰ï¼‰
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_overview()
 
-»ñÈ¡·¬¾çÈ«Ãæ¸ÅÀ¨ĞÅÏ¢£¬°üÀ¨·¢²¼Ê±¼ä¡¢¾ç¼¯Çé¿ö¡¢stat µÈÇé¿ö
+è·å–ç•ªå‰§å…¨é¢æ¦‚æ‹¬ä¿¡æ¯ï¼ŒåŒ…æ‹¬å‘å¸ƒæ—¶é—´ã€å‰§é›†æƒ…å†µã€stat ç­‰æƒ…å†µ
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_raw()
 
-Ô­Ê¼³õÊ¼»¯Êı¾İ
+åŸå§‹åˆå§‹åŒ–æ•°æ®
 
 
 
-**Returns:** `dict`:  Api Ïà¹Ø×Ö¶Î
+**Returns:** `dict`:  Api ç›¸å…³å­—æ®µ
 
 
 
 
 ### async def get_season_id()
 
-»ñÈ¡¼¾¶È id
+è·å–å­£åº¦ id
 
 
 
-**Returns:** `int`:  »ñÈ¡¼¾¶È id
+**Returns:** `int`:  è·å–å­£åº¦ id
 
 
 
 
 ### async def get_short_comment_list()
 
-»ñÈ¡¶ÌÆÀÁĞ±í
+è·å–çŸ­è¯„åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `order` | `BangumiCommentOrder, optional` | ÅÅĞò·½Ê½¡£Defaults to BangumiCommentOrder.DEFAULT |
-| `next` | `str \| None, optional` | µ÷ÓÃ·µ»Ø½á¹ûÖĞµÄ next ¼üÖµ£¬ÓÃÓÚ»ñÈ¡ÏÂÒ»Ò³Êı¾İ¡£Defaults to None |
+| `order` | `BangumiCommentOrder, optional` | æ’åºæ–¹å¼ã€‚Defaults to BangumiCommentOrder.DEFAULT |
+| `next` | `str \| None, optional` | è°ƒç”¨è¿”å›ç»“æœä¸­çš„ next é”®å€¼ï¼Œç”¨äºè·å–ä¸‹ä¸€é¡µæ•°æ®ã€‚Defaults to None |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_stat()
 
-»ñÈ¡·¬¾ç²¥·ÅÁ¿£¬×··¬µÈĞÅÏ¢
+è·å–ç•ªå‰§æ’­æ”¾é‡ï¼Œè¿½ç•ªç­‰ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_up_info()
 
-·¬¾çÉÏ´«ÕßĞÅÏ¢ ³ö²î»òÕßÔ­°æ
+ç•ªå‰§ä¸Šä¼ è€…ä¿¡æ¯ å‡ºå·®æˆ–è€…åŸç‰ˆ
 
 
 
-**Returns:** `dict`:  Api Ïà¹Ø×Ö¶Î
+**Returns:** `dict`:  Api ç›¸å…³å­—æ®µ
 
 
 
 
 ### async def set_media_id()
 
-ÉèÖÃ media_id
+è®¾ç½® media_id
 
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int` | ÉèÖÃ media_id |
+| `media_id` | `int` | è®¾ç½® media_id |
 
 
 
 
 ### async def set_ssid()
 
-ÉèÖÃ¼¾¶È id
+è®¾ç½®å­£åº¦ id
 
 
 | name | type | description |
 | - | - | - |
-| `ssid` | `int` | ÉèÖÃ¼¾¶È id |
+| `ssid` | `int` | è®¾ç½®å­£åº¦ id |
 
 
 
@@ -276,10 +276,10 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-¶ÌÆÀ / ³¤ÆÀ ÅÅĞò·½Ê½
+çŸ­è¯„ / é•¿è¯„ æ’åºæ–¹å¼
 
-+ DEFAULT: Ä¬ÈÏ
-+ CTIME: ·¢²¼Ê±¼äµ¹Ğò
++ DEFAULT: é»˜è®¤
++ CTIME: å‘å¸ƒæ—¶é—´å€’åº
 
 
 
@@ -290,11 +290,11 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-·¬¾çÀàĞÍ
+ç•ªå‰§ç±»å‹
 
-+ BANGUMI: ·¬¾ç
-+ FT: Ó°ÊÓ
-+ GUOCHUANG: ¹ú´´
++ BANGUMI: ç•ªå‰§
++ FT: å½±è§†
++ GUOCHUANG: å›½åˆ›
 
 
 
@@ -305,14 +305,14 @@ from bilibili_api import bangumi
 
 **Extend: bilibili_api.video.Video**
 
-·¬¾ç¾ç¼¯Àà
+ç•ªå‰§å‰§é›†ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
-| `video_class` | `Video` | ÊÓÆµÀà |
-| `bangumi` | `Bangumi` | ËùÊô·¬¾ç |
+| `credential` | `Credential` | å‡­æ®ç±» |
+| `video_class` | `Video` | è§†é¢‘ç±» |
+| `bangumi` | `Bangumi` | æ‰€å±ç•ªå‰§ |
 
 
 ### def \_\_init\_\_()
@@ -320,71 +320,71 @@ from bilibili_api import bangumi
 
 | name | type | description |
 | - | - | - |
-| `epid` | `int` | ·¬¾ç epid |
-| `credential` | `Credential, optional` | Æ¾¾İ. Defaults to None. |
+| `epid` | `int` | ç•ªå‰§ epid |
+| `credential` | `Credential, optional` | å‡­æ®. Defaults to None. |
 
 
 ### async def get_ai_conclusion()
 
-»ñÈ¡¸å¼ş AI ×Ü½á½á¹û¡£
+è·å–ç¨¿ä»¶ AI æ€»ç»“ç»“æœã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `up_mid` | `Optional, int` | up Ö÷µÄ mid¡£ |
+| `up_mid` | `Optional, int` | up ä¸»çš„ midã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_aid()
 
-»ñÈ¡ AID¡£
+è·å– AIDã€‚
 
 
 
-**Returns:** `str`:  AID¡£
+**Returns:** `str`:  AIDã€‚
 
 
 
 
 ### async def get_bangumi()
 
-»ñÈ¡¶ÔÓ¦µÄ·¬¾ç
+è·å–å¯¹åº”çš„ç•ªå‰§
 
 
 
-**Returns:** `Bangumi`:  ·¬¾çÀà
+**Returns:** `Bangumi`:  ç•ªå‰§ç±»
 
 
 
 
 ### async def get_bangumi_from_episode()
 
-»ñÈ¡¾ç¼¯¶ÔÓ¦µÄ·¬¾ç
+è·å–å‰§é›†å¯¹åº”çš„ç•ªå‰§
 
 
 
-**Returns:** `Bangumi`:  ÊäÈëµÄ¼¯¶ÔÓ¦µÄ·¬¾çÀà
+**Returns:** `Bangumi`:  è¾“å…¥çš„é›†å¯¹åº”çš„ç•ªå‰§ç±»
 
 
 
 
 ### async def get_bvid()
 
-»ñÈ¡ BVID¡£
+è·å– BVIDã€‚
 
 
 
-**Returns:** `str`:  BVID¡£
+**Returns:** `str`:  BVIDã€‚
 
 
 
 
 ### async def get_cid()
 
-»ñÈ¡¸å¼ş cid
+è·å–ç¨¿ä»¶ cid
 
 
 
@@ -395,56 +395,56 @@ from bilibili_api import bangumi
 
 ### async def get_danmaku_view()
 
-»ñÈ¡µ¯Ä»ÉèÖÃ¡¢ÌØÊâµ¯Ä»¡¢µ¯Ä»ÊıÁ¿¡¢µ¯Ä»·Ö¶ÎµÈĞÅÏ¢¡£
+è·å–å¼¹å¹•è®¾ç½®ã€ç‰¹æ®Šå¼¹å¹•ã€å¼¹å¹•æ•°é‡ã€å¼¹å¹•åˆ†æ®µç­‰ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  ¶ş½øÖÆÁ÷½âÎö½á¹û
+**Returns:** `dict`:  äºŒè¿›åˆ¶æµè§£æç»“æœ
 
 
 
 
 ### async def get_danmaku_xml()
 
-»ñÈ¡ËùÓĞµ¯Ä»µÄ xml Ô´ÎÄ¼ş£¨·Ç×°Ìî£©
+è·å–æ‰€æœ‰å¼¹å¹•çš„ xml æºæ–‡ä»¶ï¼ˆéè£…å¡«ï¼‰
 
 
 
-**Returns:** `str`:  ÎÄ¼şÔ´
+**Returns:** `str`:  æ–‡ä»¶æº
 
 
 
 
 ### async def get_danmakus()
 
-»ñÈ¡µ¯Ä»
+è·å–å¼¹å¹•
 
 
 | name | type | description |
 | - | - | - |
-| `date` | `datetime.date \| None, optional` | Ö¸¶¨Ä³Ò»Ìì²éÑ¯µ¯Ä». Defaults to None. (²»Ö¸¶¨Ä³Ò»Ìì) |
-| `from_seg` | `int, optional` | ´ÓµÚ¼¸¶Î¿ªÊ¼(0 ¿ªÊ¼±àºÅ£¬None Îª´ÓµÚÒ»¶Î¿ªÊ¼£¬Ò»¶Î 6 ·ÖÖÓ). Defaults to None. |
-| `to_seg` | `int, optional` | µ½µÚ¼¸¶Î½áÊø(0 ¿ªÊ¼±àºÅ£¬None Îªµ½×îºóÒ»¶Î£¬°üº¬±àºÅµÄ¶Î£¬Ò»¶Î 6 ·ÖÖÓ). Defaults to None. |
+| `date` | `datetime.date \| None, optional` | æŒ‡å®šæŸä¸€å¤©æŸ¥è¯¢å¼¹å¹•. Defaults to None. (ä¸æŒ‡å®šæŸä¸€å¤©) |
+| `from_seg` | `int, optional` | ä»ç¬¬å‡ æ®µå¼€å§‹(0 å¼€å§‹ç¼–å·ï¼ŒNone ä¸ºä»ç¬¬ä¸€æ®µå¼€å§‹ï¼Œä¸€æ®µ 6 åˆ†é’Ÿ). Defaults to None. |
+| `to_seg` | `int, optional` | åˆ°ç¬¬å‡ æ®µç»“æŸ(0 å¼€å§‹ç¼–å·ï¼ŒNone ä¸ºåˆ°æœ€åä¸€æ®µï¼ŒåŒ…å«ç¼–å·çš„æ®µï¼Œä¸€æ®µ 6 åˆ†é’Ÿ). Defaults to None. |
 
-**Returns:** `dict[Danmaku]`:  µ¯Ä»ÁĞ±í
+**Returns:** `dict[Danmaku]`:  å¼¹å¹•åˆ—è¡¨
 
 
 
 
 ### async def get_download_url()
 
-»ñÈ¡·¬¾ç¾ç¼¯ÏÂÔØĞÅÏ¢¡£
+è·å–ç•ªå‰§å‰§é›†ä¸‹è½½ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### def get_epid()
 
-»ñÈ¡ epid
+è·å– epid
 
 
 
@@ -453,93 +453,93 @@ from bilibili_api import bangumi
 
 ### async def get_episode_info()
 
-»ñÈ¡·¬¾çµ¥¼¯ĞÅÏ¢
+è·å–ç•ªå‰§å•é›†ä¿¡æ¯
 
 
 
-**Returns:** `Tuple[dict, InitialDataType]`:  Ç°°ë²¿·ÖÎªÊı¾İ£¬ºó°ë²¿·ÖÎªÊı¾İÀàĞÍ£¨__INITIAL_STATE__ »ò __NEXT_DATA£©
+**Returns:** `Tuple[dict, InitialDataType]`:  å‰åŠéƒ¨åˆ†ä¸ºæ•°æ®ï¼ŒååŠéƒ¨åˆ†ä¸ºæ•°æ®ç±»å‹ï¼ˆ__INITIAL_STATE__ æˆ– __NEXT_DATAï¼‰
 
 
 
 
 ### async def get_history_danmaku_index()
 
-»ñÈ¡ÌØ¶¨ÔÂ·İ´æÔÚÀúÊ·µ¯Ä»µÄÈÕÆÚ¡£
+è·å–ç‰¹å®šæœˆä»½å­˜åœ¨å†å²å¼¹å¹•çš„æ—¥æœŸã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `date` | `datetime.date \| None, optional` | ¾«È·µ½ÄêÔÂ. Defaults to None¡£ |
+| `date` | `datetime.date \| None, optional` | ç²¾ç¡®åˆ°å¹´æœˆ. Defaults to Noneã€‚ |
 
-**Returns:** `None | List[str]`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£²»´æÔÚÊ±Îª None¡£
+**Returns:** `None | List[str]`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚ä¸å­˜åœ¨æ—¶ä¸º Noneã€‚
 
 
 
 
 ### async def get_pbp()
 
-»ñÈ¡¸ßÄÜ½ø¶ÈÌõ
+è·å–é«˜èƒ½è¿›åº¦æ¡
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_player_info()
 
-»ñÈ¡ÊÓÆµÉÏÒ»´Î²¥·ÅµÄ¼ÇÂ¼£¬×ÖÄ»ºÍµØÇøĞÅÏ¢¡£ĞèÒª·Ö¼¯µÄ cid, ·µ»ØÊı¾İÖĞº¬ÓĞjson×ÖÄ»µÄÁ´½Ó
+è·å–è§†é¢‘ä¸Šä¸€æ¬¡æ’­æ”¾çš„è®°å½•ï¼Œå­—å¹•å’Œåœ°åŒºä¿¡æ¯ã€‚éœ€è¦åˆ†é›†çš„ cid, è¿”å›æ•°æ®ä¸­å«æœ‰jsonå­—å¹•çš„é“¾æ¥
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_subtitle()
 
-»ñÈ¡×ÖÄ»ĞÅÏ¢
+è·å–å­—å¹•ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def recall_danmaku()
 
-³·»Øµ¯Ä»¡£
+æ’¤å›å¼¹å¹•ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `dmid` | `int` | µ¯Ä» id |
+| `dmid` | `int` | å¼¹å¹• id |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def send_danmaku()
 
-·¢ËÍµ¯Ä»¡£
+å‘é€å¼¹å¹•ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `danmaku` | `Danmaku \| None` | Danmaku Àà¡£ |
+| `danmaku` | `Danmaku \| None` | Danmaku ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def set_epid()
 
-ÉèÖÃ epid
+è®¾ç½® epid
 
 
 | name | type | description |
@@ -551,38 +551,38 @@ from bilibili_api import bangumi
 
 ### async def set_favorite()
 
-ÉèÖÃÊÓÆµÊÕ²Ø×´¿ö¡£
+è®¾ç½®è§†é¢‘æ”¶è—çŠ¶å†µã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `add_media_ids` | `List[int] \| None, optional` | ÒªÌí¼Óµ½µÄÊÕ²Ø¼Ğ ID. Defaults to None£¨µÈ¼ÛÓÚ []£©. |
-| `del_media_ids` | `List[int] \| None, optional` | ÒªÒÆ³öµÄÊÕ²Ø¼Ğ ID. Defaults to None£¨µÈ¼ÛÓÚ []£©. |
+| `add_media_ids` | `List[int] \| None, optional` | è¦æ·»åŠ åˆ°çš„æ”¶è—å¤¹ ID. Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰. |
+| `del_media_ids` | `List[int] \| None, optional` | è¦ç§»å‡ºçš„æ”¶è—å¤¹ ID. Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœã€‚
 
 
 
 
 ### async def submit_subtitle()
 
-ÉÏ´«×ÖÄ»
+ä¸Šä¼ å­—å¹•
 
-×ÖÄ»Êı¾İ data ²Î¿¼£º
+å­—å¹•æ•°æ® data å‚è€ƒï¼š
 
 ```json
 {
-  "font_size": "float: ×ÖÌå´óĞ¡£¬Ä¬ÈÏ 0.4",
-  "font_color": "str: ×ÖÌåÑÕÉ«£¬Ä¬ÈÏ "#FFFFFF"",
-  "background_alpha": "float: ±³¾°²»Í¸Ã÷¶È£¬Ä¬ÈÏ 0.5",
-  "background_color": "str: ±³¾°ÑÕÉ«£¬Ä¬ÈÏ "#9C27B0"",
-  "Stroke": "str: Ãè±ß£¬Ä¿Ç°×÷ÓÃÎ´Öª£¬Ä¬ÈÏÎª "none"",
+  "font_size": "float: å­—ä½“å¤§å°ï¼Œé»˜è®¤ 0.4",
+  "font_color": "str: å­—ä½“é¢œè‰²ï¼Œé»˜è®¤ "#FFFFFF"",
+  "background_alpha": "float: èƒŒæ™¯ä¸é€æ˜åº¦ï¼Œé»˜è®¤ 0.5",
+  "background_color": "str: èƒŒæ™¯é¢œè‰²ï¼Œé»˜è®¤ "#9C27B0"",
+  "Stroke": "str: æè¾¹ï¼Œç›®å‰ä½œç”¨æœªçŸ¥ï¼Œé»˜è®¤ä¸º "none"",
   "body": [
 {
-  "from": "int: ×ÖÄ»¿ªÊ¼Ê±¼ä£¨Ãë£©",
-  "to": "int: ×ÖÄ»½áÊøÊ±¼ä£¨Ãë£©",
-  "location": "int: ×ÖÄ»Î»ÖÃ£¬Ä¬ÈÏÎª 2",
-  "content": "str: ×ÖÄ»ÄÚÈİ"
+  "from": "int: å­—å¹•å¼€å§‹æ—¶é—´ï¼ˆç§’ï¼‰",
+  "to": "int: å­—å¹•ç»“æŸæ—¶é—´ï¼ˆç§’ï¼‰",
+  "location": "int: å­—å¹•ä½ç½®ï¼Œé»˜è®¤ä¸º 2",
+  "content": "str: å­—å¹•å†…å®¹"
 }
   ]
 }
@@ -591,23 +591,23 @@ from bilibili_api import bangumi
 
 | name | type | description |
 | - | - | - |
-| `lan` | `str` | ×ÖÄ»ÓïÑÔ´úÂë£¬²Î¿¼ https |
-| `data` | `Dict` | ×ÖÄ»Êı¾İ |
-| `submit` | `bool` | ÊÇ·ñÌá½»£¬²»Ìá½»Îª²İ¸å |
-| `sign` | `bool` | ÊÇ·ñÊğÃû |
+| `lan` | `str` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå‚è€ƒ https |
+| `data` | `Dict` | å­—å¹•æ•°æ® |
+| `submit` | `bool` | æ˜¯å¦æäº¤ï¼Œä¸æäº¤ä¸ºè‰ç¨¿ |
+| `sign` | `bool` | æ˜¯å¦ç½²å |
 
-**Returns:** `dict`:  API µ÷ÓÃ·µ»Ø½á¹û
+**Returns:** `dict`:  API è°ƒç”¨è¿”å›ç»“æœ
 
 
 
 
 ### async def turn_to_video()
 
-½«·¬¾ç¾ç¼¯¶ÔÏó×ª»»ÎªÊÓÆµ
+å°†ç•ªå‰§å‰§é›†å¯¹è±¡è½¬æ¢ä¸ºè§†é¢‘
 
 
 
-**Returns:** `Video`:  ÊÓÆµ¶ÔÏó
+**Returns:** `Video`:  è§†é¢‘å¯¹è±¡
 
 
 
@@ -616,7 +616,7 @@ from bilibili_api import bangumi
 
 ## class IndexFilter()
 
-·¬¾çË÷ÒıÏà¹Ø¹Ì¶¨²ÎÊıÒÔ¼°Öµ
+ç•ªå‰§ç´¢å¼•ç›¸å…³å›ºå®šå‚æ•°ä»¥åŠå€¼
 
 
 
@@ -625,26 +625,26 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-µØÇø
+åœ°åŒº
 
-+ ALL: È«²¿
-+ CHINA: ÖĞ¹ú
-+ CHINA_MAINLAND: ÖĞ¹ú´óÂ½
-+ CHINA_HONGKONG_AND_TAIWAN: ÖĞ¹ú¸ÛÌ¨
-+ JAPAN: ÈÕ±¾
-+ USA: ÃÀ¹ú
-+ UK: Ó¢¹ú
-+ SOUTH_KOREA: º«¹ú
-+ FRANCE: ·¨¹ú
-+ THAILAND: Ì©¹ú
-+ GERMANY: µÂ¹ú
-+ ITALY: Òâ´óÀû
-+ SPAIN: Î÷°àÑÀ
-+ ANIME_OTHER: ·¬¾çÆäËû
-+ MOVIE_OTHER: Ó°ÊÓÆäËû
-+ DOCUMENTARY_OTHER: ¼ÍÂ¼Æ¬ÆäËû
++ ALL: å…¨éƒ¨
++ CHINA: ä¸­å›½
++ CHINA_MAINLAND: ä¸­å›½å¤§é™†
++ CHINA_HONGKONG_AND_TAIWAN: ä¸­å›½æ¸¯å°
++ JAPAN: æ—¥æœ¬
++ USA: ç¾å›½
++ UK: è‹±å›½
++ SOUTH_KOREA: éŸ©å›½
++ FRANCE: æ³•å›½
++ THAILAND: æ³°å›½
++ GERMANY: å¾·å›½
++ ITALY: æ„å¤§åˆ©
++ SPAIN: è¥¿ç­ç‰™
++ ANIME_OTHER: ç•ªå‰§å…¶ä»–
++ MOVIE_OTHER: å½±è§†å…¶ä»–
++ DOCUMENTARY_OTHER: çºªå½•ç‰‡å…¶ä»–
 
-×¢Òâ£º¸÷Ë÷ÒıµÄ ÆäËû ±íÊ¾µÄµØÇø¶¼²»Í¬
+æ³¨æ„ï¼šå„ç´¢å¼•çš„ å…¶ä»– è¡¨ç¤ºçš„åœ°åŒºéƒ½ä¸åŒ
 
 
 
@@ -653,11 +653,11 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-°æÈ¨·½
+ç‰ˆæƒæ–¹
 
-+ ALL: È«²¿
-+ EXCLUSIVE: ¶À¼Ò
-+ OTHER: ÆäËû
++ ALL: å…¨éƒ¨
++ EXCLUSIVE: ç‹¬å®¶
++ OTHER: å…¶ä»–
 
 
 
@@ -666,11 +666,11 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-Íê½á×´Ì¬
+å®Œç»“çŠ¶æ€
 
-+ ALL: È«²¿
-+ FINISHED: Íê½á
-+ UNFINISHED: Á¬ÔØ
++ ALL: å…¨éƒ¨
++ FINISHED: å®Œç»“
++ UNFINISHED: è¿è½½
 
 
 
@@ -679,15 +679,15 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-ÅÅĞò×Ö¶Î
+æ’åºå­—æ®µ
 
-+ UPDATE: ¸üĞÂÊ±¼ä
-+ DANMAKU: µ¯Ä»ÊıÁ¿
-+ PLAY: ²¥·ÅÊıÁ¿
-+ FOLLOWER: ×··¬ÈËÊı
-+ SOCRE: ×î¸ßÆÀ·Ö
-+ ANIME_RELEASE: ·¬¾ç¿ª²¥ÈÕÆÚ
-+ MOVIE_RELEASE: µçÓ°ÉÏÓ³ÈÕÆÚ
++ UPDATE: æ›´æ–°æ—¶é—´
++ DANMAKU: å¼¹å¹•æ•°é‡
++ PLAY: æ’­æ”¾æ•°é‡
++ FOLLOWER: è¿½ç•ªäººæ•°
++ SOCRE: æœ€é«˜è¯„åˆ†
++ ANIME_RELEASE: ç•ªå‰§å¼€æ’­æ—¥æœŸ
++ MOVIE_RELEASE: ç”µå½±ä¸Šæ˜ æ—¥æœŸ
 
 
 
@@ -696,12 +696,12 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-¹Û¿´Ìõ¼ş
+è§‚çœ‹æ¡ä»¶
 
-+ ALL: È«²¿
-+ FREE: Ãâ·Ñ
-+ PAID: ¸¶·Ñ
-+ VIP: ´ó»áÔ±
++ ALL: å…¨éƒ¨
++ FREE: å…è´¹
++ PAID: ä»˜è´¹
++ VIP: å¤§ä¼šå‘˜
 
 
 
@@ -710,29 +710,29 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-ÖÆ×÷·½
+åˆ¶ä½œæ–¹
 
-+ ALL: È«²¿
++ ALL: å…¨éƒ¨
 + CCTV: CCTV
 + BBC: BBC
-+ DISCOVERY: Ì½Ë÷ÆµµÀ
-+ NATIONAL_GEOGRAPHIC: ¹ú¼ÒµØÀí
++ DISCOVERY: æ¢ç´¢é¢‘é“
++ NATIONAL_GEOGRAPHIC: å›½å®¶åœ°ç†
 + NHK: NHK
-+ HISTORY: ÀúÊ·ÆµµÀ
-+ SATELLITE: ÎÀÊÓ
-+ SELF: ×ÔÖÆ
++ HISTORY: å†å²é¢‘é“
++ SATELLITE: å«è§†
++ SELF: è‡ªåˆ¶
 + ITV: ITV
 + SKY: SKY
 + ZDF: ZDF
-+ PARTNER: ºÏ×÷»ú¹¹
-+ SONY: Ë÷Äá
-+ GLOBAL_NEWS: »·Çò
-+ PARAMOUNT: ÅÉÀ­ÃÉ
-+ WARNER: »ªÄÉ
-+ DISNEY: µÏÊ¿Äá
++ PARTNER: åˆä½œæœºæ„
++ SONY: ç´¢å°¼
++ GLOBAL_NEWS: ç¯çƒ
++ PARAMOUNT: æ´¾æ‹‰è’™
++ WARNER: åçº³
++ DISNEY: è¿ªå£«å°¼
 + HBO: HBO
-+ DOMESTIC_OTHER: ¹úÄÚÆäËû
-+ FOREIGN_OTHER: ¹úÍâÆäËû
++ DOMESTIC_OTHER: å›½å†…å…¶ä»–
++ FOREIGN_OTHER: å›½å¤–å…¶ä»–
 
 
 
@@ -741,13 +741,13 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-¼¾¶È
+å­£åº¦
 
-+ ALL: È«²¿
-+ SPRING: ´º¼¾
-+ SUMMER: ÏÄ¼¾
-+ AUTUMN: Çï¼¾
-+ WINTER: ¶¬¼¾
++ ALL: å…¨éƒ¨
++ SPRING: æ˜¥å­£
++ SUMMER: å¤å­£
++ AUTUMN: ç§‹å­£
++ WINTER: å†¬å­£
 
 
 
@@ -756,10 +756,10 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-ÅÅĞò·½Ê½
+æ’åºæ–¹å¼
 
-+ DESC: ½µĞò
-+ ASC: ÉıĞò
++ DESC: é™åº
++ ASC: å‡åº
 
 
 
@@ -768,18 +768,18 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-ÅäÒô
+é…éŸ³
 
-+ ALL: È«²¿
-+ ORIGINAL: Ô­Éù
-+ CHINESE: ÖĞÅä
++ ALL: å…¨éƒ¨
++ ORIGINAL: åŸå£°
++ CHINESE: ä¸­é…
 
 
 
 
 ### class Style()
 
-·ç¸ñ£¬¸ù¾İË÷Òı²»Í¬£¬¿ÉÑ¡µÄ·ç¸ñÒ²²»Í¬
+é£æ ¼ï¼Œæ ¹æ®ç´¢å¼•ä¸åŒï¼Œå¯é€‰çš„é£æ ¼ä¹Ÿä¸åŒ
 
 
 
@@ -788,47 +788,47 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-·¬¾ç·ç¸ñ
+ç•ªå‰§é£æ ¼
 
-+ ALL: È«²¿
-+ ORIGINAL: Ô­´´
-+ COMIC: Âş»­¸Ä
-+ NOVEL: Ğ¡Ëµ¸Ä
-+ GAME: ÓÎÏ·¸Ä
-+ TOKUSATSU: ÌØÉã
-+ BUDAIXI: ²¼´üÏ·
-+ WARM: ÈÈÑª
-+ TIMEBACK: ´©Ô½
-+ IMAGING: Ææ»Ã
-+ WAR: Õ½¶·
-+ FUNNY: ¸ãĞ¦
-+ DAILY: ÈÕ³£
-+ SCIENCE_FICTION: ¿Æ»Ã
-+ MOE: ÃÈÏµ
-+ HEAL: ÖÎÓú
-+ SCHOOL: Ğ£Ô°
-+ CHILDREN: ¶ùÍ¯
-+ NOODLES: ÅİÃæ
-+ LOVE: Áµ°®
-+ GIRLISH: ÉÙÅ®
-+ MAGIC: Ä§·¨
-+ ADVENTURE: Ã°ÏÕ
-+ HISTORY: ÀúÊ·
-+ ALTERNATE: ¼Ü¿Õ
-+ MACHINE_BATTLE: »úÕ½
-+ GODS_DEM: ÉñÄ§
-+ VOICE: Éù¿Ø
-+ SPORT: ÔË¶¯
-+ INSPIRATION: ÀøÖ¾
-+ MUSIC: ÒôÀÖ
-+ ILLATION: ÍÆÀí
-+ SOCIEITES: ÉçÍÅ
-+ OUTWIT: ÖÇ¶·
-+ TEAR: ´ßÀá
-+ FOOD: ÃÀÊ³
-+ IDOL: Å¼Ïñ
-+ OTOME: ÒÒÅ®
-+ WORK: Ö°³¡
++ ALL: å…¨éƒ¨
++ ORIGINAL: åŸåˆ›
++ COMIC: æ¼«ç”»æ”¹
++ NOVEL: å°è¯´æ”¹
++ GAME: æ¸¸æˆæ”¹
++ TOKUSATSU: ç‰¹æ‘„
++ BUDAIXI: å¸ƒè¢‹æˆ
++ WARM: çƒ­è¡€
++ TIMEBACK: ç©¿è¶Š
++ IMAGING: å¥‡å¹»
++ WAR: æˆ˜æ–—
++ FUNNY: æç¬‘
++ DAILY: æ—¥å¸¸
++ SCIENCE_FICTION: ç§‘å¹»
++ MOE: èŒç³»
++ HEAL: æ²»æ„ˆ
++ SCHOOL: æ ¡å›­
++ CHILDREN: å„¿ç«¥
++ NOODLES: æ³¡é¢
++ LOVE: æ‹çˆ±
++ GIRLISH: å°‘å¥³
++ MAGIC: é­”æ³•
++ ADVENTURE: å†’é™©
++ HISTORY: å†å²
++ ALTERNATE: æ¶ç©º
++ MACHINE_BATTLE: æœºæˆ˜
++ GODS_DEM: ç¥é­”
++ VOICE: å£°æ§
++ SPORT: è¿åŠ¨
++ INSPIRATION: åŠ±å¿—
++ MUSIC: éŸ³ä¹
++ ILLATION: æ¨ç†
++ SOCIEITES: ç¤¾å›¢
++ OUTWIT: æ™ºæ–—
++ TEAR: å‚¬æ³ª
++ FOOD: ç¾é£Ÿ
++ IDOL: å¶åƒ
++ OTOME: ä¹™å¥³
++ WORK: èŒåœº
 
 
 
@@ -837,27 +837,27 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-¼ÍÂ¼Æ¬·ç¸ñ
+çºªå½•ç‰‡é£æ ¼
 
-+ ALL: È«²¿
-+ HISTORY: ÀúÊ·
-+ FOODS: ÃÀÊ³
-+ HUMANITIES: ÈËÎÄ
-+ TECHNOLOGY: ¿Æ¼¼
-+ DISCOVER: Ì½ÏÕ
-+ UNIVERSE: ÓîÖæ
-+ PETS: ÃÈ³è
-+ SOCIAL: Éç»á
-+ ANIMALS: ¶¯Îï
-+ NATURE: ×ÔÈ»
-+ MEDICAL: Ò½ÁÆ
-+ WAR: Õ½Õù
-+ DISATER: ÔÖÄÑ
-+ INVESTIGATIONS: ×ï°¸
-+ MYSTERIOUS: ÉñÃØ
-+ TRAVEL: ÂÃĞĞ
-+ SPORTS: ÔË¶¯
-+ MOVIES: µçÓ°
++ ALL: å…¨éƒ¨
++ HISTORY: å†å²
++ FOODS: ç¾é£Ÿ
++ HUMANITIES: äººæ–‡
++ TECHNOLOGY: ç§‘æŠ€
++ DISCOVER: æ¢é™©
++ UNIVERSE: å®‡å®™
++ PETS: èŒå® 
++ SOCIAL: ç¤¾ä¼š
++ ANIMALS: åŠ¨ç‰©
++ NATURE: è‡ªç„¶
++ MEDICAL: åŒ»ç–—
++ WAR: æˆ˜äº‰
++ DISATER: ç¾éš¾
++ INVESTIGATIONS: ç½ªæ¡ˆ
++ MYSTERIOUS: ç¥ç§˜
++ TRAVEL: æ—…è¡Œ
++ SPORTS: è¿åŠ¨
++ MOVIES: ç”µå½±
 
 
 
@@ -866,48 +866,48 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-¹ú´´·ç¸ñ
+å›½åˆ›é£æ ¼
 
-+ ALL: È«²¿
-+ ORIGINAL: Ô­´´
-+ COMIC: Âş»­¸Ä
-+ NOVEL: Ğ¡Ëµ¸Ä
-+ GAME: ÓÎÏ·¸Ä
-+ DYNAMIC: ¶¯Ì¬Âş
-+ BUDAIXI: ²¼´üÏ·
-+ WARM: ÈÈÑª
-+ IMAGING: Ææ»Ã
-+ FANTASY: Ğş»Ã
-+ WAR: Õ½¶·
-+ FUNNY: ¸ãĞ¦
-+ WUXIA: ÎäÏÀ
-+ DAILY: ÈÕ³£
-+ SCIENCE_FICTION: ¿Æ»Ã
-+ MOE: ÃÈÏµ
-+ HEAL: ÖÎÓú
-+ SUSPENSE: ĞüÒÉ
-+ SCHOOL: Ğ£Ô°
-+ CHILDREN: ÉÙ¶ù
-+ NOODLES: ÅİÃæ
-+ LOVE: Áµ°®
-+ GIRLISH: ÉÙÅ®
-+ MAGIC: Ä§·¨
-+ HISTORY: ÀúÊ·
-+ MACHINE_BATTLE: »úÕ½
-+ GODS_DEMONS: ÉñÄ§
-+ VOICE: Éù¿Ø
-+ SPORT: ÔË¶¯
-+ INSPIRATION: ÀøÖ¾
-+ MUSIC: ÒôÀÖ
-+ ILLATION: ÍÆÀí
-+ SOCIEITES: ÉçÍÅ
-+ OUTWIT: ÖÇ¶·
-+ TEAR: ´ßÀá
-+ FOOD: ÃÀÊ³
-+ IDOL: Å¼Ïñ
-+ OTOME: ÒÒÅ®
-+ WORK: Ö°³¡
-+ ANCIENT: ¹Å·ç
++ ALL: å…¨éƒ¨
++ ORIGINAL: åŸåˆ›
++ COMIC: æ¼«ç”»æ”¹
++ NOVEL: å°è¯´æ”¹
++ GAME: æ¸¸æˆæ”¹
++ DYNAMIC: åŠ¨æ€æ¼«
++ BUDAIXI: å¸ƒè¢‹æˆ
++ WARM: çƒ­è¡€
++ IMAGING: å¥‡å¹»
++ FANTASY: ç„å¹»
++ WAR: æˆ˜æ–—
++ FUNNY: æç¬‘
++ WUXIA: æ­¦ä¾ 
++ DAILY: æ—¥å¸¸
++ SCIENCE_FICTION: ç§‘å¹»
++ MOE: èŒç³»
++ HEAL: æ²»æ„ˆ
++ SUSPENSE: æ‚¬ç–‘
++ SCHOOL: æ ¡å›­
++ CHILDREN: å°‘å„¿
++ NOODLES: æ³¡é¢
++ LOVE: æ‹çˆ±
++ GIRLISH: å°‘å¥³
++ MAGIC: é­”æ³•
++ HISTORY: å†å²
++ MACHINE_BATTLE: æœºæˆ˜
++ GODS_DEMONS: ç¥é­”
++ VOICE: å£°æ§
++ SPORT: è¿åŠ¨
++ INSPIRATION: åŠ±å¿—
++ MUSIC: éŸ³ä¹
++ ILLATION: æ¨ç†
++ SOCIEITES: ç¤¾å›¢
++ OUTWIT: æ™ºæ–—
++ TEAR: å‚¬æ³ª
++ FOOD: ç¾é£Ÿ
++ IDOL: å¶åƒ
++ OTOME: ä¹™å¥³
++ WORK: èŒåœº
++ ANCIENT: å¤é£
 
 
 
@@ -916,31 +916,31 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-µçÓ°·ç¸ñ
+ç”µå½±é£æ ¼
 
-+ ALL: È«²¿
-+ SKETCH: ¶ÌÆ¬
-+ PLOT: ¾çÇé
-+ COMEDY: Ï²¾ç
-+ ROMANTIC: °®Çé
-+ ACTION: ¶¯×÷
-+ SCAIRIER: ¿Ö²À
-+ SCIENCE_FICTION: ¿Æ»Ã
-+ CRIME: ·¸×ï
-+ TIRILLER: ¾ªã¤
-+ SUSPENSE: ĞüÒÉ
-+ IMAGING: Ææ»Ã
-+ WAR: Õ½Õù
-+ ANIME: ¶¯»­
-+ BIOAGRAPHY: ´«¼Ç
-+ FAMILY: ¼ÒÍ¥
-+ SING_DANCE: ¸èÎè
-+ HISTORY: ÀúÊ·
-+ DISCOVER: Ì½ÏÕ
-+ DOCUMENTARY: ¼ÍÂ¼Æ¬
-+ DISATER: ÔÖÄÑ
-+ COMIC: Âş»­¸Ä
-+ NOVEL: Ğ¡Ëµ¸Ä
++ ALL: å…¨éƒ¨
++ SKETCH: çŸ­ç‰‡
++ PLOT: å‰§æƒ…
++ COMEDY: å–œå‰§
++ ROMANTIC: çˆ±æƒ…
++ ACTION: åŠ¨ä½œ
++ SCAIRIER: ææ€–
++ SCIENCE_FICTION: ç§‘å¹»
++ CRIME: çŠ¯ç½ª
++ TIRILLER: æƒŠæ‚š
++ SUSPENSE: æ‚¬ç–‘
++ IMAGING: å¥‡å¹»
++ WAR: æˆ˜äº‰
++ ANIME: åŠ¨ç”»
++ BIOAGRAPHY: ä¼ è®°
++ FAMILY: å®¶åº­
++ SING_DANCE: æ­Œèˆ
++ HISTORY: å†å²
++ DISCOVER: æ¢é™©
++ DOCUMENTARY: çºªå½•ç‰‡
++ DISATER: ç¾éš¾
++ COMIC: æ¼«ç”»æ”¹
++ NOVEL: å°è¯´æ”¹
 
 
 
@@ -949,33 +949,33 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-µçÊÓ¾ç·ç¸ñ
+ç”µè§†å‰§é£æ ¼
 
-+ ALL: È«²¿
-+ FUNNY: ¸ãĞ¦
-+ IMAGING: Ææ»Ã
-+ WAR: Õ½Õù
-+ WUXIA: ÎäÏÀ
-+ YOUTH: Çà´º
-+ SKETCH: ¶Ì¾ç
-+ CITY: ¶¼ÊĞ
-+ ANCIENT: ¹Å×°
-+ SPY: µıÕ½
-+ CLASSIC: ¾­µä
-+ EMOTION: Çé¸Ğ
-+ SUSPENSE: ĞüÒÉ
-+ INSPIRATION: ÀøÖ¾
-+ MYTH: Éñ»°
-+ TIMEBACK: ´©Ô½
-+ YEAR: Äê´ú
-+ COUNTRYSIDE: Ïç´å
-+ INVESTIGATION: ĞÌÕì
-+ PLOT: ¾çÇé
-+ FAMILY: ¼ÒÍ¥
-+ HISTORY: ÀúÊ·
-+ EMOTION: Çé¸Ğ
-+ ARMY: ¾üÂÃ
-+ SCIENCE_FICTION: ¿Æ»Ã
++ ALL: å…¨éƒ¨
++ FUNNY: æç¬‘
++ IMAGING: å¥‡å¹»
++ WAR: æˆ˜äº‰
++ WUXIA: æ­¦ä¾ 
++ YOUTH: é’æ˜¥
++ SKETCH: çŸ­å‰§
++ CITY: éƒ½å¸‚
++ ANCIENT: å¤è£…
++ SPY: è°æˆ˜
++ CLASSIC: ç»å…¸
++ EMOTION: æƒ…æ„Ÿ
++ SUSPENSE: æ‚¬ç–‘
++ INSPIRATION: åŠ±å¿—
++ MYTH: ç¥è¯
++ TIMEBACK: ç©¿è¶Š
++ YEAR: å¹´ä»£
++ COUNTRYSIDE: ä¹¡æ‘
++ INVESTIGATION: åˆ‘ä¾¦
++ PLOT: å‰§æƒ…
++ FAMILY: å®¶åº­
++ HISTORY: å†å²
++ EMOTION: æƒ…æ„Ÿ
++ ARMY: å†›æ—…
++ SCIENCE_FICTION: ç§‘å¹»
 
 
 
@@ -984,25 +984,25 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-×ÛÒÕ·ç¸ñ
+ç»¼è‰ºé£æ ¼
 
-+ ALL: È«²¿
-+ MUSIC: ÒôÀÖ
-+ TALK: ·ÃÌ¸
-+ TALK_SHOW: ÍÑ¿ÚĞã
-+ REALITY_SHOW: ÕæÈËĞã
-+ TALENT_SHOW: Ñ¡Ğã
-+ FOOD: ÃÀÊ³
-+ TRAVEL: ÂÃĞĞ
-+ SOIREE: Íí»á
-+ CONCERT: Ñİ³ª»á
-+ EMOTION: Çé¸Ğ
-+ COMEDY: Ï²¾ç
-+ PARENT_CHILD: Ç××Ó
-+ CULTURE: ÎÄ»¯
-+ OFFICE: Ö°³¡
-+ PET: ÃÈ³è
-+ CULTIVATE: Ñø³É
++ ALL: å…¨éƒ¨
++ MUSIC: éŸ³ä¹
++ TALK: è®¿è°ˆ
++ TALK_SHOW: è„±å£ç§€
++ REALITY_SHOW: çœŸäººç§€
++ TALENT_SHOW: é€‰ç§€
++ FOOD: ç¾é£Ÿ
++ TRAVEL: æ—…è¡Œ
++ SOIREE: æ™šä¼š
++ CONCERT: æ¼”å”±ä¼š
++ EMOTION: æƒ…æ„Ÿ
++ COMEDY: å–œå‰§
++ PARENT_CHILD: äº²å­
++ CULTURE: æ–‡åŒ–
++ OFFICE: èŒåœº
++ PET: èŒå® 
++ CULTIVATE: å…»æˆ
 
 
 
@@ -1012,14 +1012,14 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-Ë÷ÒıÀàĞÍ
+ç´¢å¼•ç±»å‹
 
-+ ANIME: ·¬¾ç
-+ MOVIE: µçÓ°
-+ DOCUMENTARY: ¼ÍÂ¼Æ¬
-+ GUOCHUANG: ¹ú´´
-+ TV: µçÊÓ¾ç
-+ VARIETY: ×ÛÒÕ
++ ANIME: ç•ªå‰§
++ MOVIE: ç”µå½±
++ DOCUMENTARY: çºªå½•ç‰‡
++ GUOCHUANG: å›½åˆ›
++ TV: ç”µè§†å‰§
++ VARIETY: ç»¼è‰º
 
 
 
@@ -1028,12 +1028,12 @@ from bilibili_api import bangumi
 
 **Extend: enum.Enum**
 
-·¬¾ç°æ±¾
+ç•ªå‰§ç‰ˆæœ¬
 
-+ ALL: È«²¿
-+ MAIN: ÕıÆ¬
-+ FILM: µçÓ°
-+ OTHER: ÆäËû
++ ALL: å…¨éƒ¨
++ MAIN: æ­£ç‰‡
++ FILM: ç”µå½±
++ OTHER: å…¶ä»–
 
 
 
@@ -1042,23 +1042,23 @@ from bilibili_api import bangumi
 
 ### def make_time_filter()
 
-Éú³É·¬¾çË÷ÒıËùĞèµÄÊ±¼äÌõ¼ş
+ç”Ÿæˆç•ªå‰§ç´¢å¼•æ‰€éœ€çš„æ—¶é—´æ¡ä»¶
 
-·¬¾ç¡¢¹ú´´Ö±½Ó´«ÈëÄê·İ£¬Îª int »òÕß str ÀàĞÍ£¬Èç `make_time_filter(start=2019, end=2020)`
+ç•ªå‰§ã€å›½åˆ›ç›´æ¥ä¼ å…¥å¹´ä»½ï¼Œä¸º int æˆ–è€… str ç±»å‹ï¼Œå¦‚ `make_time_filter(start=2019, end=2020)`
 
-Ó°ÊÓ¡¢¼ÍÂ¼Æ¬¡¢µçÊÓ¾ç´«Èë datetime.datetime£¬Èç `make_time_filter(start=datetime.datetime(2019, 1, 1), end=datetime.datetime(2020, 1, 1))`
+å½±è§†ã€çºªå½•ç‰‡ã€ç”µè§†å‰§ä¼ å…¥ datetime.datetimeï¼Œå¦‚ `make_time_filter(start=datetime.datetime(2019, 1, 1), end=datetime.datetime(2020, 1, 1))`
 
-start »ò end Îª None Ê±Ôò±íÊ¾²»ÉèÖÃ¿ªÊ¼»ò½áÎ²
+start æˆ– end ä¸º None æ—¶åˆ™è¡¨ç¤ºä¸è®¾ç½®å¼€å§‹æˆ–ç»“å°¾
 
 
 | name | type | description |
 | - | - | - |
-| `start` | `datetime, str, int` | ¿ªÊ¼Ê±¼ä. Èç¹ûÊÇ None Ôò²»ÉèÖÃ¿ªÍ·. |
-| `end` | `datetime, str, int` | ½áÊøÊ±¼ä. Èç¹ûÊÇ None Ôò²»ÉèÖÃ½áÎ². |
-| `include_start` | `bool` | ÊÇ·ñ°üº¬¿ªÊ¼Ê±¼ä. Ä¬ÈÏÎª True. |
-| `include_end` | `bool` | ÊÇ·ñ°üº¬½áÊøÊ±¼ä. Ä¬ÈÏÎª False. |
+| `start` | `datetime, str, int` | å¼€å§‹æ—¶é—´. å¦‚æœæ˜¯ None åˆ™ä¸è®¾ç½®å¼€å¤´. |
+| `end` | `datetime, str, int` | ç»“æŸæ—¶é—´. å¦‚æœæ˜¯ None åˆ™ä¸è®¾ç½®ç»“å°¾. |
+| `include_start` | `bool` | æ˜¯å¦åŒ…å«å¼€å§‹æ—¶é—´. é»˜è®¤ä¸º True. |
+| `include_end` | `bool` | æ˜¯å¦åŒ…å«ç»“æŸæ—¶é—´. é»˜è®¤ä¸º False. |
 
-**Returns:** `str`:  Äê´úÌõ¼ş
+**Returns:** `str`:  å¹´ä»£æ¡ä»¶
 
 
 
@@ -1067,16 +1067,16 @@ start »ò end Îª None Ê±Ôò±íÊ¾²»ÉèÖÃ¿ªÊ¼»ò½áÎ²
 
 ## class IndexFilterMeta()
 
-IndexFilter ÔªÊı¾İ
+IndexFilter å…ƒæ•°æ®
 
-ÓÃÓÚ´«Èë get_index_info ·½·¨
+ç”¨äºä¼ å…¥ get_index_info æ–¹æ³•
 
 
 
 
 ### class Anime()
 
-¶¯»­
+åŠ¨ç”»
 
 
 
@@ -1087,20 +1087,20 @@ Anime Meta
 
 | name | type | description |
 | - | - | - |
-| `version` | `Index_Filter.Version` | ÀàĞÍ£¬ÈçÕıÆ¬¡¢µçÓ°µÈ |
-| `spoken_language` | `Index_Filter.Spoken_Language` | ÅäÒô |
-| `area` | `Index_Filter.Area` | µØÇø |
-| `finish_status` | `Index_Filter.Finish_Status` | ÊÇ·ñÍê½á |
-| `copyright` | `Index_Filter.Copryright` | °æÈ¨ |
-| `payment` | `Index_Filter.Payment` | ¸¶·ÑÃÅ¼÷ |
-| `season` | `Index_Filter.Season` | ¼¾¶È |
-| `year` | `str` | Äê·İ£¬µ÷ÓÃ Index_Filter.make_time_filter() ´«ÈëÄê·İ (int, str) »ñÈ¡ |
-| `style` | `Index_Filter.Style.Anime` | ·ç¸ñ |
+| `version` | `Index_Filter.Version` | ç±»å‹ï¼Œå¦‚æ­£ç‰‡ã€ç”µå½±ç­‰ |
+| `spoken_language` | `Index_Filter.Spoken_Language` | é…éŸ³ |
+| `area` | `Index_Filter.Area` | åœ°åŒº |
+| `finish_status` | `Index_Filter.Finish_Status` | æ˜¯å¦å®Œç»“ |
+| `copyright` | `Index_Filter.Copryright` | ç‰ˆæƒ |
+| `payment` | `Index_Filter.Payment` | ä»˜è´¹é—¨æ§› |
+| `season` | `Index_Filter.Season` | å­£åº¦ |
+| `year` | `str` | å¹´ä»½ï¼Œè°ƒç”¨ Index_Filter.make_time_filter() ä¼ å…¥å¹´ä»½ (int, str) è·å– |
+| `style` | `Index_Filter.Style.Anime` | é£æ ¼ |
 
 
 ### class Documentary()
 
-¼ÍÂ¼Æ¬
+çºªå½•ç‰‡
 
 
 
@@ -1111,15 +1111,15 @@ Documentary Meta
 
 | name | type | description |
 | - | - | - |
-| `area` | `Index_Filter.Area` | µØÇø |
-| `release_date` | `str` | ÉÏÓ³Ê±¼ä£¬µ÷ÓÃ Index_Filter.make_time_filter() ´«ÈëÄê·İ (datetime.datetime) »ñÈ¡ |
-| `style` | `Index_Filter.Style.Documentary` | ·ç¸ñ |
-| `producer` | `Index_Filter.Producer` | ÖÆ×÷·½ |
+| `area` | `Index_Filter.Area` | åœ°åŒº |
+| `release_date` | `str` | ä¸Šæ˜ æ—¶é—´ï¼Œè°ƒç”¨ Index_Filter.make_time_filter() ä¼ å…¥å¹´ä»½ (datetime.datetime) è·å– |
+| `style` | `Index_Filter.Style.Documentary` | é£æ ¼ |
+| `producer` | `Index_Filter.Producer` | åˆ¶ä½œæ–¹ |
 
 
 ### class GuoChuang()
 
-¹ú´´
+å›½åˆ›
 
 
 
@@ -1130,17 +1130,17 @@ Guochuang Meta
 
 | name | type | description |
 | - | - | - |
-| `version` | `Index_Filter.VERSION` | ÀàĞÍ£¬ÈçÕıÆ¬¡¢µçÓ°µÈ |
-| `finish_status` | `Index_Filter.Finish_Status` | ÊÇ·ñÍê½á |
-| `copyright` | `Index_Filter.Copyright` | °æÈ¨ |
-| `payment` | `Index_Filter.Payment` | ¸¶·ÑÃÅ¼÷ |
-| `year` | `str` | Äê·İ£¬µ÷ÓÃ Index_Filter.make_time_filter() ´«ÈëÄê·İ (int, str) »ñÈ¡ |
-| `style` | `Index_Filter.Style.GuoChuang` | ·ç¸ñ |
+| `version` | `Index_Filter.VERSION` | ç±»å‹ï¼Œå¦‚æ­£ç‰‡ã€ç”µå½±ç­‰ |
+| `finish_status` | `Index_Filter.Finish_Status` | æ˜¯å¦å®Œç»“ |
+| `copyright` | `Index_Filter.Copyright` | ç‰ˆæƒ |
+| `payment` | `Index_Filter.Payment` | ä»˜è´¹é—¨æ§› |
+| `year` | `str` | å¹´ä»½ï¼Œè°ƒç”¨ Index_Filter.make_time_filter() ä¼ å…¥å¹´ä»½ (int, str) è·å– |
+| `style` | `Index_Filter.Style.GuoChuang` | é£æ ¼ |
 
 
 ### class Movie()
 
-µçÓ°
+ç”µå½±
 
 
 
@@ -1151,11 +1151,11 @@ Movie Meta
 
 | name | type | description |
 | - | - | - |
-| `area` | `Index_Filter.Area` | µØÇø |
-| `payment` | `Index_Filter.Payment` | ¸¶·ÑÃÅ¼÷ |
-| `season` | `Index_Filter.Season` | ¼¾¶È |
-| `release_date` | `str` | ÉÏÓ³Ê±¼ä£¬µ÷ÓÃ Index_Filter.make_time_filter() ´«ÈëÄê·İ (datetime.datetime) »ñÈ¡ |
-| `style` | `Index_Filter.Style.Movie` | ·ç¸ñ |
+| `area` | `Index_Filter.Area` | åœ°åŒº |
+| `payment` | `Index_Filter.Payment` | ä»˜è´¹é—¨æ§› |
+| `season` | `Index_Filter.Season` | å­£åº¦ |
+| `release_date` | `str` | ä¸Šæ˜ æ—¶é—´ï¼Œè°ƒç”¨ Index_Filter.make_time_filter() ä¼ å…¥å¹´ä»½ (datetime.datetime) è·å– |
+| `style` | `Index_Filter.Style.Movie` | é£æ ¼ |
 
 
 ### class TV()
@@ -1171,15 +1171,15 @@ TV Meta
 
 | name | type | description |
 | - | - | - |
-| `area` | `Index_Filter.Area` | µØÇø |
-| `payment` | `Index_Filter.Payment` | ¸¶·ÑÃÅ¼÷ |
-| `release_date` | `str` | ÉÏÓ³Ê±¼ä£¬µ÷ÓÃ Index_Filter.make_time_filter() ´«ÈëÄê·İ (datetime.datetime) »ñÈ¡ |
-| `style` | `Index_Filter.Style.TV` | ·ç¸ñ |
+| `area` | `Index_Filter.Area` | åœ°åŒº |
+| `payment` | `Index_Filter.Payment` | ä»˜è´¹é—¨æ§› |
+| `release_date` | `str` | ä¸Šæ˜ æ—¶é—´ï¼Œè°ƒç”¨ Index_Filter.make_time_filter() ä¼ å…¥å¹´ä»½ (datetime.datetime) è·å– |
+| `style` | `Index_Filter.Style.TV` | é£æ ¼ |
 
 
 ### class Variety()
 
-×ÛÒÕ
+ç»¼è‰º
 
 
 
@@ -1190,28 +1190,28 @@ Variety Meta
 
 | name | type | description |
 | - | - | - |
-| `payment` | `Index_Filter.Payment` | ¸¶·ÑÃÅ¼÷ |
-| `style` | `Index_Filter.Style.Variety` | ·ç¸ñ |
+| `payment` | `Index_Filter.Payment` | ä»˜è´¹é—¨æ§› |
+| `style` | `Index_Filter.Style.Variety` | é£æ ¼ |
 
 
 ---
 
 ## async def get_index_info()
 
-²éÑ¯·¬¾çË÷Òı£¬Ë÷ÒıµÄÏêÏ¸²ÎÊıĞÅÏ¢¼û `IndexFilterMeta`
+æŸ¥è¯¢ç•ªå‰§ç´¢å¼•ï¼Œç´¢å¼•çš„è¯¦ç»†å‚æ•°ä¿¡æ¯è§ `IndexFilterMeta`
 
-ÇëÏÈÍ¨¹ı `IndexFilterMeta` ¹¹Ôì filters
+è¯·å…ˆé€šè¿‡ `IndexFilterMeta` æ„é€  filters
 
 
 | name | type | description |
 | - | - | - |
-| `filters` | `Index_Filter_Meta \| None, optional` | É¸Ñ¡Ìõ¼şÔªÊı¾İ. Defaults to None£¨µÈ¼ÛÓÚ Anime£©. |
-| `order` | `BANGUMI_INDEX.ORDER, optional` | ÅÅĞò×Ö¶Î. Defaults to SCORE. |
-| `sort` | `BANGUMI_INDEX.SORT, optional` | ÅÅĞò·½Ê½. Defaults to DESC. |
-| `pn` | `int, optional` | Ò³Êı. Defaults to 1. |
-| `ps` | `int, optional` | Ã¿Ò³ÊıÁ¿. Defaults to 20. |
+| `filters` | `Index_Filter_Meta \| None, optional` | ç­›é€‰æ¡ä»¶å…ƒæ•°æ®. Defaults to Noneï¼ˆç­‰ä»·äº Animeï¼‰. |
+| `order` | `BANGUMI_INDEX.ORDER, optional` | æ’åºå­—æ®µ. Defaults to SCORE. |
+| `sort` | `BANGUMI_INDEX.SORT, optional` | æ’åºæ–¹å¼. Defaults to DESC. |
+| `pn` | `int, optional` | é¡µæ•°. Defaults to 1. |
+| `ps` | `int, optional` | æ¯é¡µæ•°é‡. Defaults to 20. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -1220,14 +1220,14 @@ Variety Meta
 
 ## async def get_timeline()
 
-»ñÈ¡·¬¾çÊ±¼äÏß
+è·å–ç•ªå‰§æ—¶é—´çº¿
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `BangumiType` | ·¬¾çÀàĞÍ |
-| `before` | `int` | ¼¸ÌìÇ°¿ªÊ¼(0~7), defaults to 7 |
-| `after` | `int` | ¼¸Ììºó½áÊø(0~7), defaults to 0 |
+| `type_` | `BangumiType` | ç•ªå‰§ç±»å‹ |
+| `before` | `int` | å‡ å¤©å‰å¼€å§‹(0~7), defaults to 7 |
+| `after` | `int` | å‡ å¤©åç»“æŸ(0~7), defaults to 0 |
 
 
 
@@ -1236,16 +1236,16 @@ Variety Meta
 
 ## async def set_follow()
 
-×··¬×´Ì¬ÉèÖÃ
+è¿½ç•ªçŠ¶æ€è®¾ç½®
 
 
 | name | type | description |
 | - | - | - |
-| `bangumi` | `Bangumi` | ·¬¾çÀà |
-| `status` | `bool, optional` | ×··¬×´Ì¬. Defaults to True. |
-| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
+| `bangumi` | `Bangumi` | ç•ªå‰§ç±» |
+| `status` | `bool, optional` | è¿½ç•ªçŠ¶æ€. Defaults to True. |
+| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -1254,16 +1254,16 @@ Variety Meta
 
 ## async def update_follow_status()
 
-¸üĞÂ×··¬×´Ì¬
+æ›´æ–°è¿½ç•ªçŠ¶æ€
 
 
 | name | type | description |
 | - | - | - |
-| `bangumi` | `Bangumi` | ·¬¾çÀà |
-| `credential` | `Credential \| None, optional` | Æ¾¾İ. Defaults to None. |
-| `status` | `int` | ×··¬×´Ì¬ 1 Ïë¿´ 2 ÔÚ¿´ 3 ÒÑ¿´ |
+| `bangumi` | `Bangumi` | ç•ªå‰§ç±» |
+| `credential` | `Credential \| None, optional` | å‡­æ®. Defaults to None. |
+| `status` | `int` | è¿½ç•ªçŠ¶æ€ 1 æƒ³çœ‹ 2 åœ¨çœ‹ 3 å·²çœ‹ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

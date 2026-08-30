@@ -3,9 +3,9 @@
 
 bilibili_api.creative_center
 
-´´×÷ÖĞĞÄÏà¹Ø¡£
+åˆ›ä½œä¸­å¿ƒç›¸å…³ã€‚
 
-Îñ±ØĞ¯´ø Credential ĞÅÏ¢£¬·ñÔòÎŞ·¨»ñÈ¡µ½Êı¾İ¡£
+åŠ¡å¿…æºå¸¦ Credential ä¿¡æ¯ï¼Œå¦åˆ™æ— æ³•è·å–åˆ°æ•°æ®ã€‚
 
 
 ``` python
@@ -61,11 +61,11 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÆÀÂÛ¹ÜÀíÖĞµÄ¸å¼şÀàĞÍ¡£
+è¯„è®ºç®¡ç†ä¸­çš„ç¨¿ä»¶ç±»å‹ã€‚
 
-+ VIDEO: ÊÓÆµ
-+ ARTICLE: ÎÄÕÂ
-+ AUDIO: ÒôÆµ
++ VIDEO: è§†é¢‘
++ ARTICLE: æ–‡ç« 
++ AUDIO: éŸ³é¢‘
 
 
 
@@ -76,14 +76,14 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÎÄÕÂÍ³¼ÆĞÅÏ¢µÄÀàĞÍ¡£
+æ–‡ç« ç»Ÿè®¡ä¿¡æ¯çš„ç±»å‹ã€‚
 
-+ READ: ÔÄ¶Á
-+ COMMENT: ÆÀÂÛ
-+ SHARE: ·ÖÏí
-+ COIN: Í¶±Ò
-+ FAV: ÊÕ²Ø
-+ LIKE: µãÔŞ
++ READ: é˜…è¯»
++ COMMENT: è¯„è®º
++ SHARE: åˆ†äº«
++ COIN: æŠ•å¸
++ FAV: æ”¶è—
++ LIKE: ç‚¹èµ
 
 
 
@@ -94,11 +94,11 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÆÀÂÛ¹ÜÀíÖĞµÄÅÅĞò×Ö¶Î¡£
+è¯„è®ºç®¡ç†ä¸­çš„æ’åºå­—æ®µã€‚
 
-+ RECENTLY: ×î½ü
-+ LIKE: µãÔŞ
-+ REPLY: »Ø¸´
++ RECENTLY: æœ€è¿‘
++ LIKE: ç‚¹èµ
++ REPLY: å›å¤
 
 
 
@@ -109,11 +109,11 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-¸å¼ş²¥·ÅÍê³ÉÂÊ¶Ô±ÈµÄ°æÈ¨ÀàĞÍ¡£
+ç¨¿ä»¶æ’­æ”¾å®Œæˆç‡å¯¹æ¯”çš„ç‰ˆæƒç±»å‹ã€‚
 
-+ ALL: È«²¿
-+ ORIGINAL: Ô­´´
-+ REPRINT: ×ªÔØ
++ ALL: å…¨éƒ¨
++ ORIGINAL: åŸåˆ›
++ REPRINT: è½¬è½½
 
 
 
@@ -124,15 +124,15 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-µ¯Ä»Ä£Ê½¡£
+å¼¹å¹•æ¨¡å¼ã€‚
 
-+ ROLL: ¹ö¶¯
-+ BOTTOM: µ×¶Ë
-+ TOP: ¶¥¶Ë
-+ REVERSE: ÄæÏò
-+ ADVANCED: ¸ß¼¶
-+ CODE: ´úÂë
-+ BAS: BAS ²¹³ä×¢ÊÍ
++ ROLL: æ»šåŠ¨
++ BOTTOM: åº•ç«¯
++ TOP: é¡¶ç«¯
++ REVERSE: é€†å‘
++ ADVANCED: é«˜çº§
++ CODE: ä»£ç 
++ BAS: BAS è¡¥å……æ³¨é‡Š
 
 
 
@@ -143,10 +143,10 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-µ¯Ä»ÅÅĞòÒÀ¾İ
+å¼¹å¹•æ’åºä¾æ®
 
-+ CTIME: ·¢ËÍÊ±¼ä
-+ LIKE_COUNT: µãÔŞÊı
++ CTIME: å‘é€æ—¶é—´
++ LIKE_COUNT: ç‚¹èµæ•°
 
 
 
@@ -157,11 +157,11 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-×Óµ¯Ä»³ØÀàĞÍ¡£
+å­å¼¹å¹•æ± ç±»å‹ã€‚
 
-+ NORMAL: ÆÕÍ¨
-+ SUBTITLE: ×ÖÄ»
-+ SPECIAL: ÌØÊâ
++ NORMAL: æ™®é€š
++ SUBTITLE: å­—å¹•
++ SPECIAL: ç‰¹æ®Š
 
 
 
@@ -172,10 +172,10 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-µ¯Ä»ÅÅĞòË³Ğò
+å¼¹å¹•æ’åºé¡ºåº
 
-+ DESC: ½µĞò
-+ ASC: ÉıĞò
++ DESC: é™åº
++ ASC: å‡åº
 
 
 
@@ -186,10 +186,10 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-µ¯Ä»É¸Ñ¡ÀàĞÍ
+å¼¹å¹•ç­›é€‰ç±»å‹
 
-+ ALL: È«²¿
-+ PROTECT: ±£»¤µ¯Ä»
++ ALL: å…¨éƒ¨
++ PROTECT: ä¿æŠ¤å¼¹å¹•
 
 
 
@@ -200,12 +200,12 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-·ÛË¿Í³¼ÆÍ¼±íµÄÊ±¼ä¶Î¡£
+ç²‰ä¸ç»Ÿè®¡å›¾è¡¨çš„æ—¶é—´æ®µã€‚
 
-+ YESTERDAY: ×òÌì
-+ WEEK: ½üÒ»ÖÜ
-+ MONTH: ½üÒ»ÔÂ
-+ THREE_MONTH: ½üÈıÔÂ
++ YESTERDAY: æ˜¨å¤©
++ WEEK: è¿‘ä¸€å‘¨
++ MONTH: è¿‘ä¸€æœˆ
++ THREE_MONTH: è¿‘ä¸‰æœˆ
 
 
 
@@ -216,12 +216,12 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-·ÛË¿Í³¼ÆÍ¼±íµÄÀàĞÍ¡£
+ç²‰ä¸ç»Ÿè®¡å›¾è¡¨çš„ç±»å‹ã€‚
 
-+ ALL_FANS: ·ÛË¿×ÜÁ¿
-+ FAN: ĞÂÔö·ÛË¿
-+ FOLLOW: ĞÂÔö¹Ø×¢
-+ UNFOLLOW: È¡Ïû¹Ø×¢
++ ALL_FANS: ç²‰ä¸æ€»é‡
++ FAN: æ–°å¢ç²‰ä¸
++ FOLLOW: æ–°å¢å…³æ³¨
++ UNFOLLOW: å–æ¶ˆå…³æ³¨
 
 
 
@@ -232,13 +232,13 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-Í³¼ÆÍ¼±íµÄÊ±¼ä¶Î¡£
+ç»Ÿè®¡å›¾è¡¨çš„æ—¶é—´æ®µã€‚
 
-+ YESTERDAY: ×òÌì
-+ WEEK: ½üÒ»ÖÜ
-+ MONTH: ½üÒ»ÔÂ
-+ THREE_MONTH: ½üÈıÔÂ
-+ TOTAL: ÀúÊ·ÀÛ¼Æ
++ YESTERDAY: æ˜¨å¤©
++ WEEK: è¿‘ä¸€å‘¨
++ MONTH: è¿‘ä¸€æœˆ
++ THREE_MONTH: è¿‘ä¸‰æœˆ
++ TOTAL: å†å²ç´¯è®¡
 
 
 
@@ -249,18 +249,18 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-Í³¼ÆÍ¼±íµÄÀàĞÍ¡£
+ç»Ÿè®¡å›¾è¡¨çš„ç±»å‹ã€‚
 
-+ PLAY: ²¥·ÅÁ¿
-+ VISITOR: ·ÃÎÊÁ¿
-+ FAN: ·ÛË¿Êı
-+ LIKE: µãÔŞÊı
-+ FAV: ÊÕ²ØÊı
-+ SHARE: ·ÖÏíÊı
-+ COMMENT: ÆÀÂÛÊı
-+ DAMKU: µ¯Ä»Êı
-+ COIN: Í¶±ÒÊı
-+ ELEC: ³äµçÊı
++ PLAY: æ’­æ”¾é‡
++ VISITOR: è®¿é—®é‡
++ FAN: ç²‰ä¸æ•°
++ LIKE: ç‚¹èµæ•°
++ FAV: æ”¶è—æ•°
++ SHARE: åˆ†äº«æ•°
++ COMMENT: è¯„è®ºæ•°
++ DAMKU: å¼¹å¹•æ•°
++ COIN: æŠ•å¸æ•°
++ ELEC: å……ç”µæ•°
 
 
 
@@ -271,12 +271,12 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÄÚÈİ¹ÜÀíÎÄÕÂ×´Ì¬×Ö¶Î¡£
+å†…å®¹ç®¡ç†æ–‡ç« çŠ¶æ€å­—æ®µã€‚
 
-+ ALL: È«²¿¸å¼ş
-+ PUBED: ÒÑÍ¨¹ı
-+ IS_PUBING: ½øĞĞÖĞ
-+ NOT_PUBED: Î´Í¨¹ı
++ ALL: å…¨éƒ¨ç¨¿ä»¶
++ PUBED: å·²é€šè¿‡
++ IS_PUBING: è¿›è¡Œä¸­
++ NOT_PUBED: æœªé€šè¿‡
 
 
 
@@ -287,13 +287,13 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÄÚÈİ¹ÜÀíÅÅĞò×Ö¶Î¡£
+å†…å®¹ç®¡ç†æ’åºå­—æ®µã€‚
 
-+ CLICK: µã»÷
-+ STOW: ÊÕ²Ø
-+ SENDDATE: ÉÏ´«ÈÕÆÚ
-+ DM_COUNT: µ¯Ä»ÊıÁ¿
-+ COMMENT_COUNT: ÆÀÂÛÊıÁ¿
++ CLICK: ç‚¹å‡»
++ STOW: æ”¶è—
++ SENDDATE: ä¸Šä¼ æ—¥æœŸ
++ DM_COUNT: å¼¹å¹•æ•°é‡
++ COMMENT_COUNT: è¯„è®ºæ•°é‡
 
 
 
@@ -304,13 +304,13 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÄÚÈİ¹ÜÀíÎÄÕÂÅÅĞò×Ö¶Î¡£
+å†…å®¹ç®¡ç†æ–‡ç« æ’åºå­—æ®µã€‚
 
-+ CREATED_TIME: ´´½¨ÈÕÆÚ
-+ LIKE: µãÔŞ
-+ COMMENT: ÆÀÂÛ
-+ FAV: ÊÕ²Ø
-+ COIN: Í¶±Ò
++ CREATED_TIME: åˆ›å»ºæ—¥æœŸ
++ LIKE: ç‚¹èµ
++ COMMENT: è¯„è®º
++ FAV: æ”¶è—
++ COIN: æŠ•å¸
 
 
 
@@ -321,12 +321,12 @@ from bilibili_api import creative_center
 
 **Extend: enum.Enum**
 
-ÄÚÈİ¹ÜÀí¸å¼ş×´Ì¬×Ö¶Î¡£
+å†…å®¹ç®¡ç†ç¨¿ä»¶çŠ¶æ€å­—æ®µã€‚
 
-+ ALL: È«²¿¸å¼ş
-+ PUBED: ÒÑÍ¨¹ı
-+ IS_PUBING: ½øĞĞÖĞ
-+ NOT_PUBED: Î´Í¨¹ı
++ ALL: å…¨éƒ¨ç¨¿ä»¶
++ PUBED: å·²é€šè¿‡
++ IS_PUBING: è¿›è¡Œä¸­
++ NOT_PUBED: æœªé€šè¿‡
 
 
 
@@ -335,17 +335,17 @@ from bilibili_api import creative_center
 
 ## async def del_comments()
 
-É¾³ıÆÀÂÛ
+åˆ é™¤è¯„è®º
 
-Ã¿¸öÆÀÂÛ¶ÔÓ¦Ò»¸ö oid
+æ¯ä¸ªè¯„è®ºå¯¹åº”ä¸€ä¸ª oid
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `oid` | `int, lsit` | Ö¸¶¨¸å¼ş |
-| `rpid` | `int, lsit` | Ö¸¶¨ÆÀÂÛ |
-| `archive_type` | `ArchiveType` | ¸å¼şÀàĞÍ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `oid` | `int, lsit` | æŒ‡å®šç¨¿ä»¶ |
+| `rpid` | `int, lsit` | æŒ‡å®šè¯„è®º |
+| `archive_type` | `ArchiveType` | ç¨¿ä»¶ç±»å‹ |
 
 
 
@@ -354,13 +354,13 @@ from bilibili_api import creative_center
 
 ## async def del_danmaku()
 
-É¾³ıµ¯Ä»
+åˆ é™¤å¼¹å¹•
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | ¸å¼ş oid |
-| `dmids` | `List[int], int` | µ¯Ä» id£¬¿ÉÒÔ´«ÈëÁĞ±íºÍ int |
+| `oid` | `int` | ç¨¿ä»¶ oid |
+| `dmids` | `List[int], int` | å¼¹å¹• idï¼Œå¯ä»¥ä¼ å…¥åˆ—è¡¨å’Œ int |
 
 
 
@@ -369,16 +369,16 @@ from bilibili_api import creative_center
 
 ## async def edit_danmaku_pool()
 
-²Ù×÷µ¯Ä»³Ø
+æ“ä½œå¼¹å¹•æ± 
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | ¸å¼ş oid |
-| `dmids` | `List[int], int` | µ¯Ä» id£¬¿ÉÒÔ´«ÈëÁĞ±íºÍ int |
-| `is_subtitle` | `bool` | ÊÇ·ñÎª×ÖÄ» |
+| `oid` | `int` | ç¨¿ä»¶ oid |
+| `dmids` | `List[int], int` | å¼¹å¹• idï¼Œå¯ä»¥ä¼ å…¥åˆ—è¡¨å’Œ int |
+| `is_subtitle` | `bool` | æ˜¯å¦ä¸ºå­—å¹• |
 
-**Returns:** `dict`:  API ·µ»ØĞÅÏ¢
+**Returns:** `dict`:  API è¿”å›ä¿¡æ¯
 
 
 
@@ -387,16 +387,16 @@ from bilibili_api import creative_center
 
 ## async def edit_danmaku_state()
 
-²Ù×÷µ¯Ä»×´Ì¬
+æ“ä½œå¼¹å¹•çŠ¶æ€
 
 
 | name | type | description |
 | - | - | - |
-| `oid` | `int` | ¸å¼ş oid |
-| `dmids` | `List[int], int` | µ¯Ä» id£¬¿ÉÒÔ´«ÈëÁĞ±íºÍ int |
-| `state` | `int, Optional` | µ¯Ä»×´Ì¬ 1 É¾³ı 2 ±£»¤ 3 È¡Ïû±£»¤ |
+| `oid` | `int` | ç¨¿ä»¶ oid |
+| `dmids` | `List[int], int` | å¼¹å¹• idï¼Œå¯ä»¥ä¼ å…¥åˆ—è¡¨å’Œ int |
+| `state` | `int, Optional` | å¼¹å¹•çŠ¶æ€ 1 åˆ é™¤ 2 ä¿æŠ¤ 3 å–æ¶ˆä¿æŠ¤ |
 
-**Returns:** `dict`:  API ·µ»ØĞÅÏ¢
+**Returns:** `dict`:  API è¿”å›ä¿¡æ¯
 
 
 
@@ -405,14 +405,14 @@ from bilibili_api import creative_center
 
 ## async def get_archive_edits()
 
-»ñÈ¡×Ô¼ºµÄµ¥¸ö¸å¼şµÄ±à¼­¼ÇÂ¼
+è·å–è‡ªå·±çš„å•ä¸ªç¨¿ä»¶çš„ç¼–è¾‘è®°å½•
 
 
 | name | type | description |
 | - | - | - |
-| `video` | `Video` | ÊÓÆµ¶ÔÏó¡£ÇëÔÚÊÓÆµ¶ÔÏóÖĞ´«ÈëÆ¾¾İÀà¡£ |
+| `video` | `Video` | è§†é¢‘å¯¹è±¡ã€‚è¯·åœ¨è§†é¢‘å¯¹è±¡ä¸­ä¼ å…¥å‡­æ®ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -421,14 +421,14 @@ from bilibili_api import creative_center
 
 ## async def get_archive_parts()
 
-»ñÈ¡×Ô¼ºµÄµ¥¸ö¸å¼şµÄ·Ö P ĞÅÏ¢
+è·å–è‡ªå·±çš„å•ä¸ªç¨¿ä»¶çš„åˆ† P ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `video` | `Video` | ÊÓÆµ¶ÔÏó¡£ÇëÔÚÊÓÆµ¶ÔÏóÖĞ´«ÈëÆ¾¾İÀà¡£ |
+| `video` | `Video` | è§†é¢‘å¯¹è±¡ã€‚è¯·åœ¨è§†é¢‘å¯¹è±¡ä¸­ä¼ å…¥å‡­æ®ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -437,15 +437,15 @@ from bilibili_api import creative_center
 
 ## async def get_article_graph()
 
-»ñÈ¡ÎÄÕÂÍ¼±íÊı¾İ¡£
+è·å–æ–‡ç« å›¾è¡¨æ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `graph_type` | `ArticleInfoType` | Í¼±íÀàĞÍ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `graph_type` | `ArticleInfoType` | å›¾è¡¨ç±»å‹ã€‚ |
 
-**Returns:** `dict`:  ÎÄÕÂÍ¼±íÊı¾İ¡£
+**Returns:** `dict`:  æ–‡ç« å›¾è¡¨æ•°æ®ã€‚
 
 
 
@@ -454,14 +454,14 @@ from bilibili_api import creative_center
 
 ## async def get_article_list_upload_manager_info()
 
-»ñÈ¡ÄÚÈİ¹ÜÀíÎÄÕÂĞÅÏ¢
+è·å–å†…å®¹ç®¡ç†æ–‡ç« ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÄÚÈİ¹ÜÀíÎÄ¼¯ĞÅÏ¢¡£
+**Returns:** `dict`:  å†…å®¹ç®¡ç†æ–‡é›†ä¿¡æ¯ã€‚
 
 
 
@@ -470,14 +470,14 @@ from bilibili_api import creative_center
 
 ## async def get_article_overview()
 
-»ñÈ¡ÎÄÕÂ¸ÅÀÀÊı¾İ¡£
+è·å–æ–‡ç« æ¦‚è§ˆæ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÎÄÕÂ¸ÅÀÀÊı¾İ¡£
+**Returns:** `dict`:  æ–‡ç« æ¦‚è§ˆæ•°æ®ã€‚
 
 
 
@@ -486,15 +486,15 @@ from bilibili_api import creative_center
 
 ## async def get_article_rank()
 
-»ñÈ¡ÎÄÕÂÅÅĞĞÊı¾İ¡£
+è·å–æ–‡ç« æ’è¡Œæ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `rank_type` | `ArticleInfoType` | ÅÅĞĞÒÀ¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `rank_type` | `ArticleInfoType` | æ’è¡Œä¾æ®ã€‚ |
 
-**Returns:** `dict`:  ÎÄÕÂÅÅĞĞÊı¾İ¡£
+**Returns:** `dict`:  æ–‡ç« æ’è¡Œæ•°æ®ã€‚
 
 
 
@@ -503,14 +503,14 @@ from bilibili_api import creative_center
 
 ## async def get_article_source()
 
-»ñÈ¡ÎÄÕÂÔÄ¶ÁÖÕ¶ËÊı¾İ
+è·å–æ–‡ç« é˜…è¯»ç»ˆç«¯æ•°æ®
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÎÄÕÂÔÄ¶ÁÖÕ¶ËÊı¾İ¡£
+**Returns:** `dict`:  æ–‡ç« é˜…è¯»ç»ˆç«¯æ•°æ®ã€‚
 
 
 
@@ -519,17 +519,17 @@ from bilibili_api import creative_center
 
 ## async def get_article_upload_manager_info()
 
-»ñÈ¡ÄÚÈİ¹ÜÀíÎÄÕÂĞÅÏ¢
+è·å–å†…å®¹ç®¡ç†æ–‡ç« ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `pn` | `int` | Ò³Âë |
-| `status` | `UploadManagerArticleStatus` | ¸å¼ş×´Ì¬ |
-| `sort` | `UploadManagerSort` | ¸å¼şÅÅĞò |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `pn` | `int` | é¡µç  |
+| `status` | `UploadManagerArticleStatus` | ç¨¿ä»¶çŠ¶æ€ |
+| `sort` | `UploadManagerSort` | ç¨¿ä»¶æ’åº |
 
-**Returns:** `dict`:  ÄÚÈİ¹ÜÀíÎÄÕÂĞÅÏ¢¡£
+**Returns:** `dict`:  å†…å®¹ç®¡ç†æ–‡ç« ä¿¡æ¯ã€‚
 
 
 
@@ -538,22 +538,22 @@ from bilibili_api import creative_center
 
 ## async def get_comments()
 
-»ñÈ¡ÆÀÂÛ
+è·å–è¯„è®º
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `oid` | `Optional, int` | Ö¸¶¨¸å¼ş |
-| `keyword` | `Optional, str` | ¹Ø¼ü´Ê |
-| `archive_type` | `ArchiveType` | ¸å¼şÀàĞÍ |
-| `order` | `CommentManagerOrder` | ÅÅĞò×Ö¶Î |
-| `filter` | `int` | É¸Ñ¡Æ÷£¬×÷ÓÃÎ´Öª |
-| `pn` | `int` | Ò³Âë |
-| `ps` | `int` | Ã¿Ò³ÏîÊı |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `oid` | `Optional, int` | æŒ‡å®šç¨¿ä»¶ |
+| `keyword` | `Optional, str` | å…³é”®è¯ |
+| `archive_type` | `ArchiveType` | ç¨¿ä»¶ç±»å‹ |
+| `order` | `CommentManagerOrder` | æ’åºå­—æ®µ |
+| `filter` | `int` | ç­›é€‰å™¨ï¼Œä½œç”¨æœªçŸ¥ |
+| `pn` | `int` | é¡µç  |
+| `ps` | `int` | æ¯é¡µé¡¹æ•° |
 | `charge_plus_filter` | `bool` | charge_plus_filter |
 
-**Returns:** `dict`:  ÆÀÂÛ¹ÜÀíÆÀÂÛĞÅÏ¢¡£
+**Returns:** `dict`:  è¯„è®ºç®¡ç†è¯„è®ºä¿¡æ¯ã€‚
 
 
 
@@ -562,14 +562,14 @@ from bilibili_api import creative_center
 
 ## async def get_compare()
 
-»ñÈ¡¶Ô±ÈÊı¾İ¡£
+è·å–å¯¹æ¯”æ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÊÓÆµ¶Ô±ÈÊı¾İ¡£
+**Returns:** `dict`:  è§†é¢‘å¯¹æ¯”æ•°æ®ã€‚
 
 
 
@@ -578,31 +578,31 @@ from bilibili_api import creative_center
 
 ## async def get_danmakus()
 
-µ¯Ä»ËÑË÷
+å¼¹å¹•æœç´¢
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Credential Æ¾¾İ |
-| `oid` | `int` | ¸å¼şoid£¬ÓÃ¶ººÅ·Ö¸ô |
-| `select_type` | `DanmakuType` | µ¯Ä»ÀàĞÍ |
-| `archive_type` | `ArchiveType` | ¸å¼şÀàĞÍ |
-| `mids` | `List[int], int` | ÓÃ»§mids£¬ÓÃ¶ººÅ·Ö¸ô»òÕßÖ±½Ó int |
-| `keyword` | `str` | ¹Ø¼ü´Ê |
-| `progress_from` | `int` | ½ø¶È¿ªÊ¼ |
-| `progress_to` | `int` | ½ø¶È½áÊø |
-| `ctime_from` | `datetime.datetime` | ´´½¨Ê±¼äÆğÊ¼ |
-| `ctime_to` | `datetime.datetime` | ´´½¨Ê±¼ä½áÊø |
-| `modes` | `DanmakuMode` | µ¯Ä»Ä£Ê½¡£ |
-| `pool` | `DanmakuPool` | µ¯Ä»³Ø |
-| `attrs` | `Unknown` | µ¯Ä»ÊôĞÔ£¬Î´Öª²ÎÊı |
-| `order` | `DanmakuOrder` | ÅÅĞò×Ö¶Î |
-| `sort` | `DanmakuSort` | ÅÅĞò·½Ê½ |
-| `pn` | `int` | Ò³Âë¡£ |
-| `ps` | `int` | Ã¿Ò³ÏîÊı¡£ |
-| `cp_filter` | `bool` | ÊÇ·ñ¹ıÂËCPµ¯Ä»¡£Î´Öª²ÎÊı£¬Ä¬ÈÏÎª False |
+| `credential` | `Credential` | Credential å‡­æ® |
+| `oid` | `int` | ç¨¿ä»¶oidï¼Œç”¨é€—å·åˆ†éš” |
+| `select_type` | `DanmakuType` | å¼¹å¹•ç±»å‹ |
+| `archive_type` | `ArchiveType` | ç¨¿ä»¶ç±»å‹ |
+| `mids` | `List[int], int` | ç”¨æˆ·midsï¼Œç”¨é€—å·åˆ†éš”æˆ–è€…ç›´æ¥ int |
+| `keyword` | `str` | å…³é”®è¯ |
+| `progress_from` | `int` | è¿›åº¦å¼€å§‹ |
+| `progress_to` | `int` | è¿›åº¦ç»“æŸ |
+| `ctime_from` | `datetime.datetime` | åˆ›å»ºæ—¶é—´èµ·å§‹ |
+| `ctime_to` | `datetime.datetime` | åˆ›å»ºæ—¶é—´ç»“æŸ |
+| `modes` | `DanmakuMode` | å¼¹å¹•æ¨¡å¼ã€‚ |
+| `pool` | `DanmakuPool` | å¼¹å¹•æ±  |
+| `attrs` | `Unknown` | å¼¹å¹•å±æ€§ï¼ŒæœªçŸ¥å‚æ•° |
+| `order` | `DanmakuOrder` | æ’åºå­—æ®µ |
+| `sort` | `DanmakuSort` | æ’åºæ–¹å¼ |
+| `pn` | `int` | é¡µç ã€‚ |
+| `ps` | `int` | æ¯é¡µé¡¹æ•°ã€‚ |
+| `cp_filter` | `bool` | æ˜¯å¦è¿‡æ»¤CPå¼¹å¹•ã€‚æœªçŸ¥å‚æ•°ï¼Œé»˜è®¤ä¸º False |
 
-**Returns:** `dict`:  µ¯Ä»ËÑË÷½á¹û
+**Returns:** `dict`:  å¼¹å¹•æœç´¢ç»“æœ
 
 
 
@@ -611,16 +611,16 @@ from bilibili_api import creative_center
 
 ## async def get_fan_graph()
 
-»ñÈ¡·ÛË¿Í¼±íÊı¾İ¡£
+è·å–ç²‰ä¸å›¾è¡¨æ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `period` | `FanGraphPeriod` | Ê±¼ä¶Î¡£ |
-| `graph_type` | `FanGraphType` | Í¼±íÀàĞÍ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `period` | `FanGraphPeriod` | æ—¶é—´æ®µã€‚ |
+| `graph_type` | `FanGraphType` | å›¾è¡¨ç±»å‹ã€‚ |
 
-**Returns:** `dict`:  ·ÛË¿Í¼±íÊı¾İ¡£
+**Returns:** `dict`:  ç²‰ä¸å›¾è¡¨æ•°æ®ã€‚
 
 
 
@@ -629,15 +629,15 @@ from bilibili_api import creative_center
 
 ## async def get_fan_overview()
 
-»ñÈ¡·ÛË¿¸ÅÀÀÊı¾İ¡£
+è·å–ç²‰ä¸æ¦‚è§ˆæ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `period` | `FanGraphPeriod` | Ê±¼ä¶Î¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `period` | `FanGraphPeriod` | æ—¶é—´æ®µã€‚ |
 
-**Returns:** `dict`:  ·ÛË¿¸ÅÀÀÊı¾İ¡£
+**Returns:** `dict`:  ç²‰ä¸æ¦‚è§ˆæ•°æ®ã€‚
 
 
 
@@ -646,16 +646,16 @@ from bilibili_api import creative_center
 
 ## async def get_graph()
 
-»ñÈ¡Í³¼ÆÍ¼±íÊı¾İ¡£
+è·å–ç»Ÿè®¡å›¾è¡¨æ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `period` | `GraphPeriod` | Ê±¼ä¶Î¡£ |
-| `graph_type` | `GraphType` | Í¼±íÀàĞÍ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `period` | `GraphPeriod` | æ—¶é—´æ®µã€‚ |
+| `graph_type` | `GraphType` | å›¾è¡¨ç±»å‹ã€‚ |
 
-**Returns:** `dict`:  ÊÓÆµÍ³¼ÆÍ¼±íÊı¾İ¡£
+**Returns:** `dict`:  è§†é¢‘ç»Ÿè®¡å›¾è¡¨æ•°æ®ã€‚
 
 
 
@@ -664,15 +664,15 @@ from bilibili_api import creative_center
 
 ## async def get_overview()
 
-»ñÈ¡¸ÅÀÀÊı¾İ¡£
+è·å–æ¦‚è§ˆæ•°æ®ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `period` | `GraphPeriod` | Ê±¼ä¶Î¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `period` | `GraphPeriod` | æ—¶é—´æ®µã€‚ |
 
-**Returns:** `dict`:  ÊÓÆµ¸ÅÀÀÊı¾İ¡£
+**Returns:** `dict`:  è§†é¢‘æ¦‚è§ˆæ•°æ®ã€‚
 
 
 
@@ -681,16 +681,16 @@ from bilibili_api import creative_center
 
 ## async def get_recently_danmakus()
 
-×î½üµ¯Ä»
+æœ€è¿‘å¼¹å¹•
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Credential Æ¾¾İ¡£ |
-| `pn` | `int` | Ò³Âë¡£ |
-| `ps` | `int` | Ã¿Ò³ÏîÊı¡£ |
+| `credential` | `Credential` | Credential å‡­æ®ã€‚ |
+| `pn` | `int` | é¡µç ã€‚ |
+| `ps` | `int` | æ¯é¡µé¡¹æ•°ã€‚ |
 
-**Returns:** `dict`:  µ¯Ä»¹ÜÀí×î½üµ¯Ä»ĞÅÏ¢¡£
+**Returns:** `dict`:  å¼¹å¹•ç®¡ç†æœ€è¿‘å¼¹å¹•ä¿¡æ¯ã€‚
 
 
 
@@ -699,14 +699,14 @@ from bilibili_api import creative_center
 
 ## async def get_video_draft_upload_manager_info()
 
-»ñÈ¡ÄÚÈİ¹ÜÀíÊÓÆµ²İ¸åĞÅÏ¢
+è·å–å†…å®¹ç®¡ç†è§†é¢‘è‰ç¨¿ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÄÚÈİ¹ÜÀíÊÓÆµ²İ¸åĞÅÏ¢¡£
+**Returns:** `dict`:  å†…å®¹ç®¡ç†è§†é¢‘è‰ç¨¿ä¿¡æ¯ã€‚
 
 
 
@@ -715,15 +715,15 @@ from bilibili_api import creative_center
 
 ## async def get_video_playanalysis()
 
-»ñÈ¡¸å¼ş²¥·ÅÍê³ÉÂÊ¶Ô±È¡£
+è·å–ç¨¿ä»¶æ’­æ”¾å®Œæˆç‡å¯¹æ¯”ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `copyright` | `Copyright` | °æÈ¨ÀàĞÍ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `copyright` | `Copyright` | ç‰ˆæƒç±»å‹ã€‚ |
 
-**Returns:** `dict`:  ¸å¼ş²¥·ÅÍê³ÉÂÊ¶Ô±ÈÊı¾İ¡£
+**Returns:** `dict`:  ç¨¿ä»¶æ’­æ”¾å®Œæˆç‡å¯¹æ¯”æ•°æ®ã€‚
 
 
 
@@ -732,14 +732,14 @@ from bilibili_api import creative_center
 
 ## async def get_video_source()
 
-»ñÈ¡¸å¼ş²¥·ÅÀ´Ô´·Ö²¼¡£
+è·å–ç¨¿ä»¶æ’­æ”¾æ¥æºåˆ†å¸ƒã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÊÓÆµÀ´Ô´·Ö²¼Êı¾İ¡£
+**Returns:** `dict`:  è§†é¢‘æ¥æºåˆ†å¸ƒæ•°æ®ã€‚
 
 
 
@@ -748,14 +748,14 @@ from bilibili_api import creative_center
 
 ## async def get_video_survey()
 
-»ñÈ¡ÊÓÆµ¸÷·ÖÇøÖĞÕ¼±ÈÅÅĞĞ¡£
+è·å–è§†é¢‘å„åˆ†åŒºä¸­å æ¯”æ’è¡Œã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
 
-**Returns:** `dict`:  ÊÓÆµ·ÖÇøÅÅĞĞÊı¾İ¡£
+**Returns:** `dict`:  è§†é¢‘åˆ†åŒºæ’è¡Œæ•°æ®ã€‚
 
 
 
@@ -764,20 +764,20 @@ from bilibili_api import creative_center
 
 ## async def get_video_upload_manager_info()
 
-»ñÈ¡ÄÚÈİ¹ÜÀíÊÓÆµĞÅÏ¢
+è·å–å†…å®¹ç®¡ç†è§†é¢‘ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `credentials` | `Credential` | Credential Æ¾¾İ¡£ |
-| `is_interative` | `bool` | ÊÇ·ñÎª»¥¶¯ÊÓÆµ |
-| `pn` | `int` | Ò³Âë |
-| `ps` | `int` | Ã¿Ò³ÏîÊı |
-| `tid` | `VideoZoneTypes, None, int` | ·ÖÇø |
-| `status` | `UploadManagerStatus` | ¸å¼ş×´Ì¬ |
-| `order` | `UploadManagerOrder` | ¸å¼şÅÅĞò |
+| `credentials` | `Credential` | Credential å‡­æ®ã€‚ |
+| `is_interative` | `bool` | æ˜¯å¦ä¸ºäº’åŠ¨è§†é¢‘ |
+| `pn` | `int` | é¡µç  |
+| `ps` | `int` | æ¯é¡µé¡¹æ•° |
+| `tid` | `VideoZoneTypes, None, int` | åˆ†åŒº |
+| `status` | `UploadManagerStatus` | ç¨¿ä»¶çŠ¶æ€ |
+| `order` | `UploadManagerOrder` | ç¨¿ä»¶æ’åº |
 
-**Returns:** `dict`:  ÄÚÈİ¹ÜÀíÊÓÆµĞÅÏ¢¡£
+**Returns:** `dict`:  å†…å®¹ç®¡ç†è§†é¢‘ä¿¡æ¯ã€‚
 
 
 

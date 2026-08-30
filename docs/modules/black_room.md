@@ -3,7 +3,7 @@
 
 bilibili_api.black_room
 
-Ğ¡ºÚÎİ
+å°é»‘å±‹
 
 
 ``` python
@@ -36,11 +36,11 @@ from bilibili_api import black_room
 
 **Extend: enum.Enum**
 
-Î¥¹æÀ´Ô´
+è¿è§„æ¥æº
 
-- SYSTEM: ÏµÍ³·â½û
-- ADMIN: ·ç¼ÍÖÙ²Ã
-- ALL: È«²¿
+- SYSTEM: ç³»ç»Ÿå°ç¦
+- ADMIN: é£çºªä»²è£
+- ALL: å…¨éƒ¨
 
 
 
@@ -51,39 +51,39 @@ from bilibili_api import black_room
 
 **Extend: enum.Enum**
 
-Î¥¹æÔ­ÒòÀàĞÍÃ¶¾Ù (Ó¢Óï·­Òë´íÎóÇëºöÂÔ/Ìá issue/·¢Æğ PR)
+è¿è§„åŸå› ç±»å‹æšä¸¾ (è‹±è¯­ç¿»è¯‘é”™è¯¯è¯·å¿½ç•¥/æ issue/å‘èµ· PR)
 
-- ALL: È«²¿
-- FLOOD_SCREEN: Ë¢ÆÁ
-- SOFA: ÇÀÉ³·¢
-- PRON_VULGAR: É«ÇéµÍË×ÄÚÈİ
-- GAMBLED_SCAMS: ¶Ä²©Õ©Æ­ÄÚÈİ
-- ILLEGAL: Î¥½ûĞÅÏ¢
-- ADS: À¬»ø¹ã¸æĞÅÏ¢
-- PERSONAL_ATTACK: ÈËÉí¹¥»÷
-- INVASION_OF_PRIVACY: ÇÖ·¸ÒşË½
-- LEAD_WAR: ÒıÕ½
-- SPOILER: ¾çÍ¸
-- ADD_MALICIOUS_TAG: ¶ñÒâÎªËûÈËÌí¼Ó±êÇ©
-- DEL_OTHERS_TAG: ¶ñÒâÉ¾³ıËûÈË±êÇ©
-- PRON: É«Çé
-- VULGAR: µÍË×
-- VIOLENT: ±©Á¦ÑªĞÈÄÚÈİ
-- MALICIOUS_ARCHIVES: ¶ñÒâÍ¶¸åĞĞÎª
-- ILLEGAL_STATION: ·¢²¼·Ç·¨ÍøÕ¾ĞÅÏ¢
-- SEND_UNREAL_EVENT: ·¢²¼²»ÊµĞÅÏ¢
-- ABETMENT: ·¢²¼½ÌËôËËÓÁĞÅÏ¢
-- MALICIOUS_SPAMMING: ¶ñÒâË¢ÆÁ
-- ILLEGAL_ACCOUNT: ÕËºÅÎ¥¹æ
-- PLAGIARISM: ³­Ï®
-- PRETEND_ORIGINAL: Ã°³ä¹ÙºÅ
-- BAD_FOR_YOUNGS: ÇàÉÙÄê²»ÒË
-- BREAK_INTERNET_SECURITY: ÆÆ»µÍøÂç°²È«
-- SEND_UNREAL_MISLEADING_EVENT: ·¢²¼²»ÊµÎèµ¸ĞÅÏ¢
-- VIOLATE_SITE_OPERATING_RULES: Î¥¹æÍøÕ¾ÔËÓª¹æÔò
-- MALICIOUS_TOPICS: ¶ñÒâ´´½¨»°Ìâ
-- CREATE_ILLEGAL_LUCKY_DRAW: ·¢²¼Î¥¹æ³é½±
-- PRETEND_OTHER: Ã°³äËûÈË
+- ALL: å…¨éƒ¨
+- FLOOD_SCREEN: åˆ·å±
+- SOFA: æŠ¢æ²™å‘
+- PRON_VULGAR: è‰²æƒ…ä½ä¿—å†…å®¹
+- GAMBLED_SCAMS: èµŒåšè¯ˆéª—å†…å®¹
+- ILLEGAL: è¿ç¦ä¿¡æ¯
+- ADS: åƒåœ¾å¹¿å‘Šä¿¡æ¯
+- PERSONAL_ATTACK: äººèº«æ”»å‡»
+- INVASION_OF_PRIVACY: ä¾µçŠ¯éšç§
+- LEAD_WAR: å¼•æˆ˜
+- SPOILER: å‰§é€
+- ADD_MALICIOUS_TAG: æ¶æ„ä¸ºä»–äººæ·»åŠ æ ‡ç­¾
+- DEL_OTHERS_TAG: æ¶æ„åˆ é™¤ä»–äººæ ‡ç­¾
+- PRON: è‰²æƒ…
+- VULGAR: ä½ä¿—
+- VIOLENT: æš´åŠ›è¡€è…¥å†…å®¹
+- MALICIOUS_ARCHIVES: æ¶æ„æŠ•ç¨¿è¡Œä¸º
+- ILLEGAL_STATION: å‘å¸ƒéæ³•ç½‘ç«™ä¿¡æ¯
+- SEND_UNREAL_EVENT: å‘å¸ƒä¸å®ä¿¡æ¯
+- ABETMENT: å‘å¸ƒæ•™å”†æ€‚æ¿ä¿¡æ¯
+- MALICIOUS_SPAMMING: æ¶æ„åˆ·å±
+- ILLEGAL_ACCOUNT: è´¦å·è¿è§„
+- PLAGIARISM: æŠ„è¢­
+- PRETEND_ORIGINAL: å†’å……å®˜å·
+- BAD_FOR_YOUNGS: é’å°‘å¹´ä¸å®œ
+- BREAK_INTERNET_SECURITY: ç ´åç½‘ç»œå®‰å…¨
+- SEND_UNREAL_MISLEADING_EVENT: å‘å¸ƒä¸å®èˆè¹ˆä¿¡æ¯
+- VIOLATE_SITE_OPERATING_RULES: è¿è§„ç½‘ç«™è¿è¥è§„åˆ™
+- MALICIOUS_TOPICS: æ¶æ„åˆ›å»ºè¯é¢˜
+- CREATE_ILLEGAL_LUCKY_DRAW: å‘å¸ƒè¿è§„æŠ½å¥–
+- PRETEND_OTHER: å†’å……ä»–äºº
 
 
 
@@ -92,12 +92,12 @@ from bilibili_api import black_room
 
 ## class BlackRoom()
 
-Ğ¡ºÚÎİ
+å°é»‘å±‹
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### def \_\_init\_\_()
@@ -105,51 +105,51 @@ from bilibili_api import black_room
 
 | name | type | description |
 | - | - | - |
-| `black_room_id` | `int` | Ğ¡ºÚÎİ id |
-| `credential` | `Credential \| None, optional` | Æ¾¾İÀà. Defaults to None. |
+| `black_room_id` | `int` | å°é»‘å±‹ id |
+| `credential` | `Credential \| None, optional` | å‡­æ®ç±». Defaults to None. |
 
 
 ### async def get_details()
 
-»ñÈ¡Ğ¡ºÚÎİÏêÏ¸ĞÅÏ¢
+è·å–å°é»‘å±‹è¯¦ç»†ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_id()
 
-»ñÈ¡Ğ¡ºÚÎİ id
+è·å–å°é»‘å±‹ id
 
 
 
-**Returns:** `int`:  Ğ¡ºÚÎİ id
+**Returns:** `int`:  å°é»‘å±‹ id
 
 
 
 
 ### async def get_reason()
 
-»ñÈ¡Ğ¡ºÚÎİµÄ·â½ûÔ­Òò
+è·å–å°é»‘å±‹çš„å°ç¦åŸå› 
 
 
 
-**Returns:** `BlackReasonType`:  ·â½ûÔ­ÒòÃ¶¾ÙÀà
+**Returns:** `BlackReasonType`:  å°ç¦åŸå› æšä¸¾ç±»
 
 
 
 
 ### def set_id()
 
-ÉèÖÃĞ¡ºÚÎİ id
+è®¾ç½®å°é»‘å±‹ id
 
 
 | name | type | description |
 | - | - | - |
-| `id_` | `int` | Ğ¡ºÚÎİ id |
+| `id_` | `int` | å°é»‘å±‹ id |
 
 
 
@@ -160,18 +160,18 @@ from bilibili_api import black_room
 
 **Extend: enum.Enum**
 
-Î¥¹æÀàĞÍÃ¶¾Ù
+è¿è§„ç±»å‹æšä¸¾
 
-- ALL: È«²¿
-- COMMENT: ÆÀÂÛ
-- DANMAKU: µ¯Ä»
-- PRIVATE_MESSAGE: Ë½ĞÅ
-- TAG: ±êÇ©
-- PERSONAL_INFORMATION: ¸öÈËĞÅÏ¢
-- VIDEO: ÊÓÆµ
-- ARTICLE: ×¨À¸
-- DYNAMIC: ¶¯Ì¬
-- ALBUM: Ïà²¾
+- ALL: å…¨éƒ¨
+- COMMENT: è¯„è®º
+- DANMAKU: å¼¹å¹•
+- PRIVATE_MESSAGE: ç§ä¿¡
+- TAG: æ ‡ç­¾
+- PERSONAL_INFORMATION: ä¸ªäººä¿¡æ¯
+- VIDEO: è§†é¢‘
+- ARTICLE: ä¸“æ 
+- DYNAMIC: åŠ¨æ€
+- ALBUM: ç›¸ç°¿
 
 
 
@@ -180,7 +180,7 @@ from bilibili_api import black_room
 
 ## class JuryCase()
 
-°¸¼şÖÙ²Ã
+æ¡ˆä»¶ä»²è£
 
 
 
@@ -190,49 +190,49 @@ from bilibili_api import black_room
 
 | name | type | description |
 | - | - | - |
-| `case_id` | `str` | °¸¼ş id |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `case_id` | `str` | æ¡ˆä»¶ id |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### async def get_details()
 
-»ñÈ¡°¸¼şÏêÏ¸ĞÅÏ¢
+è·å–æ¡ˆä»¶è¯¦ç»†ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_opinions()
 
-»ñÈ¡°¸¼şµÄ¹ÛµãÁĞ±í
+è·å–æ¡ˆä»¶çš„è§‚ç‚¹åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int, optional` | Ò³Êı. Defaults to 1. |
-| `ps` | `int, optional` | Ã¿Ò³ÊıÁ¿. Defaults to 20. |
+| `pn` | `int, optional` | é¡µæ•°. Defaults to 1. |
+| `ps` | `int, optional` | æ¯é¡µæ•°é‡. Defaults to 20. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def vote()
 
-½øĞĞÖÙ²ÃÍ¶Æ±
+è¿›è¡Œä»²è£æŠ•ç¥¨
 
 
 | name | type | description |
 | - | - | - |
-| `opinion` | `JuryVoteOpinion` | Í¶Æ±Ñ¡ÏîÀàĞÍ |
-| `is_insider` | `bool` | ÊÇ·ñ¹Û¿´´ËÀàÊÓÆµ |
-| `is_anonymous` | `bool` | ÊÇ·ñÄäÃûÍ¶Æ± |
-| `reason` | `str, optional` | Í¶Æ±ÀíÓÉ. Defaults to None. |
+| `opinion` | `JuryVoteOpinion` | æŠ•ç¥¨é€‰é¡¹ç±»å‹ |
+| `is_insider` | `bool` | æ˜¯å¦è§‚çœ‹æ­¤ç±»è§†é¢‘ |
+| `is_anonymous` | `bool` | æ˜¯å¦åŒ¿åæŠ•ç¥¨ |
+| `reason` | `str, optional` | æŠ•ç¥¨ç†ç”±. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -243,19 +243,19 @@ from bilibili_api import black_room
 
 **Extend: enum.Enum**
 
-ÖÙ²ÃÍ¶Æ±ÀàĞÍÃ¶¾Ù£¬Ñ¡Ôñ¶ÔÓ¦°¸¼şÀàĞÍµÄ¹Ûµã
+ä»²è£æŠ•ç¥¨ç±»å‹æšä¸¾ï¼Œé€‰æ‹©å¯¹åº”æ¡ˆä»¶ç±»å‹çš„è§‚ç‚¹
 
-µ¥ÌõÆÀÂÛ£¨µ¯Ä»£©
-- SUITABLE: ºÏÊÊ
-- AVERAGE: Ò»°ã
-- UNSUITABLE: ²»ºÏÊÊ
-- UNKNOW: ÎŞ·¨ÅĞ¶Ï
+å•æ¡è¯„è®ºï¼ˆå¼¹å¹•ï¼‰
+- SUITABLE: åˆé€‚
+- AVERAGE: ä¸€èˆ¬
+- UNSUITABLE: ä¸åˆé€‚
+- UNKNOW: æ— æ³•åˆ¤æ–­
 
-ÆÀÂÛ£¨µ¯Ä»£©·ÕÎ§
-- ENV_GREAT: ÆÀÂÛ»·¾³ºÃ
-- ENV_AVERAGE: ÆÀÂÛ»·¾³Ò»°ã
-- ENV_BAD: ÆÀÂÛ»·¾³²î
-- ENV_UNKNOW: ÎŞ·¨ÅĞ¶ÏÆÀÂÛ»·¾³
+è¯„è®ºï¼ˆå¼¹å¹•ï¼‰æ°›å›´
+- ENV_GREAT: è¯„è®ºç¯å¢ƒå¥½
+- ENV_AVERAGE: è¯„è®ºç¯å¢ƒä¸€èˆ¬
+- ENV_BAD: è¯„è®ºç¯å¢ƒå·®
+- ENV_UNKNOW: æ— æ³•åˆ¤æ–­è¯„è®ºç¯å¢ƒ
 
 
 
@@ -264,15 +264,15 @@ from bilibili_api import black_room
 
 ## async def get_blocked_list()
 
-»ñÈ¡Ğ¡ºÚÎİÖĞµÄÎ¥¹æÁĞ±í
+è·å–å°é»‘å±‹ä¸­çš„è¿è§„åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `from_` | `BlackFrom` | Î¥¹æÀ´Ô´. Defaults to BlackFrom.ALL. |
-| `type_` | `int` | Î¥¹æÀàĞÍ. Defaults to BlackType.ALL. |
-| `pn` | `int` | Ò³Êı. Defaults to 1. |
-| `credential` | `Credential \| None` | Æ¾¾İ. Defaults to None. |
+| `from_` | `BlackFrom` | è¿è§„æ¥æº. Defaults to BlackFrom.ALL. |
+| `type_` | `int` | è¿è§„ç±»å‹. Defaults to BlackType.ALL. |
+| `pn` | `int` | é¡µæ•°. Defaults to 1. |
+| `credential` | `Credential \| None` | å‡­æ®. Defaults to None. |
 
 
 
@@ -281,16 +281,16 @@ from bilibili_api import black_room
 
 ## async def get_jury_case_list()
 
-»ñÈ¡ÖÙ²Ã°¸¼şÁĞ±í
+è·å–ä»²è£æ¡ˆä»¶åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
-| `pn` | `int, optional` | Ò³Êı. Defaults to 1. |
-| `ps` | `int, optional` | Ã¿Ò³ÊıÁ¿. Defaults to 20. |
+| `credential` | `Credential` | å‡­æ®ç±» |
+| `pn` | `int, optional` | é¡µæ•°. Defaults to 1. |
+| `ps` | `int, optional` | æ¯é¡µæ•°é‡. Defaults to 20. |
 
-**Returns:** `List[JuryCase]`:  ÖÙ²Ã°¸¼şÁĞ±í
+**Returns:** `List[JuryCase]`:  ä»²è£æ¡ˆä»¶åˆ—è¡¨
 
 
 
@@ -299,16 +299,16 @@ from bilibili_api import black_room
 
 ## async def get_jury_case_raw()
 
-»ñÈ¡ÖÙ²Ã°¸¼şÁĞ±í
+è·å–ä»²è£æ¡ˆä»¶åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
-| `pn` | `int, optional` | Ò³Êı. Defaults to 1. |
-| `ps` | `int, optional` | Ã¿Ò³ÊıÁ¿. Defaults to 20. |
+| `credential` | `Credential` | å‡­æ®ç±» |
+| `pn` | `int, optional` | é¡µæ•°. Defaults to 1. |
+| `ps` | `int, optional` | æ¯é¡µæ•°é‡. Defaults to 20. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -317,14 +317,14 @@ from bilibili_api import black_room
 
 ## async def get_next_jury_case()
 
-»ñÈ¡ÏÂÒ»¸ö´ıÉóÀíµÄ°¸¼ş
+è·å–ä¸‹ä¸€ä¸ªå¾…å®¡ç†çš„æ¡ˆä»¶
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None, optional` | Æ¾¾İÀà. Defaults to None. |
+| `credential` | `Credential \| None, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `JuryCase`:  °¸¼şÀà
+**Returns:** `JuryCase`:  æ¡ˆä»¶ç±»
 
 
 

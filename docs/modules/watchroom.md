@@ -3,9 +3,9 @@
 
 bilibili_api.watchroom
 
-·ÅÓ³ÊÒÏà¹Ø API
+æ”¾æ˜ å®¤ç›¸å…³ API
 
-×¢Òâ£¬´ËÀà²Ù×÷Îñ±Ø´«Èë `Credential` ²¢ÇÒÒªÇó´«Èë `buvid3` ·ñÔò¿ÉÄÜÎŞ·¨¼øÈ¨
+æ³¨æ„ï¼Œæ­¤ç±»æ“ä½œåŠ¡å¿…ä¼ å…¥ `Credential` å¹¶ä¸”è¦æ±‚ä¼ å…¥ `buvid3` å¦åˆ™å¯èƒ½æ— æ³•é‰´æƒ
 
 
 ``` python
@@ -40,7 +40,7 @@ from bilibili_api import watchroom
 
 ## class Message()
 
-ÏûÏ¢¼¯ºÏ
+æ¶ˆæ¯é›†åˆ
 
 
 
@@ -55,13 +55,13 @@ from bilibili_api import watchroom
 
 ## class MessageSegment()
 
-ÏûÏ¢Æ¬¶Î
+æ¶ˆæ¯ç‰‡æ®µ
 
 
 | name | type | description |
 | - | - | - |
-| `msg` | `str` | ĞÅÏ¢ |
-| `is_emoji` | `bool` | ÊÇ·ñÎª±íÇé°ü |
+| `msg` | `str` | ä¿¡æ¯ |
+| `is_emoji` | `bool` | æ˜¯å¦ä¸ºè¡¨æƒ…åŒ… |
 
 
 ### def \_\_init\_\_()
@@ -76,10 +76,10 @@ from bilibili_api import watchroom
 
 **Extend: enum.Enum**
 
-ÏûÏ¢ÀàĞÍ
+æ¶ˆæ¯ç±»å‹
 
-+ PLAIN: ´¿ÎÄ±¾
-+ EMOJI: ±íÇé
++ PLAIN: çº¯æ–‡æœ¬
++ EMOJI: è¡¨æƒ…
 
 
 
@@ -90,14 +90,14 @@ from bilibili_api import watchroom
 
 **Extend: enum.Enum**
 
-¼¾¶ÈÀàĞÍ
+å­£åº¦ç±»å‹
 
-+ ANIME: ·¬¾ç
-+ MOVIE: µçÓ°
-+ DOCUMENTARY: ¼ÍÂ¼Æ¬
-+ GUOCHUANG: ¹ú´´
-+ TV: µçÊÓ¾ç
-+ VARIETY: ×ÛÒÕ
++ ANIME: ç•ªå‰§
++ MOVIE: ç”µå½±
++ DOCUMENTARY: çºªå½•ç‰‡
++ GUOCHUANG: å›½åˆ›
++ TV: ç”µè§†å‰§
++ VARIETY: ç»¼è‰º
 
 
 
@@ -106,7 +106,7 @@ from bilibili_api import watchroom
 
 ## class WatchRoom()
 
-·ÅÓ³ÊÒÀà
+æ”¾æ˜ å®¤ç±»
 
 
 
@@ -116,13 +116,13 @@ from bilibili_api import watchroom
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà (´ó²¿·ÖÓÃ»§²Ù×÷¶¼ĞèÒªÓëÖ®Æ¥ÅäµÄ buvid3 Öµ£¬Îñ±ØÔÚ credential ´«Èë) |
-| `room_id` | `int` | ·ÅÓ³ÊÒ id |
+| `credential` | `Credential` | å‡­æ®ç±» (å¤§éƒ¨åˆ†ç”¨æˆ·æ“ä½œéƒ½éœ€è¦ä¸ä¹‹åŒ¹é…çš„ buvid3 å€¼ï¼ŒåŠ¡å¿…åœ¨ credential ä¼ å…¥) |
+| `room_id` | `int` | æ”¾æ˜ å®¤ id |
 
 
 ### async def close()
 
-¹Ø±Õ·ÅÓ³ÊÒ
+å…³é—­æ”¾æ˜ å®¤
 
 
 
@@ -131,79 +131,79 @@ from bilibili_api import watchroom
 
 ### async def get_episode_id()
 
-»ñÈ¡·¬¾ç¾ç¼¯ id
+è·å–ç•ªå‰§å‰§é›† id
 
 
 
-**Returns:** `int`:  ·¬¾ç¾ç¼¯ id
+**Returns:** `int`:  ç•ªå‰§å‰§é›† id
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡·ÅÓ³ÊÒĞÅÏ¢£¬²¥·Å½ø¶ÈµÈ
+è·å–æ”¾æ˜ å®¤ä¿¡æ¯ï¼Œæ’­æ”¾è¿›åº¦ç­‰
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_room_id()
 
-»ñÈ¡·ÅÓ³ÊÒ id
+è·å–æ”¾æ˜ å®¤ id
 
 
 
-**Returns:** `int`:  ·ÅÓ³ÊÒ id
+**Returns:** `int`:  æ”¾æ˜ å®¤ id
 
 
 
 
 ### async def get_season_id()
 
-»ñÈ¡·¬¾ç¼¾¶È id
+è·å–ç•ªå‰§å­£åº¦ id
 
 
 
-**Returns:** `int`:  ·¬¾ç¼¾¶È id
+**Returns:** `int`:  ç•ªå‰§å­£åº¦ id
 
 
 
 
 ### async def join()
 
-¼ÓÈë·ÅÓ³ÊÒ
+åŠ å…¥æ”¾æ˜ å®¤
 
 
 | name | type | description |
 | - | - | - |
-| `token` | `str, Optional` | ÑûÇë Token |
+| `token` | `str, Optional` | é‚€è¯· Token |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def kickout()
 
-Ìß³ö·ÅÓ³ÊÒ
+è¸¢å‡ºæ”¾æ˜ å®¤
 
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ÓÃ»§ uid |
+| `uid` | `int` | ç”¨æˆ· uid |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def open()
 
-¿ª·Å·ÅÓ³ÊÒ
+å¼€æ”¾æ”¾æ˜ å®¤
 
 
 
@@ -212,62 +212,62 @@ from bilibili_api import watchroom
 
 ### async def progress()
 
-ÉèÖÃ²¥·Å×´Ì¬£¬°üÀ¨ÔİÍ£Óë½ø¶ÈÌõ
+è®¾ç½®æ’­æ”¾çŠ¶æ€ï¼ŒåŒ…æ‹¬æš‚åœä¸è¿›åº¦æ¡
 
 
 | name | type | description |
 | - | - | - |
-| `progress` | `int, None` | ½ø¶È£¬µ¥Î»ÎªÃë |
-| `status` | `bool, None` | ²¥·Å×´Ì¬ 1 ²¥·ÅÖĞ 0 ÔİÍ£ÖĞ 2 ÒÑ½áÊø |
+| `progress` | `int, None` | è¿›åº¦ï¼Œå•ä½ä¸ºç§’ |
+| `status` | `bool, None` | æ’­æ”¾çŠ¶æ€ 1 æ’­æ”¾ä¸­ 0 æš‚åœä¸­ 2 å·²ç»“æŸ |
 
 
 
 
 ### async def send()
 
-·¢ËÍÏûÏ¢
+å‘é€æ¶ˆæ¯
 
 
 | name | type | description |
 | - | - | - |
-| `msg` | `Message` | ÏûÏ¢ |
+| `msg` | `Message` | æ¶ˆæ¯ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def set_episode_id()
 
-ÉèÖÃ·¬¾ç¾ç¼¯ id
+è®¾ç½®ç•ªå‰§å‰§é›† id
 
 
 | name | type | description |
 | - | - | - |
-| `episode_id` | `int` | ·¬¾ç¾ç¼¯ id |
+| `episode_id` | `int` | ç•ªå‰§å‰§é›† id |
 
 
 
 
 ### def set_season_id()
 
-ÉèÖÃ·¬¾ç¼¾¶È id
+è®¾ç½®ç•ªå‰§å­£åº¦ id
 
 
 | name | type | description |
 | - | - | - |
-| `season_id` | `int` | ¼¾¶È id |
+| `season_id` | `int` | å­£åº¦ id |
 
 
 
 
 ### async def share()
 
-»ñÈ¡ÑûÇë Token
+è·å–é‚€è¯· Token
 
 
 
-**Returns:** `str`:  ÑûÇë Token
+**Returns:** `str`:  é‚€è¯· Token
 
 
 
@@ -276,17 +276,17 @@ from bilibili_api import watchroom
 
 ## async def create()
 
-´´½¨·ÅÓ³ÊÒ
+åˆ›å»ºæ”¾æ˜ å®¤
 
 
 | name | type | description |
 | - | - | - |
-| `season_id` | `int` | Ã¿¼¾¶ÈµÄ ID |
-| `ep_id` | `int` | ¾ç¼¯ ID |
-| `is_open` | `bool` | ÊÇ·ñ¹«¿ª |
-| `credential` | `Credential` | Æ¾¾İ |
+| `season_id` | `int` | æ¯å­£åº¦çš„ ID |
+| `ep_id` | `int` | å‰§é›† ID |
+| `is_open` | `bool` | æ˜¯å¦å…¬å¼€ |
+| `credential` | `Credential` | å‡­æ® |
 
-**Returns:** `Watchroom`:  ·ÅÓ³ÊÒ
+**Returns:** `Watchroom`:  æ”¾æ˜ å®¤
 
 
 
@@ -295,15 +295,15 @@ from bilibili_api import watchroom
 
 ## async def match()
 
-Æ¥Åä·ÅÓ³ÊÒ
+åŒ¹é…æ”¾æ˜ å®¤
 
 
 | name | type | description |
 | - | - | - |
-| `season_id` | `int` | ¼¾¶È ID |
-| `season_type` | `str` | ¼¾¶ÈÀàĞÍ |
+| `season_id` | `int` | å­£åº¦ ID |
+| `season_type` | `str` | å­£åº¦ç±»å‹ |
 
-**Returns:** `Watchroom`:  ·ÅÓ³ÊÒ
+**Returns:** `Watchroom`:  æ”¾æ˜ å®¤
 
 
 

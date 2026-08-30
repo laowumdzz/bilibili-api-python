@@ -3,7 +3,7 @@
 
 bilibili_api.note
 
-±Ê¼ÇÏà¹Ø
+ç¬”è®°ç›¸å…³
 
 
 ``` python
@@ -35,7 +35,7 @@ from bilibili_api import note
 
 ## class Note()
 
-±Ê¼ÇÏà¹Ø
+ç¬”è®°ç›¸å…³
 
 
 
@@ -45,31 +45,31 @@ from bilibili_api import note
 
 | name | type | description |
 | - | - | - |
-| `cvid` | `int` | ¹«¿ª±Ê¼Ç ID (¶ÔÓ¦×¨À¸µÄ cvid) (¹«¿ª±Ê¼Ç±ØÒª) |
-| `aid` | `int` | ¸å¼ş ID£¨oid_type Îª 0 Ê±ÊÇ avid£© (Ë½ÓĞ±Ê¼Ç±ØÒª) |
-| `note_id` | `int` | Ë½ÓĞ±Ê¼Ç ID (Ë½ÓĞ±Ê¼Ç±ØÒª) |
-| `note_type` | `str` | ±Ê¼ÇÀàĞÍ (private, public) |
+| `cvid` | `int` | å…¬å¼€ç¬”è®° ID (å¯¹åº”ä¸“æ çš„ cvid) (å…¬å¼€ç¬”è®°å¿…è¦) |
+| `aid` | `int` | ç¨¿ä»¶ IDï¼ˆoid_type ä¸º 0 æ—¶æ˜¯ avidï¼‰ (ç§æœ‰ç¬”è®°å¿…è¦) |
+| `note_id` | `int` | ç§æœ‰ç¬”è®° ID (ç§æœ‰ç¬”è®°å¿…è¦) |
+| `note_type` | `str` | ç¬”è®°ç±»å‹ (private, public) |
 | `credential` | `Credential, optional` | Credential. Defaults to None. |
 
 
 ### async def add_coins()
 
-(½ö¹©¹«¿ª±Ê¼Ç)
+(ä»…ä¾›å…¬å¼€ç¬”è®°)
 
-¸ø±Ê¼ÇÍ¶±Ò£¬Ä¿Ç°Ö»ÄÜÍ¶Ò»¸ö¡£
+ç»™ç¬”è®°æŠ•å¸ï¼Œç›®å‰åªèƒ½æŠ•ä¸€ä¸ªã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def fetch_content()
 
-»ñÈ¡²¢½âÎö±Ê¼ÇÄÚÈİ
+è·å–å¹¶è§£æç¬”è®°å†…å®¹
 
-¸Ã·µ»Ø²»»á·µ»ØÈÎºÎÖµ£¬µ÷ÓÃ¸Ã·½·¨ºóÇëÔÙµ÷ÓÃ `self.markdown()` »ò `self.json()` À´»ñÈ¡ÄãĞèÒªµÄÖµ¡£
+è¯¥è¿”å›ä¸ä¼šè¿”å›ä»»ä½•å€¼ï¼Œè°ƒç”¨è¯¥æ–¹æ³•åè¯·å†è°ƒç”¨ `self.markdown()` æˆ– `self.json()` æ¥è·å–ä½ éœ€è¦çš„å€¼ã€‚
 
 
 
@@ -78,7 +78,7 @@ from bilibili_api import note
 
 ### def get_aid()
 
-»ñÈ¡Ë½ÓĞ±Ê¼Ç¶ÔÓ¦ÊÓÆµ aid
+è·å–ç§æœ‰ç¬”è®°å¯¹åº”è§†é¢‘ aid
 
 
 
@@ -89,64 +89,64 @@ from bilibili_api import note
 
 ### async def get_all()
 
-(½ö¹©¹«¿ª±Ê¼Ç)
+(ä»…ä¾›å…¬å¼€ç¬”è®°)
 
-Ò»´ÎĞÔ»ñÈ¡×¨À¸¾¡¿ÉÄÜÏêÏ¸Êı¾İ£¬°üÀ¨Ô­Ê¼ÄÚÈİ¡¢±êÇ©¡¢·¢²¼Ê±¼ä¡¢±êÌâ¡¢Ïà¹Ø×¨À¸ÍÆ¼öµÈ
+ä¸€æ¬¡æ€§è·å–ä¸“æ å°½å¯èƒ½è¯¦ç»†æ•°æ®ï¼ŒåŒ…æ‹¬åŸå§‹å†…å®¹ã€æ ‡ç­¾ã€å‘å¸ƒæ—¶é—´ã€æ ‡é¢˜ã€ç›¸å…³ä¸“æ æ¨èç­‰
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_cvid()
 
-»ñÈ¡¹«¿ª±Ê¼Ç cvid
+è·å–å…¬å¼€ç¬”è®° cvid
 
 
 
-**Returns:** `int`:  ¹«¿ª±Ê¼Ç cvid
+**Returns:** `int`:  å…¬å¼€ç¬”è®° cvid
 
 
 
 
 ### async def get_images()
 
-»ñÈ¡±Ê¼ÇËùÓĞÍ¼Æ¬²¢×ªÎª Picture Àà
+è·å–ç¬”è®°æ‰€æœ‰å›¾ç‰‡å¹¶è½¬ä¸º Picture ç±»
 
 
 
-**Returns:** `list`:  Í¼Æ¬ĞÅÏ¢
+**Returns:** `list`:  å›¾ç‰‡ä¿¡æ¯
 
 
 
 
 ### async def get_images_raw_info()
 
-»ñÈ¡±Ê¼ÇËùÓĞÍ¼Æ¬Ô­Ê¼ĞÅÏ¢
+è·å–ç¬”è®°æ‰€æœ‰å›¾ç‰‡åŸå§‹ä¿¡æ¯
 
 
 
-**Returns:** `list`:  Í¼Æ¬ĞÅÏ¢
+**Returns:** `list`:  å›¾ç‰‡ä¿¡æ¯
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡±Ê¼ÇĞÅÏ¢
+è·å–ç¬”è®°ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  ±Ê¼ÇĞÅÏ¢
+**Returns:** `dict`:  ç¬”è®°ä¿¡æ¯
 
 
 
 
 ### def get_note_id()
 
-»ñÈ¡Ë½ÓĞ±Ê¼Ç note_id
+è·å–ç§æœ‰ç¬”è®° note_id
 
 
 
@@ -157,91 +157,91 @@ from bilibili_api import note
 
 ### async def get_private_note_info()
 
-»ñÈ¡Ë½ÓĞ±Ê¼ÇĞÅÏ¢¡£
+è·å–ç§æœ‰ç¬”è®°ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_public_note_info()
 
-»ñÈ¡¹«ÓĞ±Ê¼ÇĞÅÏ¢¡£
+è·å–å…¬æœ‰ç¬”è®°ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### def json()
 
-×ª»»Îª JSON Êı¾İ
+è½¬æ¢ä¸º JSON æ•°æ®
 
-ÇëÏÈµ÷ÓÃ fetch_content()
+è¯·å…ˆè°ƒç”¨ fetch_content()
 
 
 
-**Returns:** `dict`:  JSON Êı¾İ
+**Returns:** `dict`:  JSON æ•°æ®
 
 
 
 
 ### def markdown()
 
-×ª»»Îª Markdown
+è½¬æ¢ä¸º Markdown
 
-ÇëÏÈµ÷ÓÃ fetch_content()
+è¯·å…ˆè°ƒç”¨ fetch_content()
 
 
 
-**Returns:** `str`:  Markdown ÄÚÈİ
+**Returns:** `str`:  Markdown å†…å®¹
 
 
 
 
 ### async def set_favorite()
 
-(½ö¹©¹«¿ª±Ê¼Ç)
+(ä»…ä¾›å…¬å¼€ç¬”è®°)
 
-ÉèÖÃ×¨À¸ÊÕ²Ø×´Ì¬
+è®¾ç½®ä¸“æ æ”¶è—çŠ¶æ€
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | ÊÕ²Ø×´Ì¬. Defaults to True |
+| `status` | `bool, optional` | æ”¶è—çŠ¶æ€. Defaults to True |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def set_like()
 
-(½ö¹©¹«¿ª±Ê¼Ç)
+(ä»…ä¾›å…¬å¼€ç¬”è®°)
 
-ÉèÖÃ×¨À¸µãÔŞ×´Ì¬
+è®¾ç½®ä¸“æ ç‚¹èµçŠ¶æ€
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | µãÔŞ×´Ì¬. Defaults to True |
+| `status` | `bool, optional` | ç‚¹èµçŠ¶æ€. Defaults to True |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def turn_to_article()
 
-½«±Ê¼ÇÀà×ªÎª×¨À¸Àà¡£ĞèÒª±£Ö¤±Ê¼ÇÊÇ¹«¿ª±Ê¼Ç¡£
+å°†ç¬”è®°ç±»è½¬ä¸ºä¸“æ ç±»ã€‚éœ€è¦ä¿è¯ç¬”è®°æ˜¯å…¬å¼€ç¬”è®°ã€‚
 
 
 
-**Returns:** `Note`:  ×¨À¸Àà
+**Returns:** `Note`:  ä¸“æ ç±»
 
 
 
@@ -252,7 +252,7 @@ from bilibili_api import note
 
 **Extend: enum.Enum**
 
-±Ê¼ÇÀàĞÍ
+ç¬”è®°ç±»å‹
 
 
 
@@ -261,15 +261,15 @@ from bilibili_api import note
 
 ## async def upload_image()
 
-ÉÏ´«±Ê¼ÇÍ¼Æ¬
+ä¸Šä¼ ç¬”è®°å›¾ç‰‡
 
 
 | name | type | description |
 | - | - | - |
-| `img` | `Picture` | Í¼Æ¬ |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `img` | `Picture` | å›¾ç‰‡ |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

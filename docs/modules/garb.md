@@ -3,7 +3,7 @@
 
 bilibili_api.garb
 
-×°°ç/ÊÕ²Ø¼¯Ïà¹Ø
+è£…æ‰®/æ”¶è—é›†ç›¸å…³
 
 
 ``` python
@@ -35,12 +35,12 @@ from bilibili_api import garb
 
 ## class DLC()
 
-ÊÕ²Ø¼¯¶ÔÏó
+æ”¶è—é›†å¯¹è±¡
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
 
 ### def \_\_init\_\_()
@@ -48,13 +48,13 @@ from bilibili_api import garb
 
 | name | type | description |
 | - | - | - |
-| `act_id` | `int` | ÊÕ²Ø¼¯µÄ act_id¡£ (Á´½ÓÖĞ blackboard/activity-Mz9T5bO5Q3.html?id={act_id}... ¼´Îª act_id) |
-| `credential` | `Credential \| None, optional` | Æ¾¾İÀà¡£Defaults to None. |
+| `act_id` | `int` | æ”¶è—é›†çš„ act_idã€‚ (é“¾æ¥ä¸­ blackboard/activity-Mz9T5bO5Q3.html?id={act_id}... å³ä¸º act_id) |
+| `credential` | `Credential \| None, optional` | å‡­æ®ç±»ã€‚Defaults to None. |
 
 
 ### def get_act_id()
 
-»ñÈ¡ act_id¡£
+è·å– act_idã€‚
 
 
 
@@ -65,29 +65,29 @@ from bilibili_api import garb
 
 ### async def get_detail()
 
-»ñÈ¡ÊÕ²Ø¼¯ÏêÇé
+è·å–æ”¶è—é›†è¯¦æƒ…
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡ÊÕ²Ø¼¯ĞÅÏ¢
+è·å–æ”¶è—é›†ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_lottery_id()
 
-»ñÈ¡ lottery_id
+è·å– lottery_id
 
 
 
@@ -98,7 +98,7 @@ from bilibili_api import garb
 
 ### def set_act_id()
 
-ÉèÖÃ act_id
+è®¾ç½® act_id
 
 
 | name | type | description |
@@ -112,12 +112,12 @@ from bilibili_api import garb
 
 ## class Garb()
 
-×°°çÀà
+è£…æ‰®ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
 
 ### def \_\_init\_\_()
@@ -125,24 +125,24 @@ from bilibili_api import garb
 
 | name | type | description |
 | - | - | - |
-| `act_id` | `int` | ×°°çµÄ item_id¡£(¿ÉÍ¨¹ı garb.search_garb_dlc_raw »ñÈ¡) |
-| `credential` | `Credential \| None, optional` | Æ¾¾İÀà¡£Defaults to None. |
+| `act_id` | `int` | è£…æ‰®çš„ item_idã€‚(å¯é€šè¿‡ garb.search_garb_dlc_raw è·å–) |
+| `credential` | `Credential \| None, optional` | å‡­æ®ç±»ã€‚Defaults to None. |
 
 
 ### async def get_detail()
 
-»ñÈ¡×°°çÏêÏ¸
+è·å–è£…æ‰®è¯¦ç»†
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_item_id()
 
-»ñÈ¡ item_id
+è·å– item_id
 
 
 
@@ -153,7 +153,7 @@ from bilibili_api import garb
 
 ### def set_item_id()
 
-ÉèÖÃ item_id
+è®¾ç½® item_id
 
 
 | name | type | description |
@@ -169,11 +169,11 @@ from bilibili_api import garb
 
 **Extend: enum.Enum**
 
-ÊÕ²Ø¼¯/×°°çÅÅĞò·½Ê½
+æ”¶è—é›†/è£…æ‰®æ’åºæ–¹å¼
 
-- DEFAULT: Ä¬ÈÏÅÅĞò
-- SELL: °´ÏúÁ¿ÅÅĞò
-- LATEST: °´×îĞÂÉÏ¼ÜÊ±¼äÅÅĞò
+- DEFAULT: é»˜è®¤æ’åº
+- SELL: æŒ‰é”€é‡æ’åº
+- LATEST: æŒ‰æœ€æ–°ä¸Šæ¶æ—¶é—´æ’åº
 
 
 
@@ -184,11 +184,11 @@ from bilibili_api import garb
 
 **Extend: enum.Enum**
 
-ÊÕ²Ø¼¯/×°°çÀàĞÍ
+æ”¶è—é›†/è£…æ‰®ç±»å‹
 
-- GARB: ×°°ç
-- PENDANT: Í·Ïñ¹Ò¼ş
-- CARD: ¶¯Ì¬¿¨Æ¬
+- GARB: è£…æ‰®
+- PENDANT: å¤´åƒæŒ‚ä»¶
+- CARD: åŠ¨æ€å¡ç‰‡
 
 
 
@@ -197,18 +197,18 @@ from bilibili_api import garb
 
 ## async def get_garb_dlc_items()
 
-×°°ç/ÊÕ²Ø¼¯ÁĞ±í
+è£…æ‰®/æ”¶è—é›†åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `GarbType` | ×°°ç/ÊÕ²Ø¼¯ÀàĞÍ |
-| `sort` | `GarbSortType` | ×°°ç/ÊÕ²Ø¼¯ÅÅĞò·½Ê½ |
-| `pn` | `int` | Ò³Âë. Defaults to 1. |
-| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20. |
-| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
+| `type_` | `GarbType` | è£…æ‰®/æ”¶è—é›†ç±»å‹ |
+| `sort` | `GarbSortType` | è£…æ‰®/æ”¶è—é›†æ’åºæ–¹å¼ |
+| `pn` | `int` | é¡µç . Defaults to 1. |
+| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20. |
+| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `List[Tuple[dict, DLC | Garb]]`:  ×°°ç/ÊÕ²Ø¼¯ĞÅÏ¢Óë×°°ç/ÊÕ²Ø¼¯¶ÔÏóÁĞ±í
+**Returns:** `List[Tuple[dict, DLC | Garb]]`:  è£…æ‰®/æ”¶è—é›†ä¿¡æ¯ä¸è£…æ‰®/æ”¶è—é›†å¯¹è±¡åˆ—è¡¨
 
 
 
@@ -217,18 +217,18 @@ from bilibili_api import garb
 
 ## async def get_garb_dlc_items_obj()
 
-×°°ç/ÊÕ²Ø¼¯ÁĞ±í
+è£…æ‰®/æ”¶è—é›†åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `GarbType` | ×°°ç/ÊÕ²Ø¼¯ÀàĞÍ |
-| `sort` | `GarbSortType` | ×°°ç/ÊÕ²Ø¼¯ÅÅĞò·½Ê½ |
-| `pn` | `int` | Ò³Âë. Defaults to 1. |
-| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20. |
-| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
+| `type_` | `GarbType` | è£…æ‰®/æ”¶è—é›†ç±»å‹ |
+| `sort` | `GarbSortType` | è£…æ‰®/æ”¶è—é›†æ’åºæ–¹å¼ |
+| `pn` | `int` | é¡µç . Defaults to 1. |
+| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20. |
+| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `List[DLC | Garb]`:  ×°°ç/ÊÕ²Ø¼¯¶ÔÏóÁĞ±í
+**Returns:** `List[DLC | Garb]`:  è£…æ‰®/æ”¶è—é›†å¯¹è±¡åˆ—è¡¨
 
 
 
@@ -237,18 +237,18 @@ from bilibili_api import garb
 
 ## async def get_garb_dlc_items_raw()
 
-×°°ç/ÊÕ²Ø¼¯ÁĞ±í
+è£…æ‰®/æ”¶è—é›†åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `type_` | `GarbType` | ×°°ç/ÊÕ²Ø¼¯ÀàĞÍ |
-| `sort` | `GarbSortType` | ×°°ç/ÊÕ²Ø¼¯ÅÅĞò·½Ê½ |
-| `pn` | `int` | Ò³Âë. Defaults to 1. |
-| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20. |
-| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
+| `type_` | `GarbType` | è£…æ‰®/æ”¶è—é›†ç±»å‹ |
+| `sort` | `GarbSortType` | è£…æ‰®/æ”¶è—é›†æ’åºæ–¹å¼ |
+| `pn` | `int` | é¡µç . Defaults to 1. |
+| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20. |
+| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `List[Tuple[dict, DLC | Garb]]`:  ×°°ç/ÊÕ²Ø¼¯ĞÅÏ¢Óë×°°ç/ÊÕ²Ø¼¯¶ÔÏóÁĞ±í
+**Returns:** `List[Tuple[dict, DLC | Garb]]`:  è£…æ‰®/æ”¶è—é›†ä¿¡æ¯ä¸è£…æ‰®/æ”¶è—é›†å¯¹è±¡åˆ—è¡¨
 
 
 
@@ -257,17 +257,17 @@ from bilibili_api import garb
 
 ## async def search_garb_dlc()
 
-ËÑË÷×°°ç/ÊÕ²Ø¼¯
+æœç´¢è£…æ‰®/æ”¶è—é›†
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ¹Ø¼ü´Ê |
-| `pn` | `int` | Ò³Âë. Defaults to 1. |
-| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20. |
-| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
+| `keyword` | `str` | å…³é”®è¯ |
+| `pn` | `int` | é¡µç . Defaults to 1. |
+| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20. |
+| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `List[Tuple[dict, DLC | Garb]]`:  ×°°ç/ÊÕ²Ø¼¯ĞÅÏ¢Óë×°°ç/ÊÕ²Ø¼¯¶ÔÏóÁĞ±í
+**Returns:** `List[Tuple[dict, DLC | Garb]]`:  è£…æ‰®/æ”¶è—é›†ä¿¡æ¯ä¸è£…æ‰®/æ”¶è—é›†å¯¹è±¡åˆ—è¡¨
 
 
 
@@ -276,17 +276,17 @@ from bilibili_api import garb
 
 ## async def search_garb_dlc_obj()
 
-ËÑË÷×°°ç/ÊÕ²Ø¼¯
+æœç´¢è£…æ‰®/æ”¶è—é›†
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ¹Ø¼ü´Ê |
-| `pn` | `int` | Ò³Âë. Defaults to 1. |
-| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20. |
-| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
+| `keyword` | `str` | å…³é”®è¯ |
+| `pn` | `int` | é¡µç . Defaults to 1. |
+| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20. |
+| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `List[DLC | Garb]`:  ×°°ç/ÊÕ²Ø¼¯¶ÔÏóÁĞ±í
+**Returns:** `List[DLC | Garb]`:  è£…æ‰®/æ”¶è—é›†å¯¹è±¡åˆ—è¡¨
 
 
 
@@ -295,17 +295,17 @@ from bilibili_api import garb
 
 ## async def search_garb_dlc_raw()
 
-ËÑË÷×°°ç/ÊÕ²Ø¼¯
+æœç´¢è£…æ‰®/æ”¶è—é›†
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ¹Ø¼ü´Ê |
-| `pn` | `int` | Ò³Âë. Defaults to 1. |
-| `ps` | `int` | Ã¿Ò³´óĞ¡. Defaults to 20. |
-| `credential` | `Credential, optional` | Æ¾¾İÀà. Defaults to None. |
+| `keyword` | `str` | å…³é”®è¯ |
+| `pn` | `int` | é¡µç . Defaults to 1. |
+| `ps` | `int` | æ¯é¡µå¤§å°. Defaults to 20. |
+| `credential` | `Credential, optional` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 

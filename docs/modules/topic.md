@@ -3,7 +3,7 @@
 
 bilibili_api.topic
 
-»°ÌâÏà¹Ø
+è¯é¢˜ç›¸å…³
 
 
 ``` python
@@ -25,12 +25,12 @@ from bilibili_api import topic
 
 ## class Topic()
 
-»°ÌâÀà
+è¯é¢˜ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### def \_\_init\_\_()
@@ -38,74 +38,74 @@ from bilibili_api import topic
 
 | name | type | description |
 | - | - | - |
-| `topic_id` | `int` | »°Ìâ id |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `topic_id` | `int` | è¯é¢˜ id |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### async def get_cards()
 
-»ñÈ¡»°ÌâÏÂµÄÄÚÈİ
+è·å–è¯é¢˜ä¸‹çš„å†…å®¹
 
-Î´µÇÂ¼ÎŞ·¨Ê¹ÓÃÈÈÃÅÅÅĞò×Ö¶Î¼´ TopicCardsSortBy.RECOMMEND
+æœªç™»å½•æ— æ³•ä½¿ç”¨çƒ­é—¨æ’åºå­—æ®µå³ TopicCardsSortBy.RECOMMEND
 
 
 | name | type | description |
 | - | - | - |
-| `ps` | `int` | Êı¾İÊıÁ¿. Defaults to 100. |
-| `offset` | `Optional, str` | Æ«ÒÆÁ¿. Éú³É¸ñÊ½Îª f'{Ò³Âë}_{Ò³Âë*Êı¾İÁ¿]}' Èç'2_40' Defaults to None. |
-| `sort_by` | `TopicCardsSortBy` | ÅÅĞò·½Ê½. Defaults to TopicCardsSortBy.HOT. |
+| `ps` | `int` | æ•°æ®æ•°é‡. Defaults to 100. |
+| `offset` | `Optional, str` | åç§»é‡. ç”Ÿæˆæ ¼å¼ä¸º f'{é¡µç }_{é¡µç *æ•°æ®é‡]}' å¦‚'2_40' Defaults to None. |
+| `sort_by` | `TopicCardsSortBy` | æ’åºæ–¹å¼. Defaults to TopicCardsSortBy.HOT. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡»°Ìâ¼ò½é
+è·å–è¯é¢˜ç®€ä»‹
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_topic_id()
 
-»ñÈ¡»°Ìâ id
+è·å–è¯é¢˜ id
 
 
 
-**Returns:** `int`:  »°Ìâ id
+**Returns:** `int`:  è¯é¢˜ id
 
 
 
 
 ### async def like()
 
-ÉèÖÃµãÔŞ»°Ìâ
+è®¾ç½®ç‚¹èµè¯é¢˜
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool` | ÊÇ·ñÉèÖÃµãÔŞ. Defaults to True. |
+| `status` | `bool` | æ˜¯å¦è®¾ç½®ç‚¹èµ. Defaults to True. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def set_favorite()
 
-ÉèÖÃÊÕ²Ø»°Ìâ
+è®¾ç½®æ”¶è—è¯é¢˜
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool` | ÊÇ·ñÉèÖÃÊÕ²Ø. Defaults to True. |
+| `status` | `bool` | æ˜¯å¦è®¾ç½®æ”¶è—. Defaults to True. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -116,11 +116,11 @@ from bilibili_api import topic
 
 **Extend: enum.Enum**
 
-»°ÌâÏÂÄÚÈİÅÅĞò·½Ê½
+è¯é¢˜ä¸‹å†…å®¹æ’åºæ–¹å¼
 
-+ NEW: ×îĞÂ
-+ HOT: ×îÈÈ
-+ RECOMMEND: ÍÆ¼ö
++ NEW: æœ€æ–°
++ HOT: æœ€çƒ­
++ RECOMMEND: æ¨è
 
 
 
@@ -129,14 +129,14 @@ from bilibili_api import topic
 
 ## async def get_hot_topics()
 
-»ñÈ¡¶¯Ì¬Ò³µÄ»ğÈÈ»°Ìâ
+è·å–åŠ¨æ€é¡µçš„ç«çƒ­è¯é¢˜
 
 
 | name | type | description |
 | - | - | - |
-| `numbers` | `int` | »°ÌâÊıÁ¿. Defaults to 33. |
+| `numbers` | `int` | è¯é¢˜æ•°é‡. Defaults to 33. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -145,18 +145,18 @@ from bilibili_api import topic
 
 ## async def search_topic()
 
-ËÑË÷»°Ìâ
+æœç´¢è¯é¢˜
 
-´Ó¶¯Ì¬Ò³·¢²¼¶¯Ì¬´¦µÄ»°ÌâËÑË÷¿òËÑË÷»°Ìâ
+ä»åŠ¨æ€é¡µå‘å¸ƒåŠ¨æ€å¤„çš„è¯é¢˜æœç´¢æ¡†æœç´¢è¯é¢˜
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ËÑË÷¹Ø¼ü´Ê |
-| `ps` | `int` | Ã¿Ò³ÊıÁ¿. Defaults to 20. |
-| `pn` | `int` | Ò³Êı. Defaults to 1. |
+| `keyword` | `str` | æœç´¢å…³é”®è¯ |
+| `ps` | `int` | æ¯é¡µæ•°é‡. Defaults to 20. |
+| `pn` | `int` | é¡µæ•°. Defaults to 1. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

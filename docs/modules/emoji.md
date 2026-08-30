@@ -3,7 +3,7 @@
 
 bilibili_api.emoji
 
-±íÇé°üÏà¹Ø
+è¡¨æƒ…åŒ…ç›¸å…³
 
 
 ``` python
@@ -19,15 +19,15 @@ from bilibili_api import emoji
 
 ## async def add_emoji()
 
-Ìí¼Ó±íÇé°ü
+æ·»åŠ è¡¨æƒ…åŒ…
 
 
 | name | type | description |
 | - | - | - |
-| `package_id` | `Union[int, List[int]]` | ±íÇé°ü id£¬¿ÉÍ¨¹ı `get_emoji_list` »ò `get_all_emoji` ²éÑ¯¡£ |
-| `credential` | `Credential` | µÇÂ¼Æ¾Ö¤. Defaults to None. |
+| `package_id` | `Union[int, List[int]]` | è¡¨æƒ…åŒ… idï¼Œå¯é€šè¿‡ `get_emoji_list` æˆ– `get_all_emoji` æŸ¥è¯¢ã€‚ |
+| `credential` | `Credential` | ç™»å½•å‡­è¯. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -36,15 +36,15 @@ from bilibili_api import emoji
 
 ## async def get_all_emoji()
 
-»ñÈ¡ËùÓĞ±íÇé°ü
+è·å–æ‰€æœ‰è¡¨æƒ…åŒ…
 
 
 | name | type | description |
 | - | - | - |
-| `business` | `str` | Ê¹ÓÃ³¡¾°, reply / dynamic |
-| `credential` | `Credential` | µÇÂ¼Æ¾Ö¤. Defaults to None. |
+| `business` | `str` | ä½¿ç”¨åœºæ™¯, reply / dynamic |
+| `credential` | `Credential` | ç™»å½•å‡­è¯. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -53,15 +53,15 @@ from bilibili_api import emoji
 
 ## async def get_emoji_detail()
 
-»ñÈ¡±íÇé°üÏêÇé
+è·å–è¡¨æƒ…åŒ…è¯¦æƒ…
 
 
 | name | type | description |
 | - | - | - |
-| `id` | `Union[int, List[int]]` | ±íÇé°ü id£¬¿ÉÍ¨¹ı `get_emoji_list` »ò `get_all_emoji` ²éÑ¯¡£ |
-| `business` | `str` | Ê¹ÓÃ³¡¾°, reply / dynamic |
+| `id` | `Union[int, List[int]]` | è¡¨æƒ…åŒ… idï¼Œå¯é€šè¿‡ `get_emoji_list` æˆ– `get_all_emoji` æŸ¥è¯¢ã€‚ |
+| `business` | `str` | ä½¿ç”¨åœºæ™¯, reply / dynamic |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -70,15 +70,15 @@ from bilibili_api import emoji
 
 ## async def get_emoji_list()
 
-»ñÈ¡±íÇé°üÁĞ±í
+è·å–è¡¨æƒ…åŒ…åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `business` | `str` | Ê¹ÓÃ³¡¾°, reply / dynamic |
-| `credential` | `Credential` | µÇÂ¼Æ¾Ö¤. Defaults to None. |
+| `business` | `str` | ä½¿ç”¨åœºæ™¯, reply / dynamic |
+| `credential` | `Credential` | ç™»å½•å‡­è¯. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

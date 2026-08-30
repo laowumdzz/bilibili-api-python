@@ -457,7 +457,9 @@ for module in all_funcs:
     ]:
         continue
     docs_dir = "./docs/modules/" + module[0][0] + ".md"
-    file = open(docs_dir, "w+")
+    # 显式 pin UTF-8：docsify 站点声明 charset=UTF-8，且编码不随运行环境 locale 变化
+    # 才能保证 doc_gen 输出确定性（漂移校验依赖）；行尾交由 .gitattributes 的 text 属性归一化
+    file = open(docs_dir, "w+", encoding="utf-8")
     logger.info("BEGIN %s", module[0][0])
     if module[0][0] != "bilibili_api":
         file.write(

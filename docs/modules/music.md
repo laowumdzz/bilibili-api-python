@@ -3,9 +3,9 @@
 
 bilibili_api.music
 
-ÒôÀÖÏà¹Ø API
+éŸ³ä¹ç›¸å…³ API
 
-×¢Òâ: Ä¿Ç° B Õ¾µÄÒôÆµ²¢²»ºÍ B Õ¾µÄÒôÀÖÏà¹ØĞÅÏ¢»¥Í¨¡£ÕâÀïµÄ Music ÀàµÄÊı¾İÀ´Ô´ÓÚÊÓÆµÏÂÃæµÄ bgm ±êÇ©ºÍÈ«Õ¾ÒôÀÖ°ñÖĞµÄÃ¿Ò»¸ö bgm/ÒôÀÖ¡£get_homepage_recommend ºÍ get_music_index_info À´Ô´ÓÚ https://www.bilibili.com/v/musicplus/
+æ³¨æ„: ç›®å‰ B ç«™çš„éŸ³é¢‘å¹¶ä¸å’Œ B ç«™çš„éŸ³ä¹ç›¸å…³ä¿¡æ¯äº’é€šã€‚è¿™é‡Œçš„ Music ç±»çš„æ•°æ®æ¥æºäºè§†é¢‘ä¸‹é¢çš„ bgm æ ‡ç­¾å’Œå…¨ç«™éŸ³ä¹æ¦œä¸­çš„æ¯ä¸€ä¸ª bgm/éŸ³ä¹ã€‚get_homepage_recommend å’Œ get_music_index_info æ¥æºäº https://www.bilibili.com/v/musicplus/
 
 
 ``` python
@@ -28,11 +28,11 @@ from bilibili_api import music
 
 ## class Music()
 
-ÒôÀÖÀà¡£
+éŸ³ä¹ç±»ã€‚
 
-´Ë´¦µÄ¡°ÒôÀÖ¡±¶¨Òå£º²¿·ÖÊÓÆµµÄ±êÇ©ÖĞÓĞÀïÃæ³öÏÖ¹ıµÄÒôÀÖµÄ±êÇ©, ¿ÉÒÔµã»÷ÒôÀÖ±êÇ©²é¿´ÒôÀÖĞÅÏ¢¡£´ËÀà½«Ìá¹©²éÑ¯ÒôÀÖĞÅÏ¢µÄ½Ó¿Ú¡£
+æ­¤å¤„çš„â€œéŸ³ä¹â€å®šä¹‰ï¼šéƒ¨åˆ†è§†é¢‘çš„æ ‡ç­¾ä¸­æœ‰é‡Œé¢å‡ºç°è¿‡çš„éŸ³ä¹çš„æ ‡ç­¾, å¯ä»¥ç‚¹å‡»éŸ³ä¹æ ‡ç­¾æŸ¥çœ‹éŸ³ä¹ä¿¡æ¯ã€‚æ­¤ç±»å°†æä¾›æŸ¥è¯¢éŸ³ä¹ä¿¡æ¯çš„æ¥å£ã€‚
 
-ÆäÖĞÒôÀÖµÄ ID Îª `video.get_tags` ·µ»ØÖµÊı¾İÖĞµÄ `music_id` ¼üÖµ
+å…¶ä¸­éŸ³ä¹çš„ ID ä¸º `video.get_tags` è¿”å›å€¼æ•°æ®ä¸­çš„ `music_id` é”®å€¼
 
 
 
@@ -42,38 +42,38 @@ from bilibili_api import music
 
 | name | type | description |
 | - | - | - |
-| `music_id` | `str` | ÒôÀÖ id£¬ÀıÈç MA436038343856245020 |
+| `music_id` | `str` | éŸ³ä¹ idï¼Œä¾‹å¦‚ MA436038343856245020 |
 
 
 ### async def get_info()
 
-»ñÈ¡ÒôÀÖĞÅÏ¢
+è·å–éŸ³ä¹ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_music_id()
 
-»ñÈ¡ÒôÀÖ id
+è·å–éŸ³ä¹ id
 
 
 
-**Returns:** `str`:  ÒôÀÖ id
+**Returns:** `str`:  éŸ³ä¹ id
 
 
 
 
 ### async def get_music_videos()
 
-»ñÈ¡ÒôÀÖµÄÒôÀÖÊÓÆµ
+è·å–éŸ³ä¹çš„éŸ³ä¹è§†é¢‘
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -82,10 +82,10 @@ from bilibili_api import music
 
 ## class MusicIndexTags()
 
-ÒôÀÖË÷ÒıĞÅÏ¢²éÕÒ¿ÉÒÔÓÃµÄ±êÇ©£¬ÓĞÓïÑÔºÍÀàĞÍÁ½ÖÖ±êÇ©£¬Ã¿ÖÖ±êÇ©Ñ¡Ò»¸ö
+éŸ³ä¹ç´¢å¼•ä¿¡æ¯æŸ¥æ‰¾å¯ä»¥ç”¨çš„æ ‡ç­¾ï¼Œæœ‰è¯­è¨€å’Œç±»å‹ä¸¤ç§æ ‡ç­¾ï¼Œæ¯ç§æ ‡ç­¾é€‰ä¸€ä¸ª
 
-- Lang: ÓïÑÔ±êÇ©Ã¶¾ÙÀà
-- Genre: ÀàĞÍ±êÇ©Ã¶¾ÙÀà
+- Lang: è¯­è¨€æ ‡ç­¾æšä¸¾ç±»
+- Genre: ç±»å‹æ ‡ç­¾æšä¸¾ç±»
 
 
 
@@ -94,29 +94,29 @@ from bilibili_api import music
 
 **Extend: enum.Enum**
 
-- ALL: È«²¿
-- POPULAR: Á÷ĞĞ
-- ROCK: Ò¡¹ö
-- ELECTRONIC: µç×ÓÒôÀÖ
-- COUNTRYSIDE: Ïç´å
-- FOLK: ÃñÒ¥
-- LIVE: ÇáÒôÀÖ
-- CLASSICAL: ¹Åµä
-- NEW_CENTURY: ĞÂÊÀ¼Í
-- REGGAE: À×¹í
-- BLUES: ²¼Â³Ë¹
-- RHYTHM_BLUES: ½Ú×àÓë²¼Â³Ë¹
-- ORIGINAL: Ô­Éù
-- WORLD: ÊÀ½çÒôÀÖ
-- CHILDREN: ¶ùÍ¯ÒôÀÖ
-- LATIN: À­¶¡
-- PUNK: Åó¿Ë
-- MEDAL: ½ğÊô
-- JAZZ: ¾ôÊ¿ÀÖ
-- HIP_HOP: Îû¹ş
-- SINGER_SONGWRITER: ³ª×÷ÈË
-- AMUSEMENT: ÓéÀÖ/ÎèÌ¨
-- OTHER: ÆäËû
+- ALL: å…¨éƒ¨
+- POPULAR: æµè¡Œ
+- ROCK: æ‘‡æ»š
+- ELECTRONIC: ç”µå­éŸ³ä¹
+- COUNTRYSIDE: ä¹¡æ‘
+- FOLK: æ°‘è°£
+- LIVE: è½»éŸ³ä¹
+- CLASSICAL: å¤å…¸
+- NEW_CENTURY: æ–°ä¸–çºª
+- REGGAE: é›·é¬¼
+- BLUES: å¸ƒé²æ–¯
+- RHYTHM_BLUES: èŠ‚å¥ä¸å¸ƒé²æ–¯
+- ORIGINAL: åŸå£°
+- WORLD: ä¸–ç•ŒéŸ³ä¹
+- CHILDREN: å„¿ç«¥éŸ³ä¹
+- LATIN: æ‹‰ä¸
+- PUNK: æœ‹å…‹
+- MEDAL: é‡‘å±
+- JAZZ: çˆµå£«ä¹
+- HIP_HOP: å˜»å“ˆ
+- SINGER_SONGWRITER: å”±ä½œäºº
+- AMUSEMENT: å¨±ä¹/èˆå°
+- OTHER: å…¶ä»–
 
 
 
@@ -125,12 +125,12 @@ from bilibili_api import music
 
 **Extend: enum.Enum**
 
-- ALL: È«²¿
-- CHINESE: »ªÓï
-- EUROPE_AMERICA: Å·ÃÀ
-- JAPAN: ÈÕÓï
-- KOREA: º«Óï
-- OTHER: ÆäËû
+- ALL: å…¨éƒ¨
+- CHINESE: åè¯­
+- EUROPE_AMERICA: æ¬§ç¾
+- JAPAN: æ—¥è¯­
+- KOREA: éŸ©è¯­
+- OTHER: å…¶ä»–
 
 
 
@@ -141,10 +141,10 @@ from bilibili_api import music
 
 **Extend: enum.Enum**
 
-ÒôÀÖÅÅĞòÀàĞÍ
+éŸ³ä¹æ’åºç±»å‹
 
-+ NEW: ×îĞÂ
-+ HOT: ×îÈÈ
++ NEW: æœ€æ–°
++ HOT: æœ€çƒ­
 
 
 
@@ -153,14 +153,14 @@ from bilibili_api import music
 
 ## async def get_homepage_recommend()
 
-»ñÈ¡ÒôÆµÊ×Ò³ÍÆ¼ö
+è·å–éŸ³é¢‘é¦–é¡µæ¨è
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None` | Æ¾¾İÀà. Defaults to None. |
+| `credential` | `Credential \| None` | å‡­æ®ç±». Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -169,17 +169,17 @@ from bilibili_api import music
 
 ## async def get_music_index_info()
 
-»ñÈ¡Ê×Ò³µÄÒôÀÖÊÓÆµÁĞ±í
+è·å–é¦–é¡µçš„éŸ³ä¹è§†é¢‘åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `keyword` | `str` | ¹Ø¼ü´Ê. Defaults to None. |
-| `lang` | `MusicIndexTags.Lang` | ÓïÑÔ. Defaults to MusicIndexTags.Lang.ALL |
-| `genre` | `MusicIndexTags.Genre` | ÀàĞÍ. Defaults to MusicIndexTags.Genre.ALL |
-| `order` | `MusicOrder` | ÅÅĞò·½Ê½. Defaults to OrderAudio.NEW |
-| `page_num` | `int` | Ò³Âë. Defaults to 1. |
-| `page_size` | `int` | Ã¿Ò³µÄÊı¾İ´óĞ¡. Defaults to 10. |
+| `keyword` | `str` | å…³é”®è¯. Defaults to None. |
+| `lang` | `MusicIndexTags.Lang` | è¯­è¨€. Defaults to MusicIndexTags.Lang.ALL |
+| `genre` | `MusicIndexTags.Genre` | ç±»å‹. Defaults to MusicIndexTags.Genre.ALL |
+| `order` | `MusicOrder` | æ’åºæ–¹å¼. Defaults to OrderAudio.NEW |
+| `page_num` | `int` | é¡µç . Defaults to 1. |
+| `page_size` | `int` | æ¯é¡µçš„æ•°æ®å¤§å°. Defaults to 10. |
 
 
 

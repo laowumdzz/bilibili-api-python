@@ -3,7 +3,7 @@
 
 bilibili_api.channel_series
 
-ÓÃ»§ºÏ¼¯ÓëÁĞ±íÏà¹Ø
+ç”¨æˆ·åˆé›†ä¸åˆ—è¡¨ç›¸å…³
 
 
 ``` python
@@ -31,9 +31,9 @@ from bilibili_api import channel_series
 
 **Extend: enum.Enum**
 
-ºÏ¼¯ÊÓÆµÅÅĞòË³Ğò¡£
-+ DEFAULT: Ä¬ÈÏÅÅĞò
-+ CHANGE : ÉıĞòÅÅĞò
+åˆé›†è§†é¢‘æ’åºé¡ºåºã€‚
++ DEFAULT: é»˜è®¤æ’åº
++ CHANGE : å‡åºæ’åº
 
 
 
@@ -42,16 +42,16 @@ from bilibili_api import channel_series
 
 ## class ChannelSeries()
 
-ºÏ¼¯ÓëÁĞ±íÀà
+åˆé›†ä¸åˆ—è¡¨ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `id` | `int` | ºÏ¼¯ÓëÁĞ±íµÄ id, season_id »ò series_id. |
-| `is_new` | `int` | ÊÇ·ñÎªĞÂ°æºÏ¼¯. 1 ÎªÊÇ, 0 Îª·ñ. |
-| `owner` | `User` | ºÏ¼¯ÁĞ±í¶ÔÓ¦ÓÃ»§. |
-| `meta` | `Dict` | ºÏ¼¯ÓëÁĞ±í»ù±¾ĞÅÏ¢. |
-| `credential` | `Credential` | Æ¾¾İÀà. Defaults to None. |
+| `id` | `int` | åˆé›†ä¸åˆ—è¡¨çš„ id, season_id æˆ– series_id. |
+| `is_new` | `int` | æ˜¯å¦ä¸ºæ–°ç‰ˆåˆé›†. 1 ä¸ºæ˜¯, 0 ä¸ºå¦. |
+| `owner` | `User` | åˆé›†åˆ—è¡¨å¯¹åº”ç”¨æˆ·. |
+| `meta` | `Dict` | åˆé›†ä¸åˆ—è¡¨åŸºæœ¬ä¿¡æ¯. |
+| `credential` | `Credential` | å‡­æ®ç±». Defaults to None. |
 
 
 ### def \_\_init\_\_()
@@ -59,15 +59,15 @@ from bilibili_api import channel_series
 
 | name | type | description |
 | - | - | - |
-| `uid` | `int` | ÓÃ»§ uid. Defaults to -1. |
-| `type_` | `ChannelSeriesType` | ºÏ¼¯ÓëÁĞ±íÀàĞÍ. Defaults to ChannelSeriesType.SERIES. |
-| `id_` | `int` | season_id »ò series_id. Defaults to -1. |
-| `credential` | `Credential` | Æ¾Ö¤. Defaults to None. |
+| `uid` | `int` | ç”¨æˆ· uid. Defaults to -1. |
+| `type_` | `ChannelSeriesType` | åˆé›†ä¸åˆ—è¡¨ç±»å‹. Defaults to ChannelSeriesType.SERIES. |
+| `id_` | `int` | season_id æˆ– series_id. Defaults to -1. |
+| `credential` | `Credential` | å‡­è¯. Defaults to None. |
 
 
 ### def get_id()
 
-»ñÈ¡ season_id / series_id
+è·å– season_id / series_id
 
 
 
@@ -78,48 +78,48 @@ from bilibili_api import channel_series
 
 ### async def get_meta()
 
-»ñÈ¡ÔªÊı¾İ
+è·å–å…ƒæ•°æ®
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_owner()
 
-»ñÈ¡ºÏ¼¯ÁĞ±í¶ÔÓ¦ÓÃ»§
+è·å–åˆé›†åˆ—è¡¨å¯¹åº”ç”¨æˆ·
 
 
 
-**Returns:** `user.User`:  ¶ÔÓ¦ÓÃ»§
+**Returns:** `user.User`:  å¯¹åº”ç”¨æˆ·
 
 
 
 
 ### def get_type()
 
-»ñÈ¡ºÏ¼¯ÓëÁĞ±íÀàĞÍ
+è·å–åˆé›†ä¸åˆ—è¡¨ç±»å‹
 
 
 
-**Returns:** `ChannelSeriesType`:  ºÏ¼¯ÓëÁĞ±íÀàĞÍ
+**Returns:** `ChannelSeriesType`:  åˆé›†ä¸åˆ—è¡¨ç±»å‹
 
 
 
 
 ### async def get_videos()
 
-»ñÈ¡ºÏ¼¯ÊÓÆµ
+è·å–åˆé›†è§†é¢‘
 
 | name | type | description |
 | - | - | - |
-| `sort` | `ChannelOrder` | ÅÅĞò·½Ê½ |
-| `pn` | `int` | Ò³Êı£¬Ä¬ÈÏÎª 1 |
-| `ps` | `int` | Ã¿Ò»Ò³ÏÔÊ¾µÄÊÓÆµÊıÁ¿ |
+| `sort` | `ChannelOrder` | æ’åºæ–¹å¼ |
+| `pn` | `int` | é¡µæ•°ï¼Œé»˜è®¤ä¸º 1 |
+| `ps` | `int` | æ¯ä¸€é¡µæ˜¾ç¤ºçš„è§†é¢‘æ•°é‡ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -130,12 +130,12 @@ from bilibili_api import channel_series
 
 **Extend: enum.Enum**
 
-ºÏ¼¯ÓëÁĞ±íÀàĞÍ
+åˆé›†ä¸åˆ—è¡¨ç±»å‹
 
-+ SERIES: ÏàÍ¬ÊÓÆµ·ÖÀà
-+ SEASON: ĞÂ¸ÅÄî¶à P
++ SERIES: ç›¸åŒè§†é¢‘åˆ†ç±»
++ SEASON: æ–°æ¦‚å¿µå¤š P
 
-**SEASON ÀàºÏ¼¯ÓëÁĞ±íÃû×ÖÎª`ºÏ¼¯¡¤XXX`£¬Çë×¢ÒâÇø±ğ**
+**SEASON ç±»åˆé›†ä¸åˆ—è¡¨åå­—ä¸º`åˆé›†Â·XXX`ï¼Œè¯·æ³¨æ„åŒºåˆ«**
 
 
 
@@ -144,16 +144,16 @@ from bilibili_api import channel_series
 
 ## async def add_aids_to_series()
 
-Ìí¼ÓÊÓÆµÖÁÊÓÆµÁĞ±í(¾É°æºÏ¼¯)
+æ·»åŠ è§†é¢‘è‡³è§†é¢‘åˆ—è¡¨(æ—§ç‰ˆåˆé›†)
 
 
 | name | type | description |
 | - | - | - |
-| `series_id` | `int` | ¾É°æºÏ¼¯ id¡£ |
-| `aids` | `List[int]` | ÊÓÆµ aid ÁĞ±í¡£ |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `series_id` | `int` | æ—§ç‰ˆåˆé›† idã€‚ |
+| `aids` | `List[int]` | è§†é¢‘ aid åˆ—è¡¨ã€‚ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -162,18 +162,18 @@ from bilibili_api import channel_series
 
 ## async def create_channel_series()
 
-ĞÂ½¨Ò»¸öÊÓÆµÁĞ±í (¾É°æºÏ¼¯)
+æ–°å»ºä¸€ä¸ªè§†é¢‘åˆ—è¡¨ (æ—§ç‰ˆåˆé›†)
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÁĞ±íÃû³Æ¡£ |
-| `aids` | `List[int] \| None` | Òª¼ÓÈëÁĞ±íµÄÊÓÆµµÄ aid ÁĞ±í¡£Defaults to None£¨µÈ¼ÛÓÚ []£©¡£ |
-| `keywords` | `List[str] \| None` | ÁĞ±íµÄ¹Ø¼ü´Ê¡£Defaults to None£¨µÈ¼ÛÓÚ []£©¡£ |
-| `description` | `str` | ÁĞ±íµÄÃèÊö¡£ |
-| `credential` | `Credential \| None` | Æ¾¾İÀà¡£ |
+| `name` | `str` | åˆ—è¡¨åç§°ã€‚ |
+| `aids` | `List[int] \| None` | è¦åŠ å…¥åˆ—è¡¨çš„è§†é¢‘çš„ aid åˆ—è¡¨ã€‚Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰ã€‚ |
+| `keywords` | `List[str] \| None` | åˆ—è¡¨çš„å…³é”®è¯ã€‚Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰ã€‚ |
+| `description` | `str` | åˆ—è¡¨çš„æè¿°ã€‚ |
+| `credential` | `Credential \| None` | å‡­æ®ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -182,16 +182,16 @@ from bilibili_api import channel_series
 
 ## async def del_aids_from_series()
 
-´ÓÊÓÆµÁĞ±í(¾É°æºÏ¼¯)É¾³ıÊÓÆµ
+ä»è§†é¢‘åˆ—è¡¨(æ—§ç‰ˆåˆé›†)åˆ é™¤è§†é¢‘
 
 
 | name | type | description |
 | - | - | - |
-| `series_id` | `int` | ¾É°æºÏ¼¯ id¡£ |
-| `aids` | `List[int]` | ÊÓÆµ aid ÁĞ±í¡£ |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `series_id` | `int` | æ—§ç‰ˆåˆé›† idã€‚ |
+| `aids` | `List[int]` | è§†é¢‘ aid åˆ—è¡¨ã€‚ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -200,15 +200,15 @@ from bilibili_api import channel_series
 
 ## async def del_channel_series()
 
-É¾³ıÊÓÆµÁĞ±í(¾É°æºÏ¼¯)
+åˆ é™¤è§†é¢‘åˆ—è¡¨(æ—§ç‰ˆåˆé›†)
 
 
 | name | type | description |
 | - | - | - |
-| `series_id` | `int` | ¾É°æºÏ¼¯ id¡£ |
-| `credential` | `Credential` | Æ¾¾İÀà¡£ |
+| `series_id` | `int` | æ—§ç‰ˆåˆé›† idã€‚ |
+| `credential` | `Credential` | å‡­æ®ç±»ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -217,13 +217,13 @@ from bilibili_api import channel_series
 
 ## async def set_follow_channel_season()
 
-ÉèÖÃÊÇ·ñ¶©ÔÄºÏ¼¯(ĞÂ°æ)
+è®¾ç½®æ˜¯å¦è®¢é˜…åˆé›†(æ–°ç‰ˆ)
 
 
 | name | type | description |
 | - | - | - |
-| `season_id` | `int` | ºÏ¼¯ id |
-| `status` | `bool` | ÊÇ·ñ¶©ÔÄ×´Ì¬. Defaults to True. |
+| `season_id` | `int` | åˆé›† id |
+| `status` | `bool` | æ˜¯å¦è®¢é˜…çŠ¶æ€. Defaults to True. |
 
 
 

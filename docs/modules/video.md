@@ -1,6 +1,6 @@
 # Module video.py
 
-bilibili_api.video ¡ª ÊÓÆµÏà¹Ø½Ó¿Ú¡£
+bilibili_api.video â€” è§†é¢‘ç›¸å…³æ¥å£ã€‚
 
 ``` python
 from bilibili_api import video
@@ -101,13 +101,13 @@ from bilibili_api import video
 
 **Extend: enum.Enum**
 
-ÊÓÆµµÄÒôÆµÁ÷ÇåÎú¶ÈÃ¶¾Ù
+è§†é¢‘çš„éŸ³é¢‘æµæ¸…æ™°åº¦æšä¸¾
 
 - _64K: 64K
 - _132K: 132K
 - _192K: 192K
-- HI_RES: Hi-Res ÎŞËğ
-- DOLBY: ¶Å±ÈÈ«¾°Éù
+- HI_RES: Hi-Res æ— æŸ
+- DOLBY: æœæ¯”å…¨æ™¯å£°
 
 
 
@@ -120,17 +120,17 @@ from bilibili_api import video
 
 (@dataclass)
 
-ÒôÆµÁ÷ URL Àà
+éŸ³é¢‘æµ URL ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | ÒôÆµÁ÷ url |
-| `audio_quality` | `AudioQuality` | ÒôÆµÁ÷ÇåÎú¶È |
-| `backup_url` | `List[str]` | ±¸ÓÃÁ´½Ó |
-| `bandwidth` | `int` | ÂëÂÊ |
-| `codecs` | `str` | ÊÓÆµÁ÷ÏêÏ¸±àÂë |
-| `mime_type` | `str` | MIME ÀàĞÍ |
+| `url` | `str` | éŸ³é¢‘æµ url |
+| `audio_quality` | `AudioQuality` | éŸ³é¢‘æµæ¸…æ™°åº¦ |
+| `backup_url` | `List[str]` | å¤‡ç”¨é“¾æ¥ |
+| `bandwidth` | `int` | ç ç‡ |
+| `codecs` | `str` | è§†é¢‘æµè¯¦ç»†ç¼–ç  |
+| `mime_type` | `str` | MIME ç±»å‹ |
 | `segment_base_initialization` | `str` | SegmentBase.Initialization |
 | `segment_base_index_range` | `str` | SegmentBase.indexRange |
 
@@ -141,17 +141,17 @@ from bilibili_api import video
 
 **Extend: enum.Enum**
 
-WebSocket ×´Ì¬Ã¶¾Ù
+WebSocket çŠ¶æ€æšä¸¾
 
-- CONTINUATION: ÑÓĞø
-- TEXT: ÎÄ×Ö
-- BINARY: ×Ö½Ú
+- CONTINUATION: å»¶ç»­
+- TEXT: æ–‡å­—
+- BINARY: å­—èŠ‚
 - PING: ping
 - PONG: pong
-- CLOSE: ¹Ø±Õ
+- CLOSE: å…³é—­
 
-- CLOSING: ÕıÔÚ¹Ø±Õ
-- CLOSED: ÒÑ¹Ø±Õ
+- CLOSING: æ­£åœ¨å…³é—­
+- CLOSED: å·²å…³é—­
 
 
 
@@ -162,11 +162,11 @@ WebSocket ×´Ì¬Ã¶¾Ù
 
 **Extend: enum.Enum**
 
-µ¯Ä»²Ù×÷Ã¶¾Ù
+å¼¹å¹•æ“ä½œæšä¸¾
 
-+ DELETE - É¾³ıµ¯Ä»
-+ PROTECT - ±£»¤µ¯Ä»
-+ UNPROTECT - È¡Ïû±£»¤µ¯Ä»
++ DELETE - åˆ é™¤å¼¹å¹•
++ PROTECT - ä¿æŠ¤å¼¹å¹•
++ UNPROTECT - å–æ¶ˆä¿æŠ¤å¼¹å¹•
 
 
 
@@ -179,12 +179,12 @@ WebSocket ×´Ì¬Ã¶¾Ù
 
 (@dataclass)
 
-FLV ÊÓÆµÁ÷
+FLV è§†é¢‘æµ
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | FLV Á÷ url |
+| `url` | `str` | FLV æµ url |
 
 
 ---
@@ -195,19 +195,19 @@ FLV ÊÓÆµÁ÷
 
 (@dataclass)
 
-MP4 ÊÓÆµÁ÷
+MP4 è§†é¢‘æµ
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | HTML5 mp4 ÊÓÆµÁ÷ |
+| `url` | `str` | HTML5 mp4 è§†é¢‘æµ |
 
 
 ---
 
 ## class Video()
 
-ÊÓÆµÀà£¬¸÷ÖÖ¶ÔÊÓÆµµÄ²Ù×÷¾ùÔÚÀïÃæ¡£
+è§†é¢‘ç±»ï¼Œå„ç§å¯¹è§†é¢‘çš„æ“ä½œå‡åœ¨é‡Œé¢ã€‚
 
 
 
@@ -217,135 +217,135 @@ MP4 ÊÓÆµÁ÷
 
 | name | type | description |
 | - | - | - |
-| `bvid` | `str \| None, optional` | BV ºÅ. bvid ºÍ aid ±ØĞëÌá¹©ÆäÖĞÖ®Ò»¡£ |
-| `aid` | `int \| None, optional` | AV ºÅ. bvid ºÍ aid ±ØĞëÌá¹©ÆäÖĞÖ®Ò»¡£ |
-| `credential` | `Credential \| None, optional` | Credential Àà. Defaults to None. |
+| `bvid` | `str \| None, optional` | BV å·. bvid å’Œ aid å¿…é¡»æä¾›å…¶ä¸­ä¹‹ä¸€ã€‚ |
+| `aid` | `int \| None, optional` | AV å·. bvid å’Œ aid å¿…é¡»æä¾›å…¶ä¸­ä¹‹ä¸€ã€‚ |
+| `credential` | `Credential \| None, optional` | Credential ç±». Defaults to None. |
 
 
 ### async def add_tag()
 
-Ìí¼Ó±êÇ©¡£
+æ·»åŠ æ ‡ç­¾ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ±êÇ©Ãû×Ö¡£ |
+| `name` | `str` | æ ‡ç­¾åå­—ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£»á·µ»Ø±êÇ© ID¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚ä¼šè¿”å›æ ‡ç­¾ IDã€‚
 
 
 
 
 ### async def add_to_toview()
 
-Ìí¼ÓÊÓÆµÖÁÉÔºóÔÙ¿´ÁĞ±í
+æ·»åŠ è§†é¢‘è‡³ç¨åå†çœ‹åˆ—è¡¨
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def appeal()
 
-Í¶Ëß¸å¼ş
+æŠ•è¯‰ç¨¿ä»¶
 
 
 | name | type | description |
 | - | - | - |
-| `reason` | `Any` | Í¶ËßÀàĞÍ¡£´«Èë VideoAppealReasonType ÖĞµÄÏîÄ¿¼´¿É¡£ |
-| `detail` | `str` | ÏêÇéĞÅÏ¢¡£ |
+| `reason` | `Any` | æŠ•è¯‰ç±»å‹ã€‚ä¼ å…¥ VideoAppealReasonType ä¸­çš„é¡¹ç›®å³å¯ã€‚ |
+| `detail` | `str` | è¯¦æƒ…ä¿¡æ¯ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def delete_from_toview()
 
-´ÓÉÔºóÔÙ¿´ÁĞ±íÉ¾³ıÊÓÆµ
+ä»ç¨åå†çœ‹åˆ—è¡¨åˆ é™¤è§†é¢‘
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def delete_tag()
 
-É¾³ı±êÇ©¡£
+åˆ é™¤æ ‡ç­¾ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `tag_id` | `int` | ±êÇ© ID¡£ |
+| `tag_id` | `int` | æ ‡ç­¾ IDã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_ai_conclusion()
 
-»ñÈ¡¸å¼ş AI ×Ü½á½á¹û¡£
+è·å–ç¨¿ä»¶ AI æ€»ç»“ç»“æœã€‚
 
-cid ºÍ page_index ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
+cid å’Œ page_index è‡³å°‘æä¾›å…¶ä¸­ä¸€ä¸ªï¼Œå…¶ä¸­ cid ä¼˜å…ˆçº§æœ€é«˜
 
 
 | name | type | description |
 | - | - | - |
-| `cid` | `Optional, int` | ·Ö P µÄ cid¡£ |
-| `page_index` | `Optional, int` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£ |
-| `up_mid` | `Optional, int` | up Ö÷µÄ mid¡£ |
+| `cid` | `Optional, int` | åˆ† P çš„ cidã€‚ |
+| `page_index` | `Optional, int` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚ |
+| `up_mid` | `Optional, int` | up ä¸»çš„ midã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### def get_aid()
 
-»ñÈ¡ AID¡£
+è·å– AIDã€‚
 
 
 
-**Returns:** `int`:  aid¡£
+**Returns:** `int`:  aidã€‚
 
 
 
 
 ### def get_bvid()
 
-»ñÈ¡ BVID¡£
+è·å– BVIDã€‚
 
 
 
-**Returns:** `str`:  BVID¡£
+**Returns:** `str`:  BVIDã€‚
 
 
 
 
 ### async def get_chargers()
 
-»ñÈ¡ÊÓÆµ³äµçÓÃ»§¡£
+è·å–è§†é¢‘å……ç”µç”¨æˆ·ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_cid()
 
-»ñÈ¡¸å¼ş cid
+è·å–ç¨¿ä»¶ cid
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int` | ·Ö P |
+| `page_index` | `int` | åˆ† P |
 
 **Returns:** `int`:  cid
 
@@ -354,284 +354,284 @@ cid ºÍ page_index ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### async def get_danmaku_snapshot()
 
-»ñÈ¡µ¯Ä»¿ìÕÕ
+è·å–å¼¹å¹•å¿«ç…§
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_danmaku_view()
 
-»ñÈ¡µ¯Ä»ÉèÖÃ¡¢ÌØÊâµ¯Ä»¡¢µ¯Ä»ÊıÁ¿¡¢µ¯Ä»·Ö¶ÎµÈĞÅÏ¢¡£
+è·å–å¼¹å¹•è®¾ç½®ã€ç‰¹æ®Šå¼¹å¹•ã€å¼¹å¹•æ•°é‡ã€å¼¹å¹•åˆ†æ®µç­‰ä¿¡æ¯ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `cid` | `int, optional` | ·Ö P µÄ ID¡£Defaults to None |
+| `page_index` | `int, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `cid` | `int, optional` | åˆ† P çš„ IDã€‚Defaults to None |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_danmaku_xml()
 
-»ñÈ¡ËùÓĞµ¯Ä»µÄ xml Ô´ÎÄ¼ş£¨·Ç×°Ìî£©
+è·å–æ‰€æœ‰å¼¹å¹•çš„ xml æºæ–‡ä»¶ï¼ˆéè£…å¡«ï¼‰
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int, optional` | ·Ö P ĞòºÅ. Defaults to 0. |
+| `page_index` | `int, optional` | åˆ† P åºå·. Defaults to 0. |
 | `cid` | `int \| None, optional` | cid. Defaults to None. |
 
-**Returns:** `str`:  xml ÎÄ¼şÔ´
+**Returns:** `str`:  xml æ–‡ä»¶æº
 
 
 
 
 ### async def get_danmakus()
 
-»ñÈ¡µ¯Ä»¡£
+è·å–å¼¹å¹•ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `date` | `datetime.Date \| None, optional` | Ö¸¶¨ÈÕÆÚºóÎª»ñÈ¡ÀúÊ·µ¯Ä»£¬¾«È·µ½ÄêÔÂÈÕ¡£Defaults to None. |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
-| `from_seg` | `int, optional` | ´ÓµÚ¼¸¶Î¿ªÊ¼(0 ¿ªÊ¼±àºÅ£¬None Îª´ÓµÚÒ»¶Î¿ªÊ¼£¬Ò»¶Î 6 ·ÖÖÓ). Defaults to None. |
-| `to_seg` | `int, optional` | µ½µÚ¼¸¶Î½áÊø(0 ¿ªÊ¼±àºÅ£¬None Îªµ½×îºóÒ»¶Î£¬°üº¬±àºÅµÄ¶Î£¬Ò»¶Î 6 ·ÖÖÓ). Defaults to None. |
+| `page_index` | `int, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `date` | `datetime.Date \| None, optional` | æŒ‡å®šæ—¥æœŸåä¸ºè·å–å†å²å¼¹å¹•ï¼Œç²¾ç¡®åˆ°å¹´æœˆæ—¥ã€‚Defaults to None. |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
+| `from_seg` | `int, optional` | ä»ç¬¬å‡ æ®µå¼€å§‹(0 å¼€å§‹ç¼–å·ï¼ŒNone ä¸ºä»ç¬¬ä¸€æ®µå¼€å§‹ï¼Œä¸€æ®µ 6 åˆ†é’Ÿ). Defaults to None. |
+| `to_seg` | `int, optional` | åˆ°ç¬¬å‡ æ®µç»“æŸ(0 å¼€å§‹ç¼–å·ï¼ŒNone ä¸ºåˆ°æœ€åä¸€æ®µï¼ŒåŒ…å«ç¼–å·çš„æ®µï¼Œä¸€æ®µ 6 åˆ†é’Ÿ). Defaults to None. |
 
-**Returns:** `List[Danmaku]`:  Danmaku ÀàµÄÁĞ±í¡£
+**Returns:** `List[Danmaku]`:  Danmaku ç±»çš„åˆ—è¡¨ã€‚
 
 
-×¢Òâ£º
-- 1. ¶ÎÊı¿ÉÒÔÍ¨¹ıÊÓÆµÊ±³¤¼ÆËã¡£6·ÖÖÓÎªÒ»¶Î¡£
-- 2. `from_seg` ºÍ `to_seg` ½ö¶Ô `date == None` µÄÊ±ºòÓĞĞ§¹û¡£
-- 3. Àı£ºÈ¡Ç° `12` ·ÖÖÓµÄµ¯Ä»£º`from_seg=0, to_seg=1`
+æ³¨æ„ï¼š
+- 1. æ®µæ•°å¯ä»¥é€šè¿‡è§†é¢‘æ—¶é•¿è®¡ç®—ã€‚6åˆ†é’Ÿä¸ºä¸€æ®µã€‚
+- 2. `from_seg` å’Œ `to_seg` ä»…å¯¹ `date == None` çš„æ—¶å€™æœ‰æ•ˆæœã€‚
+- 3. ä¾‹ï¼šå–å‰ `12` åˆ†é’Ÿçš„å¼¹å¹•ï¼š`from_seg=0, to_seg=1`
 
 
 
 ### async def get_detail()
 
-»ñÈ¡ÊÓÆµÏêÏ¸ĞÅÏ¢
+è·å–è§†é¢‘è¯¦ç»†ä¿¡æ¯
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_download_url()
 
-»ñÈ¡ÊÓÆµÏÂÔØĞÅÏ¢¡£
+è·å–è§†é¢‘ä¸‹è½½ä¿¡æ¯ã€‚
 
-·µ»Ø½á¹û¿ÉÒÔ´«Èë `VideoDownloadURLDataDetecter` ½øĞĞ½âÎö¡£
+è¿”å›ç»“æœå¯ä»¥ä¼ å…¥ `VideoDownloadURLDataDetecter` è¿›è¡Œè§£æã€‚
 
-page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
+page_index å’Œ cid è‡³å°‘æä¾›å…¶ä¸­ä¸€ä¸ªï¼Œå…¶ä¸­ cid ä¼˜å…ˆçº§æœ€é«˜
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
-| `html5` | `bool, optional` | ÊÇ·ñÑ¡ÔñÒÆ¶¯¶Ë HTML5 ²¥·ÅÁ÷£¨½öÖ§³Ö MP4 ¸ñÊ½£©´ËÊ±»ñµÃµÄÃ½ÌåÁ÷·ÃÎÊÎŞĞè¼øÈ¨¡£ |
+| `page_index` | `int \| None, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
+| `html5` | `bool, optional` | æ˜¯å¦é€‰æ‹©ç§»åŠ¨ç«¯ HTML5 æ’­æ”¾æµï¼ˆä»…æ”¯æŒ MP4 æ ¼å¼ï¼‰æ­¤æ—¶è·å¾—çš„åª’ä½“æµè®¿é—®æ— éœ€é‰´æƒã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_history_danmaku_index()
 
-»ñÈ¡ÌØ¶¨ÔÂ·İ´æÔÚÀúÊ·µ¯Ä»µÄÈÕÆÚ¡£
+è·å–ç‰¹å®šæœˆä»½å­˜åœ¨å†å²å¼¹å¹•çš„æ—¥æœŸã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `date` | `datetime.date \| None` | ¾«È·µ½ÄêÔÂ. Defaults to None¡£ |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
+| `page_index` | `int \| None, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `date` | `datetime.date \| None` | ç²¾ç¡®åˆ°å¹´æœˆ. Defaults to Noneã€‚ |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
 
-**Returns:** `None | List[str]`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£²»´æÔÚÊ±Îª None¡£
+**Returns:** `None | List[str]`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚ä¸å­˜åœ¨æ—¶ä¸º Noneã€‚
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡ÊÓÆµĞÅÏ¢¡£
+è·å–è§†é¢‘ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_online()
 
-»ñÈ¡ÊµÊ±ÔÚÏßÈËÊı
+è·å–å®æ—¶åœ¨çº¿äººæ•°
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_pages()
 
-»ñÈ¡·Ö P ĞÅÏ¢¡£
+è·å–åˆ† P ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_pay_coins()
 
-»ñÈ¡ÊÓÆµÒÑÍ¶±ÒÊıÁ¿¡£
+è·å–è§†é¢‘å·²æŠ•å¸æ•°é‡ã€‚
 
 
 
-**Returns:** `int`:  ÊÓÆµÒÑÍ¶±ÒÊıÁ¿¡£
+**Returns:** `int`:  è§†é¢‘å·²æŠ•å¸æ•°é‡ã€‚
 
 
 
 
 ### async def get_pbp()
 
-»ñÈ¡¸ßÄÜ½ø¶ÈÌõ
+è·å–é«˜èƒ½è¿›åº¦æ¡
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None` | ·Ö P ºÅ |
-| `cid` | `int \| None` | ·Ö P ±àÂë |
+| `page_index` | `int \| None` | åˆ† P å· |
+| `cid` | `int \| None` | åˆ† P ç¼–ç  |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_player_info()
 
-»ñÈ¡ÊÓÆµÉÏÒ»´Î²¥·ÅµÄ¼ÇÂ¼£¬×ÖÄ»ºÍµØÇøĞÅÏ¢¡£ĞèÒª·Ö¼¯µÄ cid, ·µ»ØÊı¾İÖĞº¬ÓĞjson×ÖÄ»µÄÁ´½Ó
+è·å–è§†é¢‘ä¸Šä¸€æ¬¡æ’­æ”¾çš„è®°å½•ï¼Œå­—å¹•å’Œåœ°åŒºä¿¡æ¯ã€‚éœ€è¦åˆ†é›†çš„ cid, è¿”å›æ•°æ®ä¸­å«æœ‰jsonå­—å¹•çš„é“¾æ¥
 
 
 | name | type | description |
 | - | - | - |
-| `cid` | `int \| None` | ·Ö P ID,´ÓÊÓÆµĞÅÏ¢ÖĞ»ñÈ¡ |
-| `epid` | `int \| None` | ·¬¾ç·Ö¼¯ ID,´Ó·¬¾çĞÅÏ¢ÖĞ»ñÈ¡ |
+| `cid` | `int \| None` | åˆ† P ID,ä»è§†é¢‘ä¿¡æ¯ä¸­è·å– |
+| `epid` | `int \| None` | ç•ªå‰§åˆ†é›† ID,ä»ç•ªå‰§ä¿¡æ¯ä¸­è·å– |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_private_notes_list()
 
-»ñÈ¡¸å¼şË½ÓĞ±Ê¼ÇÁĞ±í¡£
+è·å–ç¨¿ä»¶ç§æœ‰ç¬”è®°åˆ—è¡¨ã€‚
 
 
 
-**Returns:** `list`:  note_Ids¡£
+**Returns:** `list`:  note_Idsã€‚
 
 
 
 
 ### async def get_public_notes_list()
 
-»ñÈ¡¸å¼ş¹«¿ª±Ê¼ÇÁĞ±í¡£
+è·å–ç¨¿ä»¶å…¬å¼€ç¬”è®°åˆ—è¡¨ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | Ò³Âë |
-| `ps` | `int` | Ã¿Ò³ÏîÊı |
+| `pn` | `int` | é¡µç  |
+| `ps` | `int` | æ¯é¡µé¡¹æ•° |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_related()
 
-»ñÈ¡Ïà¹ØÊÓÆµĞÅÏ¢¡£
+è·å–ç›¸å…³è§†é¢‘ä¿¡æ¯ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_relation()
 
-»ñÈ¡ÓÃ»§ÓëÊÓÆµµÄ¹ØÏµ
+è·å–ç”¨æˆ·ä¸è§†é¢‘çš„å…³ç³»
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_special_dms()
 
-»ñÈ¡ÌØÊâµ¯Ä»
+è·å–ç‰¹æ®Šå¼¹å¹•
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int, optional` | ·Ö P ºÅ. Defaults to 0. |
-| `cid` | `int \| None, optional` | ·Ö P id. Defaults to None. |
+| `page_index` | `int, optional` | åˆ† P å·. Defaults to 0. |
+| `cid` | `int \| None, optional` | åˆ† P id. Defaults to None. |
 
-**Returns:** `List[SpecialDanmaku]`:  µ÷ÓÃ½Ó¿Ú½âÎöºóµÄ½á¹û
+**Returns:** `List[SpecialDanmaku]`:  è°ƒç”¨æ¥å£è§£æåçš„ç»“æœ
 
 
 
 
 ### async def get_subtitle()
 
-»ñÈ¡×ÖÄ»ĞÅÏ¢
+è·å–å­—å¹•ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `cid` | `int \| None` | ·Ö P ID,´ÓÊÓÆµĞÅÏ¢ÖĞ»ñÈ¡ |
+| `cid` | `int \| None` | åˆ† P ID,ä»è§†é¢‘ä¿¡æ¯ä¸­è·å– |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_tags()
 
-»ñÈ¡ÊÓÆµ±êÇ©¡£
+è·å–è§†é¢‘æ ‡ç­¾ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None` | ·Ö P ĞòºÅ. Defaults to 0. |
-| `cid` | `int \| None` | ·Ö P ±àÂë. Defaults to None. |
+| `page_index` | `int \| None` | åˆ† P åºå·. Defaults to 0. |
+| `cid` | `int \| None` | åˆ† P ç¼–ç . Defaults to None. |
 
-**Returns:** `List[dict]`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `List[dict]`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def get_up_mid()
 
-»ñÈ¡ÊÓÆµ up Ö÷µÄ mid¡£
+è·å–è§†é¢‘ up ä¸»çš„ midã€‚
 
 
 
@@ -642,276 +642,276 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### async def get_video_snapshot()
 
-»ñÈ¡ÊÓÆµ¿ìÕÕ(ÊÓÆµ¸÷¸öÊ±¼ä¶ÎµÄ½ØÍ¼Æ´Í¼)
+è·å–è§†é¢‘å¿«ç…§(è§†é¢‘å„ä¸ªæ—¶é—´æ®µçš„æˆªå›¾æ‹¼å›¾)
 
 
 | name | type | description |
 | - | - | - |
-| `cid` | `int` | ·Ö P CID(¿ÉÑ¡) |
-| `json_index` | `bool` | json Êı×é½ØÈ¡Ê±¼ä±í True ÎªĞèÒª£¬False ²»ĞèÒª |
-| `pvideo` | `bool` | ÊÇ·ñÖ»»ñÈ¡Ô¤ÀÀ |
+| `cid` | `int` | åˆ† P CID(å¯é€‰) |
+| `json_index` | `bool` | json æ•°ç»„æˆªå–æ—¶é—´è¡¨ True ä¸ºéœ€è¦ï¼ŒFalse ä¸éœ€è¦ |
+| `pvideo` | `bool` | æ˜¯å¦åªè·å–é¢„è§ˆ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û,Êı¾İÖĞ Url Ã»ÓĞ http Í·
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ,æ•°æ®ä¸­ Url æ²¡æœ‰ http å¤´
 
 
 
 
 ### async def has_favoured()
 
-ÊÇ·ñÒÑÊÕ²Ø¡£
+æ˜¯å¦å·²æ”¶è—ã€‚
 
 
 
-**Returns:** `bool`:  ÊÓÆµÊÇ·ñÒÑÊÕ²Ø¡£
+**Returns:** `bool`:  è§†é¢‘æ˜¯å¦å·²æ”¶è—ã€‚
 
 
 
 
 ### async def has_liked()
 
-ÊÓÆµÊÇ·ñµãÔŞ¹ı¡£
+è§†é¢‘æ˜¯å¦ç‚¹èµè¿‡ã€‚
 
 
 
-**Returns:** `bool`:  ÊÓÆµÊÇ·ñµãÔŞ¹ı¡£
+**Returns:** `bool`:  è§†é¢‘æ˜¯å¦ç‚¹èµè¿‡ã€‚
 
 
 
 
 ### async def has_liked_danmakus()
 
-ÊÇ·ñÒÑµãÔŞµ¯Ä»¡£
+æ˜¯å¦å·²ç‚¹èµå¼¹å¹•ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `ids` | `List[int] \| None` | Òª²éÑ¯µÄµ¯Ä» ID ÁĞ±í¡£ |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
+| `page_index` | `int \| None, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `ids` | `List[int] \| None` | è¦æŸ¥è¯¢çš„å¼¹å¹• ID åˆ—è¡¨ã€‚ |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def is_episode()
 
-ÅĞ¶ÏÊÓÆµÊÇ·ñÊÇ·¬¾ç
+åˆ¤æ–­è§†é¢‘æ˜¯å¦æ˜¯ç•ªå‰§
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÊÇ·¬¾ç
+**Returns:** `bool`:  æ˜¯å¦æ˜¯ç•ªå‰§
 
 
 
 
 ### async def is_forbid_note()
 
-ÊÇ·ñ½ûÖ¹±Ê¼Ç¡£
+æ˜¯å¦ç¦æ­¢ç¬”è®°ã€‚
 
 
 
-**Returns:** `bool`:  ÊÇ·ñ½ûÖ¹±Ê¼Ç¡£
+**Returns:** `bool`:  æ˜¯å¦ç¦æ­¢ç¬”è®°ã€‚
 
 
 
 
 ### async def like()
 
-µãÔŞÊÓÆµ¡£
+ç‚¹èµè§†é¢‘ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `status` | `bool, optional` | µãÔŞ×´Ì¬¡£Defaults to True. |
+| `status` | `bool, optional` | ç‚¹èµçŠ¶æ€ã€‚Defaults to True. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def like_danmaku()
 
-µãÔŞµ¯Ä»¡£
+ç‚¹èµå¼¹å¹•ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `dmid` | `int \| None` | µ¯Ä» ID¡£ |
-| `status` | `bool \| None, optional` | µãÔŞ×´Ì¬¡£Defaults to True |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
+| `page_index` | `int \| None, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `dmid` | `int \| None` | å¼¹å¹• IDã€‚ |
+| `status` | `bool \| None, optional` | ç‚¹èµçŠ¶æ€ã€‚Defaults to True |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def operate_danmaku()
 
-²Ù×÷µ¯Ä»
+æ“ä½œå¼¹å¹•
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `dmids` | `List[int] \| None` | µ¯Ä» ID ÁĞ±í¡£ |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
-| `type_` | `DanmakuOperatorType \| None` | ²Ù×÷ÀàĞÍ |
+| `page_index` | `int \| None, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `dmids` | `List[int] \| None` | å¼¹å¹• ID åˆ—è¡¨ã€‚ |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
+| `type_` | `DanmakuOperatorType \| None` | æ“ä½œç±»å‹ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def pay_coin()
 
-Í¶±Ò¡£
+æŠ•å¸ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `num` | `int, optional` | Ó²±ÒÊıÁ¿£¬Îª 1 ~ 2 ¸ö¡£Defaults to 1. |
-| `like` | `bool, optional` | ÊÇ·ñÍ¬Ê±µãÔŞ¡£Defaults to False. |
+| `num` | `int, optional` | ç¡¬å¸æ•°é‡ï¼Œä¸º 1 ~ 2 ä¸ªã€‚Defaults to 1. |
+| `like` | `bool, optional` | æ˜¯å¦åŒæ—¶ç‚¹èµã€‚Defaults to False. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### async def recall_danmaku()
 
-³·»Øµ¯Ä»
+æ’¤å›å¼¹å¹•
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ |
-| `dmid` | `int` | µ¯Ä» id |
-| `cid` | `int \| None, optional` | ·Ö P ±àÂë |
+| `page_index` | `int \| None, optional` | åˆ† P å· |
+| `dmid` | `int` | å¼¹å¹• id |
+| `cid` | `int \| None, optional` | åˆ† P ç¼–ç  |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def report_start_watching()
 
-ÉÏ±¨¿ªÊ¼¹Û¿´
-¸Ã½Ó¿ÚÒà±»ÓÃÓÚ¼ÆËã²¥·ÅÁ¿, ²¥·ÅÁ¿¸üĞÂ²»ÊÇÊµÊ±µÄ
-¸Ã½Ó¿ÚÊ¹ÓÃËÆºõ´æÔÚ 200 ²¥·ÅÏŞÖÆ, ÇëÎğÀÄÓÃ!
+ä¸ŠæŠ¥å¼€å§‹è§‚çœ‹
+è¯¥æ¥å£äº¦è¢«ç”¨äºè®¡ç®—æ’­æ”¾é‡, æ’­æ”¾é‡æ›´æ–°ä¸æ˜¯å®æ—¶çš„
+è¯¥æ¥å£ä½¿ç”¨ä¼¼ä¹å­˜åœ¨ 200 æ’­æ”¾é™åˆ¶, è¯·å‹¿æ»¥ç”¨!
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None` | ·Ö P ĞòºÅ |
+| `page_index` | `int \| None` | åˆ† P åºå· |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def report_watch_history()
 
-ÉÏ±¨¹Û¿´ÀúÊ·
+ä¸ŠæŠ¥è§‚çœ‹å†å²
 
 | name | type | description |
 | - | - | - |
-| `progress` | `int` | ¹Û¿´½ø¶È (µ¥Î» Ãë) |
-| `page_index` | `int \| None` | ·Ö P ĞòºÅ |
-| `cid` | `int \| None` | ·Ö P ID,´ÓÊÓÆµĞÅÏ¢ÖĞ»ñÈ¡ |
+| `progress` | `int` | è§‚çœ‹è¿›åº¦ (å•ä½ ç§’) |
+| `page_index` | `int \| None` | åˆ† P åºå· |
+| `cid` | `int \| None` | åˆ† P ID,ä»è§†é¢‘ä¿¡æ¯ä¸­è·å– |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def send_danmaku()
 
-·¢ËÍµ¯Ä»¡£
+å‘é€å¼¹å¹•ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `page_index` | `int \| None, optional` | ·Ö P ºÅ£¬´Ó 0 ¿ªÊ¼¡£Defaults to None |
-| `danmaku` | `Danmaku \| None` | Danmaku Àà¡£ |
-| `cid` | `int \| None, optional` | ·Ö P µÄ ID¡£Defaults to None |
+| `page_index` | `int \| None, optional` | åˆ† P å·ï¼Œä» 0 å¼€å§‹ã€‚Defaults to None |
+| `danmaku` | `Danmaku \| None` | Danmaku ç±»ã€‚ |
+| `cid` | `int \| None, optional` | åˆ† P çš„ IDã€‚Defaults to None |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
 
 ### def set_aid()
 
-ÉèÖÃ aid¡£
+è®¾ç½® aidã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `aid` | `int` | AV ºÅ¡£ |
+| `aid` | `int` | AV å·ã€‚ |
 
 
 
 
 ### def set_bvid()
 
-ÉèÖÃ bvid¡£
+è®¾ç½® bvidã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `bvid` | `str` | ÒªÉèÖÃµÄ bvid¡£ |
+| `bvid` | `str` | è¦è®¾ç½®çš„ bvidã€‚ |
 
 
 
 
 ### async def set_favorite()
 
-ÉèÖÃÊÓÆµÊÕ²Ø×´¿ö¡£
+è®¾ç½®è§†é¢‘æ”¶è—çŠ¶å†µã€‚
 
-**Èç¹ûÊÓÆµÊÇ·¬¾ç `await is_bangumi()`£¬Çë×ªÎª `Episode` ÀàÊÕ²Ø**
+**å¦‚æœè§†é¢‘æ˜¯ç•ªå‰§ `await is_bangumi()`ï¼Œè¯·è½¬ä¸º `Episode` ç±»æ”¶è—**
 
 
 | name | type | description |
 | - | - | - |
-| `add_media_ids` | `List[int] \| None, optional` | ÒªÌí¼Óµ½µÄÊÕ²Ø¼Ğ ID. Defaults to None£¨µÈ¼ÛÓÚ []£©. |
-| `del_media_ids` | `List[int] \| None, optional` | ÒªÒÆ³öµÄÊÕ²Ø¼Ğ ID. Defaults to None£¨µÈ¼ÛÓÚ []£©. |
+| `add_media_ids` | `List[int] \| None, optional` | è¦æ·»åŠ åˆ°çš„æ”¶è—å¤¹ ID. Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰. |
+| `del_media_ids` | `List[int] \| None, optional` | è¦ç§»å‡ºçš„æ”¶è—å¤¹ ID. Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœã€‚
 
 
 
 
 ### async def share()
 
-·ÖÏíÊÓÆµ
+åˆ†äº«è§†é¢‘
 
 
 
-**Returns:** `int`:  µ±Ç°·ÖÏíÊı
+**Returns:** `int`:  å½“å‰åˆ†äº«æ•°
 
 
 
 
 ### async def submit_subtitle()
 
-ÉÏ´«×ÖÄ»
+ä¸Šä¼ å­—å¹•
 
-×ÖÄ»Êı¾İ data ²Î¿¼£º
+å­—å¹•æ•°æ® data å‚è€ƒï¼š
 
 ```json
 {
-  "font_size": "float: ×ÖÌå´óĞ¡£¬Ä¬ÈÏ 0.4",
-  "font_color": "str: ×ÖÌåÑÕÉ«£¬Ä¬ÈÏ "#FFFFFF"",
-  "background_alpha": "float: ±³¾°²»Í¸Ã÷¶È£¬Ä¬ÈÏ 0.5",
-  "background_color": "str: ±³¾°ÑÕÉ«£¬Ä¬ÈÏ "#9C27B0"",
-  "Stroke": "str: Ãè±ß£¬Ä¿Ç°×÷ÓÃÎ´Öª£¬Ä¬ÈÏÎª "none"",
+  "font_size": "float: å­—ä½“å¤§å°ï¼Œé»˜è®¤ 0.4",
+  "font_color": "str: å­—ä½“é¢œè‰²ï¼Œé»˜è®¤ "#FFFFFF"",
+  "background_alpha": "float: èƒŒæ™¯ä¸é€æ˜åº¦ï¼Œé»˜è®¤ 0.5",
+  "background_color": "str: èƒŒæ™¯é¢œè‰²ï¼Œé»˜è®¤ "#9C27B0"",
+  "Stroke": "str: æè¾¹ï¼Œç›®å‰ä½œç”¨æœªçŸ¥ï¼Œé»˜è®¤ä¸º "none"",
   "body": [
 {
-  "from": "int: ×ÖÄ»¿ªÊ¼Ê±¼ä£¨Ãë£©",
-  "to": "int: ×ÖÄ»½áÊøÊ±¼ä£¨Ãë£©",
-  "location": "int: ×ÖÄ»Î»ÖÃ£¬Ä¬ÈÏÎª 2",
-  "content": "str: ×ÖÄ»ÄÚÈİ"
+  "from": "int: å­—å¹•å¼€å§‹æ—¶é—´ï¼ˆç§’ï¼‰",
+  "to": "int: å­—å¹•ç»“æŸæ—¶é—´ï¼ˆç§’ï¼‰",
+  "location": "int: å­—å¹•ä½ç½®ï¼Œé»˜è®¤ä¸º 2",
+  "content": "str: å­—å¹•å†…å®¹"
 }
   ]
 }
@@ -920,14 +920,14 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 | name | type | description |
 | - | - | - |
-| `lan` | `str` | ×ÖÄ»ÓïÑÔ´úÂë£¬²Î¿¼ https |
-| `data` | `Dict` | ×ÖÄ»Êı¾İ |
-| `submit` | `bool` | ÊÇ·ñÌá½»£¬²»Ìá½»Îª²İ¸å |
-| `sign` | `bool` | ÊÇ·ñÊğÃû |
-| `page_index` | `int \| None, optional` | ·Ö P Ë÷Òı. Defaults to None. |
-| `cid` | `int \| None, optional` | ·Ö P id. Defaults to None. |
+| `lan` | `str` | å­—å¹•è¯­è¨€ä»£ç ï¼Œå‚è€ƒ https |
+| `data` | `Dict` | å­—å¹•æ•°æ® |
+| `submit` | `bool` | æ˜¯å¦æäº¤ï¼Œä¸æäº¤ä¸ºè‰ç¨¿ |
+| `sign` | `bool` | æ˜¯å¦ç½²å |
+| `page_index` | `int \| None, optional` | åˆ† P ç´¢å¼•. Defaults to None. |
+| `cid` | `int \| None, optional` | åˆ† P id. Defaults to None. |
 
-**Returns:** `dict`:  API µ÷ÓÃ·µ»Ø½á¹û
+**Returns:** `dict`:  API è°ƒç”¨è¿”å›ç»“æœ
 
 
 
@@ -935,22 +935,22 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### async def triple()
 
-¸ø°¢ÆÅÖ÷ËÍÉÏÒ»¼üÈıÁ¬
+ç»™é˜¿å©†ä¸»é€ä¸Šä¸€é”®ä¸‰è¿
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def turn_to_episode()
 
-½«ÊÓÆµ×ª»»Îª·¬¾ç
+å°†è§†é¢‘è½¬æ¢ä¸ºç•ªå‰§
 
 
 
-**Returns:** `Episode`:  ·¬¾ç¶ÔÏó
+**Returns:** `Episode`:  ç•ªå‰§å¯¹è±¡
 
 
 
@@ -959,42 +959,42 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ## class VideoAppealReasonType()
 
-ÊÓÆµÍ¶ËßÔ­ÒòÃ¶¾Ù
+è§†é¢‘æŠ•è¯‰åŸå› æšä¸¾
 
-×¢Òâ: Ã¿Ò»Ïî¾ùÎªº¯Êı£¬²¿·ÖÏîÓĞ²ÎÊı£¬Ã»ÓĞ²ÎÊıµÄº¯ÊıÎŞĞèµ÷ÓÃº¯Êı£¬Ö±½Ó´«Èë¼´¿É£¬ÓĞ²ÎÊıµÄº¯ÊıÇëµ÷ÓÃ½á¹ûÖ®ºó´«Èë¡£
+æ³¨æ„: æ¯ä¸€é¡¹å‡ä¸ºå‡½æ•°ï¼Œéƒ¨åˆ†é¡¹æœ‰å‚æ•°ï¼Œæ²¡æœ‰å‚æ•°çš„å‡½æ•°æ— éœ€è°ƒç”¨å‡½æ•°ï¼Œç›´æ¥ä¼ å…¥å³å¯ï¼Œæœ‰å‚æ•°çš„å‡½æ•°è¯·è°ƒç”¨ç»“æœä¹‹åä¼ å…¥ã€‚
 
-- ILLEGAL(): Î¥·¨Î¥½û
-- PRON(): É«Çé
-- VULGAR(): µÍË×
-- GAMBLED_SCAMS(): ¶Ä²©Õ©Æ­
-- VIOLENT(): ÑªĞÈ±©Á¦
-- PERSONAL_ATTACK(): ÈËÉí¹¥»÷
-- PLAGIARISM(bvid: str): ÓëÕ¾ÄÚÆäËûÊÓÆµ×²³µ
-- BAD_FOR_YOUNGS(): ÇàÉÙÄê²»Á¼ĞÅÏ¢
-- CLICKBAIT(): ²»Á¼·âÃæ/±êÌâ
-- POLITICAL_RUMORS(): ÉæÕşÒ¥ÑÔ
-- SOCIAL_RUMORS(): ÉæÉç»áÊÂ¼şÒ¥ÑÔ
-- UNREAL_EVENT(): Ğé¼Ù²»ÊµÏûÏ¢
-- OTHER(): ÓĞÆäËûÎÊÌâ
-- LEAD_WAR(): ÒıÕ½
-- CANNOT_CHARGE(): ²»ÄÜ²Î¼Ó³äµç
-- UNREAL_COPYRIGHT(source: str): ×ªÔØ/×ÔÖÆÀàĞÍ´íÎó
-- ILLEGAL_POPULARIZE(): Î¥¹æÍÆ¹ã
-- ILLEGAL_OTHER(): ÆäËû²»¹æ·¶ĞĞÎª
-- DANGEROUS(): Î£ÏÕĞĞÎª
-- OTHER_NEW(): ÆäËû
-- COOPERATE_INFRINGEMENT(): ÆóÒµÉÌÓşÇÖÈ¨
-- INFRINGEMENT(): ÇÖÈ¨ÉêËß
-- VIDEO_INFRINGEMENT(): µÁ°á¸å¼ş-Â·ÈË¾Ù±¨
-- DISCOMFORT(): ¹Û¸Ğ²»ÊÊ
-- ILLEGAL_URL(): Î¥·¨ĞÅÏ¢ÍâÁ´
+- ILLEGAL(): è¿æ³•è¿ç¦
+- PRON(): è‰²æƒ…
+- VULGAR(): ä½ä¿—
+- GAMBLED_SCAMS(): èµŒåšè¯ˆéª—
+- VIOLENT(): è¡€è…¥æš´åŠ›
+- PERSONAL_ATTACK(): äººèº«æ”»å‡»
+- PLAGIARISM(bvid: str): ä¸ç«™å†…å…¶ä»–è§†é¢‘æ’è½¦
+- BAD_FOR_YOUNGS(): é’å°‘å¹´ä¸è‰¯ä¿¡æ¯
+- CLICKBAIT(): ä¸è‰¯å°é¢/æ ‡é¢˜
+- POLITICAL_RUMORS(): æ¶‰æ”¿è°£è¨€
+- SOCIAL_RUMORS(): æ¶‰ç¤¾ä¼šäº‹ä»¶è°£è¨€
+- UNREAL_EVENT(): è™šå‡ä¸å®æ¶ˆæ¯
+- OTHER(): æœ‰å…¶ä»–é—®é¢˜
+- LEAD_WAR(): å¼•æˆ˜
+- CANNOT_CHARGE(): ä¸èƒ½å‚åŠ å……ç”µ
+- UNREAL_COPYRIGHT(source: str): è½¬è½½/è‡ªåˆ¶ç±»å‹é”™è¯¯
+- ILLEGAL_POPULARIZE(): è¿è§„æ¨å¹¿
+- ILLEGAL_OTHER(): å…¶ä»–ä¸è§„èŒƒè¡Œä¸º
+- DANGEROUS(): å±é™©è¡Œä¸º
+- OTHER_NEW(): å…¶ä»–
+- COOPERATE_INFRINGEMENT(): ä¼ä¸šå•†èª‰ä¾µæƒ
+- INFRINGEMENT(): ä¾µæƒç”³è¯‰
+- VIDEO_INFRINGEMENT(): ç›—æ¬ç¨¿ä»¶-è·¯äººä¸¾æŠ¥
+- DISCOMFORT(): è§‚æ„Ÿä¸é€‚
+- ILLEGAL_URL(): è¿æ³•ä¿¡æ¯å¤–é“¾
 
 
 
 
 ### def COOPERATE_INFRINGEMENT()
 
-ÆóÒµÉÌÓşÇÖÈ¨
+ä¼ä¸šå•†èª‰ä¾µæƒ
 
 
 
@@ -1002,7 +1002,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def DANGEROUS()
 
-Î£ÏÕĞĞÎª
+å±é™©è¡Œä¸º
 
 
 
@@ -1010,7 +1010,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def DISCOMFORT()
 
-¹Û¸Ğ²»ÊÊ
+è§‚æ„Ÿä¸é€‚
 
 
 
@@ -1018,7 +1018,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def ILLEGAL_OTHER()
 
-ÆäËû²»¹æ·¶ĞĞÎª
+å…¶ä»–ä¸è§„èŒƒè¡Œä¸º
 
 
 
@@ -1026,7 +1026,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def ILLEGAL_POPULARIZE()
 
-Î¥¹æÍÆ¹ã
+è¿è§„æ¨å¹¿
 
 
 
@@ -1034,7 +1034,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def ILLEGAL_URL()
 
-Î¥·¨ĞÅÏ¢ÍâÁ´
+è¿æ³•ä¿¡æ¯å¤–é“¾
 
 
 
@@ -1042,7 +1042,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def INFRINGEMENT()
 
-ÇÖÈ¨ÉêËß
+ä¾µæƒç”³è¯‰
 
 
 
@@ -1050,7 +1050,7 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def OTHER_NEW()
 
-ÆäËû
+å…¶ä»–
 
 
 
@@ -1060,12 +1060,12 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def PLAGIARISM()
 
-ÓëÕ¾ÄÚÆäËûÊÓÆµ×²³µ
+ä¸ç«™å†…å…¶ä»–è§†é¢‘æ’è½¦
 
 
 | name | type | description |
 | - | - | - |
-| `bvid` | `str` | ×²³µ¶ÔÏó |
+| `bvid` | `str` | æ’è½¦å¯¹è±¡ |
 
 
 
@@ -1074,19 +1074,19 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ### def UNREAL_COPYRIGHT()
 
-×ªÔØ/×ÔÖÆÀàĞÍ´íÎó
+è½¬è½½/è‡ªåˆ¶ç±»å‹é”™è¯¯
 
 
 | name | type | description |
 | - | - | - |
-| `source` | `str` | Ô­´´ÊÓÆµ³ö´¦ |
+| `source` | `str` | åŸåˆ›è§†é¢‘å‡ºå¤„ |
 
 
 
 
 ### def VIDEO_INFRINGEMENT()
 
-µÁ°á¸å¼ş-Â·ÈË¾Ù±¨
+ç›—æ¬ç¨¿ä»¶-è·¯äººä¸¾æŠ¥
 
 
 
@@ -1098,12 +1098,12 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 **Extend: enum.Enum**
 
-ÊÓÆµµÄÊÓÆµÁ÷±àÂëÃ¶¾Ù
+è§†é¢‘çš„è§†é¢‘æµç¼–ç æšä¸¾
 
 - HEV: HEVC(H.265)
 - AVC: AVC(H.264)
 - AV1: AV1
-- UNKNOWN: Î´Öª
+- UNKNOWN: æœªçŸ¥
 
 
 
@@ -1112,16 +1112,16 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 ## class VideoDownloadURLDataDetecter()
 
-`Video.get_download_url` ·µ»Ø½á¹û½âÎöÀà¡£
+`Video.get_download_url` è¿”å›ç»“æœè§£æç±»ã€‚
 
-ÔÚµ÷ÓÃ `Video.get_download_url` Ö®ºó¿ÉÒÔ½«´úÈë `VideoDownloadURLDataDetecter`£¬´ËÀà½«Ò»¼ü½âÎö¡£
+åœ¨è°ƒç”¨ `Video.get_download_url` ä¹‹åå¯ä»¥å°†ä»£å…¥ `VideoDownloadURLDataDetecter`ï¼Œæ­¤ç±»å°†ä¸€é”®è§£æã€‚
 
-Ä¿Ç°Ö§³Ö:
-  - ÊÓÆµÇåÎú¶È: 360P, 480P, 720P, 1080P, 1080P ¸ßÂëÂÊ, 1080P 60 Ö¡, 4K, HDR, ¶Å±ÈÊÓ½ç, 8K
-  - ÊÓÆµ±àÂë: HEVC(H.265), AVC(H.264), AV1
-  - ÒôÆµÇåÎú¶È: 64K, 132K, Hi-Res ÎŞËğÒôĞ§, ¶Å±ÈÈ«¾°Éù, 192K
-  - FLV ÊÓÆµÁ÷
-  - ·¬¾ç/¿Î³ÌÊÔ¿´ÊÓÆµÁ÷
+ç›®å‰æ”¯æŒ:
+  - è§†é¢‘æ¸…æ™°åº¦: 360P, 480P, 720P, 1080P, 1080P é«˜ç ç‡, 1080P 60 å¸§, 4K, HDR, æœæ¯”è§†ç•Œ, 8K
+  - è§†é¢‘ç¼–ç : HEVC(H.265), AVC(H.264), AV1
+  - éŸ³é¢‘æ¸…æ™°åº¦: 64K, 132K, Hi-Res æ— æŸéŸ³æ•ˆ, æœæ¯”å…¨æ™¯å£°, 192K
+  - FLV è§†é¢‘æµ
+  - ç•ªå‰§/è¯¾ç¨‹è¯•çœ‹è§†é¢‘æµ
 
 
 
@@ -1131,91 +1131,91 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 | name | type | description |
 | - | - | - |
-| `data` | `Dict` | `Video.get_download_url` ·µ»ØµÄ½á¹û |
+| `data` | `Dict` | `Video.get_download_url` è¿”å›çš„ç»“æœ |
 
 
 ### def check_flv_mp4_stream()
 
-ÅĞ¶ÏÊÇ·ñÎª FLV / MP4 Á÷
+åˆ¤æ–­æ˜¯å¦ä¸º FLV / MP4 æµ
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÎª FLV / MP4 Á÷
+**Returns:** `bool`:  æ˜¯å¦ä¸º FLV / MP4 æµ
 
 
 
 
 ### def check_video_and_audio_stream()
 
-ÅĞ¶ÏÊÇ·ñÎª DASH £¨ÒôÊÓÆµ·ÖÀë£©
+åˆ¤æ–­æ˜¯å¦ä¸º DASH ï¼ˆéŸ³è§†é¢‘åˆ†ç¦»ï¼‰
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÎª DASH
+**Returns:** `bool`:  æ˜¯å¦ä¸º DASH
 
 
 
 
 ### def detect()
 
-½âÎöÊı¾İ
+è§£ææ•°æ®
 
 
 | name | type | description |
 | - | - | - |
-| `video_max_quality` | `VideoQuality, optional` | ÉèÖÃÌáÈ¡µÄÊÓÆµÁ÷ÇåÎú¶È×î´óÖµ£¬ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ HDR/¶Å±È. Defaults to VideoQuality._8K. |
-| `audio_max_quality` | `AudioQuality, optional` | ÉèÖÃÌáÈ¡µÄÒôÆµÁ÷ÇåÎú¶È×î´óÖµ. ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ Hi-Res/¶Å±È. Defaults to AudioQuality._192K. |
-| `video_min_quality` | `VideoQuality, optional` | ÉèÖÃÌáÈ¡µÄÊÓÆµÁ÷ÇåÎú¶È×îĞ¡Öµ£¬ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ HDR/¶Å±È. Defaults to VideoQuality._360P. |
-| `audio_min_quality` | `AudioQuality, optional` | ÉèÖÃÌáÈ¡µÄÒôÆµÁ÷ÇåÎú¶È×îĞ¡Öµ. ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ Hi-Res/¶Å±È. Defaults to AudioQuality._64K. |
-| `video_accepted_qualities` | `List[VideoQuality], optional` | ÉèÖÃÔÊĞíµÄËùÓĞÊÓÆµÁ÷ÇåÎú¶È. Defaults to ALL. |
-| `audio_accepted_qualities` | `List[AudioQuality], optional` | ÉèÖÃÔÊĞíµÄËùÓĞÒôÆµÇåÎú¶È. Defaults to ALL. |
-| `codecs` | `List[VideoCodecs], optional` | ÉèÖÃËùÓĞÔÊĞíÌáÈ¡³öÀ´µÄÊÓÆµ±àÂë. ´ËÏî²»»áºöÂÔ HDR/¶Å±È. Defaults to ALL codecs. |
-| `no_dolby_video` | `bool, optional` | ÊÇ·ñ½ûÖ¹ÌáÈ¡¶Å±ÈÊÓ½çÊÓÆµÁ÷. Defaults to False. |
-| `no_dolby_audio` | `bool, optional` | ÊÇ·ñ½ûÖ¹ÌáÈ¡¶Å±ÈÈ«¾°ÉùÒôÆµÁ÷. Defaults to False. |
-| `no_hdr` | `bool, optional` | ÊÇ·ñ½ûÖ¹ÌáÈ¡ HDR ÊÓÆµÁ÷. Defaults to False. |
-| `no_hires` | `bool, optional` | ÊÇ·ñ½ûÖ¹ÌáÈ¡ Hi-Res ÒôÆµÁ÷. Defaults to False. |
+| `video_max_quality` | `VideoQuality, optional` | è®¾ç½®æå–çš„è§†é¢‘æµæ¸…æ™°åº¦æœ€å¤§å€¼ï¼Œè®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ HDR/æœæ¯”. Defaults to VideoQuality._8K. |
+| `audio_max_quality` | `AudioQuality, optional` | è®¾ç½®æå–çš„éŸ³é¢‘æµæ¸…æ™°åº¦æœ€å¤§å€¼. è®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ Hi-Res/æœæ¯”. Defaults to AudioQuality._192K. |
+| `video_min_quality` | `VideoQuality, optional` | è®¾ç½®æå–çš„è§†é¢‘æµæ¸…æ™°åº¦æœ€å°å€¼ï¼Œè®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ HDR/æœæ¯”. Defaults to VideoQuality._360P. |
+| `audio_min_quality` | `AudioQuality, optional` | è®¾ç½®æå–çš„éŸ³é¢‘æµæ¸…æ™°åº¦æœ€å°å€¼. è®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ Hi-Res/æœæ¯”. Defaults to AudioQuality._64K. |
+| `video_accepted_qualities` | `List[VideoQuality], optional` | è®¾ç½®å…è®¸çš„æ‰€æœ‰è§†é¢‘æµæ¸…æ™°åº¦. Defaults to ALL. |
+| `audio_accepted_qualities` | `List[AudioQuality], optional` | è®¾ç½®å…è®¸çš„æ‰€æœ‰éŸ³é¢‘æ¸…æ™°åº¦. Defaults to ALL. |
+| `codecs` | `List[VideoCodecs], optional` | è®¾ç½®æ‰€æœ‰å…è®¸æå–å‡ºæ¥çš„è§†é¢‘ç¼–ç . æ­¤é¡¹ä¸ä¼šå¿½ç•¥ HDR/æœæ¯”. Defaults to ALL codecs. |
+| `no_dolby_video` | `bool, optional` | æ˜¯å¦ç¦æ­¢æå–æœæ¯”è§†ç•Œè§†é¢‘æµ. Defaults to False. |
+| `no_dolby_audio` | `bool, optional` | æ˜¯å¦ç¦æ­¢æå–æœæ¯”å…¨æ™¯å£°éŸ³é¢‘æµ. Defaults to False. |
+| `no_hdr` | `bool, optional` | æ˜¯å¦ç¦æ­¢æå– HDR è§†é¢‘æµ. Defaults to False. |
+| `no_hires` | `bool, optional` | æ˜¯å¦ç¦æ­¢æå– Hi-Res éŸ³é¢‘æµ. Defaults to False. |
 
-**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]`:  ÌáÈ¡³öÀ´µÄÊÓÆµ/ÒôÆµÁ÷
+**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]`:  æå–å‡ºæ¥çš„è§†é¢‘/éŸ³é¢‘æµ
 
 
-**²ÎÊı½öÄÜÔÚÒôÊÓÆµÁ÷·ÖÀëµÄÇé¿öÏÂ²úÉú×÷ÓÃ£¬flv / mp4 Á÷ÏÂÒÔÏÂ²ÎÊı¾ùÃ»ÓĞ×÷ÓÃ**
+**å‚æ•°ä»…èƒ½åœ¨éŸ³è§†é¢‘æµåˆ†ç¦»çš„æƒ…å†µä¸‹äº§ç”Ÿä½œç”¨ï¼Œflv / mp4 æµä¸‹ä»¥ä¸‹å‚æ•°å‡æ²¡æœ‰ä½œç”¨**
 
 
 
 ### def detect_all()
 
-½âÎö²¢·µ»ØËùÓĞÊı¾İ
+è§£æå¹¶è¿”å›æ‰€æœ‰æ•°æ®
 
 
 
-**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]`:  ËùÓĞµÄÊÓÆµ/ÒôÆµÁ÷
+**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | EpisodeTryMP4DownloadURL]`:  æ‰€æœ‰çš„è§†é¢‘/éŸ³é¢‘æµ
 
 
 
 
 ### def detect_best_streams()
 
-ÌáÈ¡³ö·Ö±æÂÊ¡¢ÒôÖÊµÈĞÅÏ¢×îºÃµÄÒôÊÓÆµÁ÷¡£
+æå–å‡ºåˆ†è¾¨ç‡ã€éŸ³è´¨ç­‰ä¿¡æ¯æœ€å¥½çš„éŸ³è§†é¢‘æµã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `video_max_quality` | `VideoQuality` | ÉèÖÃÌáÈ¡µÄÊÓÆµÁ÷ÇåÎú¶È×î´óÖµ£¬ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ HDR/¶Å±È. Defaults to VideoQuality._8K. |
-| `audio_max_quality` | `AudioQuality` | ÉèÖÃÌáÈ¡µÄÒôÆµÁ÷ÇåÎú¶È×î´óÖµ. ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ Hi-Res/¶Å±È. Defaults to AudioQuality._192K. |
-| `video_min_quality` | `VideoQuality, optional` | ÉèÖÃÌáÈ¡µÄÊÓÆµÁ÷ÇåÎú¶È×îĞ¡Öµ£¬ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ HDR/¶Å±È. Defaults to VideoQuality._360P. |
-| `audio_min_quality` | `AudioQuality, optional` | ÉèÖÃÌáÈ¡µÄÒôÆµÁ÷ÇåÎú¶È×îĞ¡Öµ. ÉèÖÃ´Ë²ÎÊı¾ø¶Ô²»»á½ûÖ¹ Hi-Res/¶Å±È. Defaults to AudioQuality._64K. |
-| `video_accepted_qualities` | `List[VideoQuality], optional` | ÉèÖÃÔÊĞíµÄËùÓĞÊÓÆµÁ÷ÇåÎú¶È. Defaults to ALL. |
-| `audio_accepted_qualities` | `List[AudioQuality], optional` | ÉèÖÃÔÊĞíµÄËùÓĞÒôÆµÇåÎú¶È. Defaults to ALL. |
-| `codecs` | `List[VideoCodecs]` | ÉèÖÃËùÓĞÔÊĞíÌáÈ¡³öÀ´µÄÊÓÆµ±àÂë. ÔÚÊı×éÖĞÔ½¿¿Ç°µÄ±àÂëÑ¡ÔñÓÅÏÈ¼¶Ô½¸ß. ´ËÏî²»»áºöÂÔ HDR/¶Å±È. Defaults to [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV]. |
-| `no_dolby_video` | `bool` | ÊÇ·ñ½ûÖ¹ÌáÈ¡¶Å±ÈÊÓ½çÊÓÆµÁ÷. Defaults to False. |
-| `no_dolby_audio` | `bool` | ÊÇ·ñ½ûÖ¹ÌáÈ¡¶Å±ÈÈ«¾°ÉùÒôÆµÁ÷. Defaults to False. |
-| `no_hdr` | `bool` | ÊÇ·ñ½ûÖ¹ÌáÈ¡ HDR ÊÓÆµÁ÷. Defaults to False. |
-| `no_hires` | `bool` | ÊÇ·ñ½ûÖ¹ÌáÈ¡ Hi-Res ÒôÆµÁ÷. Defaults to False. |
+| `video_max_quality` | `VideoQuality` | è®¾ç½®æå–çš„è§†é¢‘æµæ¸…æ™°åº¦æœ€å¤§å€¼ï¼Œè®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ HDR/æœæ¯”. Defaults to VideoQuality._8K. |
+| `audio_max_quality` | `AudioQuality` | è®¾ç½®æå–çš„éŸ³é¢‘æµæ¸…æ™°åº¦æœ€å¤§å€¼. è®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ Hi-Res/æœæ¯”. Defaults to AudioQuality._192K. |
+| `video_min_quality` | `VideoQuality, optional` | è®¾ç½®æå–çš„è§†é¢‘æµæ¸…æ™°åº¦æœ€å°å€¼ï¼Œè®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ HDR/æœæ¯”. Defaults to VideoQuality._360P. |
+| `audio_min_quality` | `AudioQuality, optional` | è®¾ç½®æå–çš„éŸ³é¢‘æµæ¸…æ™°åº¦æœ€å°å€¼. è®¾ç½®æ­¤å‚æ•°ç»å¯¹ä¸ä¼šç¦æ­¢ Hi-Res/æœæ¯”. Defaults to AudioQuality._64K. |
+| `video_accepted_qualities` | `List[VideoQuality], optional` | è®¾ç½®å…è®¸çš„æ‰€æœ‰è§†é¢‘æµæ¸…æ™°åº¦. Defaults to ALL. |
+| `audio_accepted_qualities` | `List[AudioQuality], optional` | è®¾ç½®å…è®¸çš„æ‰€æœ‰éŸ³é¢‘æ¸…æ™°åº¦. Defaults to ALL. |
+| `codecs` | `List[VideoCodecs]` | è®¾ç½®æ‰€æœ‰å…è®¸æå–å‡ºæ¥çš„è§†é¢‘ç¼–ç . åœ¨æ•°ç»„ä¸­è¶Šé å‰çš„ç¼–ç é€‰æ‹©ä¼˜å…ˆçº§è¶Šé«˜. æ­¤é¡¹ä¸ä¼šå¿½ç•¥ HDR/æœæ¯”. Defaults to [VideoCodecs.AV1, VideoCodecs.AVC, VideoCodecs.HEV]. |
+| `no_dolby_video` | `bool` | æ˜¯å¦ç¦æ­¢æå–æœæ¯”è§†ç•Œè§†é¢‘æµ. Defaults to False. |
+| `no_dolby_audio` | `bool` | æ˜¯å¦ç¦æ­¢æå–æœæ¯”å…¨æ™¯å£°éŸ³é¢‘æµ. Defaults to False. |
+| `no_hdr` | `bool` | æ˜¯å¦ç¦æ­¢æå– HDR è§†é¢‘æµ. Defaults to False. |
+| `no_hires` | `bool` | æ˜¯å¦ç¦æ­¢æå– Hi-Res éŸ³é¢‘æµ. Defaults to False. |
 
-**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | None]`:  FLV ÊÓÆµÁ÷ / HTML5 MP4 ÊÓÆµÁ÷ / ·¬¾ç»ò¿Î³ÌÊÔ¿´ MP4 ÊÓÆµÁ÷·µ»Ø `[FLVStreamDownloadURL | HTML5MP4StreamDownloadURL | EpisodeTryMP4DownloadURL]`, ·ñÔòÎª `[VideoStreamDownloadURL, AudioStreamDownloadURL]`, Èç¹ûÎ´Æ¥ÅäÉÏÈÎºÎºÏÊÊµÄÁ÷Ôò¶ÔÓ¦µÄÎ»ÖÃÎ» `None`
+**Returns:** `List[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | HTML5MP4DownloadURL | None]`:  FLV è§†é¢‘æµ / HTML5 MP4 è§†é¢‘æµ / ç•ªå‰§æˆ–è¯¾ç¨‹è¯•çœ‹ MP4 è§†é¢‘æµè¿”å› `[FLVStreamDownloadURL | HTML5MP4StreamDownloadURL | EpisodeTryMP4DownloadURL]`, å¦åˆ™ä¸º `[VideoStreamDownloadURL, AudioStreamDownloadURL]`, å¦‚æœæœªåŒ¹é…ä¸Šä»»ä½•åˆé€‚çš„æµåˆ™å¯¹åº”çš„ä½ç½®ä½ `None`
 
 
-**ÒÔÉÏ²ÎÊı½öÄÜÔÚÒôÊÓÆµÁ÷·ÖÀëµÄÇé¿öÏÂ²úÉú×÷ÓÃ£¬flv / mp4 ÊÔ¿´Á÷ / html5 mp4 Á÷ÏÂÒÔÏÂ²ÎÊı¾ùÃ»ÓĞ×÷ÓÃ**
+**ä»¥ä¸Šå‚æ•°ä»…èƒ½åœ¨éŸ³è§†é¢‘æµåˆ†ç¦»çš„æƒ…å†µä¸‹äº§ç”Ÿä½œç”¨ï¼Œflv / mp4 è¯•çœ‹æµ / html5 mp4 æµä¸‹ä»¥ä¸‹å‚æ•°å‡æ²¡æœ‰ä½œç”¨**
 
 
 
@@ -1225,23 +1225,23 @@ page_index ºÍ cid ÖÁÉÙÌá¹©ÆäÖĞÒ»¸ö£¬ÆäÖĞ cid ÓÅÏÈ¼¶×î¸ß
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-ÊÓÆµÔÚÏßÈËÊıÊµÊ±¼à²â¡£
+è§†é¢‘åœ¨çº¿äººæ•°å®æ—¶ç›‘æµ‹ã€‚
 
-Ê¾Àı´úÂë£º
+ç¤ºä¾‹ä»£ç ï¼š
 
 ```python
 import asyncio
 from bilibili_api import video
 
-# ÊµÀı»¯
+# å®ä¾‹åŒ–
 r = video.VideoOnlineMonitor("BV1Bf4y1Q7QP")
 
-# ×°ÊÎÆ÷·½·¨×¢²áÊÂ¼ş¼àÌıÆ÷
+# è£…é¥°å™¨æ–¹æ³•æ³¨å†Œäº‹ä»¶ç›‘å¬å™¨
 @r.on("ONLINE")
 async def handler(data):
 print(data)
 
-# º¯Êı·½·¨×¢²áÊÂ¼ş¼àÌıÆ÷
+# å‡½æ•°æ–¹æ³•æ³¨å†Œäº‹ä»¶ç›‘å¬å™¨
 async def handler2(data):
 print(data)
 
@@ -1255,11 +1255,11 @@ Extends: AsyncEvent
 Logger: VideoOnlineMonitor().logger
 
 Events:
-ONLINE£ºÔÚÏßÈËÊı¸üĞÂ¡£  CallbackData: dict¡£
-DANMAKU£º   ÊÕµ½ÊµÊ±µ¯Ä»¡£  CallbackData: Danmaku¡£
-DISCONNECTED£º  Õı³£¶Ï¿ªÁ¬½Ó¡£  CallbackData: None¡£
-ERROR:  ·¢Éú´íÎó¡£ CallbackData: None¡£
-CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
+ONLINEï¼šåœ¨çº¿äººæ•°æ›´æ–°ã€‚  CallbackData: dictã€‚
+DANMAKUï¼š   æ”¶åˆ°å®æ—¶å¼¹å¹•ã€‚  CallbackData: Danmakuã€‚
+DISCONNECTEDï¼š  æ­£å¸¸æ–­å¼€è¿æ¥ã€‚  CallbackData: Noneã€‚
+ERROR:  å‘ç”Ÿé”™è¯¯ã€‚ CallbackData: Noneã€‚
+CONNECTED:  æˆåŠŸè¿æ¥ã€‚ CallbackData: Noneã€‚
 
 
 
@@ -1271,14 +1271,14 @@ CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
 | - | - | - |
 | `bvid` | `str \| None, optional` | BVID. Defaults to None. |
 | `aid` | `int \| None, optional` | AID. Defaults to None. |
-| `page_index` | `int, optional` | ·Ö P ĞòºÅ. Defaults to 0. |
-| `credential` | `Credential \| None, optional` | Credential Àà. Defaults to None. |
-| `debug` | `bool, optional` | µ÷ÊÔÄ£Ê½£¬½«Êä³ö¸üÏêÏ¸ĞÅÏ¢. Defaults to False. |
+| `page_index` | `int, optional` | åˆ† P åºå·. Defaults to 0. |
+| `credential` | `Credential \| None, optional` | Credential ç±». Defaults to None. |
+| `debug` | `bool, optional` | è°ƒè¯•æ¨¡å¼ï¼Œå°†è¾“å‡ºæ›´è¯¦ç»†ä¿¡æ¯. Defaults to False. |
 
 
 ### async def connect()
 
-Á¬½Ó·şÎñÆ÷
+è¿æ¥æœåŠ¡å™¨
 
 
 
@@ -1287,7 +1287,7 @@ CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
 
 ### async def disconnect()
 
-¶Ï¿ª·şÎñÆ÷
+æ–­å¼€æœåŠ¡å™¨
 
 
 
@@ -1300,19 +1300,19 @@ CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
 
 **Extend: enum.Enum**
 
-ÊÓÆµµÄÊÓÆµÁ÷·Ö±æÂÊÃ¶¾Ù
+è§†é¢‘çš„è§†é¢‘æµåˆ†è¾¨ç‡æšä¸¾
 
-- _360P: Á÷³© 360P
-- _480P: ÇåÎú 480P
-- _720P: ¸ßÇå 720P60
-- _1080P: ¸ßÇå 1080P
-- AI_REPAIR: ÖÇÄÜĞŞ¸´£¨ÈË¹¤ÖÇÄÜĞŞ¸´»­ÖÊ£©
-- _1080P_PLUS: ¸ßÇå 1080P ¸ßÂëÂÊ
-- _1080P_60: ¸ßÇå 1080P 60 Ö¡ÂëÂÊ
-- _4K: ³¬Çå 4K
-- HDR: Õæ²Ê HDR
-- DOLBY: ¶Å±ÈÊÓ½ç
-- _8K: ³¬¸ßÇå 8K
+- _360P: æµç•… 360P
+- _480P: æ¸…æ™° 480P
+- _720P: é«˜æ¸… 720P60
+- _1080P: é«˜æ¸… 1080P
+- AI_REPAIR: æ™ºèƒ½ä¿®å¤ï¼ˆäººå·¥æ™ºèƒ½ä¿®å¤ç”»è´¨ï¼‰
+- _1080P_PLUS: é«˜æ¸… 1080P é«˜ç ç‡
+- _1080P_60: é«˜æ¸… 1080P 60 å¸§ç ç‡
+- _4K: è¶…æ¸… 4K
+- HDR: çœŸå½© HDR
+- DOLBY: æœæ¯”è§†ç•Œ
+- _8K: è¶…é«˜æ¸… 8K
 
 
 
@@ -1325,21 +1325,21 @@ CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
 
 (@dataclass)
 
-ÊÓÆµÁ÷ URL Àà
+è§†é¢‘æµ URL ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `url` | `str` | ÊÓÆµÁ÷ url |
-| `video_quality` | `VideoQuality` | ÊÓÆµÁ÷ÇåÎú¶È |
-| `video_codecs` | `VideoCodecs` | ÊÓÆµÁ÷±àÂë |
-| `backup_url` | `List[str]` | ±¸ÓÃÁ´½Ó |
-| `bandwidth` | `int` | ÂëÂÊ |
-| `codecs` | `str` | ÊÓÆµÁ÷ÏêÏ¸±àÂë |
-| `frame_rate` | `float` | Ö¡ÂÊ |
-| `scale` | `Tuple[int, int]` | »­Ãæ³ß´ç |
-| `sar` | `Tuple[int, int]` | ²ÉÑù×İºá±È |
-| `mime_type` | `str` | MIME ÀàĞÍ |
+| `url` | `str` | è§†é¢‘æµ url |
+| `video_quality` | `VideoQuality` | è§†é¢‘æµæ¸…æ™°åº¦ |
+| `video_codecs` | `VideoCodecs` | è§†é¢‘æµç¼–ç  |
+| `backup_url` | `List[str]` | å¤‡ç”¨é“¾æ¥ |
+| `bandwidth` | `int` | ç ç‡ |
+| `codecs` | `str` | è§†é¢‘æµè¯¦ç»†ç¼–ç  |
+| `frame_rate` | `float` | å¸§ç‡ |
+| `scale` | `Tuple[int, int]` | ç”»é¢å°ºå¯¸ |
+| `sar` | `Tuple[int, int]` | é‡‡æ ·çºµæ¨ªæ¯” |
+| `mime_type` | `str` | MIME ç±»å‹ |
 | `segment_base_initialization` | `str` | SegmentBase.Initialization |
 | `segment_base_index_range` | `str` | SegmentBase.indexRange |
 
@@ -1348,11 +1348,11 @@ CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
 
 ## async def get_cid_info()
 
-»ñÈ¡ cid ĞÅÏ¢ (¶ÔÓ¦µÄÊÓÆµ£¬¾ßÌå·Ö P ĞòºÅ£¬up µÈ)
+è·å– cid ä¿¡æ¯ (å¯¹åº”çš„è§†é¢‘ï¼Œå…·ä½“åˆ† P åºå·ï¼Œup ç­‰)
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ https//hd.biliplus.com µÄ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ https//hd.biliplus.com çš„ API è¿”å›çš„ç»“æœ
 
 
 
@@ -1361,11 +1361,11 @@ CONNECTED:  ³É¹¦Á¬½Ó¡£ CallbackData: None¡£
 
 ## def get_client()
 
-ÔÚµ±Ç°ÊÂ¼şÑ­»·ÏÂ»ñÈ¡Ä£¿éÕıÔÚÊ¹ÓÃµÄÇëÇó¿Í»§¶Ë
+åœ¨å½“å‰äº‹ä»¶å¾ªç¯ä¸‹è·å–æ¨¡å—æ­£åœ¨ä½¿ç”¨çš„è¯·æ±‚å®¢æˆ·ç«¯
 
 
 
-**Returns:** `BiliAPIClient`:  ÇëÇó¿Í»§¶Ë
+**Returns:** `BiliAPIClient`:  è¯·æ±‚å®¢æˆ·ç«¯
 
 
 

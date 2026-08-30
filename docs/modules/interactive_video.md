@@ -3,7 +3,7 @@
 
 bilibili_api.interactive_video
 
-»¥¶¯ÊÓÆµÏà¹Ø²Ù×÷
+äº’åŠ¨è§†é¢‘ç›¸å…³æ“ä½œ
 
 
 ``` python
@@ -75,7 +75,7 @@ from bilibili_api import interactive_video
 
 ## class InteractiveButton()
 
-»¥¶¯ÊÓÆµ½Úµã°´Å¥Àà
+äº’åŠ¨è§†é¢‘èŠ‚ç‚¹æŒ‰é’®ç±»
 
 
 
@@ -85,41 +85,41 @@ from bilibili_api import interactive_video
 
 | name | type | description |
 | - | - | - |
-| `text` | `str` | ÎÄ×Ö |
-| `x` | `int` | x Öá |
-| `y` | `int` | y Öá |
-| `align` | `InteractiveButtonAlign \| int` | °´Å¥µÄÎÄ×ÖÔÚ°´Å¥ÖĞµÄÎ»ÖÃ |
+| `text` | `str` | æ–‡å­— |
+| `x` | `int` | x è½´ |
+| `y` | `int` | y è½´ |
+| `align` | `InteractiveButtonAlign \| int` | æŒ‰é’®çš„æ–‡å­—åœ¨æŒ‰é’®ä¸­çš„ä½ç½® |
 
 
 ### def get_align()
 
-»ñÈ¡°´Å¥ÎÄ×Ö²¼¾Ö
+è·å–æŒ‰é’®æ–‡å­—å¸ƒå±€
 
 
 
-**Returns:** `int`:  °´Å¥ÎÄ×Ö²¼¾Ö
+**Returns:** `int`:  æŒ‰é’®æ–‡å­—å¸ƒå±€
 
 
 
 
 ### def get_pos()
 
-»ñÈ¡°´Å¥Î»ÖÃ
+è·å–æŒ‰é’®ä½ç½®
 
 
 
-**Returns:** `Tuple[int, int]`:  °´Å¥Î»ÖÃ
+**Returns:** `Tuple[int, int]`:  æŒ‰é’®ä½ç½®
 
 
 
 
 ### def get_text()
 
-»ñÈ¡°´Å¥ÎÄ×Ö
+è·å–æŒ‰é’®æ–‡å­—
 
 
 
-**Returns:** `str`:  °´Å¥ÎÄ×Ö
+**Returns:** `str`:  æŒ‰é’®æ–‡å­—
 
 
 
@@ -130,7 +130,7 @@ from bilibili_api import interactive_video
 
 **Extend: enum.Enum**
 
-°´Å¥µÄÎÄ×ÖÔÚ°´Å¥ÖĞµÄÎ»ÖÃ
+æŒ‰é’®çš„æ–‡å­—åœ¨æŒ‰é’®ä¸­çš„ä½ç½®
 
 
 ``` text
@@ -160,7 +160,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ## class InteractiveGraph()
 
-Çé½ÚÊ÷Àà
+æƒ…èŠ‚æ ‘ç±»
 
 
 
@@ -170,51 +170,51 @@ o----|xxx| (TEXT_RIGHT)
 
 | name | type | description |
 | - | - | - |
-| `video` | `InteractiveVideo` | »¥¶¯ÊÓÆµÀà |
-| `skin` | `Dict` | ÑùÊ½ |
-| `root_cid` | `int` | ¸ù½Úµã CID |
+| `video` | `InteractiveVideo` | äº’åŠ¨è§†é¢‘ç±» |
+| `skin` | `Dict` | æ ·å¼ |
+| `root_cid` | `int` | æ ¹èŠ‚ç‚¹ CID |
 
 
 ### async def get_children()
 
-»ñÈ¡×Ó½Úµã
+è·å–å­èŠ‚ç‚¹
 
 
 
-**Returns:** `List[InteractiveNode]`:  ×Ó½Úµã
+**Returns:** `List[InteractiveNode]`:  å­èŠ‚ç‚¹
 
 
 
 
 ### async def get_root_node()
 
-»ñÈ¡¸ù½Úµã
+è·å–æ ¹èŠ‚ç‚¹
 
 
 
-**Returns:** `InteractiveNode`:  ¸ù½Úµã
+**Returns:** `InteractiveNode`:  æ ¹èŠ‚ç‚¹
 
 
 
 
 ### def get_skin()
 
-»ñÈ¡°´Å¥ÑùÊ½
+è·å–æŒ‰é’®æ ·å¼
 
 
 
-**Returns:** `dict`:  °´Å¥ÑùÊ½
+**Returns:** `dict`:  æŒ‰é’®æ ·å¼
 
 
 
 
 ### def get_video()
 
-»ñÈ¡ÊÓÆµ
+è·å–è§†é¢‘
 
 
 
-**Returns:** `InteractiveVideo`:  ÊÓÆµ
+**Returns:** `InteractiveVideo`:  è§†é¢‘
 
 
 
@@ -223,7 +223,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ## class InteractiveJumpingCommand()
 
-½ÚµãÌø×ª¶Ô±äÁ¿µÄ²Ù×÷
+èŠ‚ç‚¹è·³è½¬å¯¹å˜é‡çš„æ“ä½œ
 
 
 
@@ -233,39 +233,39 @@ o----|xxx| (TEXT_RIGHT)
 
 | name | type | description |
 | - | - | - |
-| `var` | `List[InteractiveVariable] \| None` | ËùÓĞ±äÁ¿. Defaults to None£¨µÈ¼ÛÓÚ []£©¡£ |
-| `command` | `str` | ¹«Ê½ |
+| `var` | `List[InteractiveVariable] \| None` | æ‰€æœ‰å˜é‡. Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰ã€‚ |
+| `command` | `str` | å…¬å¼ |
 
 
 ### def get_command()
 
-»ñÈ¡±í´ïÊ½
+è·å–è¡¨è¾¾å¼
 
 
 
-**Returns:** `str`:  ±í´ïÊ½
+**Returns:** `str`:  è¡¨è¾¾å¼
 
 
 
 
 ### def get_vars()
 
-»ñÈ¡¹«Ê½ÖĞµÄ±äÁ¿
+è·å–å…¬å¼ä¸­çš„å˜é‡
 
 
 
-**Returns:** `List[InteractiveVariable]`:  ±äÁ¿
+**Returns:** `List[InteractiveVariable]`:  å˜é‡
 
 
 
 
 ### def run_command()
 
-Ö´ĞĞ²Ù×÷
+æ‰§è¡Œæ“ä½œ
 
 
 
-**Returns:** `List[InteractiveVariable]`:  ËùÓĞ±äÁ¿µÄ×îÖÕÖµ
+**Returns:** `List[InteractiveVariable]`:  æ‰€æœ‰å˜é‡çš„æœ€ç»ˆå€¼
 
 
 
@@ -274,7 +274,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ## class InteractiveJumpingCondition()
 
-½ÚµãÌø×ªµÄ¹«Ê½£¬Ö»ÓĞ¹«Ê½³ÉÁ¢²Å»áÌø×ª
+èŠ‚ç‚¹è·³è½¬çš„å…¬å¼ï¼Œåªæœ‰å…¬å¼æˆç«‹æ‰ä¼šè·³è½¬
 
 
 
@@ -284,39 +284,39 @@ o----|xxx| (TEXT_RIGHT)
 
 | name | type | description |
 | - | - | - |
-| `var` | `List[InteractiveVariable] \| None` | ËùÓĞ±äÁ¿. Defaults to None£¨µÈ¼ÛÓÚ []£©¡£ |
-| `condition` | `str` | ¹«Ê½ |
+| `var` | `List[InteractiveVariable] \| None` | æ‰€æœ‰å˜é‡. Defaults to Noneï¼ˆç­‰ä»·äº []ï¼‰ã€‚ |
+| `condition` | `str` | å…¬å¼ |
 
 
 ### def get_condition()
 
-»ñÈ¡±í´ïÊ½
+è·å–è¡¨è¾¾å¼
 
 
 
-**Returns:** `str`:  ±í´ïÊ½
+**Returns:** `str`:  è¡¨è¾¾å¼
 
 
 
 
 ### def get_result()
 
-¼ÆËã¹«Ê½»ñµÃ½á¹û
+è®¡ç®—å…¬å¼è·å¾—ç»“æœ
 
 
 
-**Returns:** `bool`:  ÊÇ·ñ³ÉÁ¢
+**Returns:** `bool`:  æ˜¯å¦æˆç«‹
 
 
 
 
 ### def get_vars()
 
-»ñÈ¡¹«Ê½ÖĞµÄ±äÁ¿
+è·å–å…¬å¼ä¸­çš„å˜é‡
 
 
 
-**Returns:** `List[InteractiveVariable]`:  ±äÁ¿
+**Returns:** `List[InteractiveVariable]`:  å˜é‡
 
 
 
@@ -325,7 +325,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ## class InteractiveNode()
 
-»¥¶¯ÊÓÆµ½ÚµãÀà
+äº’åŠ¨è§†é¢‘èŠ‚ç‚¹ç±»
 
 
 
@@ -335,74 +335,74 @@ o----|xxx| (TEXT_RIGHT)
 
 | name | type | description |
 | - | - | - |
-| `video` | `InteractiveVideo` | ÊÓÆµÀà |
-| `node_id` | `int` | ½Úµã id |
+| `video` | `InteractiveVideo` | è§†é¢‘ç±» |
+| `node_id` | `int` | èŠ‚ç‚¹ id |
 | `cid` | `int` | CID |
-| `vars` | `List[InteractiveVariable]` | ±äÁ¿ |
-| `button` | `InteractiveButton` | ¶ÔÓ¦µÄ°´Å¥ |
-| `condition` | `InteractiveJumpingCondition \| None` | Ìø×ª¹«Ê½. Defaults to None£¨ĞÂ½¨¿Õ¹«Ê½£© |
-| `native_command` | `InteractiveJumpingCommand \| None` | Ìø×ªÊ±¶Ô±äÁ¿µÄ²Ù×÷. Defaults to None£¨ĞÂ½¨¿Õ²Ù×÷£© |
-| `is_default` | `bool` | ÊÇ²»ÊÇÄ¬ÈÏµÄÌø×ªµÄ½Úµã |
+| `vars` | `List[InteractiveVariable]` | å˜é‡ |
+| `button` | `InteractiveButton` | å¯¹åº”çš„æŒ‰é’® |
+| `condition` | `InteractiveJumpingCondition \| None` | è·³è½¬å…¬å¼. Defaults to Noneï¼ˆæ–°å»ºç©ºå…¬å¼ï¼‰ |
+| `native_command` | `InteractiveJumpingCommand \| None` | è·³è½¬æ—¶å¯¹å˜é‡çš„æ“ä½œ. Defaults to Noneï¼ˆæ–°å»ºç©ºæ“ä½œï¼‰ |
+| `is_default` | `bool` | æ˜¯ä¸æ˜¯é»˜è®¤çš„è·³è½¬çš„èŠ‚ç‚¹ |
 
 
 ### async def get_children()
 
-»ñÈ¡½ÚµãµÄËùÓĞ×Ó½Úµã
+è·å–èŠ‚ç‚¹çš„æ‰€æœ‰å­èŠ‚ç‚¹
 
 
 
-**Returns:** `List[InteractiveNode]`:  ËùÓĞ×Ó½Úµã
+**Returns:** `List[InteractiveNode]`:  æ‰€æœ‰å­èŠ‚ç‚¹
 
 
 
 
 ### def get_cid()
 
-»ñÈ¡½Úµã cid
+è·å–èŠ‚ç‚¹ cid
 
 
 
-**Returns:** `int`:  ½Úµã cid
+**Returns:** `int`:  èŠ‚ç‚¹ cid
 
 
 
 
 ### async def get_info()
 
-»ñÈ¡½ÚµãµÄ¼ò½é
+è·å–èŠ‚ç‚¹çš„ç®€ä»‹
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### def get_jumping_command()
 
-»ñÈ¡Ìø×ªÊ±Ö´ĞĞµÄÓï¾ä£¬ÒÑ×Ô¶¯Ö´ĞĞ£¬ÎŞĞèÊÖ¶¯µ÷ÓÃ
+è·å–è·³è½¬æ—¶æ‰§è¡Œçš„è¯­å¥ï¼Œå·²è‡ªåŠ¨æ‰§è¡Œï¼Œæ— éœ€æ‰‹åŠ¨è°ƒç”¨
 
 
 
-**Returns:** `InteractiveJumpingCommand`:  Ö´ĞĞµÄÓï¾ä
+**Returns:** `InteractiveJumpingCommand`:  æ‰§è¡Œçš„è¯­å¥
 
 
 
 
 ### def get_jumping_condition()
 
-»ñÈ¡Ìø×ªÌõ¼ş
+è·å–è·³è½¬æ¡ä»¶
 
 
 
-**Returns:** `InteractiveJumpingCondition`:  Ìø×ªÌõ¼ş
+**Returns:** `InteractiveJumpingCondition`:  è·³è½¬æ¡ä»¶
 
 
 
 
 ### async def get_jumping_type()
 
-»ñÈ¡×Ó½ÚµãÌø×ª·½Ê½ (²Î¿¼ InteractiveNodeJumpingType)
+è·å–å­èŠ‚ç‚¹è·³è½¬æ–¹å¼ (å‚è€ƒ InteractiveNodeJumpingType)
 
 
 
@@ -411,55 +411,55 @@ o----|xxx| (TEXT_RIGHT)
 
 ### def get_node_id()
 
-»ñÈ¡½Úµã id
+è·å–èŠ‚ç‚¹ id
 
 
 
-**Returns:** `int`:  ½Úµã id
+**Returns:** `int`:  èŠ‚ç‚¹ id
 
 
 
 
 ### def get_self_button()
 
-»ñÈ¡¸Ã½ÚµãËù¶ÔÓ¦µÄ°´Å¥
+è·å–è¯¥èŠ‚ç‚¹æ‰€å¯¹åº”çš„æŒ‰é’®
 
 
 
-**Returns:** `InteractiveButton`:  Ëù¶ÔÓ¦µÄ°´Å¥
+**Returns:** `InteractiveButton`:  æ‰€å¯¹åº”çš„æŒ‰é’®
 
 
 
 
 ### def get_vars()
 
-»ñÈ¡½ÚµãµÄËùÓĞ±äÁ¿
+è·å–èŠ‚ç‚¹çš„æ‰€æœ‰å˜é‡
 
 
 
-**Returns:** `List[InteractiveVariable]`:  ½ÚµãµÄËùÓĞ±äÁ¿
+**Returns:** `List[InteractiveVariable]`:  èŠ‚ç‚¹çš„æ‰€æœ‰å˜é‡
 
 
 
 
 ### def get_video()
 
-»ñÈ¡½Úµã¶ÔÓ¦ÊÓÆµ
+è·å–èŠ‚ç‚¹å¯¹åº”è§†é¢‘
 
 
 
-**Returns:** `InteractiveVideo`:  ¶ÔÓ¦ÊÓÆµ
+**Returns:** `InteractiveVideo`:  å¯¹åº”è§†é¢‘
 
 
 
 
 ### def is_default()
 
-½ÚµãÊÇ·ñÎªÌø×ªÖĞÄ¬ÈÏ½Úµã
+èŠ‚ç‚¹æ˜¯å¦ä¸ºè·³è½¬ä¸­é»˜è®¤èŠ‚ç‚¹
 
 
 
-**Returns:** `bool`:  ÊÇ·ñÎªÌø×ªÖĞÄ¬ÈÏ½Úµã
+**Returns:** `bool`:  æ˜¯å¦ä¸ºè·³è½¬ä¸­é»˜è®¤èŠ‚ç‚¹
 
 
 
@@ -470,11 +470,11 @@ o----|xxx| (TEXT_RIGHT)
 
 **Extend: enum.Enum**
 
-¶ÔÏÂÒ»½ÚµãµÄÌø×ªµÄ·½Ê½
+å¯¹ä¸‹ä¸€èŠ‚ç‚¹çš„è·³è½¬çš„æ–¹å¼
 
-- ASK: Ñ¡Ôñ
-- DEFAULT: Ìø×ªµ½Ä¬ÈÏ½Úµã
-- READY  : Ñ¡Ôñ(Ö»ÓĞÒ»¸öÑ¡Ôñ)
+- ASK: é€‰æ‹©
+- DEFAULT: è·³è½¬åˆ°é»˜è®¤èŠ‚ç‚¹
+- READY  : é€‰æ‹©(åªæœ‰ä¸€ä¸ªé€‰æ‹©)
 
 
 
@@ -483,7 +483,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ## class InteractiveVariable()
 
-»¥¶¯½ÚµãµÄ±äÁ¿
+äº’åŠ¨èŠ‚ç‚¹çš„å˜é‡
 
 
 
@@ -493,71 +493,71 @@ o----|xxx| (TEXT_RIGHT)
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ±äÁ¿Ãû |
-| `var_id` | `str` | ±äÁ¿ id |
-| `var_value` | `int` | ±äÁ¿µÄÖµ |
-| `show` | `bool` | ÊÇ·ñÏÔÊ¾ |
-| `random` | `bool` | ÊÇ·ñÎªËæ»úÖµ(1-100) |
+| `name` | `str` | å˜é‡å |
+| `var_id` | `str` | å˜é‡ id |
+| `var_value` | `int` | å˜é‡çš„å€¼ |
+| `show` | `bool` | æ˜¯å¦æ˜¾ç¤º |
+| `random` | `bool` | æ˜¯å¦ä¸ºéšæœºå€¼(1-100) |
 
 
 ### def get_id()
 
-»ñÈ¡±äÁ¿ id
+è·å–å˜é‡ id
 
 
 
-**Returns:** `str`:  ±äÁ¿ id
+**Returns:** `str`:  å˜é‡ id
 
 
 
 
 ### def get_name()
 
-»ñÈ¡±äÁ¿µÄÃû×Ö
+è·å–å˜é‡çš„åå­—
 
 
 
-**Returns:** `str`:  ±äÁ¿µÄÃû×Ö
+**Returns:** `str`:  å˜é‡çš„åå­—
 
 
 
 
 ### def get_value()
 
-»ñÈ¡±äÁ¿¶ÔÓ¦µÄÖµ
+è·å–å˜é‡å¯¹åº”çš„å€¼
 
 
 
-**Returns:** `int`:  ±äÁ¿¶ÔÓ¦µÄÖµ
+**Returns:** `int`:  å˜é‡å¯¹åº”çš„å€¼
 
 
 
 
 ### def is_random()
 
-±äÁ¿ÊÇ·ñËæ»úÉú³É
+å˜é‡æ˜¯å¦éšæœºç”Ÿæˆ
 
 
 
-**Returns:** `bool`:  ±äÁ¿ÊÇ·ñËæ»úÉú³É
+**Returns:** `bool`:  å˜é‡æ˜¯å¦éšæœºç”Ÿæˆ
 
 
 
 
 ### def is_show()
 
-±äÁ¿ÊÇ·ñÏÔÊ¾
+å˜é‡æ˜¯å¦æ˜¾ç¤º
 
 
 
-**Returns:** `bool`:  ±äÁ¿ÊÇ·ñÏÔÊ¾
+**Returns:** `bool`:  å˜é‡æ˜¯å¦æ˜¾ç¤º
 
 
 
 
 ### def refresh_value()
 
-Ë¢ĞÂ±äÁ¿ÊıÖµ
+åˆ·æ–°å˜é‡æ•°å€¼
 
 
 
@@ -570,7 +570,7 @@ o----|xxx| (TEXT_RIGHT)
 
 **Extend: bilibili_api.video.Video**
 
-»¥¶¯ÊÓÆµÀà
+äº’åŠ¨è§†é¢‘ç±»
 
 
 
@@ -583,7 +583,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ### async def get_cid()
 
-»ñÈ¡¸å¼ş cid
+è·å–ç¨¿ä»¶ cid
 
 
 
@@ -592,75 +592,75 @@ o----|xxx| (TEXT_RIGHT)
 
 ### async def get_edge_info()
 
-»ñÈ¡¾çÇéÍ¼½ÚµãĞÅÏ¢
+è·å–å‰§æƒ…å›¾èŠ‚ç‚¹ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `edge_id` | `int, optional` | ½Úµã ID£¬Îª None Ê±»ñÈ¡¸ù½ÚµãĞÅÏ¢. Defaults to None. |
+| `edge_id` | `int, optional` | èŠ‚ç‚¹ IDï¼Œä¸º None æ—¶è·å–æ ¹èŠ‚ç‚¹ä¿¡æ¯. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_graph()
 
-»ñÈ¡¸å¼şÇé½ÚÊ÷
+è·å–ç¨¿ä»¶æƒ…èŠ‚æ ‘
 
 
 
-**Returns:** `InteractiveGraph`:  Çé½ÚÊ÷
+**Returns:** `InteractiveGraph`:  æƒ…èŠ‚æ ‘
 
 
 
 
 ### async def get_graph_version()
 
-»ñÈ¡¾çÇéÍ¼°æ±¾ºÅ£¬½ö¹© `get_edge_info()` Ê¹ÓÃ¡£
+è·å–å‰§æƒ…å›¾ç‰ˆæœ¬å·ï¼Œä»…ä¾› `get_edge_info()` ä½¿ç”¨ã€‚
 
 
 
-**Returns:** `int`:  ¾çÇéÍ¼°æ±¾ºÅ
+**Returns:** `int`:  å‰§æƒ…å›¾ç‰ˆæœ¬å·
 
 
 
 
 ### async def mark_score()
 
-Îª»¥¶¯ÊÓÆµ´ò·Ö
+ä¸ºäº’åŠ¨è§†é¢‘æ‰“åˆ†
 
 
 | name | type | description |
 | - | - | - |
-| `score` | `int` | »¥¶¯ÊÓÆµ·ÖÊı. Defaults to 5. |
+| `score` | `int` | äº’åŠ¨è§†é¢‘åˆ†æ•°. Defaults to 5. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def up_get_ivideo_pages()
 
-»ñÈ¡½»»¥ÊÓÆµµÄ·Ö P ĞÅÏ¢¡£up Ö÷ĞèÒªÓµÓĞÊÓÆµËùÓĞÈ¨¡£
+è·å–äº¤äº’è§†é¢‘çš„åˆ† P ä¿¡æ¯ã€‚up ä¸»éœ€è¦æ‹¥æœ‰è§†é¢‘æ‰€æœ‰æƒã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def up_submit_story_tree()
 
-ÉÏ´«½»»¥ÊÓÆµµÄÇé½ÚÊ÷¡£up Ö÷ĞèÒªÓµÓĞÊÓÆµËùÓĞÈ¨¡£
+ä¸Šä¼ äº¤äº’è§†é¢‘çš„æƒ…èŠ‚æ ‘ã€‚up ä¸»éœ€è¦æ‹¥æœ‰è§†é¢‘æ‰€æœ‰æƒã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `story_tree` | `str` | Çé½ÚÊ÷µÄÃèÊö£¬²Î¿¼ bilibili_storytree.StoryGraph, ĞèÒª Serialize Õâ¸ö½á¹¹ |
+| `story_tree` | `str` | æƒ…èŠ‚æ ‘çš„æè¿°ï¼Œå‚è€ƒ bilibili_storytree.StoryGraph, éœ€è¦ Serialize è¿™ä¸ªç»“æ„ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -671,31 +671,31 @@ o----|xxx| (TEXT_RIGHT)
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-»¥¶¯ÊÓÆµÏÂÔØÀà
+äº’åŠ¨è§†é¢‘ä¸‹è½½ç±»
 
 
 
 
 ### def \_\_init\_\_()
 
-`self_download_func` º¯ÊıÓ¦½ÓÊÜÁ½¸ö²ÎÊı£¨µÚÒ»¸öÊÇÏÂÔØ URL£¬µÚ¶ş¸öÊÇÊä³öµØÖ·£¨¾«È·ÖÁÎÄ¼şÃû£©£©
+`self_download_func` å‡½æ•°åº”æ¥å—ä¸¤ä¸ªå‚æ•°ï¼ˆç¬¬ä¸€ä¸ªæ˜¯ä¸‹è½½ URLï¼Œç¬¬äºŒä¸ªæ˜¯è¾“å‡ºåœ°å€ï¼ˆç²¾ç¡®è‡³æ–‡ä»¶åï¼‰ï¼‰
 
-Îª±£Ö¤ÊÓÆµÄÜ±»³É¹¦ÏÂÔØ£¬ÇëÔÚ×Ô¶¨ÒåÏÂÔØº¯ÊıÇëÇóµÄÊ±ºò¼ÓÈë `bilibili_api.HEADERS` Í·²¿¡£
+ä¸ºä¿è¯è§†é¢‘èƒ½è¢«æˆåŠŸä¸‹è½½ï¼Œè¯·åœ¨è‡ªå®šä¹‰ä¸‹è½½å‡½æ•°è¯·æ±‚çš„æ—¶å€™åŠ å…¥ `bilibili_api.HEADERS` å¤´éƒ¨ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `video` | `InteractiveVideo` | »¥¶¯ÊÓÆµÀà |
-| `out` | `str` | Êä³öÎÄ¼şµØÖ· (Èç¹ûÄ£Ê½Îª NODE_VIDEOS/NO_PACKAGING Ôò´Ë²ÎÊı±íÊ¾ËùÓĞ½ÚµãÊÓÆµµÄ´æ·ÅÄ¿Â¼) |
-| `self_download_func` | `Callable[[str, str], Awaitable[None]], optional` | ×Ô¶¨ÒåÏÂÔØº¯Êı£¨Ğè async º¯Êı£©. Defaults to None. |
-| `downloader_mode` | `InteractiveVideoDownloaderMode` | ÏÂÔØÄ£Ê½ |
-| `stream_detecting_params` | `Dict \| None` | `VideoDownloadURLDataDetecter` ÌáÈ¡×î¼ÑÁ÷Ê±´«ÈëµÄ²ÎÊı£¬¿É¿ØÖÆÊÓÆµ¼°ÒôÆµÆ·ÖÊ. Defaults to None£¨µÈ¼ÛÓÚ {}£© |
-| `fetching_nodes_retry_times` | `int` | »ñÈ¡½ÚµãÊ±µÄ×î´óÖØÊÔ´ÎÊı |
+| `video` | `InteractiveVideo` | äº’åŠ¨è§†é¢‘ç±» |
+| `out` | `str` | è¾“å‡ºæ–‡ä»¶åœ°å€ (å¦‚æœæ¨¡å¼ä¸º NODE_VIDEOS/NO_PACKAGING åˆ™æ­¤å‚æ•°è¡¨ç¤ºæ‰€æœ‰èŠ‚ç‚¹è§†é¢‘çš„å­˜æ”¾ç›®å½•) |
+| `self_download_func` | `Callable[[str, str], Awaitable[None]], optional` | è‡ªå®šä¹‰ä¸‹è½½å‡½æ•°ï¼ˆéœ€ async å‡½æ•°ï¼‰. Defaults to None. |
+| `downloader_mode` | `InteractiveVideoDownloaderMode` | ä¸‹è½½æ¨¡å¼ |
+| `stream_detecting_params` | `Dict \| None` | `VideoDownloadURLDataDetecter` æå–æœ€ä½³æµæ—¶ä¼ å…¥çš„å‚æ•°ï¼Œå¯æ§åˆ¶è§†é¢‘åŠéŸ³é¢‘å“è´¨. Defaults to Noneï¼ˆç­‰ä»·äº {}ï¼‰ |
+| `fetching_nodes_retry_times` | `int` | è·å–èŠ‚ç‚¹æ—¶çš„æœ€å¤§é‡è¯•æ¬¡æ•° |
 
 
 ### async def abort()
 
-ÖĞ¶ÏÏÂÔØ
+ä¸­æ–­ä¸‹è½½
 
 
 
@@ -704,7 +704,7 @@ o----|xxx| (TEXT_RIGHT)
 
 ### async def start()
 
-¿ªÊ¼ÏÂÔØ
+å¼€å§‹ä¸‹è½½
 
 
 
@@ -717,20 +717,20 @@ o----|xxx| (TEXT_RIGHT)
 
 **Extend: enum.Enum**
 
-»¥¶¯ÊÓÆµÏÂÔØÆ÷ÊÂ¼şÃ¶¾Ù
+äº’åŠ¨è§†é¢‘ä¸‹è½½å™¨äº‹ä»¶æšä¸¾
 
 | event | meaning | IVI mode | NODE_VIDEOS mode | DOT_GRAPH mode | NO_PACKAGING mode | Is Built-In downloader event |
 | ----- | ------- | -------- | ---------------- | -------------- | ----------------- | ------------------------- |
-| START | ¿ªÊ¼ÏÂÔØ | [x] | [x] | [x] | [x] | [ ] |
-| GET | »ñÈ¡µ½½ÚµãĞÅÏ¢ | [x] | [x] | [x] | [x] | [ ] |
-| PREPARE_DOWNLOAD | ×¼±¸ÏÂÔØµ¥¸ö½Úµã | [x] | [x] | [ ] | [x] | [ ] |
-| DOWNLOAD_START | ¿ªÊ¼ÏÂÔØµ¥¸öÎÄ¼ş | Unknown | Unknown | [ ] | Unknown | [x] |
-| DOWNLOAD_PART | ÎÄ¼ş·Ö¿é²¿·ÖÍê³É | Unknown | Unknown | [ ] | Unknown | [x] |
-| DOWNLOAD_SUCCESS | Íê³ÉÏÂÔØ | Unknown | Unknown | [ ] | Unknown | [x] |
-| PACKAGING | ÕıÔÚ´ò°ü | [x] | [ ] | [ ] | [ ] | [ ] |
-| SUCCESS | ÏÂÔØ³É¹¦ | [x] | [x] | [x] | [x] | [ ] |
-| ABORTED | ÓÃ»§ÔİÍ£ | [x] | [x] | [x] | [x] | [ ] |
-| FAILED | ÏÂÔØÊ§°Ü | [x] | [x] | [x] | [x] | [ ] |
+| START | å¼€å§‹ä¸‹è½½ | [x] | [x] | [x] | [x] | [ ] |
+| GET | è·å–åˆ°èŠ‚ç‚¹ä¿¡æ¯ | [x] | [x] | [x] | [x] | [ ] |
+| PREPARE_DOWNLOAD | å‡†å¤‡ä¸‹è½½å•ä¸ªèŠ‚ç‚¹ | [x] | [x] | [ ] | [x] | [ ] |
+| DOWNLOAD_START | å¼€å§‹ä¸‹è½½å•ä¸ªæ–‡ä»¶ | Unknown | Unknown | [ ] | Unknown | [x] |
+| DOWNLOAD_PART | æ–‡ä»¶åˆ†å—éƒ¨åˆ†å®Œæˆ | Unknown | Unknown | [ ] | Unknown | [x] |
+| DOWNLOAD_SUCCESS | å®Œæˆä¸‹è½½ | Unknown | Unknown | [ ] | Unknown | [x] |
+| PACKAGING | æ­£åœ¨æ‰“åŒ… | [x] | [ ] | [ ] | [ ] | [ ] |
+| SUCCESS | ä¸‹è½½æˆåŠŸ | [x] | [x] | [x] | [x] | [ ] |
+| ABORTED | ç”¨æˆ·æš‚åœ | [x] | [x] | [x] | [x] | [ ] |
+| FAILED | ä¸‹è½½å¤±è´¥ | [x] | [x] | [x] | [x] | [ ] |
 
 
 
@@ -741,12 +741,12 @@ o----|xxx| (TEXT_RIGHT)
 
 **Extend: enum.Enum**
 
-»¥¶¯ÊÓÆµÏÂÔØÄ£Ê½
+äº’åŠ¨è§†é¢‘ä¸‹è½½æ¨¡å¼
 
-- IVI: ÏÂÔØ¿É²¥·ÅµÄ ivi ÎÄ¼ş
-- NODE_VIDEOS: ÏÂÔØËùÓĞ½ÚµãµÄËùÓĞÊÓÆµ²¢´æ·ÅÔÚÄ³¸öÎÄ¼ş¼Ğ£¬Ã¿Ò»¸ö½ÚµãµÄÊÓÆµÃüÃûÎª `{½Úµã id} {½Úµã±êÌâ (×Ô¶¯È¥³ıÃô¸Ğ×Ö·û)}.mp4`
-- DOT_GRAPH: ÏÂÔØ dot ¸ñÊ½µÄÇé½ÚÊ÷Í¼±í
-- NO_PACKAGING: Ç°Ãæ°´ÕÕ ivi ÎÄ¼şÏÂÔØ²½Öè½øĞĞÏÂÔØ£¬µ«ÊÇ×îÖÕ²»»á´ò°ü³ÉÎª ivi ÎÄ¼ş£¬ËùÓĞÎÄ¼ş½«´æ·ÅÓÚÒ»¸öÎÄ¼ş¼ĞÖĞ¡£»¥¶¯ÊÓÆµÊı¾İ½«´æ·ÅÔÚÒ»¸öÎÄ¼ş¼ĞÖĞ£¬ÀïÃæµÄÎÄ¼şÃüÃû/º¬ÒåÓë²ğ°üºóµÄ ivi ÎÄ¼şÍêÈ«ÏàÍ¬¡£
+- IVI: ä¸‹è½½å¯æ’­æ”¾çš„ ivi æ–‡ä»¶
+- NODE_VIDEOS: ä¸‹è½½æ‰€æœ‰èŠ‚ç‚¹çš„æ‰€æœ‰è§†é¢‘å¹¶å­˜æ”¾åœ¨æŸä¸ªæ–‡ä»¶å¤¹ï¼Œæ¯ä¸€ä¸ªèŠ‚ç‚¹çš„è§†é¢‘å‘½åä¸º `{èŠ‚ç‚¹ id} {èŠ‚ç‚¹æ ‡é¢˜ (è‡ªåŠ¨å»é™¤æ•æ„Ÿå­—ç¬¦)}.mp4`
+- DOT_GRAPH: ä¸‹è½½ dot æ ¼å¼çš„æƒ…èŠ‚æ ‘å›¾è¡¨
+- NO_PACKAGING: å‰é¢æŒ‰ç…§ ivi æ–‡ä»¶ä¸‹è½½æ­¥éª¤è¿›è¡Œä¸‹è½½ï¼Œä½†æ˜¯æœ€ç»ˆä¸ä¼šæ‰“åŒ…æˆä¸º ivi æ–‡ä»¶ï¼Œæ‰€æœ‰æ–‡ä»¶å°†å­˜æ”¾äºä¸€ä¸ªæ–‡ä»¶å¤¹ä¸­ã€‚äº’åŠ¨è§†é¢‘æ•°æ®å°†å­˜æ”¾åœ¨ä¸€ä¸ªæ–‡ä»¶å¤¹ä¸­ï¼Œé‡Œé¢çš„æ–‡ä»¶å‘½å/å«ä¹‰ä¸æ‹†åŒ…åçš„ ivi æ–‡ä»¶å®Œå…¨ç›¸åŒã€‚
 
 
 
@@ -755,14 +755,14 @@ o----|xxx| (TEXT_RIGHT)
 
 ## def get_ivi_file_meta()
 
-»ñÈ¡ ivi ÎÄ¼şĞÅÏ¢
+è·å– ivi æ–‡ä»¶ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `path` | `str` | ÎÄ¼şµØÖ· |
+| `path` | `str` | æ–‡ä»¶åœ°å€ |
 
-**Returns:** `dict`:  ÎÄ¼şĞÅÏ¢
+**Returns:** `dict`:  æ–‡ä»¶ä¿¡æ¯
 
 
 

@@ -3,7 +3,7 @@
 
 bilibili_api.homepage
 
-Ö÷Ò³Ïà¹Ø²Ù×÷¡£
+ä¸»é¡µç›¸å…³æ“ä½œã€‚
 
 
 ``` python
@@ -21,16 +21,16 @@ from bilibili_api import homepage
 
 ## async def get_favorite_list_and_toview()
 
-»ñÈ¡Ê×Ò³ÓÒÉÏ½ÇÊÓÆµÏà¹ØÁĞ±í£¨ÊÕ²Ø¼Ğ+ÉÔºóÔÙ¿´£©
+è·å–é¦–é¡µå³ä¸Šè§’è§†é¢‘ç›¸å…³åˆ—è¡¨ï¼ˆæ”¶è—å¤¹+ç¨åå†çœ‹ï¼‰
 
-ÊÕ²Ø¼Ğ¾ßÌåÄÚÈİÔÚ `get_favorite_list_content` ½Ó¿Ú
+æ”¶è—å¤¹å…·ä½“å†…å®¹åœ¨ `get_favorite_list_content` æ¥å£
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -39,17 +39,17 @@ from bilibili_api import homepage
 
 ## async def get_favorite_list_content()
 
-»ñÈ¡Ê×Ò³ÓÒÉÏ½ÇÊÓÆµÏà¹ØÁĞ±í£¨ÊÕ²Ø¼Ğ+ÉÔºóÔÙ¿´£©µÄ¾ßÌåÄÚÈİ
+è·å–é¦–é¡µå³ä¸Šè§’è§†é¢‘ç›¸å…³åˆ—è¡¨ï¼ˆæ”¶è—å¤¹+ç¨åå†çœ‹ï¼‰çš„å…·ä½“å†…å®¹
 
-ÉÔºóÔÙ¿´¾ßÌåÄÚÈİÔÚ `get_favorite_list_and_toview` ½Ó¿Ú
+ç¨åå†çœ‹å…·ä½“å†…å®¹åœ¨ `get_favorite_list_and_toview` æ¥å£
 
 
 | name | type | description |
 | - | - | - |
-| `media_id` | `int` | ÊÕ²Ø¼Ğ id |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `media_id` | `int` | æ”¶è—å¤¹ id |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -58,15 +58,15 @@ from bilibili_api import homepage
 
 ## async def get_links()
 
-»ñÈ¡Ö÷Ò³×óÃæµÄÁ´½Ó¡£
-¿ÉÄÜºÍ¸öÈËÏ²ºÃÓĞ¹Ø¡£
+è·å–ä¸»é¡µå·¦é¢çš„é“¾æ¥ã€‚
+å¯èƒ½å’Œä¸ªäººå–œå¥½æœ‰å…³ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None` | Æ¾¾İÀà |
+| `credential` | `Credential \| None` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -75,15 +75,15 @@ from bilibili_api import homepage
 
 ## async def get_popularize()
 
-»ñÈ¡ÍÆ¹ãµÄÏîÄ¿¡£
-(ÓĞÊÓÆµÓĞ¹ã¸æ)
+è·å–æ¨å¹¿çš„é¡¹ç›®ã€‚
+(æœ‰è§†é¢‘æœ‰å¹¿å‘Š)
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None` | Æ¾¾İÀà |
+| `credential` | `Credential \| None` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -92,12 +92,12 @@ from bilibili_api import homepage
 
 ## async def get_top_photo()
 
-»ñÈ¡Ö÷Ò³×îÉÏ·½µÄÍ¼Ïñ¡£
-ÀıÈç£ºb Õ¾µÄ·çÒ¶´©ĞĞ£¬Í¨¹ıÕâ¸ö API »ñÈ¡µÄÍ¼Æ¬¾ÍÊÇ·çÒ¶´©ĞĞµÄÍ¼Æ¬¡£
+è·å–ä¸»é¡µæœ€ä¸Šæ–¹çš„å›¾åƒã€‚
+ä¾‹å¦‚ï¼šb ç«™çš„é£å¶ç©¿è¡Œï¼Œé€šè¿‡è¿™ä¸ª API è·å–çš„å›¾ç‰‡å°±æ˜¯é£å¶ç©¿è¡Œçš„å›¾ç‰‡ã€‚
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û¡£
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœã€‚
 
 
 
@@ -106,14 +106,14 @@ from bilibili_api import homepage
 
 ## async def get_videos()
 
-»ñÈ¡Ê×Ò³ÍÆ¼öµÄÊÓÆµ¡£
+è·å–é¦–é¡µæ¨èçš„è§†é¢‘ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None` | Æ¾¾İÀà |
+| `credential` | `Credential \| None` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 

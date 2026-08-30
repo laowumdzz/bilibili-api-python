@@ -3,7 +3,7 @@
 
 bilibili_api.video_zone
 
-·ÖÇøÏà¹Ø²Ù×÷£¬ÓëÆµµÀ²»»¥Í¨¡£
+åˆ†åŒºç›¸å…³æ“ä½œï¼Œä¸Žé¢‘é“ä¸äº’é€šã€‚
 
 
 ``` python
@@ -26,148 +26,148 @@ from bilibili_api import video_zone
 
 **Extend: enum.Enum**
 
-ËùÓÐ·ÖÇøÃ¶¾Ù
+æ‰€æœ‰åˆ†åŒºæžšä¸¾
 
-- MAINPAGE: Ö÷Ò³
-- ANIME: ·¬¾ç
-- ANIME_SERIAL: Á¬ÔØ¶¯»­
-- ANIME_FINISH: Íê½á¶¯»­
-- ANIME_INFORMATION: ×ÊÑ¶
-- ANIME_OFFICAL: ¹Ù·½ÑÓÉì
-- MOVIE: µçÓ°
-- GUOCHUANG: ¹ú´´
-- GUOCHUANG_CHINESE: ¹ú²ú¶¯»­
-- GUOCHUANG_ORIGINAL: ¹ú²úÔ­´´Ïà¹Ø
-- GUOCHUANG_PUPPETRY: ²¼´üÏ·
-- GUOCHUANG_MOTIONCOMIC: ¶¯Ì¬Âþ¡¤¹ã²¥¾ç
-- GUOCHUANG_INFORMATION: ×ÊÑ¶
-- TELEPLAY: µçÊÓ¾ç
-- DOCUMENTARY: ¼ÍÂ¼Æ¬
-- DOUGA: ¶¯»­
-- DOUGA_MAD: MAD¡¤AMV
-- DOUGA_MMD: MMD¡¤3D
-- DOUGA_HANDDRAWN: Í¬ÈË¡¤ÊÖÊé
-- DOUGA_VOICE: ÅäÒô
-- DOUGA_GARAGE_KIT: Ä£Íæ¡¤ÖÜ±ß
-- DOUGA_TOKUSATSU: ÌØÉã
-- DOUGA_ACGNTALKS: ¶¯ÂþÔÓÌ¸
-- DOUGA_OTHER: ×ÛºÏ
-- GAME: ÓÎÏ·
-- GAME_STAND_ALONE: µ¥»úÓÎÏ·
-- GAME_ESPORTS: µç×Ó¾º¼¼
-- GAME_MOBILE: ÊÖ»úÓÎÏ·
-- GAME_ONLINE: ÍøÂçÓÎÏ·
-- GAME_BOARD: ×ÀÓÎÆåÅÆ
+- MAINPAGE: ä¸»é¡µ
+- ANIME: ç•ªå‰§
+- ANIME_SERIAL: è¿žè½½åŠ¨ç”»
+- ANIME_FINISH: å®Œç»“åŠ¨ç”»
+- ANIME_INFORMATION: èµ„è®¯
+- ANIME_OFFICAL: å®˜æ–¹å»¶ä¼¸
+- MOVIE: ç”µå½±
+- GUOCHUANG: å›½åˆ›
+- GUOCHUANG_CHINESE: å›½äº§åŠ¨ç”»
+- GUOCHUANG_ORIGINAL: å›½äº§åŽŸåˆ›ç›¸å…³
+- GUOCHUANG_PUPPETRY: å¸ƒè¢‹æˆ
+- GUOCHUANG_MOTIONCOMIC: åŠ¨æ€æ¼«Â·å¹¿æ’­å‰§
+- GUOCHUANG_INFORMATION: èµ„è®¯
+- TELEPLAY: ç”µè§†å‰§
+- DOCUMENTARY: çºªå½•ç‰‡
+- DOUGA: åŠ¨ç”»
+- DOUGA_MAD: MADÂ·AMV
+- DOUGA_MMD: MMDÂ·3D
+- DOUGA_HANDDRAWN: åŒäººÂ·æ‰‹ä¹¦
+- DOUGA_VOICE: é…éŸ³
+- DOUGA_GARAGE_KIT: æ¨¡çŽ©Â·å‘¨è¾¹
+- DOUGA_TOKUSATSU: ç‰¹æ‘„
+- DOUGA_ACGNTALKS: åŠ¨æ¼«æ‚è°ˆ
+- DOUGA_OTHER: ç»¼åˆ
+- GAME: æ¸¸æˆ
+- GAME_STAND_ALONE: å•æœºæ¸¸æˆ
+- GAME_ESPORTS: ç”µå­ç«žæŠ€
+- GAME_MOBILE: æ‰‹æœºæ¸¸æˆ
+- GAME_ONLINE: ç½‘ç»œæ¸¸æˆ
+- GAME_BOARD: æ¡Œæ¸¸æ£‹ç‰Œ
 - GAME_GMV: GMV
-- GAME_MUSIC: ÒôÓÎ
+- GAME_MUSIC: éŸ³æ¸¸
 - GAME_MUGEN: Mugen
-- KICHIKU: ¹íÐó
-- KICHIKU_GUIDE: ¹íÐóµ÷½Ì
-- KICHIKU_MAD: ÒôMAD
-- KICHIKU_MANUAL_VOCALOID: ÈËÁ¦VOCALOID
-- KICHIKU_THEATRE: ¹íÐó¾ç³¡
-- KICHIKU_COURSE: ½Ì³ÌÑÝÊ¾
-- MUSIC: ÒôÀÖ
-- MUSIC_ORIGINAL: Ô­´´ÒôÀÖ
-- MUSIC_COVER: ·­³ª
-- MUSIC_PERFORM: ÑÝ×à
-- MUSIC_VOCALOID: VOCALOID¡¤UTAU
-- MUSIC_LIVE: ÒôÀÖÏÖ³¡
+- KICHIKU: é¬¼ç•œ
+- KICHIKU_GUIDE: é¬¼ç•œè°ƒæ•™
+- KICHIKU_MAD: éŸ³MAD
+- KICHIKU_MANUAL_VOCALOID: äººåŠ›VOCALOID
+- KICHIKU_THEATRE: é¬¼ç•œå‰§åœº
+- KICHIKU_COURSE: æ•™ç¨‹æ¼”ç¤º
+- MUSIC: éŸ³ä¹
+- MUSIC_ORIGINAL: åŽŸåˆ›éŸ³ä¹
+- MUSIC_COVER: ç¿»å”±
+- MUSIC_PERFORM: æ¼”å¥
+- MUSIC_VOCALOID: VOCALOIDÂ·UTAU
+- MUSIC_LIVE: éŸ³ä¹çŽ°åœº
 - MUSIC_MV: MV
-- MUSIC_COMMENTARY: ÀÖÆÀÅÌµã
-- MUSIC_TUTORIAL: ÒôÀÖ½ÌÑ§
-- MUSIC_FAN_VIDEOS: ÒôÀÖ·ÛË¿·¹ÅÄ
-- MUSIC_AI_MUSIC: AIÒôÀÖ
-- MUSIC_RADIO: µçÌ¨
-- MUSIC_OTHER: ÒôÀÖ×ÛºÏ
-- DANCE: Îèµ¸
-- DANCE_OTAKU: Õ¬Îè
-- DANCE_HIPHOP: ½ÖÎè
-- DANCE_STAR: Ã÷ÐÇÎèµ¸
-- DANCE_CHINA: ¹ú·çÎèµ¸
-- DANCE_THREE_D: Îèµ¸×ÛºÏ
-- DANCE_DEMO: Îèµ¸½Ì³Ì
-- DANGE_GESTURES: ÑÕÖµ¡¤ÍøºìÎè
-- CINEPHILE: Ó°ÊÓ
-- CINEPHILE_CINECISM: Ó°ÊÓÔÓÌ¸
-- CINEPHILE_MONTAGE: Ó°ÊÓ¼ô¼­
-- CINEPHILE_MASHUP: Ó°ÊÓÕû»î
-- CINEPHILE_AI_IMAGING: AIÓ°Ïñ
-- CINEPHILE_SHORTFILM: ¶ÌÆ¬
-- CINEPHILE_SHORTPLAY: Ð¡¾ç³¡
-- CINEPHILE_TRAILER_INFO: Ô¤¸æ¡¤×ÊÑ¶
-- CINEPHILE_COMPREHENSIVE: Ó°ÊÓ×ÛºÏ
-- ENT: ÓéÀÖ
-- ENT_VARIETY: ×ÛÒÕ
-- ENT_TALKER: ÓéÀÖÔÓÌ¸
-- ENT_FANS: ·ÛË¿´´×÷
-- ENT_CELEBRITY: Ã÷ÐÇ×ÛºÏ
-- ENT_CP_RECOMMENDATION: CP°²Àû
-- ENT_BEAUTY: ÑÕÖµ°²Àû
-- ENT_ENTERTAINMENT_NEWS: ÓéÀÖ×ÊÑ¶
-- KNOWLEDGE: ÖªÊ¶
-- KNOWLEDGE_SCIENCE: ¿ÆÑ§¿ÆÆÕ
-- KNOWLEDGE_SOCIAL_SCIENCE: Éç¿Æ¡¤·¨ÂÉ¡¤ÐÄÀí
-- KNOWLEDGE_HUMANITY_HISTORY: ÈËÎÄÀúÊ·
-- KNOWLEDGE_BUSINESS: ²Æ¾­ÉÌÒµ
-- KNOWLEDGE_CAMPUS: Ð£Ô°Ñ§Ï°
-- KNOWLEDGE_CAREER: Ö°ÒµÖ°³¡
-- KNOWLEDGE_DESIGN: Éè¼Æ¡¤´´Òâ
-- KNOWLEDGE_SKILL: Ò°Éú¼¼ÄÜÐ­»á
-- TECH: ¿Æ¼¼
-- TECH_DIGITAL: ÊýÂë
-- TECH_APPLICATION: Èí¼þÓ¦ÓÃ
-- TECH_COMPUTER_TECH: ¼ÆËã»ú¼¼Êõ
-- TECH_INDUSTRY: ¿Æ¹¤»úÐµ
-- TECH_DIY: ¼«¿ÍDIY
-- INFORMATION: ×ÊÑ¶
-- INFORMATION_HOTSPOT: ÈÈµã
-- INFORMATION_GLOBAL: »·Çò
-- INFORMATION_SOCIAL: Éç»á
-- INFORMATION_MULTIPLE: ×ÛºÏ
-- FOOD: ÃÀÊ³
-- FOOD_MAKE: ÃÀÊ³ÖÆ×÷
-- FOOD_DETECTIVE: ÃÀÊ³ÕìÌ½
-- FOOD_MEASUREMENT: ÃÀÊ³²âÆÀ
-- FOOD_RURAL: ÌïÔ°ÃÀÊ³
-- FOOD_RECORD: ÃÀÊ³¼ÇÂ¼
-- LIFE: Éú»î
-- LIFE_FUNNY: ¸ãÐ¦
-- LIFE_PARENTING: Ç××Ó
-- LIFE_TRAVEL: ³öÐÐ
-- LIFE_RURALLIFE: ÈýÅ©
-- LIFE_HOME: ¼Ò¾Ó·¿²ú
-- LIFE_HANDMAKE: ÊÖ¹¤
-- LIFE_PAINTING: »æ»­
-- LIFE_DAILY: ÈÕ³£
-- CAR: Æû³µ
-- CAR_RACING: Èü³µ
-- CAR_MODIFIEDVEHICLE: ¸Ä×°Íæ³µ
-- CAR_NEWENERGYVEHICLE: ÐÂÄÜÔ´³µ
-- CAR_TOURINGCAR: ·¿³µ
-- CAR_MOTORCYCLE: Ä¦ÍÐ³µ
-- CAR_STRATEGY: ¹º³µ¹¥ÂÔ
-- CAR_LIFE: Æû³µÉú»î
-- CAR_KNOWLEDGE: Æû³µÖªÊ¶¿ÆÆÕ
-- FASHION: Ê±ÉÐ
-- FASHION_MAKEUP: ÃÀ×±»¤·ô
-- FASHION_COS: ·Â×±cos
-- FASHION_CLOTHING: ´©´î
-- FASHION_TREND: Ê±ÉÐ³±Á÷
-- SPORTS: ÔË¶¯
-- SPORTS_BASKETBALL: ÀºÇò
-- SPORTS_FOOTBALL: ×ãÇò
-- SPORTS_AEROBICS: ½¡Éí
-- SPORTS_ATHLETIC: ¾º¼¼ÌåÓý
-- SPORTS_CULTURE: ÔË¶¯ÎÄ»¯
-- SPORTS_COMPREHENSIVE: ÔË¶¯×ÛºÏ
-- ANIMAL: ¶¯ÎïÈ¦
-- ANIMAL_CAT: ß÷ÐÇÈË
-- ANIMAL_DOG: ÍôÐÇÈË
-- ANIMAL_REPTILES: Ð¡³èÒì³è
-- ANIMAL_PANDA: ¶¯Îï¶þ´´
-- ANIMAL_WILD_ANIMAL: Ò°Éú¶¯Îï
-- ANIMAL_COMPOSITE: ¶¯Îï×ÛºÏ
+- MUSIC_COMMENTARY: ä¹è¯„ç›˜ç‚¹
+- MUSIC_TUTORIAL: éŸ³ä¹æ•™å­¦
+- MUSIC_FAN_VIDEOS: éŸ³ä¹ç²‰ä¸é¥­æ‹
+- MUSIC_AI_MUSIC: AIéŸ³ä¹
+- MUSIC_RADIO: ç”µå°
+- MUSIC_OTHER: éŸ³ä¹ç»¼åˆ
+- DANCE: èˆžè¹ˆ
+- DANCE_OTAKU: å®…èˆž
+- DANCE_HIPHOP: è¡—èˆž
+- DANCE_STAR: æ˜Žæ˜Ÿèˆžè¹ˆ
+- DANCE_CHINA: å›½é£Žèˆžè¹ˆ
+- DANCE_THREE_D: èˆžè¹ˆç»¼åˆ
+- DANCE_DEMO: èˆžè¹ˆæ•™ç¨‹
+- DANGE_GESTURES: é¢œå€¼Â·ç½‘çº¢èˆž
+- CINEPHILE: å½±è§†
+- CINEPHILE_CINECISM: å½±è§†æ‚è°ˆ
+- CINEPHILE_MONTAGE: å½±è§†å‰ªè¾‘
+- CINEPHILE_MASHUP: å½±è§†æ•´æ´»
+- CINEPHILE_AI_IMAGING: AIå½±åƒ
+- CINEPHILE_SHORTFILM: çŸ­ç‰‡
+- CINEPHILE_SHORTPLAY: å°å‰§åœº
+- CINEPHILE_TRAILER_INFO: é¢„å‘ŠÂ·èµ„è®¯
+- CINEPHILE_COMPREHENSIVE: å½±è§†ç»¼åˆ
+- ENT: å¨±ä¹
+- ENT_VARIETY: ç»¼è‰º
+- ENT_TALKER: å¨±ä¹æ‚è°ˆ
+- ENT_FANS: ç²‰ä¸åˆ›ä½œ
+- ENT_CELEBRITY: æ˜Žæ˜Ÿç»¼åˆ
+- ENT_CP_RECOMMENDATION: CPå®‰åˆ©
+- ENT_BEAUTY: é¢œå€¼å®‰åˆ©
+- ENT_ENTERTAINMENT_NEWS: å¨±ä¹èµ„è®¯
+- KNOWLEDGE: çŸ¥è¯†
+- KNOWLEDGE_SCIENCE: ç§‘å­¦ç§‘æ™®
+- KNOWLEDGE_SOCIAL_SCIENCE: ç¤¾ç§‘Â·æ³•å¾‹Â·å¿ƒç†
+- KNOWLEDGE_HUMANITY_HISTORY: äººæ–‡åŽ†å²
+- KNOWLEDGE_BUSINESS: è´¢ç»å•†ä¸š
+- KNOWLEDGE_CAMPUS: æ ¡å›­å­¦ä¹ 
+- KNOWLEDGE_CAREER: èŒä¸šèŒåœº
+- KNOWLEDGE_DESIGN: è®¾è®¡Â·åˆ›æ„
+- KNOWLEDGE_SKILL: é‡Žç”ŸæŠ€èƒ½åä¼š
+- TECH: ç§‘æŠ€
+- TECH_DIGITAL: æ•°ç 
+- TECH_APPLICATION: è½¯ä»¶åº”ç”¨
+- TECH_COMPUTER_TECH: è®¡ç®—æœºæŠ€æœ¯
+- TECH_INDUSTRY: ç§‘å·¥æœºæ¢°
+- TECH_DIY: æžå®¢DIY
+- INFORMATION: èµ„è®¯
+- INFORMATION_HOTSPOT: çƒ­ç‚¹
+- INFORMATION_GLOBAL: çŽ¯çƒ
+- INFORMATION_SOCIAL: ç¤¾ä¼š
+- INFORMATION_MULTIPLE: ç»¼åˆ
+- FOOD: ç¾Žé£Ÿ
+- FOOD_MAKE: ç¾Žé£Ÿåˆ¶ä½œ
+- FOOD_DETECTIVE: ç¾Žé£Ÿä¾¦æŽ¢
+- FOOD_MEASUREMENT: ç¾Žé£Ÿæµ‹è¯„
+- FOOD_RURAL: ç”°å›­ç¾Žé£Ÿ
+- FOOD_RECORD: ç¾Žé£Ÿè®°å½•
+- LIFE: ç”Ÿæ´»
+- LIFE_FUNNY: æžç¬‘
+- LIFE_PARENTING: äº²å­
+- LIFE_TRAVEL: å‡ºè¡Œ
+- LIFE_RURALLIFE: ä¸‰å†œ
+- LIFE_HOME: å®¶å±…æˆ¿äº§
+- LIFE_HANDMAKE: æ‰‹å·¥
+- LIFE_PAINTING: ç»˜ç”»
+- LIFE_DAILY: æ—¥å¸¸
+- CAR: æ±½è½¦
+- CAR_RACING: èµ›è½¦
+- CAR_MODIFIEDVEHICLE: æ”¹è£…çŽ©è½¦
+- CAR_NEWENERGYVEHICLE: æ–°èƒ½æºè½¦
+- CAR_TOURINGCAR: æˆ¿è½¦
+- CAR_MOTORCYCLE: æ‘©æ‰˜è½¦
+- CAR_STRATEGY: è´­è½¦æ”»ç•¥
+- CAR_LIFE: æ±½è½¦ç”Ÿæ´»
+- CAR_KNOWLEDGE: æ±½è½¦çŸ¥è¯†ç§‘æ™®
+- FASHION: æ—¶å°š
+- FASHION_MAKEUP: ç¾Žå¦†æŠ¤è‚¤
+- FASHION_COS: ä»¿å¦†cos
+- FASHION_CLOTHING: ç©¿æ­
+- FASHION_TREND: æ—¶å°šæ½®æµ
+- SPORTS: è¿åŠ¨
+- SPORTS_BASKETBALL: ç¯®çƒ
+- SPORTS_FOOTBALL: è¶³çƒ
+- SPORTS_AEROBICS: å¥èº«
+- SPORTS_ATHLETIC: ç«žæŠ€ä½“è‚²
+- SPORTS_CULTURE: è¿åŠ¨æ–‡åŒ–
+- SPORTS_COMPREHENSIVE: è¿åŠ¨ç»¼åˆ
+- ANIMAL: åŠ¨ç‰©åœˆ
+- ANIMAL_CAT: å–µæ˜Ÿäºº
+- ANIMAL_DOG: æ±ªæ˜Ÿäºº
+- ANIMAL_REPTILES: å°å® å¼‚å® 
+- ANIMAL_PANDA: åŠ¨ç‰©äºŒåˆ›
+- ANIMAL_WILD_ANIMAL: é‡Žç”ŸåŠ¨ç‰©
+- ANIMAL_COMPOSITE: åŠ¨ç‰©ç»¼åˆ
 
 
 
@@ -176,14 +176,14 @@ from bilibili_api import video_zone
 
 ## async def get_zone_hot_tags()
 
-»ñÈ¡·ÖÇøÈÈÃÅ±êÇ©
+èŽ·å–åˆ†åŒºçƒ­é—¨æ ‡ç­¾
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int` | ·ÖÇø id |
+| `tid` | `int` | åˆ†åŒº id |
 
-**Returns:** `List[dict]`:  ÈÈÃÅ±êÇ©
+**Returns:** `List[dict]`:  çƒ­é—¨æ ‡ç­¾
 
 
 
@@ -192,14 +192,14 @@ from bilibili_api import video_zone
 
 ## def get_zone_info_by_name()
 
-¸ù¾Ý·ÖÇøÃû³Æ»ñÈ¡·ÖÇøÐÅÏ¢¡£
+æ ¹æ®åˆ†åŒºåç§°èŽ·å–åˆ†åŒºä¿¡æ¯ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `name` | `str` | ÆµµÀµÄÃû³Æ¡£ |
+| `name` | `str` | é¢‘é“çš„åç§°ã€‚ |
 
-**Returns:** `Tuple[dict | None, dict | None]`:  µÚÒ»¸öÊÇÖ÷·ÖÇø£¬µÚ¶þ¸öÊÇ×Ó·ÖÇø£¬Ã»ÓÐÊ±·µ»Ø None¡£
+**Returns:** `Tuple[dict | None, dict | None]`:  ç¬¬ä¸€ä¸ªæ˜¯ä¸»åˆ†åŒºï¼Œç¬¬äºŒä¸ªæ˜¯å­åˆ†åŒºï¼Œæ²¡æœ‰æ—¶è¿”å›ž Noneã€‚
 
 
 
@@ -208,14 +208,14 @@ from bilibili_api import video_zone
 
 ## def get_zone_info_by_tid()
 
-¸ù¾Ý tid »ñÈ¡·ÖÇøÐÅÏ¢¡£
+æ ¹æ® tid èŽ·å–åˆ†åŒºä¿¡æ¯ã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int` | ÆµµÀµÄ tid¡£ |
+| `tid` | `int` | é¢‘é“çš„ tidã€‚ |
 
-**Returns:** `Tuple[dict | None, dict | None]`:  µÚÒ»¸öÊÇÖ÷·ÖÇø£¬µÚ¶þ¸öÊÇ×Ó·ÖÇø£¬Ã»ÓÐÊ±·µ»Ø None¡£
+**Returns:** `Tuple[dict | None, dict | None]`:  ç¬¬ä¸€ä¸ªæ˜¯ä¸»åˆ†åŒºï¼Œç¬¬äºŒä¸ªæ˜¯å­åˆ†åŒºï¼Œæ²¡æœ‰æ—¶è¿”å›ž Noneã€‚
 
 
 
@@ -224,11 +224,11 @@ from bilibili_api import video_zone
 
 ## def get_zone_list()
 
-»ñÈ¡ËùÓÐ·ÖÇøµÄÊý¾Ý
+èŽ·å–æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
 
 
 
-**Returns:** `List[dict]`:  ËùÓÐ·ÖÇøµÄÊý¾Ý
+**Returns:** `List[dict]`:  æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
 
 
 
@@ -237,12 +237,12 @@ from bilibili_api import video_zone
 
 ## def get_zone_list_sub()
 
-»ñÈ¡ËùÓÐ·ÖÇøµÄÊý¾Ý
-º¬¸¸×Ó¹ØÏµ£¨¼´Ò»²ã´ÎÖ»ÓÐÖ÷·ÖÇø£©
+èŽ·å–æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
+å«çˆ¶å­å…³ç³»ï¼ˆå³ä¸€å±‚æ¬¡åªæœ‰ä¸»åˆ†åŒºï¼‰
 
 
 
-**Returns:** `dict`:  ËùÓÐ·ÖÇøµÄÊý¾Ý
+**Returns:** `dict`:  æ‰€æœ‰åˆ†åŒºçš„æ•°æ®
 
 
 
@@ -251,16 +251,16 @@ from bilibili_api import video_zone
 
 ## async def get_zone_new_videos()
 
-»ñÈ¡·ÖÇø×îÐÂÍ¶¸å
+èŽ·å–åˆ†åŒºæœ€æ–°æŠ•ç¨¿
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int` | ·ÖÇø id |
-| `page_num` | `int` | µÚ¼¸Ò³. Defaults to 1. |
-| `page_size` | `int` | Ã¿Ò³µÄÊý¾Ý´óÐ¡. Defaults to 10. |
+| `tid` | `int` | åˆ†åŒº id |
+| `page_num` | `int` | ç¬¬å‡ é¡µ. Defaults to 1. |
+| `page_size` | `int` | æ¯é¡µçš„æ•°æ®å¤§å°. Defaults to 10. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›žçš„ç»“æžœ
 
 
 
@@ -269,16 +269,16 @@ from bilibili_api import video_zone
 
 ## async def get_zone_top10()
 
-»ñÈ¡·ÖÇøÇ°Ê®ÅÅÐÐ°ñ¡£
+èŽ·å–åˆ†åŒºå‰åæŽ’è¡Œæ¦œã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `tid` | `int` | ÆµµÀµÄ tid¡£ |
-| `day` | `int, optional` | 3 ÌìÅÅÐÐ»¹ÊÇ 7 ÌìÅÅÐÐ¡£ Defaults to 7. |
-| `credential` | `Credential \| None, optional` | Credential Àà¡£Defaults to None. |
+| `tid` | `int` | é¢‘é“çš„ tidã€‚ |
+| `day` | `int, optional` | 3 å¤©æŽ’è¡Œè¿˜æ˜¯ 7 å¤©æŽ’è¡Œã€‚ Defaults to 7. |
+| `credential` | `Credential \| None, optional` | Credential ç±»ã€‚Defaults to None. |
 
-**Returns:** `list`:  Ç° 10 µÄÊÓÆµÐÅÏ¢¡£
+**Returns:** `list`:  å‰ 10 çš„è§†é¢‘ä¿¡æ¯ã€‚
 
 
 
@@ -287,14 +287,14 @@ from bilibili_api import video_zone
 
 ## async def get_zone_videos_count_today()
 
-»ñÈ¡Ã¿¸ö·ÖÇøµ±ÈÕ×îÐÂÍ¶¸åÊýÁ¿
+èŽ·å–æ¯ä¸ªåˆ†åŒºå½“æ—¥æœ€æ–°æŠ•ç¨¿æ•°é‡
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential \| None` | Æ¾¾ÝÀà |
+| `credential` | `Credential \| None` | å‡­æ®ç±» |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›žçš„ç»“æžœ
 
 
 

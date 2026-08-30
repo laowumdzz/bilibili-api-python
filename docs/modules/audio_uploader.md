@@ -3,7 +3,7 @@
 
 bilibili_api.audio_uploader
 
-ÒôÆµÉÏ´«
+éŸ³é¢‘ä¸Šä¼ 
 
 
 ``` python
@@ -43,26 +43,26 @@ from bilibili_api import audio_uploader
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-ÒôÆµÉÏ´«
+éŸ³é¢‘ä¸Šä¼ 
 
 
 
 
 ### def \_\_init\_\_()
 
-³õÊ¼»¯
+åˆå§‹åŒ–
 
 
 | name | type | description |
 | - | - | - |
-| `path` | `str` | ÎÄ¼şÂ·¾¶ |
-| `meta` | `AudioMeta` | ÔªÊı¾İ |
-| `credential` | `Credential` | ÕËºÅĞÅÏ¢ |
+| `path` | `str` | æ–‡ä»¶è·¯å¾„ |
+| `meta` | `AudioMeta` | å…ƒæ•°æ® |
+| `credential` | `Credential` | è´¦å·ä¿¡æ¯ |
 
 
 ### async def abort()
 
-ÖĞ¶Ï¸ü¸Ä
+ä¸­æ–­æ›´æ”¹
 
 
 
@@ -71,7 +71,7 @@ from bilibili_api import audio_uploader
 
 ### async def start()
 
-¿ªÊ¼ÉÏ´«
+å¼€å§‹ä¸Šä¼ 
 
 
 
@@ -84,23 +84,23 @@ from bilibili_api import audio_uploader
 
 **Extend: enum.Enum**
 
-ÉÏ´«ÊÂ¼şÃ¶¾Ù
+ä¸Šä¼ äº‹ä»¶æšä¸¾
 
 Events:
-+ PREUPLOAD  »ñÈ¡ÉÏ´«ĞÅÏ¢
-+ PREUPLOAD_FAILED  »ñÈ¡ÉÏ´«ĞÅÏ¢Ê§°Ü
-+ PRE_CHUNK  ÉÏ´«·Ö¿éÇ°
-+ AFTER_CHUNK  ÉÏ´«·Ö¿éºó
-+ CHUNK_FAILED  Çø¿éÉÏ´«Ê§°Ü
-+ PRE_COVER  ÉÏ´«·âÃæÇ°
-+ AFTER_COVER  ÉÏ´«·âÃæºó
-+ COVER_FAILED  ÉÏ´«·âÃæÊ§°Ü
-+ PRE_SUBMIT  Ìá½»ÒôÆµÇ°
-+ SUBMIT_FAILED  Ìá½»ÒôÆµÊ§°Ü
-+ AFTER_SUBMIT  Ìá½»ÒôÆµºó
-+ COMPLETED  Íê³ÉÉÏ´«
-+ ABORTED  ÓÃ»§ÖĞÖ¹
-+ FAILED  ÉÏ´«Ê§°Ü
++ PREUPLOAD  è·å–ä¸Šä¼ ä¿¡æ¯
++ PREUPLOAD_FAILED  è·å–ä¸Šä¼ ä¿¡æ¯å¤±è´¥
++ PRE_CHUNK  ä¸Šä¼ åˆ†å—å‰
++ AFTER_CHUNK  ä¸Šä¼ åˆ†å—å
++ CHUNK_FAILED  åŒºå—ä¸Šä¼ å¤±è´¥
++ PRE_COVER  ä¸Šä¼ å°é¢å‰
++ AFTER_COVER  ä¸Šä¼ å°é¢å
++ COVER_FAILED  ä¸Šä¼ å°é¢å¤±è´¥
++ PRE_SUBMIT  æäº¤éŸ³é¢‘å‰
++ SUBMIT_FAILED  æäº¤éŸ³é¢‘å¤±è´¥
++ AFTER_SUBMIT  æäº¤éŸ³é¢‘å
++ COMPLETED  å®Œæˆä¸Šä¼ 
++ ABORTED  ç”¨æˆ·ä¸­æ­¢
++ FAILED  ä¸Šä¼ å¤±è´¥
 
 
 
@@ -119,7 +119,7 @@ AuthorInfo(name: str, uid: int = 0)
 
 ## class CompilationCategories()
 
-×¨¼­·ÖÀà
+ä¸“è¾‘åˆ†ç±»
 
 
 
@@ -128,12 +128,12 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÉùÒôÀàĞÍ
+å£°éŸ³ç±»å‹
 
-+ RADIO_DRAMA: ¹ã²¥¾ç
-+ AUDIO_STORY: ÓĞÉù¹ÊÊÂ
++ RADIO_DRAMA: å¹¿æ’­å‰§
++ AUDIO_STORY: æœ‰å£°æ•…äº‹
 + ASMR: ASMR
-+ OTHER: ÆäËû
++ OTHER: å…¶ä»–
 
 
 
@@ -142,10 +142,10 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÄÚÈİÀàĞÍ
+å†…å®¹ç±»å‹
 
-+ MUSIC: ÒôÀÖ
-+ AUDIO_PROGRAM: ÓĞÉù½ÚÄ¿
++ MUSIC: éŸ³ä¹
++ AUDIO_PROGRAM: æœ‰å£°èŠ‚ç›®
 
 
 
@@ -154,11 +154,11 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-´´×÷ÀàĞÍ
+åˆ›ä½œç±»å‹
 
-+ ORIGINAL: Ô­´´
-+ COVER: ·­³ª/·­×à
-+ REMIX: ¸Ä±à/remix
++ ORIGINAL: åŸåˆ›
++ COVER: ç¿»å”±/ç¿»å¥
++ REMIX: æ”¹ç¼–/remix
 
 
 
@@ -167,14 +167,14 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÓïÖÖ
+è¯­ç§
 
-+ CHINESE: ÖĞÎÄ
-+ JAPANESE: ÈÕÓï
-+ ENGLISH: Ó¢Óï
-+ KOREAN: º«Óï
-+ CANTONESE: ÔÁÓï
-+ OTHER_LANGUAGES: ÆäËûÓïÖÖ
++ CHINESE: ä¸­æ–‡
++ JAPANESE: æ—¥è¯­
++ ENGLISH: è‹±è¯­
++ KOREAN: éŸ©è¯­
++ CANTONESE: ç²¤è¯­
++ OTHER_LANGUAGES: å…¶ä»–è¯­ç§
 
 
 
@@ -183,12 +183,12 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÉùÒôÀàĞÍ
+å£°éŸ³ç±»å‹
 
-+ HUMAN_SINGING: ÈËÉùÑİ³ª
-+ VOCALOID_SINGER: VOCALOID¸èÊÖ
-+ HUMAN_KICHUKU: ÈËÁ¦¹íĞó
-+ PURE_MUSIC: ´¿ÒôÀÖ
++ HUMAN_SINGING: äººå£°æ¼”å”±
++ VOCALOID_SINGER: VOCALOIDæ­Œæ‰‹
++ HUMAN_KICHUKU: äººåŠ›é¬¼ç•œ
++ PURE_MUSIC: çº¯éŸ³ä¹
 
 
 
@@ -197,33 +197,33 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-·ç¸ñ
+é£æ ¼
 
-+ POP: Á÷ĞĞ
-+ ANCIENT_STYLE: ¹Å·ç
-+ ROCK: Ò¡¹ö
-+ FOLK_SONG: ÃñÒ¥
-+ ELECTRONIC: µç×Ó
-+ DANCE_MUSIC: ÎèÇú
-+ RAP: Ëµ³ª
-+ LIGHT_MUSIC: ÇáÒôÀÖ
-+ A_CAPPELLA: °¢¿¨±´À­
-+ JAZZ: ¾ôÊ¿
-+ COUNTRY_MUSIC: Ïç´å
++ POP: æµè¡Œ
++ ANCIENT_STYLE: å¤é£
++ ROCK: æ‘‡æ»š
++ FOLK_SONG: æ°‘è°£
++ ELECTRONIC: ç”µå­
++ DANCE_MUSIC: èˆæ›²
++ RAP: è¯´å”±
++ LIGHT_MUSIC: è½»éŸ³ä¹
++ A_CAPPELLA: é˜¿å¡è´æ‹‰
++ JAZZ: çˆµå£«
++ COUNTRY_MUSIC: ä¹¡æ‘
 + R_AND_B: R&B/Soul
-+ CLASSICAL: ¹Åµä
-+ CLASSICAL: ¹Åµä
-+ ETHNIC: Ãñ×å
-+ BRITISH: Ó¢Â×
-+ METAL: ½ğÊô
-+ PUNK: Åó¿Ë
-+ BLUES: À¶µ÷
-+ REGGAE: À×¹í
-+ WORLD_MUSIC: ÊÀ½çÒôÀÖ
-+ LATIN: À­¶¡
-+ ALTERNATIVE: ÁíÀà/¶ÀÁ¢
++ CLASSICAL: å¤å…¸
++ CLASSICAL: å¤å…¸
++ ETHNIC: æ°‘æ—
++ BRITISH: è‹±ä¼¦
++ METAL: é‡‘å±
++ PUNK: æœ‹å…‹
++ BLUES: è“è°ƒ
++ REGGAE: é›·é¬¼
++ WORLD_MUSIC: ä¸–ç•ŒéŸ³ä¹
++ LATIN: æ‹‰ä¸
++ ALTERNATIVE: å¦ç±»/ç‹¬ç«‹
 + NEW_AGE: New Age
-+ POST_ROCK: ºóÒ¡
++ POST_ROCK: åæ‘‡
 + BOSSA_NOVA: Bossa Nova
 
 
@@ -233,14 +233,14 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-Ö÷ÌâÀ´Ô´
+ä¸»é¢˜æ¥æº
 
-+ GAME: ÓÎÏ·
-+ ANIMATION: ¶¯»­
-+ FILM_AND_TELEVISION: Ó°ÊÓ
-+ NETWORK_SONG: ÍøÂç¸èÇú
-+ DERIVATIVE_WORK: Í¬ÈË
-+ IDOL: Å¼Ïñ
++ GAME: æ¸¸æˆ
++ ANIMATION: åŠ¨ç”»
++ FILM_AND_TELEVISION: å½±è§†
++ NETWORK_SONG: ç½‘ç»œæ­Œæ›²
++ DERIVATIVE_WORK: åŒäºº
++ IDOL: å¶åƒ
 
 
 
@@ -249,7 +249,7 @@ AuthorInfo(name: str, uid: int = 0)
 
 ## class SongCategories()
 
-¸èÇú·ÖÀà
+æ­Œæ›²åˆ†ç±»
 
 
 
@@ -258,11 +258,11 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÓĞÉù½ÚÄ¿ÀàĞÍ
+æœ‰å£°èŠ‚ç›®ç±»å‹
 
-+ RADIO_DRAMA: ¹ã²¥¾ç
-+ AUDIO_STORY: ÓĞÉù¹ÊÊÂ
-+ OTHER: ÆäËû
++ RADIO_DRAMA: å¹¿æ’­å‰§
++ AUDIO_STORY: æœ‰å£°æ•…äº‹
++ OTHER: å…¶ä»–
 
 
 
@@ -271,10 +271,10 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÄÚÈİÀàĞÍ
+å†…å®¹ç±»å‹
 
-+ MUSIC: ÒôÀÖ
-+ AUDIO_PROGRAM: ÓĞÉù½ÚÄ¿
++ MUSIC: éŸ³ä¹
++ AUDIO_PROGRAM: æœ‰å£°èŠ‚ç›®
 
 
 
@@ -283,11 +283,11 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-´´×÷ÀàĞÍ
+åˆ›ä½œç±»å‹
 
-+ ORIGINAL: Ô­´´
-+ COVER: ·­³ª/·­×à
-+ REMIX: ¸Ä±à/remix
++ ORIGINAL: åŸåˆ›
++ COVER: ç¿»å”±/ç¿»å¥
++ REMIX: æ”¹ç¼–/remix
 
 
 
@@ -296,14 +296,14 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÓïÑÔ
+è¯­è¨€
 
-+ CHINESE: »ªÓï
-+ JAPANESE: ÈÕÓï
-+ ENGLISH: Ó¢Óï
-+ KOREAN: º«Óï
-+ CANTONESE: ÔÁÓï
-+ OTHER_LANGUAGES: ÆäËûÓïÖÖ
++ CHINESE: åè¯­
++ JAPANESE: æ—¥è¯­
++ ENGLISH: è‹±è¯­
++ KOREAN: éŸ©è¯­
++ CANTONESE: ç²¤è¯­
++ OTHER_LANGUAGES: å…¶ä»–è¯­ç§
 
 
 
@@ -312,12 +312,12 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÉùÒôÀàĞÍ
+å£°éŸ³ç±»å‹
 
-+ HUMAN_SINGING: ÈËÉùÑİ³ª
-+ VOCALOID: VOCALOID¸èÊÖ
-+ HUMAN_GHOST: ÈËÁ¦¹íĞó
-+ PURE_MUSIC: ´¿ÒôÀÖ/Ñİ×à
++ HUMAN_SINGING: äººå£°æ¼”å”±
++ VOCALOID: VOCALOIDæ­Œæ‰‹
++ HUMAN_GHOST: äººåŠ›é¬¼ç•œ
++ PURE_MUSIC: çº¯éŸ³ä¹/æ¼”å¥
 
 
 
@@ -326,32 +326,32 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-ÒôÀÖ·ç¸ñ
+éŸ³ä¹é£æ ¼
 
-+ POP: Á÷ĞĞ
-+ ANCIENT: ¹Å·ç
-+ ROCK: Ò¡¹ö
-+ FOLK: ÃñÒ¥
-+ ELECTRONIC: µç×Ó
-+ DANCE: ÎèÇú
-+ RAP: Ëµ³ª
-+ LIGHT_MUSIC: ÇáÒôÀÖ
-+ ACAPELLA: °¢¿¨±´À­
-+ JAZZ: ¾ôÊ¿
-+ COUNTRY: Ïç´å
++ POP: æµè¡Œ
++ ANCIENT: å¤é£
++ ROCK: æ‘‡æ»š
++ FOLK: æ°‘è°£
++ ELECTRONIC: ç”µå­
++ DANCE: èˆæ›²
++ RAP: è¯´å”±
++ LIGHT_MUSIC: è½»éŸ³ä¹
++ ACAPELLA: é˜¿å¡è´æ‹‰
++ JAZZ: çˆµå£«
++ COUNTRY: ä¹¡æ‘
 + RNB_SOUL: R&B/Soul
-+ CLASSICAL: ¹Åµä
-+ ETHNIC: Ãñ×å
-+ BRITISH: Ó¢Â×
-+ METAL: ½ğÊô
-+ PUNK: Åó¿Ë
-+ BLUES: À¶µ÷
-+ REGGAE: À×¹í
-+ WORLD_MUSIC: ÊÀ½çÒôÀÖ
-+ LATIN: À­¶¡
-+ ALTERNATIVE_INDEPENDENT: ÁíÀà/¶ÀÁ¢
++ CLASSICAL: å¤å…¸
++ ETHNIC: æ°‘æ—
++ BRITISH: è‹±ä¼¦
++ METAL: é‡‘å±
++ PUNK: æœ‹å…‹
++ BLUES: è“è°ƒ
++ REGGAE: é›·é¬¼
++ WORLD_MUSIC: ä¸–ç•ŒéŸ³ä¹
++ LATIN: æ‹‰ä¸
++ ALTERNATIVE_INDEPENDENT: å¦ç±»/ç‹¬ç«‹
 + NEW_AGE: New Age
-+ POST_ROCK: ºóÒ¡
++ POST_ROCK: åæ‘‡
 + BOSSA_NOVA: Bossa Nova
 
 
@@ -361,14 +361,14 @@ AuthorInfo(name: str, uid: int = 0)
 
 **Extend: enum.Enum**
 
-Ö÷Ìâ
+ä¸»é¢˜
 
-+ ANIMATION: ¶¯»­
-+ GAME: ÓÎÏ·
-+ FILM_AND_TELEVISION: Ó°ÊÓ
-+ INTERNET_SONG: ÍøÂç¸èÇú
-+ SECOND_CREATION: Í¬ÈË
-+ IDOL: Å¼Ïñ
++ ANIMATION: åŠ¨ç”»
++ GAME: æ¸¸æˆ
++ FILM_AND_TELEVISION: å½±è§†
++ INTERNET_SONG: ç½‘ç»œæ­Œæ›²
++ SECOND_CREATION: åŒäºº
++ IDOL: å¶åƒ
 
 
 
@@ -379,59 +379,59 @@ AuthorInfo(name: str, uid: int = 0)
 
 ## class SongMeta()
 
-content_type (SongCategories.ContentType): ÄÚÈİÀàĞÍ
+content_type (SongCategories.ContentType): å†…å®¹ç±»å‹
 
-song_type (Union[SongCategories.SongType, SongCategories.AudioType]): ¸èÇúÀàĞÍ
+song_type (Union[SongCategories.SongType, SongCategories.AudioType]): æ­Œæ›²ç±»å‹
 
-creation_type (SongCategories.CreationType): ´´×÷ÀàĞÍ
+creation_type (SongCategories.CreationType): åˆ›ä½œç±»å‹
 
-language (Optional[SongCategories.Language]): ÓïÑÔÀàĞÍ
+language (Optional[SongCategories.Language]): è¯­è¨€ç±»å‹
 
-theme (Optional[SongCategories.Theme]): Ö÷ÌâÀ´Ô´
+theme (Optional[SongCategories.Theme]): ä¸»é¢˜æ¥æº
 
-style (Optional[SongCategories.Style]): ·ç¸ñÀàĞÍ
+style (Optional[SongCategories.Style]): é£æ ¼ç±»å‹
 
-singer (List[AuthorInfo]): ¸èÊÖ
+singer (List[AuthorInfo]): æ­Œæ‰‹
 
-player (Optional[List[AuthorInfo]]): Ñİ×à
+player (Optional[List[AuthorInfo]]): æ¼”å¥
 
-sound_source (Optional[List[AuthorInfo]]): ÒôÔ´
+sound_source (Optional[List[AuthorInfo]]): éŸ³æº
 
-tuning (Optional[List[AuthorInfo]]): µ÷Òô
+tuning (Optional[List[AuthorInfo]]): è°ƒéŸ³
 
-lyricist (Optional[List[AuthorInfo]]): ×÷´Ê
+lyricist (Optional[List[AuthorInfo]]): ä½œè¯
 
-arranger (List[AuthorInfo]): ±àÇú
+arranger (List[AuthorInfo]): ç¼–æ›²
 
-composer (Optional[List[AuthorInfo]]): ×÷Çú
+composer (Optional[List[AuthorInfo]]): ä½œæ›²
 
-mixer (Optional[str]): »ìÒô
+mixer (Optional[str]): æ··éŸ³
 
-cover_maker (Optional[List[AuthorInfo]]): ·âÃæÖÆ×÷Õß
+cover_maker (Optional[List[AuthorInfo]]): å°é¢åˆ¶ä½œè€…
 
-instrument (Optional[List[str]]): ÀÖÆ÷
+instrument (Optional[List[str]]): ä¹å™¨
 
-origin_url (Optional[str]): Ô­ÇúÁ´½Ó
+origin_url (Optional[str]): åŸæ›²é“¾æ¥
 
-origin_title (Optional[str]): Ô­Çú±êÌâ
+origin_title (Optional[str]): åŸæ›²æ ‡é¢˜
 
-title (str): ±êÌâ
+title (str): æ ‡é¢˜
 
-cover (Optional[Picture]): ·âÃæ
+cover (Optional[Picture]): å°é¢
 
-description (Optional[str]): ÃèÊö
+description (Optional[str]): æè¿°
 
-tags (Union[List[str], str]): ±êÇ©
+tags (Union[List[str], str]): æ ‡ç­¾
 
-aid (Optional[int]): ÊÓÆµ aid
+aid (Optional[int]): è§†é¢‘ aid
 
-cid (Optional[int]): ÊÓÆµ cid
+cid (Optional[int]): è§†é¢‘ cid
 
-tid (Optional[int]): ÊÓÆµ tid
+tid (Optional[int]): è§†é¢‘ tid
 
-compilation_id (Optional[int]): ºÏ¼­ ID
+compilation_id (Optional[int]): åˆè¾‘ ID
 
-lrc (Optional[str]): ¸è´Ê
+lrc (Optional[str]): æ­Œè¯
 
 
 
@@ -440,13 +440,13 @@ lrc (Optional[str]): ¸è´Ê
 
 ## async def get_upinfo()
 
-»ñÈ¡ UP ĞÅÏ¢
+è·å– UP ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `param` | `Union[int, str]` | UP Ö÷ ID »òÕßÓÃ»§Ãû |
-| `credential` | `Credential` | Æ¾¾İ |
+| `param` | `Union[int, str]` | UP ä¸» ID æˆ–è€…ç”¨æˆ·å |
+| `credential` | `Credential` | å‡­æ® |
 
 
 
@@ -455,15 +455,15 @@ lrc (Optional[str]): ¸è´Ê
 
 ## async def upload_cover()
 
-ÉÏ´«·âÃæ
+ä¸Šä¼ å°é¢
 
 
 | name | type | description |
 | - | - | - |
-| `cover` | `Picture` | ·âÃæ |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `cover` | `Picture` | å°é¢ |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
-**Returns:** `str`:  ·âÃæÁ´½Ó
+**Returns:** `str`:  å°é¢é“¾æ¥
 
 
 
@@ -472,13 +472,13 @@ lrc (Optional[str]): ¸è´Ê
 
 ## async def upload_lrc()
 
-ÉÏ´« LRC ¸è´Ê
+ä¸Šä¼  LRC æ­Œè¯
 
 
 | name | type | description |
 | - | - | - |
-| `lrc` | `str` | ¸è´Ê |
-| `credential` | `Credential` | Æ¾¾İ |
+| `lrc` | `str` | æ­Œè¯ |
+| `credential` | `Credential` | å‡­æ® |
 
 
 

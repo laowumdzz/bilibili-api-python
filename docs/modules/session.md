@@ -3,7 +3,7 @@
 
 bilibili_api.session
 
-ÏûÏ¢Ïà¹Ø
+æ¶ˆæ¯ç›¸å…³
 
 
 ``` python
@@ -37,29 +37,29 @@ from bilibili_api import session
 
 ## class Event()
 
-ÊÂ¼ş²ÎÊı:
-+ receiver_id:   ÊÕĞÅÈË UID
-+ receiver_type: ÊÕĞÅÈËÀàĞÍ£¬1: Ë½ÁÄ, 2: Ó¦Ô®ÍÅÍ¨Öª, 3: Ó¦Ô®ÍÅ
-+ sender_uid:·¢ËÍÈË UID
-+ talker_id: ¶Ô»°ÈË UID
-+ msg_seqno: ÊÂ¼ş Seqno
-+ msg_type:  ÊÂ¼şÀàĞÍ
-+ msg_key:   ÊÂ¼şÎ¨Ò»±àºÅ
-+ timestamp: ÊÂ¼şÊ±¼ä´Á
-+ content:   ÊÂ¼şÄÚÈİ
+äº‹ä»¶å‚æ•°:
++ receiver_id:   æ”¶ä¿¡äºº UID
++ receiver_type: æ”¶ä¿¡äººç±»å‹ï¼Œ1: ç§èŠ, 2: åº”æ´å›¢é€šçŸ¥, 3: åº”æ´å›¢
++ sender_uid:å‘é€äºº UID
++ talker_id: å¯¹è¯äºº UID
++ msg_seqno: äº‹ä»¶ Seqno
++ msg_type:  äº‹ä»¶ç±»å‹
++ msg_key:   äº‹ä»¶å”¯ä¸€ç¼–å·
++ timestamp: äº‹ä»¶æ—¶é—´æˆ³
++ content:   äº‹ä»¶å†…å®¹
 
 
 
 
 ### def \_\_init\_\_()
 
-ĞÅÏ¢ÊÂ¼şÀàĞÍ
+ä¿¡æ¯äº‹ä»¶ç±»å‹
 
 
 | name | type | description |
 | - | - | - |
-| `data` | `Dict` | ½ÓÊÕµ½µÄÊÂ¼şÏêÏ¸ĞÅÏ¢ |
-| `self_uid` | `int` | ÓÃ»§×ÔÉí UID |
+| `data` | `Dict` | æ¥æ”¶åˆ°çš„äº‹ä»¶è¯¦ç»†ä¿¡æ¯ |
+| `self_uid` | `int` | ç”¨æˆ·è‡ªèº« UID |
 
 
 ---
@@ -68,16 +68,16 @@ from bilibili_api import session
 
 **Extend: enum.Enum**
 
-ÊÂ¼şÀàĞÍ
+äº‹ä»¶ç±»å‹
 
-- TEXT:   ´¿ÎÄ×ÖÏûÏ¢
-- PICTURE:Í¼Æ¬ÏûÏ¢
-- WITHDRAW:   ³·»ØÏûÏ¢
-- GROUPS_PICTURE: Ó¦Ô®ÍÅÍ¼Æ¬£¬µ«ËÆºõ²»³£´¥·¢£¬Ò»°ãÊ¹ÓÃ PICTURE ¼´¿É
-- SHARE_VIDEO:·ÖÏíÊÓÆµ
-- NOTICE: ÏµÍ³Í¨Öª
-- PUSHED_VIDEO:   UPÖ÷ÍÆËÍµÄÊÓÆµ
-- WELCOME:ĞÂ³ÉÔ±¼ÓÈëÓ¦Ô®ÍÅ»¶Ó­
+- TEXT:   çº¯æ–‡å­—æ¶ˆæ¯
+- PICTURE:å›¾ç‰‡æ¶ˆæ¯
+- WITHDRAW:   æ’¤å›æ¶ˆæ¯
+- GROUPS_PICTURE: åº”æ´å›¢å›¾ç‰‡ï¼Œä½†ä¼¼ä¹ä¸å¸¸è§¦å‘ï¼Œä¸€èˆ¬ä½¿ç”¨ PICTURE å³å¯
+- SHARE_VIDEO:åˆ†äº«è§†é¢‘
+- NOTICE: ç³»ç»Ÿé€šçŸ¥
+- PUSHED_VIDEO:   UPä¸»æ¨é€çš„è§†é¢‘
+- WELCOME:æ–°æˆå‘˜åŠ å…¥åº”æ´å›¢æ¬¢è¿
 
 
 
@@ -88,7 +88,7 @@ from bilibili_api import session
 
 **Extend: bilibili_api.utils.AsyncEvent.AsyncEvent**
 
-»á»°Àà£¬ÓÃÀ´¿ªÆôÏûÏ¢¼àÌı¡£
+ä¼šè¯ç±»ï¼Œç”¨æ¥å¼€å¯æ¶ˆæ¯ç›‘å¬ã€‚
 
 
 
@@ -101,7 +101,7 @@ from bilibili_api import session
 
 ### def close()
 
-½áÊøÂÖÑ¯
+ç»“æŸè½®è¯¢
 
 
 
@@ -109,62 +109,62 @@ from bilibili_api import session
 
 ### def get_status()
 
-»ñÈ¡Á¬½Ó×´Ì¬
+è·å–è¿æ¥çŠ¶æ€
 
 
 
-**Returns:** `int`:  0 ³õÊ¼»¯£¬1 ÒÑÁ¬½Ó£¬2 ¶Ï¿ªÁ¬½ÓÖĞ£¬3 ÒÑ¶Ï¿ª£¬4 ´íÎó
+**Returns:** `int`:  0 åˆå§‹åŒ–ï¼Œ1 å·²è¿æ¥ï¼Œ2 æ–­å¼€è¿æ¥ä¸­ï¼Œ3 å·²æ–­å¼€ï¼Œ4 é”™è¯¯
 
 
 
 
 ### def on()
 
-ÖØÔØ×°ÊÎÆ÷×¢²áÊÂ¼ş¼àÌıÆ÷
+é‡è½½è£…é¥°å™¨æ³¨å†Œäº‹ä»¶ç›‘å¬å™¨
 
 
 | name | type | description |
 | - | - | - |
-| `event_type` | `EventType` | ÊÂ¼şÀàĞÍ |
+| `event_type` | `EventType` | äº‹ä»¶ç±»å‹ |
 
 
 
 
 ### async def reply()
 
-¿ìËÙ»Ø¸´ÏûÏ¢
+å¿«é€Ÿå›å¤æ¶ˆæ¯
 
 
 | name | type | description |
 | - | - | - |
-| `event` | `Event` | Òª»Ø¸´µÄÏûÏ¢ |
-| `content` | `str \| Picture` | Òª»Ø¸´µÄÎÄ×ÖÄÚÈİ |
+| `event` | `Event` | è¦å›å¤çš„æ¶ˆæ¯ |
+| `content` | `str \| Picture` | è¦å›å¤çš„æ–‡å­—å†…å®¹ |
 
-**Returns:** `dict`:  µ÷ÓÃ½Ó¿Ú·µ»ØµÄÄÚÈİ¡£
+**Returns:** `dict`:  è°ƒç”¨æ¥å£è¿”å›çš„å†…å®¹ã€‚
 
 
 
 
 ### async def run()
 
-·Ç×èÈûÒì²½ÅÀ³æ ¶¨Ê±·¢ËÍÇëÇó»ñÈ¡ÏûÏ¢
+éé˜»å¡å¼‚æ­¥çˆ¬è™« å®šæ—¶å‘é€è¯·æ±‚è·å–æ¶ˆæ¯
 
 
 | name | type | description |
 | - | - | - |
-| `exclude_self` | `bool` | ÊÇ·ñÅÅ³ı×Ô¼º·¢³öµÄÏûÏ¢£¬Ä¬ÈÏÅÅ³ı |
+| `exclude_self` | `bool` | æ˜¯å¦æ’é™¤è‡ªå·±å‘å‡ºçš„æ¶ˆæ¯ï¼Œé»˜è®¤æ’é™¤ |
 
 
 
 
 ### async def start()
 
-×èÈûÒì²½Æô¶¯ Í¨¹ıµ÷ÓÃ self.close() ºó¿É¶Ï¿ªÁ¬½Ó
+é˜»å¡å¼‚æ­¥å¯åŠ¨ é€šè¿‡è°ƒç”¨ self.close() åå¯æ–­å¼€è¿æ¥
 
 
 | name | type | description |
 | - | - | - |
-| `exclude_self` | `bool` | ÊÇ·ñÅÅ³ı×Ô¼º·¢³öµÄÏûÏ¢£¬Ä¬ÈÏÅÅ³ı |
+| `exclude_self` | `bool` | æ˜¯å¦æ’é™¤è‡ªå·±å‘å‡ºçš„æ¶ˆæ¯ï¼Œé»˜è®¤æ’é™¤ |
 
 
 
@@ -173,17 +173,17 @@ from bilibili_api import session
 
 ## async def fetch_session_msgs()
 
-»ñÈ¡Ö¸¶¨ÓÃ»§µÄ½üÈıÊ®ÌõÏûÏ¢
+è·å–æŒ‡å®šç”¨æˆ·çš„è¿‘ä¸‰åæ¡æ¶ˆæ¯
 
 
 | name | type | description |
 | - | - | - |
-| `talker_id` | `int` | ÓÃ»§ UID |
+| `talker_id` | `int` | ç”¨æˆ· UID |
 | `credential` | `Credential` | Credential |
-| `session_type` | `int` | »á»°ÀàĞÍ 1 Ë½ÁÄ 2 Ó¦Ô®ÍÅ |
-| `begin_seqno` | `int` | ÆğÊ¼ Seqno |
+| `session_type` | `int` | ä¼šè¯ç±»å‹ 1 ç§èŠ 2 åº”æ´å›¢ |
+| `begin_seqno` | `int` | èµ·å§‹ Seqno |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
 
 
 
@@ -192,16 +192,16 @@ from bilibili_api import session
 
 ## async def get_at()
 
-»ñÈ¡ÊÕµ½µÄ AT
+è·å–æ”¶åˆ°çš„ AT
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà. |
-| `last_id` | `Optional, int` | ×îºóÒ»¸ö ID. ÓÃÓÚ·­Ò³¡£Defaults to None. |
-| `at_time` | `Optional, int` | ×îºóÒ»¸öµãÔŞ·¢ËÍÊ±¼ä. ÓÃÓÚ·­Ò³¡£Defaults to None. |
+| `credential` | `Credential` | å‡­æ®ç±». |
+| `last_id` | `Optional, int` | æœ€åä¸€ä¸ª ID. ç”¨äºç¿»é¡µã€‚Defaults to None. |
+| `at_time` | `Optional, int` | æœ€åä¸€ä¸ªç‚¹èµå‘é€æ—¶é—´. ç”¨äºç¿»é¡µã€‚Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -210,16 +210,16 @@ from bilibili_api import session
 
 ## async def get_likes()
 
-»ñÈ¡ÊÕµ½µÄÔŞ
+è·å–æ”¶åˆ°çš„èµ
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà. |
-| `last_id` | `Optional, int` | ×îºóÒ»¸ö ID. ÓÃÓÚ·­Ò³¡£Defaults to None. |
-| `like_time` | `Optional, int` | ×îºóÒ»¸öµãÔŞ·¢ËÍÊ±¼ä. ÓÃÓÚ·­Ò³¡£Defaults to None. |
+| `credential` | `Credential` | å‡­æ®ç±». |
+| `last_id` | `Optional, int` | æœ€åä¸€ä¸ª ID. ç”¨äºç¿»é¡µã€‚Defaults to None. |
+| `like_time` | `Optional, int` | æœ€åä¸€ä¸ªç‚¹èµå‘é€æ—¶é—´. ç”¨äºç¿»é¡µã€‚Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -228,16 +228,16 @@ from bilibili_api import session
 
 ## async def get_replies()
 
-»ñÈ¡ÊÕµ½µÄ»Ø¸´
+è·å–æ”¶åˆ°çš„å›å¤
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà. |
-| `last_reply_id` | `Optional, int` | ×îºóÒ»¸öÆÀÂÛµÄ ID. ÓÃÓÚ·­Ò³¡£Defaults to None. |
-| `reply_time` | `Optional, int` | ×îºóÒ»¸öÆÀÂÛ·¢ËÍÊ±¼ä. ÓÃÓÚ·­Ò³¡£Defaults to None. |
+| `credential` | `Credential` | å‡­æ®ç±». |
+| `last_reply_id` | `Optional, int` | æœ€åä¸€ä¸ªè¯„è®ºçš„ ID. ç”¨äºç¿»é¡µã€‚Defaults to None. |
+| `reply_time` | `Optional, int` | æœ€åä¸€ä¸ªè¯„è®ºå‘é€æ—¶é—´. ç”¨äºç¿»é¡µã€‚Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -246,16 +246,16 @@ from bilibili_api import session
 
 ## async def get_session_detail()
 
-»ñÈ¡»á»°ÏêÇé
+è·å–ä¼šè¯è¯¦æƒ…
 
 
 | name | type | description |
 | - | - | - |
 | `credential` | `Credential` | Credential |
-| `session_type` | `int` | »á»°ÀàĞÍ |
-| `talker_id` | `int` | »á»°¶ÔÏóµÄUID |
+| `session_type` | `int` | ä¼šè¯ç±»å‹ |
+| `talker_id` | `int` | ä¼šè¯å¯¹è±¡çš„UID |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
 
 
 
@@ -264,14 +264,14 @@ from bilibili_api import session
 
 ## async def get_session_settings()
 
-»ñÈ¡ÏûÏ¢ÉèÖÃ
+è·å–æ¶ˆæ¯è®¾ç½®
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà. |
+| `credential` | `Credential` | å‡­æ®ç±». |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -280,15 +280,15 @@ from bilibili_api import session
 
 ## async def get_sessions()
 
-»ñÈ¡ÒÑÓĞÏûÏ¢
+è·å–å·²æœ‰æ¶ˆæ¯
 
 
 | name | type | description |
 | - | - | - |
 | `credential` | `Credential` | Credential |
-| `session_type` | `int` | »á»°ÀàĞÍ 1 |
+| `session_type` | `int` | ä¼šè¯ç±»å‹ 1 |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
 
 
 
@@ -297,14 +297,14 @@ from bilibili_api import session
 
 ## async def get_system_messages()
 
-»ñÈ¡ÏµÍ³ĞÅÏ¢
+è·å–ç³»ç»Ÿä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà. |
+| `credential` | `Credential` | å‡­æ®ç±». |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -313,14 +313,14 @@ from bilibili_api import session
 
 ## async def get_unread_messages()
 
-»ñÈ¡Î´¶ÁµÄĞÅÏ¢
+è·å–æœªè¯»çš„ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾¾İÀà. |
+| `credential` | `Credential` | å‡­æ®ç±». |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -329,15 +329,15 @@ from bilibili_api import session
 
 ## async def new_sessions()
 
-»ñÈ¡ĞÂÏûÏ¢
+è·å–æ–°æ¶ˆæ¯
 
 
 | name | type | description |
 | - | - | - |
 | `credential` | `Credential` | Credential |
-| `begin_ts` | `int` | ÆğÊ¼Ê±¼ä´Á |
+| `begin_ts` | `int` | èµ·å§‹æ—¶é—´æˆ³ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
 
 
 
@@ -346,19 +346,19 @@ from bilibili_api import session
 
 ## async def send_msg()
 
-¸øÓÃ»§·¢ËÍË½ÁÄĞÅÏ¢¡£Ä¿Ç°½öÖ§³Ö´¿ÎÄ±¾¡£
+ç»™ç”¨æˆ·å‘é€ç§èŠä¿¡æ¯ã€‚ç›®å‰ä»…æ”¯æŒçº¯æ–‡æœ¬ã€‚
 
-µ÷ÓÃ API ĞèÒª·¢ËÍÕßÓÃ»§µÄ UID£¬¿É½«´ËĞ¯´øÔÚÆ¾¾İÀàµÄ DedeUserID ×Ö¶Î£¬²»Ğ¯´øÄ£¿é½«×Ô¶¯»ñÈ¡¶ÔÓ¦ UID¡£
+è°ƒç”¨ API éœ€è¦å‘é€è€…ç”¨æˆ·çš„ UIDï¼Œå¯å°†æ­¤æºå¸¦åœ¨å‡­æ®ç±»çš„ DedeUserID å­—æ®µï¼Œä¸æºå¸¦æ¨¡å—å°†è‡ªåŠ¨è·å–å¯¹åº” UIDã€‚
 
 
 | name | type | description |
 | - | - | - |
-| `credential` | `Credential` | Æ¾Ö¤ |
-| `receiver_id` | `int` | ½ÓÊÕÕß UID |
-| `msg_type` | `EventType` | ĞÅÏ¢ÀàĞÍ£¬²Î¿¼ Event ÀàµÄÊÂ¼şÀàĞÍ¡£ |
-| `content` | `str \| Picture` | ĞÅÏ¢ÄÚÈİ¡£Ö§³ÖÎÄ×ÖºÍÍ¼Æ¬¡£ |
+| `credential` | `Credential` | å‡­è¯ |
+| `receiver_id` | `int` | æ¥æ”¶è€… UID |
+| `msg_type` | `EventType` | ä¿¡æ¯ç±»å‹ï¼Œå‚è€ƒ Event ç±»çš„äº‹ä»¶ç±»å‹ã€‚ |
+| `content` | `str \| Picture` | ä¿¡æ¯å†…å®¹ã€‚æ”¯æŒæ–‡å­—å’Œå›¾ç‰‡ã€‚ |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»Ø½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›ç»“æœ
 
 
 

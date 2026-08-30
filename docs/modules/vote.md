@@ -3,9 +3,9 @@
 
 bilibili_api.vote
 
-Í¶Æ±Ïà¹Ø²Ù×÷¡£
+æŠ•ç¥¨ç›¸å…³æ“ä½œã€‚
 
-ĞèÒª vote_id,»ñÈ¡ vote_id: https://nemo2011.github.io/bilibili-api/#/vote_id
+éœ€è¦ vote_id,è·å– vote_id: https://nemo2011.github.io/bilibili-api/#/vote_id
 
 
 ``` python
@@ -30,13 +30,13 @@ from bilibili_api import vote
 
 ## class Vote()
 
-Í¶Æ±Àà
+æŠ•ç¥¨ç±»
 
 
 | name | type | description |
 | - | - | - |
-| `vote_id` | `int` | vote_id, »ñÈ¡£ºhttps |
-| `credential` | `Credential` | Æ¾¾İÀà |
+| `vote_id` | `int` | vote_id, è·å–ï¼šhttps |
+| `credential` | `Credential` | å‡­æ®ç±» |
 
 
 ### def \_\_init\_\_()
@@ -44,60 +44,60 @@ from bilibili_api import vote
 
 | name | type | description |
 | - | - | - |
-| `vote_id` | `int` | vote_id, »ñÈ¡£ºhttps |
-| `credential` | `Credential` | Æ¾¾İÀà£¬·Ç±ØÒª. |
+| `vote_id` | `int` | vote_id, è·å–ï¼šhttps |
+| `credential` | `Credential` | å‡­æ®ç±»ï¼Œéå¿…è¦. |
 
 
 ### async def get_info()
 
-»ñÈ¡Í¶Æ±ÏêÇé
+è·å–æŠ•ç¥¨è¯¦æƒ…
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
 
 ### async def get_title()
 
-¿ìËÙ»ñÈ¡Í¶Æ±±êÌâ
+å¿«é€Ÿè·å–æŠ•ç¥¨æ ‡é¢˜
 
 
 
-**Returns:** `str`:  Í¶Æ±±êÌâ
+**Returns:** `str`:  æŠ•ç¥¨æ ‡é¢˜
 
 
 
 
 ### def get_vote_id()
 
-»ñÈ¡Í¶Æ± id
+è·å–æŠ•ç¥¨ id
 
 
 
-**Returns:** `int`:  Í¶Æ± id
+**Returns:** `int`:  æŠ•ç¥¨ id
 
 
 
 
 ### async def update_vote()
 
-¸üĞÂÍ¶Æ±ÄÚÈİ
+æ›´æ–°æŠ•ç¥¨å†…å®¹
 
 
 | name | type | description |
 | - | - | - |
 | `vote_id` | `int` | vote_id |
-| `title` | `str` | Í¶Æ±±êÌâ |
-| `_type` | `VoteType` | Í¶Æ±ÀàĞÍ |
-| `choice_cnt` | `int` | ×î¶à¼¸Ïî |
-| `duration` | `int` | Í¶Æ±³ÖĞøÃëÊı ³£ÓÃ |
-| `choices` | `VoteChoices` | Í¶Æ±Ñ¡Ïî |
-| `credential` | `Credential` | Credential Ã¶¾ÙÀà |
-| `desc` | `Optional[str], optional` | Í¶Æ±ÃèÊö. Defaults to None. |
+| `title` | `str` | æŠ•ç¥¨æ ‡é¢˜ |
+| `_type` | `VoteType` | æŠ•ç¥¨ç±»å‹ |
+| `choice_cnt` | `int` | æœ€å¤šå‡ é¡¹ |
+| `duration` | `int` | æŠ•ç¥¨æŒç»­ç§’æ•° å¸¸ç”¨ |
+| `choices` | `VoteChoices` | æŠ•ç¥¨é€‰é¡¹ |
+| `credential` | `Credential` | Credential æšä¸¾ç±» |
+| `desc` | `Optional[str], optional` | æŠ•ç¥¨æè¿°. Defaults to None. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -106,7 +106,7 @@ from bilibili_api import vote
 
 ## class VoteChoices()
 
-Í¶Æ±Ñ¡ÏîÀà
+æŠ•ç¥¨é€‰é¡¹ç±»
 
 
 
@@ -119,20 +119,20 @@ from bilibili_api import vote
 
 ### def add_choice()
 
-Íù VoteChoices Ìí¼ÓÑ¡Ïî
+å¾€ VoteChoices æ·»åŠ é€‰é¡¹
 
 
 | name | type | description |
 | - | - | - |
-| `desc` | `str` | Ñ¡ÏîÃèÊö |
-| `image` | `str, Picture, optional` | Ñ¡ÏîµÄÍ¼Æ¬Á´½Ó£¬ÓÃÓÚÍ¼Æ¬Í¶Æ±¡£Ö§³Ö Picture Àà. Defaults to None. |
+| `desc` | `str` | é€‰é¡¹æè¿° |
+| `image` | `str, Picture, optional` | é€‰é¡¹çš„å›¾ç‰‡é“¾æ¥ï¼Œç”¨äºå›¾ç‰‡æŠ•ç¥¨ã€‚æ”¯æŒ Picture ç±». Defaults to None. |
 
 
 
 
 ### def get_choices()
 
-»ñÈ¡ VoteChoices µÄ choices
+è·å– VoteChoices çš„ choices
 
 
 
@@ -143,12 +143,12 @@ from bilibili_api import vote
 
 ### def remove_choice()
 
-´Ó VoteChoices ÒÆ³ıÑ¡Ïî
+ä» VoteChoices ç§»é™¤é€‰é¡¹
 
 
 | name | type | description |
 | - | - | - |
-| `index` | `int` | Ñ¡ÏîË÷Òı |
+| `index` | `int` | é€‰é¡¹ç´¢å¼• |
 
 
 
@@ -159,10 +159,10 @@ from bilibili_api import vote
 
 **Extend: enum.Enum**
 
-Í¶Æ±ÀàĞÍÃ¶¾ÙÀà
+æŠ•ç¥¨ç±»å‹æšä¸¾ç±»
 
-+ TEXT: ÎÄ×ÖÍ¶Æ±
-+ IMAGE: Í¼Æ¬Í¶Æ±
++ TEXT: æ–‡å­—æŠ•ç¥¨
++ IMAGE: å›¾ç‰‡æŠ•ç¥¨
 
 
 
@@ -171,20 +171,20 @@ from bilibili_api import vote
 
 ## async def create_vote()
 
-´´½¨Í¶Æ±
+åˆ›å»ºæŠ•ç¥¨
 
 
 | name | type | description |
 | - | - | - |
-| `title` | `str` | Í¶Æ±±êÌâ |
-| `_type` | `VoteType` | Í¶Æ±ÀàĞÍ |
-| `choice_cnt` | `int` | ×î¶à¼¸Ïî |
-| `duration` | `int` | Í¶Æ±³ÖĞøÃëÊı ³£ÓÃ |
-| `choices` | `VoteChoices` | Í¶Æ±Ñ¡Ïî |
+| `title` | `str` | æŠ•ç¥¨æ ‡é¢˜ |
+| `_type` | `VoteType` | æŠ•ç¥¨ç±»å‹ |
+| `choice_cnt` | `int` | æœ€å¤šå‡ é¡¹ |
+| `duration` | `int` | æŠ•ç¥¨æŒç»­ç§’æ•° å¸¸ç”¨ |
+| `choices` | `VoteChoices` | æŠ•ç¥¨é€‰é¡¹ |
 | `credential` | `Credential` | Credential |
-| `desc` | `Optional[str], optional` | Í¶Æ±ÃèÊö. Defaults to None. |
+| `desc` | `Optional[str], optional` | æŠ•ç¥¨æè¿°. Defaults to None. |
 
-**Returns:** `Vote`:  Vote Àà
+**Returns:** `Vote`:  Vote ç±»
 
 
 

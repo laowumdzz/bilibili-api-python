@@ -3,7 +3,7 @@
 
 bilibili_api.hot
 
-ÈÈÃÅÏà¹Ø API
+çƒ­é—¨ç›¸å…³ API
 
 
 ``` python
@@ -20,11 +20,11 @@ from bilibili_api import hot
 
 ## async def get_history_popular_videos()
 
-»ñÈ¡ÈëÕ¾±ØË¢ 85 ¸öÊÓÆµ
+è·å–å…¥ç«™å¿…åˆ· 85 ä¸ªè§†é¢‘
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -33,15 +33,15 @@ from bilibili_api import hot
 
 ## async def get_hot_buzzwords()
 
-»ñÈ¡ÈÈ´ÊÍ¼¼øĞÅÏ¢
+è·å–çƒ­è¯å›¾é‰´ä¿¡æ¯
 
 
 | name | type | description |
 | - | - | - |
-| `page_num` | `int` | Ò³Âë. Defaults to 1. |
-| `page_size` | `int` | Ã¿Ò»Ò³µÄÊı¾İ´óĞ¡. Defaults to 20. |
+| `page_num` | `int` | é¡µç . Defaults to 1. |
+| `page_size` | `int` | æ¯ä¸€é¡µçš„æ•°æ®å¤§å°. Defaults to 20. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -50,15 +50,15 @@ from bilibili_api import hot
 
 ## async def get_hot_videos()
 
-»ñÈ¡ÈÈÃÅÊÓÆµ
+è·å–çƒ­é—¨è§†é¢‘
 
 
 | name | type | description |
 | - | - | - |
-| `pn` | `int` | µÚ¼¸Ò³. Default to 1. |
-| `ps` | `int` | Ã¿Ò³ÊÓÆµÊı. Default to 20. |
+| `pn` | `int` | ç¬¬å‡ é¡µ. Default to 1. |
+| `ps` | `int` | æ¯é¡µè§†é¢‘æ•°. Default to 20. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -67,14 +67,14 @@ from bilibili_api import hot
 
 ## async def get_weekly_hot_videos()
 
-»ñÈ¡Ò»ÖÜµÄÃ¿ÖÜ±Ø¿´ÊÓÆµÁĞ±í
+è·å–ä¸€å‘¨çš„æ¯å‘¨å¿…çœ‹è§†é¢‘åˆ—è¡¨
 
 
 | name | type | description |
 | - | - | - |
-| `week` | `int` | µÚ¼¸ÖÜ. Default to 1. |
+| `week` | `int` | ç¬¬å‡ å‘¨. Default to 1. |
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
@@ -83,11 +83,11 @@ from bilibili_api import hot
 
 ## async def get_weekly_hot_videos_list()
 
-»ñÈ¡Ã¿ÖÜ±Ø¿´ÁĞ±í(½ö¸ÅÊö)
+è·å–æ¯å‘¨å¿…çœ‹åˆ—è¡¨(ä»…æ¦‚è¿°)
 
 
 
-**Returns:** `dict`:  µ÷ÓÃ API ·µ»ØµÄ½á¹û
+**Returns:** `dict`:  è°ƒç”¨ API è¿”å›çš„ç»“æœ
 
 
 
