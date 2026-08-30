@@ -4,6 +4,7 @@ import importlib
 import json
 import logging
 import os
+import re
 import sys
 
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
@@ -440,7 +441,23 @@ def parse_docstring1(doc: str):
     return mdstring
 
 
-import bilibili_api  # noqa: F401  # eval() 动态引用，不可删除
+import bilibili_api  # _symbol_doc 逐级 getattr 取符号 docstring，不可删除
+
+
+def _symbol_doc(qualname: str) -> str | None:
+    """按限定名（如 bilibili_api.video.Video）逐级 getattr 取 docstring。
+
+    替代 eval 动态求值：符号名来自 .mypy_cache 缓存清单，
+    走属性访问可在缓存被篡改时也不会把符号名当代码执行。
+    """
+    parts = qualname.split(".")
+    if parts[0] == "bilibili_api":
+        parts = parts[1:]
+    obj: object = bilibili_api
+    for part in parts:
+        obj = getattr(obj, part)
+    return obj.__doc__
+
 
 # _video_* / _live_danmaku 为本仓库内部私有模块，不单独生成文档；
 # 其经公开模块 __all__ re-export 的符号已在 re-export 所在模块的文档中生成章节（见收集阶段的 root=True 解析）。
@@ -456,18 +473,23 @@ for module in all_funcs:
         "_live_danmaku",
     ]:
         continue
+    # 模块名来自 .mypy_cache 目录清单，拼接输出路径前先白名单校验，防缓存被篡改时写出 docs/modules/ 之外
+    if not re.fullmatch(r"[A-Za-z0-9_.]+", module[0][0]):
+        raise ValueError(f"非法模块名，拒绝生成文档: {module[0][0]!r}")
     docs_dir = "./docs/modules/" + module[0][0] + ".md"
     # 显式 pin UTF-8：docsify 站点声明 charset=UTF-8，且编码不随运行环境 locale 变化
     # 才能保证 doc_gen 输出确定性（漂移校验依赖）；行尾交由 .gitattributes 的 text 属性归一化
+    # 模块名已经白名单校验，输出固定落在 docs/modules/ 下
+    # mimosa-ignore
     file = open(docs_dir, "w+", encoding="utf-8")
     logger.info("BEGIN %s", module[0][0])
     if module[0][0] != "bilibili_api":
         file.write(
-            f"# Module {module[0][0]}.py\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import {module[0][0]}\n```\n\n"
+            f"# Module {module[0][0]}.py\n\n{_symbol_doc(module[0][1])}\n\n``` python\nfrom bilibili_api import {module[0][0]}\n```\n\n"
         )
     else:
         file.write(
-            f"# Module bilibili_api\n\n{eval(f'{module[0][1]}.__doc__')}\n\n``` python\nfrom bilibili_api import ...\n```\n\n"
+            f"# Module bilibili_api\n\n{_symbol_doc(module[0][1])}\n\n``` python\nfrom bilibili_api import ...\n```\n\n"
         )
     logger.info("GENERATING TOC")
     last_data_class = -114514
@@ -506,16 +528,16 @@ for module in all_funcs:
             if not func[3].startswith("@") and func[3] != "builtins.object":
                 file.write(f"**Extend: {func[3]}**\n\n")
             if func[0] in ["request_log", "BiliAPIClient"]:
-                doc = eval(f"{func[1]}.__doc__")
+                doc = _symbol_doc(func[1])
                 for line in doc.split("\n"):
                     file.write(line + "\n")
                 file.write("\n\n")
             else:
-                file.write(parse_docstring1(eval(f"{func[1]}.__doc__")))
+                file.write(parse_docstring1(_symbol_doc(func[1])))
         else:
             if func[0] == "\\_\\_init\\_\\_":
-                file.write(parse_docstring1(eval(f"{func[1]}.__doc__")))
+                file.write(parse_docstring1(_symbol_doc(func[1])))
             else:
-                file.write(parse_docstring(eval(f"{func[1]}.__doc__")))
+                file.write(parse_docstring(_symbol_doc(func[1])))
     file.close()
     logger.info("DONE %s", docs_dir)
