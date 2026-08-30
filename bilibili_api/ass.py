@@ -5,7 +5,8 @@ bilibili_api.ass
 """
 
 import json
-from tempfile import gettempdir
+import os
+from tempfile import mkstemp
 
 from .bangumi import Episode
 from .cheese import CheeseVideo
@@ -347,6 +348,8 @@ async def make_ass_file_subtitle(
 
     subtitle_ass_str = subtitle_data_obj.to_ass(font=font, font_size=font_size)
 
+    # out 为调用方指定的输出路径，属字幕导出 API 固有形态
+    # mimosa-ignore
     with open(out, "w+", encoding="utf-8") as file:
         file.write(subtitle_ass_str)
 
@@ -386,6 +389,8 @@ async def make_srt_file_subtitle(
 
     subtitle_ass_str = subtitle_data_obj.to_srt()
 
+    # out 为调用方指定的输出路径，属字幕导出 API 固有形态
+    # mimosa-ignore
     with open(out, "w+", encoding="utf-8") as file:
         file.write(subtitle_ass_str)
 
@@ -425,6 +430,8 @@ async def make_lrc_file_subtitle(
 
     subtitle_ass_str = subtitle_data_obj.to_lrc()
 
+    # out 为调用方指定的输出路径，属字幕导出 API 固有形态
+    # mimosa-ignore
     with open(out, "w+", encoding="utf-8") as file:
         file.write(subtitle_ass_str)
 
@@ -464,6 +471,8 @@ async def make_simple_json_file_subtitle(
 
     subtitle_ass_str = subtitle_data_obj.to_simple_json_str()
 
+    # out 为调用方指定的输出路径，属字幕导出 API 固有形态
+    # mimosa-ignore
     with open(out, "w+", encoding="utf-8") as file:
         file.write(subtitle_ass_str)
 
@@ -572,21 +581,26 @@ async def make_ass_file_danmakus_protobuf(
         danmakus = await obj.get_danmakus()
     else:
         raise ArgsException("请传入 Video/Episode/CheeseVideo 类！")
-    with open(gettempdir() + "/danmaku_temp.xml", "w+", encoding="utf-8") as file:
-        file.write("<i>")
-        for d in danmakus:
-            file.write(d.to_xml())
-        file.write("</i>")
-    _export_ass_from_xml(
-        gettempdir() + "/danmaku_temp.xml",
-        out,
-        stage_size,
-        font_name,
-        font_size,
-        alpha,
-        fly_time,
-        static_time,
-    )
+    # 临时文件用 mkstemp 随机命名：共享 tmpdir 下固定名可被预置符号链接劫持，且并发导出会互相覆盖
+    fd, temp_xml_path = mkstemp(suffix=".xml", prefix="danmaku_")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as file:
+            file.write("<i>")
+            for d in danmakus:
+                file.write(d.to_xml())
+            file.write("</i>")
+        _export_ass_from_xml(
+            temp_xml_path,
+            out,
+            stage_size,
+            font_name,
+            font_size,
+            alpha,
+            fly_time,
+            static_time,
+        )
+    finally:
+        os.remove(temp_xml_path)
 
 
 async def make_ass_file_danmakus_xml(
@@ -647,15 +661,19 @@ async def make_ass_file_danmakus_xml(
         xml_content = await obj.get_danmaku_xml()
     else:
         raise ArgsException("请传入 Video/Episode/CheeseVideo 类！")
-    with open(gettempdir() + "/danmaku_temp.xml", "w+", encoding="utf-8") as file:
-        file.write(xml_content)
-    _export_ass_from_xml(
-        gettempdir() + "/danmaku_temp.xml",
-        out,
-        stage_size,
-        font_name,
-        font_size,
-        alpha,
-        fly_time,
-        static_time,
-    )
+    fd, temp_xml_path = mkstemp(suffix=".xml", prefix="danmaku_")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as file:
+            file.write(xml_content)
+        _export_ass_from_xml(
+            temp_xml_path,
+            out,
+            stage_size,
+            font_name,
+            font_size,
+            alpha,
+            fly_time,
+            static_time,
+        )
+    finally:
+        os.remove(temp_xml_path)
