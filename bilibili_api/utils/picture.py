@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 import os
+from pathlib import Path
+import re
 import tempfile
 from typing import Any
 
@@ -8,6 +10,23 @@ from yarl import URL
 
 from .network import BiliAPIFile, Credential, get_client
 from .utils import img_auto_scheme
+
+
+def _sanitize_image_type(imgtype: str) -> str:
+    """
+    过滤进入临时文件路径的图片后缀。
+
+    后缀可能来自远程图片 URL 的最后一段（load_url），仅保留字母数字并限长，
+    防止路径分隔符等字符借 URL 后缀把临时文件写到临时目录之外。
+
+    Args:
+        imgtype (str): 原始后缀
+
+    Returns:
+        str: 安全后缀；非法输入回退为 "png"（Pillow 依文件内容识别格式，回退不影响解析）
+    """
+    safe = re.sub(r"[^A-Za-z0-9]", "", imgtype)[:10]
+    return safe if safe else "png"
 
 
 @dataclass
@@ -48,8 +67,11 @@ class Picture:
         return f"Picture(height='{self.height}', width='{self.width}', imageType='{self.imageType}', size={self.size}, url='{self.url}')"
 
     def __set_picture_meta_from_bytes(self, imgtype: str) -> None:
+        imgtype = _sanitize_image_type(imgtype)
         tmp_dir = tempfile.gettempdir()
         img_path = os.path.join(tmp_dir, "test." + imgtype)
+        # 后缀已 _sanitize_image_type 白名单过滤
+        # mimosa-ignore
         with open(img_path, "wb+") as file:
             file.write(self.content)
         img = Image.open(img_path)
@@ -125,7 +147,9 @@ class Picture:
 
     def _to_biliapifile(self) -> BiliAPIFile:
         tmp_dir = tempfile.gettempdir()
-        img_path = os.path.join(tmp_dir, "test." + self.imageType)
+        img_path = os.path.join(tmp_dir, "test." + _sanitize_image_type(self.imageType))
+        # 后缀已 _sanitize_image_type 白名单过滤
+        # mimosa-ignore
         with open(img_path, "wb") as file:
             file.write(self.content)
         img = Image.open(img_path)
@@ -179,10 +203,10 @@ class Picture:
             Picture: `self`
         """
         tmp_dir = tempfile.gettempdir()
-        img_path = os.path.join(tmp_dir, "test." + self.imageType)
-        open(img_path, "wb").write(self.content)
+        img_path = os.path.join(tmp_dir, "test." + _sanitize_image_type(self.imageType))
+        Path(img_path).write_bytes(self.content)
         img = Image.open(img_path)
-        new_img_path = os.path.join(tmp_dir, "test." + new_format)
+        new_img_path = os.path.join(tmp_dir, "test." + _sanitize_image_type(new_format))
         img.save(new_img_path)
         with open(new_img_path, "rb") as file:
             self.content = file.read()
@@ -201,11 +225,11 @@ class Picture:
             Picture: `self`
         """
         tmp_dir = tempfile.gettempdir()
-        img_path = os.path.join(tmp_dir, "test." + self.imageType)
-        open(img_path, "wb").write(self.content)
+        img_path = os.path.join(tmp_dir, "test." + _sanitize_image_type(self.imageType))
+        Path(img_path).write_bytes(self.content)
         img = Image.open(img_path)
         img = img.resize((width, height))
-        new_img_path = os.path.join(tmp_dir, "test." + self.imageType)
+        new_img_path = os.path.join(tmp_dir, "test." + _sanitize_image_type(self.imageType))
         img.save(new_img_path)
         with open(new_img_path, "rb") as file:
             self.content = file.read()
@@ -223,8 +247,8 @@ class Picture:
             Picture: `self`
         """
         tmp_dir = tempfile.gettempdir()
-        img_path = os.path.join(tmp_dir, "test." + self.imageType)
-        open(img_path, "wb").write(self.content)
+        img_path = os.path.join(tmp_dir, "test." + _sanitize_image_type(self.imageType))
+        Path(img_path).write_bytes(self.content)
         img = Image.open(img_path)
         img.save(path, save_all=(True if self.imageType in ["webp", "gif"] else False))
         self.url = "file://" + path
