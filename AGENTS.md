@@ -54,7 +54,7 @@ bilibili_api/            # 库源码
 └── tools/               # 附带工具（ivitools / parser）
 scripts/                 # 开发脚本
 ├── doc_gen.py           # 文档自动生成（从 docstring）
-├── lint.py              # ruff check + format + pyrefly 类型检查 + 豁免错误码存量棘轮（type_ratchet）
+├── lint.py              # ruff check + format + pyrefly 类型检查 + 豁免错误码存量棘轮（type_ratchet）+ 文档漂移校验（docs/modules/）
 ├── type_ratchet.py      # pyrefly 豁免错误码存量棘轮校验（基线只减不增）
 └── get_*.py             # 数据抓取脚本
 tests/                   # 测试套件（统一由 pytest 运行）
@@ -95,7 +95,7 @@ Wbi 签名（`recalculate_wbi`）、buvid 自动生成（`get_buvid`）、bili_t
 
 ### 风格
 
-- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行，末尾含 `scripts/type_ratchet.py` 豁免错误码存量棘轮：豁免类别的存量计数只减不增，新增类型错误会被阻断）
+- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行，末尾含 `scripts/type_ratchet.py` 豁免错误码存量棘轮与 docs/modules/ 文档漂移校验：豁免类别的存量计数只减不增，新增类型错误会被阻断）
 - **类型存量棘轮维护义务**：修复存量类型错误后仅向下更新 `scripts/type_ratchet.py` 基线；某错误码基线清零后，须同步从 `pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表移除该条目并从脚本基线中删除，恢复默认启用
 - **下划线命名**，与现有代码保持一致
 - **全面类型注解**：函数参数、返回值均需类型注释
@@ -159,7 +159,7 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx / curl_cffi）
 2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
 3. 从 `dev` 分支切出新分支开发
-4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check` → 豁免错误码存量棘轮 `scripts/type_ratchet.py`）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`，类型存量变更需另跑 `uv run python scripts/type_ratchet.py` 确认基线只减不增
+4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check` → 豁免错误码存量棘轮 `scripts/type_ratchet.py` → 文档漂移校验：重新运行 doc_gen 后以 git 检测 `docs/modules/` 是否与源码漂移并阻断；docstring 漂移总是检测，公开符号级漂移依赖 `.mypy_cache`，缺失时跳过、落后时仅提示，`DOCS_DRIFT_STRICT=1` 时两者均升级为失败）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`，类型存量变更需另跑 `uv run python scripts/type_ratchet.py` 确认基线只减不增
 5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（脚本已兼容 Python 3.10+；依赖 mypy（含 stubgen）先生成 `.mypy_cache`，且 mypy 需以忽略错误的方式运行，否则含错误模块的缓存会被 mypy 删除）
 6. 向 `dev` 分支发起 PR
 
