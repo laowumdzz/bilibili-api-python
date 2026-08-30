@@ -26,7 +26,8 @@ import random
 import re
 import sys
 import time
-import xml.dom.minidom
+
+import defusedxml.minidom
 
 gettext.install(
     "danmaku2ass",
@@ -160,7 +161,8 @@ def ReadCommentsNiconico(f, fontsize):
         "nobleviolet": 0x6633CC,
         "purple2": 0x6633CC,
     }
-    dom = xml.dom.minidom.parse(f)
+    # 输入 XML 来自 B 站弹幕接口（远程数据），用 defusedxml 解析防实体注入
+    dom = defusedxml.minidom.parse(f)
     comment_element = dom.getElementsByTagName("chat")
     for comment in comment_element:
         try:
@@ -231,7 +233,8 @@ def ReadCommentsAcfun(f, fontsize):
 
 
 def ReadCommentsBilibili(f, fontsize):
-    dom = xml.dom.minidom.parse(f)
+    # 输入 XML 来自 B 站弹幕接口（远程数据），用 defusedxml 解析防实体注入
+    dom = defusedxml.minidom.parse(f)
     comment_element = dom.getElementsByTagName("d")
     for i, comment in enumerate(comment_element):
         try:
@@ -274,7 +277,8 @@ def ReadCommentsBilibili(f, fontsize):
 
 
 def ReadCommentsBilibili2(f, fontsize):
-    dom = xml.dom.minidom.parse(f)
+    # 输入 XML 来自 B 站弹幕接口（远程数据），用 defusedxml 解析防实体注入
+    dom = defusedxml.minidom.parse(f)
     comment_element = dom.getElementsByTagName("d")
     for i, comment in enumerate(comment_element):
         try:
@@ -359,7 +363,8 @@ def ReadCommentsTudou2(f, fontsize):
 
 
 def ReadCommentsMioMio(f, fontsize):
-    dom = xml.dom.minidom.parse(f)
+    # 输入 XML 来自 B 站弹幕接口（远程数据），用 defusedxml 解析防实体注入
+    dom = defusedxml.minidom.parse(f)
     comment_element = dom.getElementsByTagName("data")
     for i, comment in enumerate(comment_element):
         try:
@@ -769,7 +774,7 @@ def ProcessComments(
     reduced,
     progress_callback,
 ):
-    styleid = f"Danmaku2ASS_{random.randint(0, 0xFFFF):04x}"
+    styleid = f"Danmaku2ASS_{random.randint(0, 0xFFFF):04x}"  # mimosa-ignore
     WriteASSHead(f, width, height, fontface, fontsize, alpha, styleid)
     rows = [[None] * (height - bottomReserved + 1) for i in range(4)]
     for idx, i in enumerate(comments):
