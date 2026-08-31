@@ -39,3 +39,4 @@ env.sh
 temp/
 # Mimosa 安全插件本地状态（finding ledger / 扫描历史 / hook 状态）
 .mimosa/
+.zcode/
