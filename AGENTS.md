@@ -58,7 +58,8 @@ scripts/                 # 开发脚本
 ├── type_ratchet.py      # pyrefly 豁免错误码存量棘轮校验（基线只减不增）
 └── get_*.py             # 数据抓取脚本
 tests/                   # 测试套件（统一由 pytest 运行）
-├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记）
+├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记 / --login 临时登录）
+├── _login_cache.py      # 临时登录凭据缓存纯函数（路径 / base64 编解码 / 合法性判定 / 来源合并）
 ├── test_offline_*.py    # 离线单元/冒烟测试（无需凭据与网络）
 └── test_*.py            # 各模块集成测试（需要 BILI_* 凭据，缺凭据自动 skip）
 docs/                    # docsify 文档站
@@ -186,10 +187,12 @@ uv run pytest -m readonly
 uv run pytest tests/test_video.py
 ```
 
-集成测试凭据来源（优先级从高到低，由 `tests/conftest.py` 自动加载）：
+集成测试凭据来源（优先级从高到低，由 `tests/conftest.py` 自动装配）：
 
-1. **`.bilibili.cookie` 文件（推荐，本项目已配置）**：项目根目录下的 `.bilibili.cookie` 存放测试账号的完整 Cookie（浏览器导出的标准 Cookie 字符串，含 `SESSDATA` / `bili_jct` / `buvid3` / `buvid4` / `DedeUserID`）。每次测试直接 `uv run pytest` 即可自动使用它进行全量测试。**该文件已加入 `.gitignore`，严禁提交到仓库。**
-2. **BILI_* 环境变量**（同名环境变量优先于 cookie 文件）：
+1. **`--login` 临时登录**：`uv run pytest --login qrcode`（终端扫码）或 `uv run pytest --login phone`（短信验证码，含极验滑块与风控二次验证）。显式传入时无条件重新登录，成功后凭据以 base64(JSON) 写入系统 TEMP 目录的 `bilibili_api_pytest_login.json` 缓存文件（本机临时目录，永不入库）；登录中止（用户中断 / 二维码连续 3 次超时 / 流程失败）则不写缓存、按后续来源回退，离线用例照常执行。交互只发生在显式传 `--login` 时。
+2. **TEMP 凭据缓存**：不带 `--login` 的普通运行自动尝试读取上述缓存文件——缺失则提示并回退；内容不合法则删除文件、报错并回退；合法则联网校验（仅在实际需要凭据时才发起）：有效直接使用（零交互），过期自动刷新（成功回写缓存，失败警告 + 删除 + 回退）。
+3. **`.bilibili.cookie` 文件（推荐，本项目已配置）**：项目根目录下的 `.bilibili.cookie` 存放测试账号的完整 Cookie（浏览器导出的标准 Cookie 字符串，含 `SESSDATA` / `bili_jct` / `buvid3` / `buvid4` / `DedeUserID`）。每次测试直接 `uv run pytest` 即可自动使用它进行全量测试。**该文件已加入 `.gitignore`，严禁提交到仓库。**
+4. **BILI_* 环境变量**（同名环境变量优先于 cookie 文件）：
 
 ```bash
 BILI_SESSDATA=xxx        # SESSDATA cookie
@@ -199,7 +202,7 @@ BILI_DEDEUSERID=xxx      # DedeUserID cookie
 BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控）
 ```
 
-两者均缺失时，集成用例自动 skip，仅离线用例执行。
+全部来源均不可用时，集成用例自动 skip，仅离线用例执行。任何提示 / 错误 / 警告消息只描述状态，不得输出凭据字段值。
 
 - 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作；新增离线用例请放入 `tests/test_offline_*.py`
 - 只读集成用例（`readonly` 标记，如 `tests/test_readonly_smoke.py`）仅允许 GET 式读请求与反爬虫参数获取，严禁写操作；该子集在 CI 的 `integration-readonly` 任务中参与 PR 验证，缺凭据时自动降级为警告而不阻塞合入
