@@ -48,9 +48,11 @@ class FakeDownloadClient:
         self.close_cnt = cnt
 
 
-def _make_resp(raw: bytes, headers: dict | None = None, code: int = 200) -> BiliAPIResponse:
+def _make_resp(
+    raw: bytes, headers: dict | None = None, code: int = 200, cookies: dict | None = None
+) -> BiliAPIResponse:
     """构造离线用的假响应对象。"""
-    return BiliAPIResponse(code=code, headers=headers or {}, cookies={}, raw=raw, url="https://example.com")
+    return BiliAPIResponse(code=code, headers=headers or {}, cookies=cookies or {}, raw=raw, url="https://example.com")
 
 
 async def test_download_close_called_on_chunk_error(tmp_path, monkeypatch):
@@ -125,3 +127,104 @@ def test_process_response_non_200_raises_network_exception():
     api = Api(url="https://example.com", method="GET")
     with pytest.raises(NetworkException):
         api._process_response(_make_resp(b"gateway error", code=502))
+
+
+# ---------------------------------------------------------------- request_with_cookies
+
+
+def _poll_like_body() -> bytes:
+    """构造与二维码轮询接口同构的响应体（外层 code=0，data 内承载业务字段）。"""
+    return json.dumps(
+        {
+            "code": 0,
+            "message": "0",
+            "ttl": 1,
+            "data": {
+                "url": "https://passport.biligame.com/x/passport-login/web/crossDomain?ticket=fake",
+                "refresh_token": "fake-refresh-token",
+                "timestamp": 1788414542857,
+                "code": 0,
+                "message": "",
+            },
+        }
+    ).encode("utf-8")
+
+
+class FakeRequestClient:
+    """假请求客户端：返回预设的 BiliAPIResponse。"""
+
+    def __init__(self, resp: BiliAPIResponse):
+        self.resp = resp
+
+    async def request(self, **config) -> BiliAPIResponse:
+        """返回预设响应。"""
+        return self.resp
+
+
+def _patch_request_path(monkeypatch, resp: BiliAPIResponse) -> None:
+    """离线隔离完整请求路径：假客户端 + 绕开会触发反爬联网的 _prepare_request。"""
+    monkeypatch.setattr(api_mod, "get_client", lambda: FakeRequestClient(resp))
+
+    async def _fake_prepare_request(self) -> dict:
+        return {
+            "method": self.method,
+            "url": self.url,
+            "params": {},
+            "data": {},
+            "files": {},
+            "cookies": {},
+            "headers": {},
+            "proxy": None,
+        }
+
+    monkeypatch.setattr(api_mod.Api, "_prepare_request", _fake_prepare_request)
+
+
+async def test_request_with_cookies_returns_data_and_cookies(monkeypatch):
+    """非 raw 模式提取 data 字段，同时原样返回响应 Cookie（保留原名大小写）。"""
+    _patch_request_path(
+        monkeypatch,
+        _make_resp(
+            _poll_like_body(),
+            cookies={
+                "SESSDATA": "fake-sessdata",
+                "bili_jct": "fake-jct",
+                "DedeUserID": "fake-uid",
+                "buvid3": "fake-b3",
+            },
+        ),
+    )
+    data, cookies = await Api(url="https://example.com/poll", method="GET").request_with_cookies()
+    assert data["refresh_token"] == "fake-refresh-token"
+    assert cookies == {
+        "SESSDATA": "fake-sessdata",
+        "bili_jct": "fake-jct",
+        "DedeUserID": "fake-uid",
+        "buvid3": "fake-b3",
+    }
+
+
+async def test_request_with_cookies_raw_returns_full_body(monkeypatch):
+    """raw 模式返回完整解析后的 JSON 体，与 request(raw=True) 语义对齐。"""
+    _patch_request_path(monkeypatch, _make_resp(_poll_like_body(), cookies={"SESSDATA": "x"}))
+    body, _ = await Api(url="https://example.com/poll", method="GET").request_with_cookies(raw=True)
+    assert body["code"] == 0
+    assert body["data"]["url"].startswith("https://passport.biligame.com/")
+
+
+async def test_request_with_cookies_no_set_cookie_returns_empty_dict(monkeypatch):
+    """响应未下发 Cookie 时第 2 项为空字典，不报错。"""
+    _patch_request_path(monkeypatch, _make_resp(_poll_like_body()))
+    data, cookies = await Api(url="https://example.com/poll", method="GET").request_with_cookies()
+    assert data is not None
+    assert cookies == {}
+
+
+async def test_request_still_returns_data_only(monkeypatch):
+    """既有 request() 与 perf 直连入口 _request() 均不受影响：只返回处理结果。"""
+    _patch_request_path(monkeypatch, _make_resp(_poll_like_body(), cookies={"SESSDATA": "fake-sessdata"}))
+    ret = await Api(url="https://example.com/poll", method="GET").request()
+    assert isinstance(ret, dict)
+    assert ret["refresh_token"] == "fake-refresh-token"
+    ret2 = await Api(url="https://example.com/poll", method="GET")._request()
+    assert ret2 == ret
