@@ -332,9 +332,9 @@ class Api:
                 real_data = resp_data.get("result")
         return real_data
 
-    async def _request(
+    async def _request_pair(
         self, raw: bool = False, byte: bool = False, request_id: int | None = None
-    ) -> int | str | dict | bytes | None:
+    ) -> tuple[int | str | dict | bytes | None, dict]:
         api_id = request_id if request_id is not None else next(_api_request_id)
         request_log.dispatch(
             "API_REQUEST",
@@ -357,19 +357,17 @@ class Api:
             "Api 获得响应",
             {"id": api_id, "result": ret},
         )
+        return ret, resp.cookies
+
+    async def _request(
+        self, raw: bool = False, byte: bool = False, request_id: int | None = None
+    ) -> int | str | dict | bytes | None:
+        ret, _ = await self._request_pair(raw=raw, byte=byte, request_id=request_id)
         return ret
 
-    async def request(self, raw: bool = False, byte: bool = False) -> int | str | dict | bytes | None:
-        """
-        向接口发送请求。
-
-        Args:
-            raw  (bool): 是否不提取 data 或 result 字段。 Defaults to False.
-            byte (bool): 是否直接返回字节数据。 Defaults to False.
-
-        Returns:
-            int | str | dict | bytes | None: 接口未返回数据时，返回 None，否则返回该接口提供的 data 或 result 字段的数据。
-        """
+    async def _request_with_retry(
+        self, raw: bool = False, byte: bool = False
+    ) -> tuple[int | str | dict | bytes | None, dict]:
         times = request_settings.get_wbi_retry_times()
         loop = times
         # 同一逻辑请求的所有重试尝试共享同一请求 id，便于日志按 id 关联配对
@@ -383,7 +381,7 @@ class Api:
                 )
             loop -= 1
             try:
-                return await self._request(raw=raw, byte=byte, request_id=request_id)
+                return await self._request_pair(raw=raw, byte=byte, request_id=request_id)
             except ResponseCodeException as e:
                 # -403 时尝试重新获取 wbi_mixin_key 可能过期了
                 if e.code == -403 and self.wbi:
@@ -392,6 +390,43 @@ class Api:
                 # 不是 -403 错误直接报错
                 raise
         raise WbiRetryTimesExceedException()
+
+    async def request(self, raw: bool = False, byte: bool = False) -> int | str | dict | bytes | None:
+        """
+        向接口发送请求。
+
+        Args:
+            raw  (bool): 是否不提取 data 或 result 字段。 Defaults to False.
+            byte (bool): 是否直接返回字节数据。 Defaults to False.
+
+        Returns:
+            int | str | dict | bytes | None: 接口未返回数据时，返回 None，否则返回该接口提供的 data 或 result 字段的数据。
+        """
+        ret, _ = await self._request_with_retry(raw=raw, byte=byte)
+        return ret
+
+    async def request_with_cookies(self, raw: bool = False) -> tuple[int | str | dict | bytes | None, dict]:
+        """
+        向接口发送请求，并在返回处理结果的同时携带本响应由服务端下发的 Cookie。
+
+        请求链路与 request() 完全一致（状态码校验、code 校验、data / result
+        字段提取、-403 时的 wbi 重试）；区别仅在返回值为二元组，适用于需要读取
+        响应 Set-Cookie 的场景（如网页端二维码扫码登录）。Cookie 名保持服务端
+        原始大小写；响应未下发 Cookie 时第 2 项为空字典；发生重试时返回最终
+        成功那次响应的 Cookie。
+
+        Args:
+            raw (bool): 是否不提取 data 或 result 字段。 Defaults to False.
+
+        Returns:
+            tuple[int | str | dict | bytes | None, dict]: 第 1 项与 request(raw=...) 的返回一致；第 2 项为本响应下发的 Cookie 字典。
+
+        Raises:
+            NetworkException: 网络错误或响应码非 200。
+            ResponseCodeException: 接口返回错误码。
+            WbiRetryTimesExceedException: wbi 重试次数超限。
+        """
+        return await self._request_with_retry(raw=raw)
 
     @property
     async def result(self) -> int | str | dict | bytes | None:

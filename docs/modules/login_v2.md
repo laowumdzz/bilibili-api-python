@@ -133,11 +133,14 @@ from bilibili_api import login_v2
 
 检查二维码登录状态
 
+WEB 通道登录成功时，凭据从本响应 Set-Cookie 下发的 Cookie 中构造。
+
 
 
 **Returns:** `QrCodeLoginEvents`:  二维码登录状态
 
 
+Raises:
 
 
 ### async def generate_qrcode()

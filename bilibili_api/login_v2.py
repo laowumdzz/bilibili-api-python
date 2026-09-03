@@ -18,7 +18,7 @@ import qrcode
 import qrcode_terminal
 import yarl
 
-from .exceptions import GeetestException, LoginError
+from .exceptions import ArgsException, GeetestException, LoginError
 from .utils.geetest import Geetest, GeetestType
 from .utils.network import Api, Credential, get_buvid, get_client
 from .utils.picture import Picture
@@ -471,13 +471,18 @@ class QrCodeLogin:
         """
         检查二维码登录状态
 
+        WEB 通道登录成功时，凭据从本响应 Set-Cookie 下发的 Cookie 中构造。
+
         Returns:
             QrCodeLoginEvents: 二维码登录状态
+
+        Raises:
+            ArgsException: WEB 通道登录成功响应缺少构造凭据所必需的字段（SESSDATA / bili_jct / DedeUserID / refresh_token 任一缺失或为空）。
         """
         if self.__platform == QrCodeLoginChannel.WEB:
             api = API["qrcode"]["web"]["get_events"]
             params = {"qrcode_key": self.__qr_key}
-            events = await Api(credential=Credential(), **api).update_params(**params).result
+            events, cookies = await Api(credential=Credential(), **api).update_params(**params).request_with_cookies()
             code = events["code"]
             if code == 86101:
                 return QrCodeLoginEvents.SCAN
@@ -486,25 +491,19 @@ class QrCodeLogin:
             elif code == 86038:
                 return QrCodeLoginEvents.TIMEOUT
             else:
-                cred_url = events["url"]
-                ac_time_value = events["refresh_token"]
-                cookies_list = cred_url.split("?")[1].split("&")
-                sessdata = ""
-                bili_jct = ""
-                dedeuserid = ""
-                for cookie in cookies_list:
-                    if cookie[:8] == "SESSDATA":
-                        sessdata = cookie[9:]
-                    if cookie[:8] == "bili_jct":
-                        bili_jct = cookie[9:]
-                    if cookie[:11].upper() == "DEDEUSERID=":
-                        dedeuserid = cookie[11:]
-                self.__credential = Credential(
-                    sessdata=sessdata,
-                    bili_jct=bili_jct,
-                    dedeuserid=dedeuserid,
-                    ac_time_value=ac_time_value,
-                )
+                # 登录 Cookie 由本响应 Set-Cookie 下发；响应体 url 已是不含 Cookie 的跳转链接，不可解析
+                refresh_token = events.get("refresh_token") if isinstance(events, dict) else ""
+                kwargs: dict[str, str] = {"ac_time_value": str(refresh_token or "")}
+                for name, value in cookies.items():
+                    field = name.lower()
+                    if field in ("sessdata", "bili_jct", "dedeuserid", "buvid3", "buvid4"):
+                        kwargs[field] = value
+                missing = [
+                    field for field in ("sessdata", "bili_jct", "dedeuserid", "ac_time_value") if not kwargs.get(field)
+                ]
+                if missing:
+                    raise ArgsException(f"二维码登录响应缺少必要字段: {', '.join(missing)}")
+                self.__credential = Credential(**kwargs)
                 return QrCodeLoginEvents.DONE
         else:
             api = API["qrcode"]["tv"]["get_events"]
