@@ -10,7 +10,7 @@ import json
 import os
 import tempfile
 import time
-from typing import Union
+from typing import Union, cast
 
 from Cryptodome.Cipher import PKCS1_v1_5
 from Cryptodome.PublicKey import RSA
@@ -491,9 +491,9 @@ class QrCodeLogin:
             elif code == 86038:
                 return QrCodeLoginEvents.TIMEOUT
             else:
-                # 登录 Cookie 由本响应 Set-Cookie 下发；响应体 url 已是不含 Cookie 的跳转链接，不可解析
-                refresh_token = events.get("refresh_token") if isinstance(events, dict) else ""
-                kwargs: dict[str, str] = {"ac_time_value": str(refresh_token or "")}
+                # 登录 Cookie 由本响应 Set-Cookie 下发；响应体 url 已是不含 Cookie 的跳转链接，不可解析。
+                # poll 的 data 字段恒为 JSON 对象，refresh_token 恒为字符串，不存在非 dict 形态
+                kwargs: dict[str, str] = {"ac_time_value": str(cast(dict, events).get("refresh_token") or "")}
                 for name, value in cookies.items():
                     field = name.lower()
                     if field in ("sessdata", "bili_jct", "dedeuserid", "buvid3", "buvid4"):
