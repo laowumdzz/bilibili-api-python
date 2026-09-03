@@ -133,12 +133,14 @@ ignore = [
 "scripts/check_commit_msg.py" = ["T201"]
 # scripts/type_ratchet.py 为命令行门禁脚本，允许 print
 "scripts/type_ratchet.py" = ["T201"]
+# scripts/login_and_cache.py 为交互式登录脚本，允许 print
+"scripts/login_and_cache.py" = ["T201"]
 # 上游有意在异步函数中使用阻塞 open/os.path（读取本地小文件），待后续引入 aiofiles 再改
 "bilibili_api/**" = ["ASYNC230", "ASYNC240"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
-known-first-party = ["src", "tests"]
+known-first-party = ["src", "tests", "scripts"]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
