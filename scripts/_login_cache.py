@@ -48,11 +48,7 @@ def encode_credential_cache(fields: dict[str, str | None]) -> str:
     Returns:
         str: base64 编码后的文件内容
     """
-    cleaned = {
-        key: value
-        for key, value in fields.items()
-        if key in CACHE_FIELDS and isinstance(value, str) and value
-    }
+    cleaned = {key: value for key, value in fields.items() if key in CACHE_FIELDS and isinstance(value, str) and value}
     payload = json.dumps(cleaned, ensure_ascii=False).encode("utf-8")
     return base64.b64encode(payload).decode("ascii")
 
@@ -114,11 +110,7 @@ def load_cache(path: Path | None = None) -> CacheLoadResult:
         return CacheLoadResult(CacheStatus.CORRUPT, reason="内容不是合法的 UTF-8 JSON")
     if not isinstance(data, dict):
         return CacheLoadResult(CacheStatus.CORRUPT, reason="JSON 顶层不是对象")
-    fields = {
-        key: value
-        for key, value in data.items()
-        if key in CACHE_FIELDS and isinstance(value, str) and value
-    }
+    fields = {key: value for key, value in data.items() if key in CACHE_FIELDS and isinstance(value, str) and value}
     missing = [name for name in REQUIRED_FIELDS if name not in fields]
     if missing:
         return CacheLoadResult(CacheStatus.CORRUPT, reason=f"缺少必需字段（{' / '.join(missing)}）")

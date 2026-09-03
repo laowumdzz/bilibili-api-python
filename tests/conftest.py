@@ -28,7 +28,7 @@ from bilibili_api.login_v2 import (
 )
 from bilibili_api.utils._session import get_client
 from bilibili_api.utils.geetest import Geetest, GeetestType
-from tests._login_cache import (
+from scripts._login_cache import (
     CACHE_FIELDS,
     REQUIRED_FIELDS,
     CacheStatus,
