@@ -27,12 +27,12 @@ BASELINE: dict[str, int] = {
     "bad-argument-type": 69,
     "bad-assignment": 57,
     "bad-function-definition": 17,
-    "bad-index": 286,
+    "bad-index": 280,
     "bad-override": 20,
     "bad-return": 387,
     "missing-attribute": 35,
     "not-iterable": 13,
-    "unsupported-operation": 186,
+    "unsupported-operation": 184,
 }
 
 # 非豁免表内、但在强制检查中仍会现身的残留错误码（2026-08-06 审计时已清零并恢复默认启用，
