@@ -5,6 +5,7 @@ AioHTTPClient 实现
 """
 
 import os
+from typing import cast
 
 import aiohttp  # pylint: disable=E0401
 
@@ -370,7 +371,12 @@ class AioHTTPClient(BiliAPIClient):
                 "headers": headers,
             },
         )
-        self.__wss[self.__ws_cnt] = await session.ws_connect(url=url, params=params, headers=headers)
+        # pyrefly 在 Python 3.10 目标下把 ws_connect 返回值推断为泛型
+        # ClientWebSocketResponse[bool]，与 __wss 的裸类型声明不兼容，cast 归一
+        self.__wss[self.__ws_cnt] = cast(
+            aiohttp.ClientWebSocketResponse,
+            await session.ws_connect(url=url, params=params, headers=headers),
+        )
         return self.__ws_cnt
 
     async def ws_recv(self, cnt: int) -> tuple[bytes, BiliWsMsgType]:
