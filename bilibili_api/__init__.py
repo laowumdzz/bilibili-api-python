@@ -170,7 +170,7 @@ if TYPE_CHECKING:
         watchroom as watchroom,
     )
 
-BILIBILI_API_VERSION = "17.4.2"
+BILIBILI_API_VERSION = "18.0.0"
 
 
 def __register_all_clients():
