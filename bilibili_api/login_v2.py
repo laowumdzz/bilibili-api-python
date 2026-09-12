@@ -481,7 +481,19 @@ class QrCodeLogin:
         """
         if self.__platform == QrCodeLoginChannel.WEB:
             api = API["qrcode"]["web"]["get_events"]
-            params = {"qrcode_key": self.__qr_key}
+            params = {
+                "qrcode_key": self.__qr_key,
+                "source": "main-fe-header",
+                "web_location": 333.1007,
+                "x-bili-locale-json": {"c_locale": {"language": "zh", "script": "Hans"}, "always_translate": True},
+                "x-bili-redirect": 1,
+                "x-bili-device-req-json": {
+                    "platform": "web",
+                    "device": "pc",
+                    "spmid": "333.1007",
+                    "mobi_app": "web_cn",
+                },
+            }
             events, cookies = await Api(credential=Credential(), **api).update_params(**params).request_with_cookies()
             code = events["code"]
             if code == 86101:
@@ -499,7 +511,7 @@ class QrCodeLogin:
                     if field in ("sessdata", "bili_jct", "dedeuserid", "buvid3", "buvid4"):
                         kwargs[field] = value
                 missing = [
-                    field for field in ("sessdata", "bili_jct", "dedeuserid", "ac_time_value") if not kwargs.get(field)
+                    field for field in ("sessdata", "bili_jct", "dedeuserid") if not kwargs.get(field)
                 ]
                 if missing:
                     raise ArgsException(f"二维码登录响应缺少必要字段: {', '.join(missing)}")

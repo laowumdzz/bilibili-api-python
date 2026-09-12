@@ -1,4 +1,4 @@
-name: Upload Python Package
+name: Build and Attach to Release
 
 on:
   release:
@@ -6,9 +6,13 @@ on:
 
   workflow_dispatch:
 
+# 上传 Release 资产需要写权限（仓库默认 token 权限可能为只读）
+permissions:
+  contents: write
+
 jobs:
   deploy:
-    name: Build and publish to PyPI
+    name: Build and attach to GitHub Release
     runs-on: ubuntu-latest
 
     steps:
@@ -22,17 +26,16 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Export branch and version
-        run: echo "${{ github.ref_name }}|${{ github.event.release.target_commitish }}" > github.txt
-
       - name: Build sdist and wheel
         # 版本号由 setuptools 动态读取 bilibili_api.BILIBILI_API_VERSION，
         # uv build 自动完成构建环境隔离与打包。
         run: uv build --sdist --wheel
 
-      - name: Publish to PyPI
-        # 保留既有 twine + PyPI 账号凭据的发布方式（不引入 OIDC 等需仓库侧额外配置的方案）。
+      - name: Attach dist to GitHub Release
+        # 仅发布到 GitHub Release，不再上传 PyPI。
+        # release 事件与手动 dispatch 均在 tag ref 上运行，ref_name 即 tag 名；
+        # 手动触发时需选择已存在 Release 的 tag，否则 gh 报 release 不存在。
+        # --clobber 允许工作流重跑时覆盖同名资产。
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: uvx twine upload dist/*
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.ref_name }}" dist/* --clobber
