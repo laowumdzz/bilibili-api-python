@@ -511,7 +511,7 @@ class QrCodeLogin:
                     if field in ("sessdata", "bili_jct", "dedeuserid", "buvid3", "buvid4"):
                         kwargs[field] = value
                 missing = [
-                    field for field in ("sessdata", "bili_jct", "dedeuserid") if not kwargs.get(field)
+                    field for field in ("sessdata", "bili_jct", "dedeuserid", "ac_time_value") if not kwargs.get(field)
                 ]
                 if missing:
                     raise ArgsException(f"二维码登录响应缺少必要字段: {', '.join(missing)}")
