@@ -7,7 +7,6 @@
 # ConcurrentFuture 支持、异常传播。
 
 from concurrent.futures import Future as ConcurrentFuture
-import sys
 import threading
 
 import pytest
@@ -20,12 +19,8 @@ async def _fail_coro() -> int:
     raise ValueError("sync 应传播协程内部异常")
 
 
-@pytest.mark.skipif(
-    sys.version_info >= (3, 14),
-    reason="Python 3.14 起 asyncio 不再接受 concurrent.futures.Future（sync 包装器已知兼容性问题，已在任务报告记录）",
-)
 def test_sync_accepts_concurrent_future():
-    """sync 应支持 concurrent.futures.Future（无运行中循环场景）。"""
+    """sync 应支持 concurrent.futures.Future（无运行中循环场景，经 wrap_future 转换）。"""
     future: ConcurrentFuture = ConcurrentFuture()
     future.set_result(2024)
 

@@ -39,6 +39,26 @@ def __ensure_event_loop() -> asyncio.AbstractEventLoop:
         return loop
 
 
+def __run_until_complete(obj: Coroutine[Any, Any, T] | AsyncioFuture | ConcurrentFuture) -> T:
+    """
+    在当前线程的事件循环上同步执行传入对象。
+
+    concurrent.futures.Future 必须经 `asyncio.wrap_future` 显式转换为 asyncio
+    Future 后执行——`run_until_complete` 自身不接受该类型（3.14 起直接抛
+    TypeError，早期版本行为亦不可移植）。
+
+    Args:
+        obj (Coroutine | Future): 异步函数或期物
+
+    Returns:
+        Any: 执行结果。
+    """
+    loop = __ensure_event_loop()
+    if isinstance(obj, ConcurrentFuture):
+        obj = asyncio.wrap_future(obj, loop=loop)
+    return loop.run_until_complete(obj)
+
+
 def sync(coroutine: Coroutine[Any, Any, T] | AsyncioFuture | ConcurrentFuture) -> T:
     """
     同步执行异步函数，使用可参考 [同步执行异步代码](https://nemo2011.github.io/bilibili-api/#/sync-executor)
@@ -52,7 +72,7 @@ def sync(coroutine: Coroutine[Any, Any, T] | AsyncioFuture | ConcurrentFuture) -
     try:
         asyncio.get_running_loop()
     except RuntimeError:
-        return __ensure_event_loop().run_until_complete(coroutine)
+        return __run_until_complete(coroutine)
     else:
         with ThreadPoolExecutor() as executor:
-            return executor.submit(lambda x: __ensure_event_loop().run_until_complete(x), coroutine).result()
+            return executor.submit(__run_until_complete, coroutine).result()
