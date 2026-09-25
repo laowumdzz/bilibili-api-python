@@ -1169,7 +1169,8 @@ class Bangumi:
         credential = self.credential if self.credential is not None else Credential()
 
         api = API["info"]["short_comment"]
-        params = {"media_id": await self.get_media_id(), "ps": 20, "sort": order.value}
+        # media_id / ps 为 int、sort / cursor 为 str，显式声明避免字面量按 key 推导与新键写入冲突
+        params: dict[str, int | str] = {"media_id": await self.get_media_id(), "ps": 20, "sort": order.value}
         if next is not None:
             params["cursor"] = next
 
@@ -1194,7 +1195,8 @@ class Bangumi:
         credential = self.credential if self.credential is not None else Credential()
 
         api = API["info"]["long_comment"]
-        params = {"media_id": await self.get_media_id(), "ps": 20, "sort": order.value}
+        # media_id / ps 为 int、sort / cursor 为 str，显式声明避免字面量按 key 推导与新键写入冲突
+        params: dict[str, int | str] = {"media_id": await self.get_media_id(), "ps": 20, "sort": order.value}
         if next is not None:
             params["cursor"] = next
 
