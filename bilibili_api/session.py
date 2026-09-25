@@ -5,11 +5,14 @@ bilibili_api.session
 """
 
 import asyncio
+from collections.abc import Callable
 import datetime
 from enum import Enum
 import json
 import logging
 import time
+from typing import Any
+import warnings
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -462,14 +465,35 @@ class Session(AsyncEvent):
             handler.setFormatter(logging.Formatter("[%(asctime)s][%(levelname)s]: %(message)s", "%Y-%m-%d %H:%M:%S"))
             self.logger.addHandler(handler)
 
-    def on(self, event_type: EventType):
+    def on(self, event_name: EventType | str | None = None, **kwargs: Any) -> Callable:
         """
         重载装饰器注册事件监听器
 
         Args:
-            event_type (EventType): 事件类型
+            event_name (EventType | str, optional): 事件类型（EventType 枚举或事件名）。Defaults to None。
+
+            **kwargs                              : 兼容垫层，仅用于吸收旧参数名 event_type（已弃用）。
+
+        Returns:
+            Callable: 装饰器
+
+        Raises:
+            TypeError: 未提供事件类型。
         """
-        return super().on(event_name=str(event_type.value))
+        if "event_type" in kwargs:
+            # 旧参数名 event_type 已弃用：经垫层吸收并告警，保持关键字调用方兼容（research.md R6）
+            warnings.warn(
+                "Session.on 的 event_type 参数名已弃用，请改用 event_name",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            event_name = kwargs.pop("event_type")
+        if event_name is None:
+            # 与旧必填位置参数的缺参行为保持一致（异常类型不变式）
+            raise TypeError("Session.on() missing 1 required positional argument: 'event_name'")
+        if isinstance(event_name, EventType):
+            event_name = event_name.value
+        return super().on(event_name=str(event_name))
 
     def get_status(self) -> int:
         """
