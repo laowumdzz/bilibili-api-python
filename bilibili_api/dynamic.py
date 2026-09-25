@@ -582,7 +582,9 @@ async def send_dynamic(info: BuildDynamic, credential: Credential):
         pic_data.append({"img_src": image.url, "img_width": image.width, "img_height": image.height})
 
     api = API["send"]["instant"]
-    data = {
+    # 动态发送 JSON 载荷按条件分支逐步写入（pics/topic/option/attach_card 值类型互异），
+    # 内层为开放形状，显式声明避免字面量精确推导与后续写入冲突
+    data: dict[str, dict[str, Any]] = {
         "dyn_req": {
             "content": {"contents": await info.get_contents(credential=credential)},  # 必要参数
             "scene": info.get_dynamic_type().value,  # 必要参数

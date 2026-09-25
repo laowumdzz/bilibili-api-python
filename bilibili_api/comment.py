@@ -18,6 +18,7 @@ bilibili_api.comment
 
 from enum import Enum
 import json
+from typing import Any
 
 from bilibili_api import Picture
 
@@ -368,7 +369,8 @@ async def send_comment(
     credential.raise_for_no_sessdata()
     credential.raise_for_no_bili_jct()
 
-    data = {
+    # 发评论 JSON 载荷值类型异构且 pictures 键条件写入（先 list 后 json 串），显式声明开放形状
+    data: dict[str, Any] = {
         "oid": oid,
         "type": type_.value,
         "message": text,

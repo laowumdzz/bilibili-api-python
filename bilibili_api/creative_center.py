@@ -659,7 +659,9 @@ async def get_comments(
         dict: 评论管理评论信息。
     """
 
-    params = {
+    # order/type 为 str、filter/pn/ps 为 int、charge_plus_filter 为 bool，keyword/oid 条件写入，
+    # 显式声明避免字面量按 key 推导与新键写入冲突
+    params: dict[str, int | str | bool] = {
         "order": order.value,
         "filter": filter,
         "type": archive_type.value,
