@@ -342,7 +342,7 @@ class CheeseVideo:
             if from_seg is None:
                 from_seg = 0
             if to_seg is None:
-                to_seg = self.get_meta()["duration"] // 360 + 1
+                to_seg = (await self.get_meta())["duration"] // 360 + 1
 
         danmakus = []
 
