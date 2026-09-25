@@ -4,9 +4,10 @@ bilibili_api.utils.upos
 
 import asyncio
 from asyncio.tasks import create_task
-from collections.abc import Awaitable, Callable
+from collections.abc import Callable, Coroutine
 import json
 import os
+from typing import Any
 
 from ..exceptions.NetworkException import NetworkException
 from ..exceptions.ResponseCodeException import ResponseCodeException
@@ -56,7 +57,7 @@ async def upload_chunks_with_retry(
     file_size: int,
     chunk_size: int,
     threads: int,
-    make_chunk_task: Callable[[int, int, int], Awaitable[dict]],
+    make_chunk_task: Callable[[int, int, int], Coroutine[Any, Any, dict]],
 ) -> int:
     """
     并发上传文件全部分块，失败的分块自动重试。
@@ -68,7 +69,7 @@ async def upload_chunks_with_retry(
 
         threads         (int): 并发上传线程数。
 
-        make_chunk_task (Callable[[int, int, int], Awaitable[dict]]):
+        make_chunk_task (Callable[[int, int, int], Coroutine[Any, Any, dict]]):
             接收 (offset, chunk_number, total_chunk_count) 并返回分块上传协程的工厂函数，
             协程需返回含 `ok` / `offset` / `chunk_number` 字段的 dict。
 
