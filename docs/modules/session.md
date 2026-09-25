@@ -125,8 +125,14 @@ from bilibili_api import session
 
 | name | type | description |
 | - | - | - |
-| `event_type` | `EventType` | 事件类型 |
+| `event_name` | `EventType \| str, optional` | 事件类型（EventType 枚举或事件名）。Defaults to None。 |
+| `**kwargs  : 兼容垫层，仅用于吸收旧参数名 event_type（已弃用）。` | `` | 兼容垫层，仅用于吸收旧参数名 event_type（已弃用）。 |
 
+**Returns:** `Callable`:  装饰器
+
+
+Raises:
+TypeError: 未提供事件类型。
 
 
 
