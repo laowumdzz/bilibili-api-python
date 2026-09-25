@@ -7,7 +7,7 @@ from asyncio.tasks import create_task
 from collections.abc import Callable, Coroutine
 import json
 import os
-from typing import Any
+from typing import Any, cast
 
 from ..exceptions.NetworkException import NetworkException
 from ..exceptions.ResponseCodeException import ResponseCodeException
@@ -274,8 +274,11 @@ class UposFileUploader:
             err = NetworkException(resp.code, "状态码错误，提交分 P 失败")
             raise err
 
-        data = resp.json()
+        # upos 提交接口响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+        data = cast(dict, resp.json())
 
         if data["OK"] != 1:
             err = ResponseCodeException(-1, f"提交分 P 失败，原因: {data['message']}")
             raise err
+
+        return data
