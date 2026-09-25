@@ -14,6 +14,7 @@ import json
 import os
 import re
 import time
+from typing import Any, cast
 
 from .exceptions import ApiException, ArgsException, NetworkException, ResponseCodeException
 from .topic import Topic
@@ -40,7 +41,7 @@ async def upload_cover(cover: Picture, credential: Credential) -> str:
     pic = cover if isinstance(cover, Picture) else Picture().from_file(cover)
     cover = pic.convert_format("png")
     data = {"cover": f"data:image/png;base64,{base64.b64encode(pic.content).decode('utf-8')}"}
-    return (await Api(**api, credential=credential).update_data(**data).result)["url"]
+    return (await Api(**api, credential=credential).update_data(**data).result_dict())["url"]
 
 
 class Lines(Enum):
@@ -95,10 +96,11 @@ async def _probe() -> dict:
         if cost_time < min_cost:
             min_cost, fastest_line = cost_time, line
     request_settings.set_timeout(legacy_timeout)
-    return fastest_line
+    # 全部线路测速失败时 fastest_line 维持既有 None 返回形态，声明沿用 dict
+    return cast(dict, fastest_line)
 
 
-async def _choose_line(line: Lines) -> dict:
+async def _choose_line(line: "Lines | dict | None") -> dict:
     """
     选择线路，不存在则直接测速自动选择
     """
@@ -203,7 +205,7 @@ async def get_available_topics(tid: int, credential: Credential) -> list[dict]:
     credential.raise_for_no_sessdata()
     api = _API["available_topics"]
     params = {"type_id": tid, "pn": 0, "ps": 200}  # 一次性获取完
-    return (await Api(**api, credential=credential).update_params(**params).result)["topics"]
+    return (await Api(**api, credential=credential).update_params(**params).result_dict())["topics"]
 
 
 class VideoPorderType(Enum):
@@ -301,7 +303,7 @@ class VideoPorderMeta:
     brand_name: str | None = None
     show_types: list[VideoPorderShowType] = []
 
-    __info: dict = None
+    __info: dict
 
     def __init__(
         self,
@@ -311,8 +313,9 @@ class VideoPorderMeta:
         show_types: list[VideoPorderShowType] | None = None,
     ):
         self.flow_id = 1
-        # 商单信息模板 dict：dict() 拷贝避免后续写入污染枚举类共享的模板值
-        self.__info = dict(porden_type.value)
+        # 商单信息模板 dict：键值随商单类型与后续写入变化，为开放形状；
+        # dict() 拷贝避免后续写入污染枚举类共享的模板值
+        self.__info: dict = dict(porden_type.value)
         if porden_type == VideoPorderType.OTHER:
             if industry_type is None:
                 raise ArgsException("VideoPorderType.OTHER 需要提供 industry_type 参数")
@@ -362,7 +365,7 @@ class VideoMeta:
     watermark: bool | None = False  # 可选，水印
 
     __credential: Credential
-    __pre_info = dict
+    __pre_info: dict
 
     def __init__(
         self,
@@ -562,7 +565,7 @@ class VideoMeta:
         包括活动等在内，固定信息已经缓存于 data/video_uploader_meta_pre.json
         """
         api = _API["pre"]
-        self.__pre_info = await Api(**api, credential=self.__credential).result
+        self.__pre_info = await Api(**api, credential=self.__credential).result_dict()
         return self.__pre_info
 
     def _check_tid(self) -> bool:
@@ -599,7 +602,9 @@ class VideoMeta:
         需要登录
         """
         api = _API["check_tag_name"]
-        return (await Api(**api, credential=credential, ignore_code=True).update_params(t=name).result)["code"] == 0
+        return (await Api(**api, credential=credential, ignore_code=True).update_params(t=name).result_dict())[
+            "code"
+        ] == 0
 
     async def _check_tags(self) -> list[str]:
         """
@@ -648,9 +653,11 @@ class VideoMeta:
             raise ValueError(f"封面不合法 {self.cover.__repr__()}")
 
         if self.delay_time is not None:
-            if self.delay_time < int(time.time()) + 7200:
+            # __init__ 已将 datetime 归一为 int 时间戳，此处为唯一收窄点
+            delay_ts = cast(int, self.delay_time)
+            if delay_ts < int(time.time()) + 7200:
                 raise ValueError("delay_time 不能小于两小时")
-            if self.delay_time > int(time.time()) + 3600 * 24 * 15:
+            if delay_ts > int(time.time()) + 3600 * 24 * 15:
                 raise ValueError("delay_time 不能大于十五天")
         return True
 
@@ -730,9 +737,10 @@ class VideoUploader(AsyncEvent):
             if isinstance(self.meta, VideoMeta)
             else cover
             if isinstance(cover, Picture)
-            else Picture().from_file(cover)
+            else Picture().from_file(cast(str, cover))
         )
-        self.line = line
+        # start() 后 self.line 会被 _choose_line 的返回值（线路信息 dict）覆盖
+        self.line: Lines | dict | None = line
         self.__task: Task | None = None
 
     async def _preupload(self, page: VideoUploaderPage) -> dict:
@@ -745,6 +753,9 @@ class VideoUploader(AsyncEvent):
         self.dispatch(VideoUploaderEvents.PREUPLOAD.value, {"page": page})
         api = _API["preupload"]
 
+        # _preupload 仅在 start() 之后执行，self.line 已被 _choose_line 返回值覆盖为 dict，此处为唯一收窄点
+        line_info = cast(dict, self.line)
+
         # 首先获取视频文件预检信息
         session = get_client()
 
@@ -755,12 +766,12 @@ class VideoUploader(AsyncEvent):
                 "profile": "ugcfx/bup",
                 "name": os.path.basename(page.path),
                 "size": page.get_size(),
-                "r": self.line["os"],
+                "r": line_info["os"],
                 "ssl": "0",
                 "version": "2.14.0",
                 "build": "2100400",
-                "upcdn": self.line["upcdn"],
-                "probe_version": self.line["probe_version"],
+                "upcdn": line_info["upcdn"],
+                "probe_version": line_info["probe_version"],
             },
             cookies=await self.credential.get_buvid_cookies(),
             headers={
@@ -772,13 +783,14 @@ class VideoUploader(AsyncEvent):
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
             raise NetworkException(resp.code, "")
 
-        preupload = resp.json()
+        # 该端点响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+        preupload = cast(dict, resp.json())
 
         if preupload["OK"] != 1:
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
             raise ApiException(json.dumps(preupload))
 
-        preupload = self._switch_upload_endpoint(preupload, self.line)
+        preupload = self._switch_upload_endpoint(preupload, line_info)
         url = self._get_upload_url(preupload)
 
         # 获取 upload_id
@@ -803,7 +815,8 @@ class VideoUploader(AsyncEvent):
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
             raise ApiException("获取 upload_id 错误")
 
-        data = resp.json()
+        # JSON 对象收窄（同上）
+        data = cast(dict, resp.json())
 
         if data["OK"] != 1:
             self.dispatch(VideoUploaderEvents.PREUPLOAD_FAILED.value, {"page": page})
@@ -1056,7 +1069,8 @@ class VideoUploader(AsyncEvent):
         Returns:
             dict: 上传结果和分块信息。
         """
-        chunk_event_callback_data = {
+        # 分块事件载荷：info 键在失败路径写入字符串、成功路径写入数值，为开放形状
+        chunk_event_callback_data: dict[str, Any] = {
             "page": page,
             "offset": offset,
             "chunk_number": chunk_number,
@@ -1070,8 +1084,8 @@ class VideoUploader(AsyncEvent):
         chunk = stream.read(preupload["chunk_size"])
         stream.close()
 
-        # 上传目标 URL
-        preupload = self._switch_upload_endpoint(preupload, self.line)
+        # 上传目标 URL；self.line 已被 start() 中的 _choose_line 返回值覆盖为 dict（唯一收窄点）
+        preupload = self._switch_upload_endpoint(preupload, cast(dict, self.line))
         url = self._get_upload_url(preupload)
 
         err_return = {
@@ -1161,7 +1175,8 @@ class VideoUploader(AsyncEvent):
             "biz_id": preupload["biz_id"],
         }
 
-        preupload = self._switch_upload_endpoint(preupload, self.line)
+        # self.line 已被 start() 中的 _choose_line 返回值覆盖为 dict（唯一收窄点）
+        preupload = self._switch_upload_endpoint(preupload, cast(dict, self.line))
         url = self._get_upload_url(preupload)
 
         session = get_client()
@@ -1184,7 +1199,8 @@ class VideoUploader(AsyncEvent):
             )
             raise err
 
-        data = resp.json()
+        # JSON 对象收窄（同上）
+        data = cast(dict, resp.json())
 
         if data["OK"] != 1:
             err = ResponseCodeException(-1, f"提交分 P 失败，原因: {data['message']}")
@@ -1231,7 +1247,7 @@ class VideoUploader(AsyncEvent):
                 .update_params(**params)
                 .update_data(**meta)
                 # .update_headers(**headers)
-                .result
+                .result_dict()
             )
             self.dispatch(VideoUploaderEvents.AFTER_SUBMIT.value, resp)
             return resp
@@ -1262,11 +1278,12 @@ async def get_missions(tid: int = 0, credential: Credential | None = None) -> di
     Returns:
         dict: API 调用返回结果
     """
+    credential = credential if credential else Credential()
     api = _API["missions"]
 
     params = {"tid": tid}
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 class VideoEditorEvents(Enum):
@@ -1376,7 +1393,9 @@ class VideoEditor(AsyncEvent):
         try:
             api = _API["upload_args"]
             params = {"bvid": self.bvid}
-            self.__old_configs = await Api(**api, credential=self.credential).update_params(**params).result
+            self.__old_configs: dict = (
+                await Api(**api, credential=self.credential).update_params(**params).result_dict()
+            )
         except (NetworkException, ResponseCodeException) as e:
             self.dispatch(VideoEditorEvents.PRELOAD_FAILED.value, {"err", e})
             raise e
@@ -1419,7 +1438,7 @@ class VideoEditor(AsyncEvent):
                 .update_params(**params)
                 .update_data(**data)
                 .update_headers(**headers)
-                .result
+                .result_dict()
             )
             self.dispatch(VideoEditorEvents.AFTER_SUBMIT.value, resp)
         except (NetworkException, ResponseCodeException) as e:
