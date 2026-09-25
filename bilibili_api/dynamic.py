@@ -247,7 +247,8 @@ class BuildDynamic:
         if topic_id != -1:
             dyn.set_topic(topic_id)
         if vote_id != -1:
-            dyn.add_vote(vote.Vote(vote_id=vote_id))
+            # add_vote 需要的是投票 id（int），原实现误传 Vote 对象导致 JSON 序列化失败
+            dyn.add_vote(vote_id)
         if live_reserve_id != -1:
             dyn.set_attach_card(live_reserve_id)
         if send_time is not None:
