@@ -35,9 +35,9 @@ BASELINE: dict[str, int] = {
     "unsupported-operation": 184,
 }
 
-# 非豁免表内、但在强制检查中仍会现身的残留错误码（2026-08-06 审计时已清零并恢复默认启用，
-# 后因上游依赖变化重新出现，按默认严重级别处理，不纳入豁免棘轮）
-KNOWN_RESIDUAL = {"bad-override-mutable-attribute", "bad-override-param-name"}
+# 非豁免表内、但在强制检查中仍会现身的错误码：一律视为异常并阻断（曾经的
+# 残留码 bad-override-mutable-attribute / bad-override-param-name 已于
+# 2026-09 特性 005 中修复归零，不再对冲豁免）。
 
 # min-text 输出中每条错误的首行形如：
 # ERROR path:line:col-range: message [error-code]
@@ -99,7 +99,7 @@ def main() -> int:
             regressed_codes.append(code)
         elif actual < limit:
             improvements.append(f"  {code}: 存量 {actual} < 基线 {limit}，请下调 BASELINE")
-    unexpected = sorted(code for code in counts if code not in BASELINE and code not in KNOWN_RESIDUAL)
+    unexpected = sorted(code for code in counts if code not in BASELINE)
 
     if regressions:
         print("类型存量棘轮校验失败：以下豁免错误码出现新增类型错误（存量只减不增）：")
