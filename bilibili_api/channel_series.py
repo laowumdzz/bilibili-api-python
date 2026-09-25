@@ -228,9 +228,9 @@ async def del_channel_series(series_id: int, credential: Credential) -> dict:
 
     credential.raise_for_no_sessdata()
     credential.raise_for_no_bili_jct()
-    series_total = ChannelSeries(type_=ChannelSeriesType.SERIES, id_=series_id, credential=credential).get_meta()[
-        "total"
-    ]
+    series_total = (
+        await ChannelSeries(type_=ChannelSeriesType.SERIES, id_=series_id, credential=credential).get_meta()
+    )["total"]
     self_uid = (await get_self_info(credential))["mid"]
     aids = []
     pages = series_total // 20 + (1 if (series_total % 20 != 0) else 0)
