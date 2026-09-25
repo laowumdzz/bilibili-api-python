@@ -8,6 +8,7 @@ from inspect import Parameter, signature
 import itertools
 import json
 import re
+from typing import cast
 
 from ..exceptions import (
     NetworkException,
@@ -427,6 +428,36 @@ class Api:
             WbiRetryTimesExceedException: wbi 重试次数超限。
         """
         return await self._request_with_retry(raw=raw)
+
+    async def result_dict(self) -> dict:
+        """
+        获取请求结果并收窄为 dict 类型返回。
+
+        供声明返回 dict 的接口调用点使用的链尾类型化访问器：请求链路与
+        request() 完全一致（状态码校验、code 校验、data / result 字段提取、
+        -403 时的 wbi 重试），仅在返回前做一次中心化类型收窄。收窄逻辑
+        集中在此处，替代在约 380 个业务模块调用点散落 cast（spec
+        005-pyrefly-type-debt FR-004）。request() / result 的联合返回类型
+        与行为保持不变，本访问器为纯增量选项。
+
+        Returns:
+            dict: 接口返回的 data 或 result 字段数据。
+
+        Raises:
+            NetworkException: 网络错误或响应码非 200。
+            ResponseCodeException: 接口返回错误码。
+            WbiRetryTimesExceedException: wbi 重试次数超限。
+        """
+        result = await self.request()
+        if isinstance(result, dict):
+            return result
+        # 中心收窄点（全局唯一批量豁口，research.md R2）：request() 的诚实联合类型
+        # （int | str | dict | bytes | None）在此按"声明返回 dict 的端点契约"收窄。
+        # 声明 -> dict 的端点运行时恒返回 JSON 对象（dict）；个别端点的空响应会
+        # 透传 None，与既有 request() 行为一致。收窄用 cast 而非 isinstance 抛错，
+        # 保持零运行时变更；若未来端点普查证实可升级为显式异常，须按行为变更
+        # 单独评估（research.md R2 备选项 ③）。
+        return cast(dict, result)
 
     @property
     async def result(self) -> int | str | dict | bytes | None:
