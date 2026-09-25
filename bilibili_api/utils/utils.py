@@ -84,7 +84,7 @@ def crack_uid(crc32: str):
         int, 真实用户 UID，不一定准确。
     """
     crctable = _CRC_TABLE
-    __index = [None] * 4
+    __index: list[int] = [0, 0, 0, 0]
 
     def __crc32(input_):
         if not isinstance(input_, str):
@@ -153,7 +153,7 @@ def crack_uid(crc32: str):
                 break
     if i == 10000000:
         return -1
-    return str(i) + deepCheckData[1]
+    return str(i) + str(deepCheckData[1])
 
 
 def join(seperator: str, array: list):
@@ -171,10 +171,10 @@ def join(seperator: str, array: list):
     return seperator.join(str(x) for x in array)
 
 
-ChunkT = TypeVar("ChunkT", list, list)
+ChunkT = TypeVar("ChunkT")
 
 
-def chunk(arr: ChunkT, size: int) -> list[ChunkT]:
+def chunk(arr: list[ChunkT], size: int) -> list[list[ChunkT]]:
     if size <= 0:
         raise ArgsException('Parameter "size" must greater than 0')
 

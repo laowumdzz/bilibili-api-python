@@ -207,6 +207,8 @@ class AioHTTPClient(BiliAPIClient):
             form = aiohttp.FormData()
             if isinstance(data, str):
                 raise NotImplementedError
+            # files 场景下 data 契约上为表单字段字典（唯一收窄点）
+            data = cast(dict, data)
             for key, value in data.items():
                 form.add_field(name=key, value=value)
             for key, value in files.items():

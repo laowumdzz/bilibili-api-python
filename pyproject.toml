@@ -158,15 +158,6 @@ project-excludes = ["tests/**", "docs/**", "scripts/**"]
 # project-excludes 不生效，故改用本配置项而非排除目录。
 ignore-missing-imports = ["PyQt6", "fastapi", "PyInstaller", "PyInstaller.utils.hooks"]
 
-# 存量类型错误豁免（2026-08-06 审计收紧）：以下错误码为上游遗留问题，
-# 暂时禁用以保证 CI 门禁可用；正按特性 005（specs/005-pyrefly-type-debt）
-# 逐批修复，每个错误码实测归零后同批次从本表移除并恢复默认启用。
-# 2026-08-29 起引入存量棘轮（scripts/type_ratchet.py，由 scripts/lint.py 阻断式调用）：
-# 豁免类别的存量计数只减不增，新增类型错误会被棘轮拦截。
-[tool.pyrefly.errors]
-bad-argument-type = false # 存量 69
-bad-assignment = false # 存量 57
-bad-index = false # 存量 286
-bad-return = false # 存量 387
-missing-attribute = false # 存量 35
-unsupported-operation = false # 存量 186
+# 存量类型错误豁免已于 2026-09 特性 005（specs/005-pyrefly-type-debt）整体退役：
+# 曾在此处配置的 [tool.pyrefly.errors] 豁免表已清空移除，类型检查默认全量启用，
+# 任何新增类型错误都会被 scripts/lint.py（含 scripts/type_ratchet.py 棘轮）直接拦截。

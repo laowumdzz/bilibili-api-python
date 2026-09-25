@@ -9,7 +9,7 @@ import asyncio
 from functools import reduce
 import hashlib
 import time
-from typing import ClassVar
+from typing import ClassVar, cast
 import urllib.parse
 
 from ._credential import Credential
@@ -139,14 +139,14 @@ class WbiManager:
             credential = credential if credential else Credential()
             api: dict[str, str] = API["info"]["valid"]
             client = get_client()
-            nav_data: dict = (
-                await client.request(
-                    method="GET",
-                    url=api["url"],
-                    headers=cls.HEADERS.copy(),
-                    cookies=credential.get_cookies(),
-                )
-            ).json()["data"]
+            nav_resp = await client.request(
+                method="GET",
+                url=api["url"],
+                headers=cls.HEADERS.copy(),
+                cookies=credential.get_cookies(),
+            )
+            # nav 接口响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+            nav_data: dict = cast(dict, nav_resp.json())["data"]
             img_key: str = nav_data["wbi_img"]["img_url"].rsplit("/", 1)[1].split(".")[0]
             sub_key: str = nav_data["wbi_img"]["sub_url"].rsplit("/", 1)[1].split(".")[0]
             cls._img_key = img_key

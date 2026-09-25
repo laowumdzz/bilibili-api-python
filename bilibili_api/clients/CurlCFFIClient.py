@@ -6,6 +6,7 @@ CurlCFFIClient 实现
 
 import asyncio
 from select import select
+from typing import cast
 
 import curl_cffi  # pylint: disable=E0401
 from curl_cffi import requests  # pylint: disable=E0401
@@ -55,7 +56,8 @@ class CurlCFFIClient(BiliAPIClient):
             loop = asyncio.get_running_loop()
             self.__session = requests.AsyncSession(
                 loop=loop,
-                timeout=self.__normalize_timeout(timeout),
+                # timeout=None 表示不限时，实测 curl_cffi 0.13 支持（见 __normalize_timeout），存根类型较窄（唯一收窄点）
+                timeout=cast("float | tuple[float, float]", self.__normalize_timeout(timeout)),
                 proxies={"all": proxy},
                 verify=verify_ssl,
                 trust_env=trust_env,
@@ -110,7 +112,8 @@ class CurlCFFIClient(BiliAPIClient):
         Args:
             timeout (float, optional): 请求超时时间. Defaults to 0.0.
         """
-        self.__session.timeout = self.__normalize_timeout(timeout)
+        # timeout=None 表示不限时，实测 curl_cffi 0.13 支持（见 __normalize_timeout），存根类型较窄（唯一收窄点）
+        self.__session.timeout = cast("float | tuple[float, float]", self.__normalize_timeout(timeout))
 
     def set_verify_ssl(self, verify_ssl: bool = True) -> None:
         """
@@ -213,7 +216,8 @@ class CurlCFFIClient(BiliAPIClient):
         else:
             multipart = None
         resp = await self.__session.request(
-            method=method,
+            # curl_cffi 存根仅声明字面量 HTTP 方法集合，运行时接受任意大写动词
+            method=method,  # pyrefly: ignore[bad-argument-type]
             url=url,
             params=params,
             data=data,
@@ -400,7 +404,7 @@ class CurlCFFIClient(BiliAPIClient):
         chunks = []
         flags = 0
         # ACTIVESOCKET 返回套接字句柄（int），getinfo 的联合返回类型需收窄为 int 才能传入 select()
-        sock_fd = int(ws.curl.getinfo(curl_cffi.CurlInfo.ACTIVESOCKET))
+        sock_fd = int(cast(int, ws.curl.getinfo(curl_cffi.CurlInfo.ACTIVESOCKET)))
         if sock_fd == curl_cffi.aio.CURL_SOCKET_BAD:
             raise curl_cffi.WebSocketError("Invalid active socket", curl_cffi.CurlECode.NO_CONNECTION_AVAILABLE)
         while True:

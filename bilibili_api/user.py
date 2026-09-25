@@ -996,12 +996,12 @@ class User:
         }
         return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
-    async def get_access_id(self) -> dict[str, Any]:
+    async def get_access_id(self) -> dict[str, Any] | None:
         """
         获取用户 access_id (w_webid) 如未过期直接从本地获取 防止重复请求
 
         Returns:
-            dict[str, Any]: 用户动态页面服务端渲染数据（内含 access_id 相关字段）。
+            dict[str, Any] | None: 用户动态页面服务端渲染数据（内含 access_id 相关字段），页面数据缺失时为 None。
         """
         return await get_user_dynamic_render_data(self.__uid, self.credential)
 

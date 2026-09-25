@@ -24,7 +24,7 @@ async def get_activity_list(pn: int = 1, ps: int = 15) -> dict:
     """
     api = API["info"]["list"]
     params = {"plat": "1,3", "mold": "0", "http": "3", "pn": pn, "ps": ps}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_activity_info(url: str) -> dict:
@@ -40,7 +40,7 @@ async def get_activity_info(url: str) -> dict:
     return (await get_initial_state(url))[0]
 
 
-async def get_activity_aid(url: str) -> dict:
+async def get_activity_aid(url: str) -> int:
     """
     获取部分活动存在的 aid，可用于获取评论
 

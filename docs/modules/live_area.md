@@ -86,7 +86,7 @@ from bilibili_api import live_area
 
 
 
-**Returns:** `dict`:  所有分区的数据
+**Returns:** `List[dict]`:  所有分区的数据
 
 
 

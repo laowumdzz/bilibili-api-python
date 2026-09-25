@@ -148,4 +148,4 @@ async def get_category_recommend_articles(
     """
     api = API["info"]["recommends"]
     params = {"cid": category_id, "sort": order.value, "pn": page_num, "ps": page_size}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()

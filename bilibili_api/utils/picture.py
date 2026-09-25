@@ -254,12 +254,12 @@ class Picture:
         self.url = "file://" + path
         return self
 
-    def to_json(self) -> dict:
+    def to_json(self) -> list[dict]:
         """
         转换为 bilibili api 中的 json 格式，提供图片链接/长宽/大小
 
         Returns:
-            dict: 图片链接/长宽/大小
+            List[dict]: 图片链接/长宽/大小
         """
         return [
             {

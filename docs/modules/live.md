@@ -767,7 +767,7 @@ Events:
 
 
 
-**Returns:** `dict`:  调用 API 返回的结果
+**Returns:** `List[dict]`:  调用 API 返回的结果（分区频道列表）
 
 
 

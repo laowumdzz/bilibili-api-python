@@ -84,12 +84,12 @@ def bvid2aid(bvid: str) -> int:
     Returns:
         int: AV 号。
     """
-    bvid = list(bvid)
-    bvid[3], bvid[9] = bvid[9], bvid[3]
-    bvid[4], bvid[7] = bvid[7], bvid[4]
-    bvid = bvid[3:]
+    chars = list(bvid)
+    chars[3], chars[9] = chars[9], chars[3]
+    chars[4], chars[7] = chars[7], chars[4]
+    chars = chars[3:]
     tmp = 0
-    for i in bvid:
+    for i in chars:
         idx = data.index(i.encode())
         tmp = tmp * BASE + idx
     return (tmp & MASK_CODE) ^ XOR_CODE

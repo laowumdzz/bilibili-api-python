@@ -1181,7 +1181,7 @@ NOTE: `gt`, `challenge`, `token` 为验证码基本字段。`seccode`, `validate
 
 
 
-**Returns:** `dict`:  图片链接/长宽/大小
+**Returns:** `List[dict]`:  图片链接/长宽/大小
 
 
 
@@ -1391,7 +1391,7 @@ BV 号转 AV 号。
 | - | - | - |
 | `credential` | `Credential, optional` | 凭据. Defaults to None. |
 
-**Returns:** `Tuple[str, str]`:  bili_ticket, bili_ticket_expires
+**Returns:** `Tuple[str, int]`:  bili_ticket, bili_ticket_expires
 
 
 

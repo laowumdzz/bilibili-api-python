@@ -11,6 +11,10 @@
 `pyrefly check ./bilibili_api/ --error <豁免码列表> --output-format min-text`）。
 修复存量错误后，请仅向下更新基线；某错误码基线归零后，应从
 `pyproject.toml` 豁免表中移除该条目并从本脚本基线中删除，恢复默认启用。
+
+2026-09 特性 005（specs/005-pyrefly-type-debt）起存量逐批清零，豁免机制已
+整体退役：BASELINE 为空表且 `pyproject.toml` 豁免表为空，类型检查默认全量
+启用，任何新增类型错误都会被本脚本与默认门禁直接拦截。
 """
 
 from pathlib import Path
@@ -22,15 +26,9 @@ import sys
 # 仓库根目录（本脚本位于 scripts/ 下），避免依赖调用方的工作目录
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# 与 [tool.pyrefly.errors] 豁免表一一对应的存量基线（只减不增）
-BASELINE: dict[str, int] = {
-    "bad-argument-type": 4,
-    "bad-assignment": 4,
-    "bad-index": 2,
-    "bad-return": 17,
-    "missing-attribute": 6,
-    "unsupported-operation": 15,
-}
+# 与 [tool.pyrefly.errors] 豁免表一一对应的存量基线（只减不增）。
+# 空表表示豁免机制已整体退役：类型检查默认全量启用，零容忍。
+BASELINE: dict[str, int] = {}
 
 # 非豁免表内、但在强制检查中仍会现身的错误码：一律视为异常并阻断（曾经的
 # 残留码 bad-override-mutable-attribute / bad-override-param-name 已于
@@ -43,13 +41,15 @@ ERROR_LINE = re.compile(r"^ERROR .+\[([a-z][a-z\-]*)\]\s*$")
 
 def run_pyrefly() -> tuple[int, str]:
     """以强制启用全部豁免错误码的方式运行 pyrefly，返回（进程返回码, min-text 输出）。"""
-    codes = ",".join(sorted(BASELINE))
     cmd = [
         "pyrefly",
         "check",
         str(REPO_ROOT / "bilibili_api"),
-        "--error",
-        codes,
+    ]
+    if BASELINE:
+        # 基线尚存豁免码时强制启用重跑；全部退役后默认全量启用即为最强检查
+        cmd += ["--error", ",".join(sorted(BASELINE))]
+    cmd += [
         "--output-format",
         "min-text",
         "--color",
@@ -117,7 +117,10 @@ def main() -> int:
     if improvements:
         print("以下错误码存量已低于基线，请下调 scripts/type_ratchet.py 的 BASELINE（只减不增）：")
         print("\n".join(improvements))
-    print(f"类型存量棘轮校验通过：{len(BASELINE)} 个豁免错误码存量均未超过基线。")
+    if not BASELINE:
+        print("类型存量棘轮校验通过：豁免机制已整体退役，类型检查默认全量启用且零报错。")
+    else:
+        print(f"类型存量棘轮校验通过：{len(BASELINE)} 个豁免错误码存量均未超过基线。")
     return 0
 
 

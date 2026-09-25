@@ -15,11 +15,11 @@ from .network import Credential
 
 RENDER_DATA_PATTERN: Pattern[str] = compile(r"<script id=\"__RENDER_DATA__\" type=\"application/json\">(.*?)</script>")
 
-access_ids = {}
-last_timestamp = {}
+access_ids: dict[str, Any] = {}
+last_timestamp: dict[str, int] = {}
 
 
-async def get_webid(url: str, credential: Credential) -> dict[str, Any]:
+async def get_webid(url: str, credential: Credential) -> dict[str, Any] | None:
     """
     获取页面加载静态渲染数据
     """
@@ -36,7 +36,7 @@ async def get_webid(url: str, credential: Credential) -> dict[str, Any]:
     return access_ids[url]
 
 
-async def get_user_dynamic_render_data(uid: int, credential: Credential) -> dict[str, Any]:
+async def get_user_dynamic_render_data(uid: int, credential: Credential) -> dict[str, Any] | None:
     """
     获取用户动态页面加载静态渲染数据 获取部分接口需要的 w_webid 关键参数
 

@@ -8,7 +8,7 @@ from inspect import Parameter, signature
 import itertools
 import json
 import re
-from typing import cast
+from typing import Any, cast
 
 from ..exceptions import (
     NetworkException,
@@ -59,7 +59,7 @@ async def get_buvid() -> tuple[str, str]:
     return await anti_spider_cache.get_buvid()
 
 
-async def get_bili_ticket(credential: Credential | None = None) -> tuple[str, str]:
+async def get_bili_ticket(credential: Credential | None = None) -> tuple[str, int]:
     """
     获取 bili_ticket
 
@@ -67,7 +67,7 @@ async def get_bili_ticket(credential: Credential | None = None) -> tuple[str, st
         credential (Credential, optional): 凭据. Defaults to None.
 
     Returns:
-        Tuple[str, str]: bili_ticket, bili_ticket_expires
+        Tuple[str, int]: bili_ticket, bili_ticket_expires
     """
     return await anti_spider_cache.get_bili_ticket(credential)
 
@@ -177,7 +177,8 @@ class Api:
         self.original_params = self.params.copy()
         self.data = dict.fromkeys(self.data.keys(), "")
         self.params = dict.fromkeys(self.params.keys(), "")
-        self.files = dict.fromkeys(self.files.keys(), "")
+        # 占位清空：仅保留键，真实文件字典经 update_files 恢复
+        self.files = cast("dict[str, BiliAPIFile]", dict.fromkeys(self.files.keys(), ""))
         self.headers = dict.fromkeys(self.headers.keys(), "")
         self.credential = self.credential if self.credential else Credential()
 
@@ -274,7 +275,7 @@ class Api:
             else:
                 self.params = _enc_sign(self.params)
         # 初步 params
-        config = {
+        config: dict[str, Any] = {
             "method": self.method,
             "url": self.url,
             "params": self.params,
@@ -303,7 +304,10 @@ class Api:
         # 提取 json（直接解析原始 bytes，省去先全量解码为 str 的中间串）
         if "callback" in self.params:
             # JSONP 请求
-            resp_data: dict = json.loads(_JSONP_RE.match(resp.raw).group(1))
+            jsonp_match = _JSONP_RE.match(resp.raw)
+            if jsonp_match is None:
+                raise NetworkException(resp.code, "JSONP 响应解析失败")
+            resp_data: dict = json.loads(jsonp_match.group(1))
         else:
             # JSON
             resp_data: dict = json.loads(resp.raw)

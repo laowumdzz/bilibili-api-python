@@ -15,7 +15,7 @@ from .utils.utils import get_api
 API = get_api("live-area")
 
 
-live_area_data = None
+live_area_data: list[dict] | None = None
 
 
 async def fetch_live_area_data() -> None:
@@ -99,7 +99,7 @@ def get_area_list() -> list[dict]:
     if not live_area_data:
         raise ApiException("请先调用 fetch_live_area_data()")
     channel = live_area_data
-    channel_list = []
+    channel_list: list[dict] = []
     for channel_big in channel:
         channel_big_copy = copy.copy(channel_big)
         channel_list.append(channel_big_copy)
@@ -112,13 +112,13 @@ def get_area_list() -> list[dict]:
     return channel_list
 
 
-def get_area_list_sub() -> dict:
+def get_area_list_sub() -> list[dict]:
     """
     获取所有分区的数据
     含父子关系（即一层次只有主分区）
 
     Returns:
-        dict: 所有分区的数据
+        List[dict]: 所有分区的数据
     """
     global live_area_data
     if not live_area_data:
@@ -150,8 +150,11 @@ async def get_list_by_area(
     """
     credential = credential if credential else Credential()
     api = API["info"]["list"]
-    parent_area_id = get_area_info_by_id(area_id)[0]["id"]
-    area_id = 0 if (get_area_info_by_id(area_id)[1] is None) else area_id
+    area_info = get_area_info_by_id(area_id)
+    if area_info[0] is None:
+        raise ApiException(f"未找到 id 为 {area_id} 的分区")
+    parent_area_id = area_info[0]["id"]
+    area_id = 0 if (area_info[1] is None) else area_id
     params = {
         "platform": "web",
         "parent_area_id": parent_area_id,
@@ -164,4 +167,4 @@ async def get_list_by_area(
             credential=credential,
         ),
     }
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()

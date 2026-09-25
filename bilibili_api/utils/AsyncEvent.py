@@ -20,6 +20,8 @@ class AsyncEvent:
         self.__handlers = {}
         self.__ignore_events = []
         self.__tasks = set()
+        # 任务事件名映射：替代直接向 Task 挂动态属性
+        self.__task_event_names: dict[asyncio.Task, str] = {}
 
     def add_event_listener(self, name: str, handler: Callable | Coroutine) -> None:
         """
@@ -95,12 +97,13 @@ class AsyncEvent:
         2、如果任务抛出异常，分发特殊异常事件，避免Task exception was never retrieved
         """
         self.__tasks.discard(task)
+        self.__task_event_names.pop(task, None)
 
         if task.cancelled():
             return
 
         logger: logging.Logger | None = getattr(self, "logger", None)
-        event_name = getattr(task, "event_name", None)
+        event_name = self.__task_event_names.get(task)
 
         try:
             e = task.exception()
@@ -136,7 +139,7 @@ class AsyncEvent:
                 obj = callableorcoroutine(*args, **kwargs)
                 if isinstance(obj, Coroutine):
                     task = asyncio.create_task(obj)
-                    task.event_name = name  # 通过检查event_name避免异常被循环dispatch
+                    self.__task_event_names[task] = name  # 通过检查event_name避免异常被循环dispatch
                     task.add_done_callback(self.__on_task_done)
                     self.__tasks.add(task)  # 保持对task的引用状态
 

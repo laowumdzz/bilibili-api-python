@@ -18,7 +18,7 @@ async def get_zone() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["zone"]
-    return await Api(**api).result
+    return await Api(**api).result_dict()
 
 
 # async def get_client_info() -> dict:
@@ -29,7 +29,7 @@ async def get_zone() -> dict:
 #         dict: 调用 API 返回的结果
 #     """
 #     api = API["info"]
-#     return await Api(**api).result
+#     return await Api(**api).result_dict()
 
 
 async def get_zone_live() -> dict:
@@ -40,4 +40,4 @@ async def get_zone_live() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["live_zone"]
-    return await Api(**api).result
+    return await Api(**api).result_dict()

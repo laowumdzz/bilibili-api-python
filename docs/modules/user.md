@@ -299,7 +299,7 @@ medialist排序顺序。
 
 
 
-**Returns:** `dict[str, Any]`:  用户动态页面服务端渲染数据（内含 access_id 相关字段）。
+**Returns:** `dict[str, Any] | None`:  用户动态页面服务端渲染数据（内含 access_id 相关字段），页面数据缺失时为 None。
 
 
 

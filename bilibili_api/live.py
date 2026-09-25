@@ -962,15 +962,15 @@ async def get_gift_config(
     return await Api(**api).update_params(**params).result
 
 
-async def get_area_info() -> dict:
+async def get_area_info() -> list[dict]:
     """
     获取所有分区信息
 
     Returns:
-        dict: 调用 API 返回的结果
+        List[dict]: 调用 API 返回的结果（分区频道列表）
     """
     api = API["info"]["area_info"]
-    return await Api(**api).result_dict()
+    return await Api(**api).result_list()
 
 
 async def get_live_followers_info(need_recommend: bool = True, credential: Credential | None = None) -> dict:

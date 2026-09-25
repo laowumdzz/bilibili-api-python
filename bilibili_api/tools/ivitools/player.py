@@ -364,7 +364,7 @@ class MPlayer:
         self.current_node = 0
         self.variables: list[InteractiveVariable] = []
         self.state_log = []
-        self.graph = None
+        self.graph: dict = {}
         self.choice_buttons: list[Button] = []
         self.choice_labels: list[ButtonLabel] = []
 
@@ -568,10 +568,9 @@ class MPlayer:
             pos = [pos.x(), pos.y()]
             for var in self.variables:
                 if var.is_random():
-                    var._InteractiveVariable__var_value = (
-                        # mimosa-ignore
-                        random.random() * 100
-                    )
+                    # 类外写入 InteractiveVariable 名称重整私有值槽，工具存根不可见
+                    # mimosa-ignore
+                    var._InteractiveVariable__var_value = random.random() * 100  # pyrefly: ignore[missing-attribute]
             for btn in self.choice_buttons:
                 if (
                     (pos[0] - btn.pos[0] <= 200)
@@ -689,7 +688,7 @@ class MPlayer:
         for lbl in self.choice_labels:
             lbl.hide()
         self.choice_labels = []
-        self.graph = None
+        self.graph = {}
         self.stop_playing()
         self.pp.setText("Pause")
         self.has_end = False

@@ -6,6 +6,7 @@ bilibili_api.utils.initial_state
 
 from enum import Enum
 import json
+from typing import Literal, cast, overload
 from urllib.parse import unquote
 
 from ..exceptions import InitialStateException
@@ -22,7 +23,7 @@ class InitialDataType(Enum):
     RENDER_DATA = "__RENDER_DATA__"
 
 
-def find_json(content: str) -> str:
+def find_json(content: str) -> tuple[int, InitialDataType] | tuple[Literal[-1], None]:
     patterns = [
         ("window.__INITIAL_STATE__=", InitialDataType.INITIAL_STATE),
         ('window.__initialState = JSON.parse("', InitialDataType.INITIAL_STATE),
@@ -56,9 +57,21 @@ def _parse_detected_content(detected_content: str) -> dict:
     return decoder.raw_decode(decoded_content)[0]
 
 
+@overload
+async def get_initial_state(
+    url: str, credential: Credential | None = ..., strict: Literal[True] = ...
+) -> tuple[dict, InitialDataType]: ...
+
+
+@overload
+async def get_initial_state(
+    url: str, credential: Credential | None = ..., strict: Literal[False] = ...
+) -> tuple[None, None]: ...
+
+
 async def get_initial_state(
     url: str, credential: Credential | None = None, strict: bool = True
-) -> tuple[dict, InitialDataType]:
+) -> tuple[dict, InitialDataType] | tuple[None, None]:
     """
     异步获取初始化信息
 
@@ -70,10 +83,15 @@ async def get_initial_state(
         strict (bool): 无结果时报错。Defaults to True.
     """
     credential = credential if credential else Credential()
-    resp = await Api(url=url, method="GET", credential=credential, comment="[获取初始化信息]").request(byte=True)
+    # byte=True 契约收窄：该模式返回原始字节流（唯一收窄点）
+    resp = cast(
+        bytes,
+        await Api(url=url, method="GET", credential=credential, comment="[获取初始化信息]").request(byte=True),
+    )
     content = resp.decode("utf-8")
     pos, content_type = find_json(content)
-    if pos == -1:
+    if content_type is None:
+        # find_json 契约：仅未命中时返回 None
         if strict:
             raise InitialStateException("未找到相关信息")
         return None, None

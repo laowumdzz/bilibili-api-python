@@ -122,7 +122,7 @@ async def get_project_info(project_id: int) -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["info"]["get"]
-    return await Api(**api).update_params(id=project_id).result
+    return await Api(**api).update_params(id=project_id).result_dict()
 
 
 async def get_available_sessions(project_id: int) -> list[Session]:
@@ -165,7 +165,7 @@ async def get_all_buyer_info(credential: Credential) -> dict:
     """
     credential.raise_for_no_sessdata()
     api = API["info"]["buyer_info"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_all_buyer_info_obj(credential: Credential) -> list[BuyerInfo]:
@@ -278,7 +278,7 @@ class OrderTicket:
             "screen_id": self.session.id,
             "sku_id": self.ticket.id,
         }
-        return await Api(**api, credential=self.credential).update_data(**payload).result
+        return await Api(**api, credential=self.credential).update_data(**payload).result_dict()
 
     async def create_order(self):
         """
@@ -293,5 +293,5 @@ class OrderTicket:
             await Api(**api, credential=self.credential)
             .update_params(project_id=self.project_id)
             .update_data(**payload)
-            .result
+            .result_dict()
         )
