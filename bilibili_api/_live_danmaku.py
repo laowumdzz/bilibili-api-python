@@ -31,7 +31,7 @@ API = get_api("live")
 
 def parse_user_info(bt6: bytes) -> dict:
     def parse_base(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -76,7 +76,7 @@ def parse_user_info(bt6: bytes) -> dict:
         return ret7
 
     def parse_level(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -123,7 +123,7 @@ def parse_user_info(bt6: bytes) -> dict:
         return ret7
 
     def parse_wealth(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -134,7 +134,7 @@ def parse_user_info(bt6: bytes) -> dict:
         return ret7
 
     def parse_title(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -145,7 +145,7 @@ def parse_user_info(bt6: bytes) -> dict:
         return ret7
 
     def parse_guard(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -156,7 +156,7 @@ def parse_user_info(bt6: bytes) -> dict:
         return ret7
 
     def parse_user_head_frame(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -167,7 +167,7 @@ def parse_user_info(bt6: bytes) -> dict:
         return ret7
 
     def parse_guard_leader(bt7: bytes) -> dict:
-        ret7 = {}
+        ret7: dict[str, Any] = {}
         br7 = BytesReader(stream=bt7)
         while not br7.has_end():
             type7 = br7.varint() >> 3
@@ -175,7 +175,7 @@ def parse_user_info(bt6: bytes) -> dict:
                 ret7["is_guard_leader"] = br7.bool()
         return ret7
 
-    ret6 = {}
+    ret6: dict[str, Any] = {}
     br6 = BytesReader(stream=bt6)
     while not br6.has_end():
         type6 = br6.varint() >> 3
@@ -200,7 +200,7 @@ def parse_user_info(bt6: bytes) -> dict:
 
 def parse_interact_word_v2(bt: bytes) -> dict:
     def parse_fans_medal_info(bt2: bytes) -> dict:
-        ret2 = {}
+        ret2: dict[str, Any] = {}
         br2 = BytesReader(stream=bt2)
         while not br2.has_end():
             type2 = br2.varint() >> 3
@@ -233,7 +233,7 @@ def parse_interact_word_v2(bt: bytes) -> dict:
         return ret2
 
     def parse_contribution_info(bt3: bytes) -> dict:
-        ret3 = {}
+        ret3: dict[str, Any] = {}
         br3 = BytesReader(stream=bt3)
         while not br3.has_end():
             type3 = br3.varint() >> 3
@@ -242,7 +242,7 @@ def parse_interact_word_v2(bt: bytes) -> dict:
         return ret3
 
     def parse_contribution_info_v2(bt4: bytes) -> dict:
-        ret4 = {}
+        ret4: dict[str, Any] = {}
         br4 = BytesReader(stream=bt4)
         while not br4.has_end():
             type4 = br4.varint() >> 3
@@ -255,7 +255,7 @@ def parse_interact_word_v2(bt: bytes) -> dict:
         return ret4
 
     def parse_group_medal_brief(bt5: bytes) -> dict:
-        ret5 = {}
+        ret5: dict[str, Any] = {}
         br5 = BytesReader(stream=bt5)
         while not br5.has_end():
             type5 = br5.varint() >> 3
@@ -268,7 +268,7 @@ def parse_interact_word_v2(bt: bytes) -> dict:
         return ret5
 
     def parse_user_anchor_relation(bt8: bytes) -> dict:
-        ret8 = {}
+        ret8: dict[str, Any] = {}
         br8 = BytesReader(stream=bt8)
         while not br8.has_end():
             type8 = br8.varint() >> 3
@@ -280,7 +280,7 @@ def parse_interact_word_v2(bt: bytes) -> dict:
                 ret8["tail_type"] = br8.varint()
         return ret8
 
-    ret = {}
+    ret: dict[str, Any] = {}
     br = BytesReader(stream=bt)
     while not br.has_end():
         type_ = br.varint() >> 3
@@ -337,7 +337,7 @@ def parse_interact_word_v2(bt: bytes) -> dict:
 
 def parse_online_rank_v3(bt: bytes) -> dict:
     def parse_gold_rank_broadcast_item(ht: bytes) -> dict:
-        item = {}
+        item: dict[str, Any] = {}
         reader = BytesReader(stream=ht)
         while not reader.has_end():
             t = reader.varint() >> 3
@@ -359,7 +359,7 @@ def parse_online_rank_v3(bt: bytes) -> dict:
                 item["user_info"] = parse_user_info(reader.bytes_string())
         return item
 
-    ret = {}
+    ret: dict[str, Any] = {}
     br = BytesReader(stream=bt)
     while not br.has_end():
         type_ = br.varint() >> 3
@@ -515,14 +515,14 @@ class LiveDanmaku(AsyncEvent):
         self.max_retry_for_credential: int = max_retry_for_credential
         self.__room_real_id = None
         self.__status = 0
-        self.__ws = None
+        self.__ws: int | None = None
         self.__tasks = []
         self.__debug = debug
         # 最近一次收到心跳响应的事件循环时刻（loop.time()），截止时间式心跳定时据此判定超时与重置发送节奏；
         # 0.0 表示尚未收到过响应（loop.time() 基于单调时钟，恒非负且随时间递增）
         self.__last_heartbeat_response_time = 0.0
         self.err_reason: str = ""
-        self.room = None
+        self.room: "LiveRoom | None" = None
 
         # logging
         self.logger = logging.getLogger(f"LiveDanmaku_{self.room_display_id}")
@@ -534,12 +534,12 @@ class LiveDanmaku(AsyncEvent):
             )
             self.logger.addHandler(handler)
 
-    def get_live_room(self) -> "LiveRoom":
+    def get_live_room(self) -> "LiveRoom | None":
         """
         获取对应直播间对象
 
         Returns:
-            LiveRoom: 直播间对象
+            LiveRoom | None: 直播间对象，连接建立前为 None。
         """
         return self.room
 
@@ -702,7 +702,8 @@ class LiveDanmaku(AsyncEvent):
         self.logger.debug(f"收到信息：{data}")
 
         for info in data:
-            callback_info = {
+            # 事件回调载荷：键集合与值类型随事件类型变化，为开放式 JSON 形状
+            callback_info: dict[str, Any] = {
                 "room_display_id": self.room_display_id,
                 "room_real_id": self.__room_real_id,
             }
@@ -789,7 +790,9 @@ class LiveDanmaku(AsyncEvent):
         if not self.credential.has_dedeuserid():
             if not self.credential.has_sessdata():
                 self.logger.warning("未提供登录凭据，使用匿名身份连接")
-                self.credential.dedeuserid = 0
+                # 匿名哨兵：0 保持 falsy（未登录语义）且可被下方 int() 取出 uid=0；
+                # Credential.dedeuserid 注解为 str | None，此为既有的跨类型哨兵用法
+                self.credential.dedeuserid = 0  # pyrefly: ignore[bad-assignment]
             else:
                 # 运行时导入，破解 live ↔ _live_danmaku 循环依赖
                 from .live import get_self_info
@@ -808,11 +811,13 @@ class LiveDanmaku(AsyncEvent):
                         )
                         await asyncio.sleep(self.retry_after)
                 if not self.credential.has_dedeuserid():
-                    self.credential.dedeuserid = 0
+                    # 同上：匿名哨兵 0
+                    self.credential.dedeuserid = 0  # pyrefly: ignore[bad-assignment]
                     self.logger.warning("获取用户信息失败，使用匿名身份连接")
 
         verifyData = {
-            "uid": int(self.credential.dedeuserid),
+            # dedeuserid 此处必为非空 str 或匿名哨兵 0（前述分支保证），or 0 仅兜底 None 形态
+            "uid": int(self.credential.dedeuserid or 0),
             "roomid": self.__room_real_id,
             "protover": 3,
             "platform": "web",
@@ -885,7 +890,8 @@ class LiveDanmaku(AsyncEvent):
                     break
             if timeout_at is None and now >= next_send_at:
                 self.logger.debug("发送 WebSocket 心跳包")
-                await self.__client.ws_send(self.__ws, HEARTBEAT)
+                # 心跳任务仅在连接建立（__ws 已创建）后启动，跨方法时序类型层不可见
+                await self.__client.ws_send(self.__ws, HEARTBEAT)  # pyrefly: ignore[bad-argument-type]
                 sent_at = loop.time()
                 timeout_at = sent_at + 30.0
                 next_send_at = float("inf")  # 收到响应前不再发送下一次心跳包（等价于原实现计数器进入负值区间）
@@ -904,7 +910,8 @@ class LiveDanmaku(AsyncEvent):
         """
         data = self.__pack(data, protocol_version, datapack_type)
         self.logger.debug(f"发送原始数据：{data}")
-        await self.__client.ws_send(self.__ws, data)
+        # __send 仅在 ws_create 之后被调用，__ws 必已创建，跨方法时序类型层不可见
+        await self.__client.ws_send(self.__ws, data)  # pyrefly: ignore[bad-argument-type]
 
     @staticmethod
     def __pack(data: bytes, protocol_version: int, datapack_type: int) -> bytes:
@@ -913,9 +920,11 @@ class LiveDanmaku(AsyncEvent):
         """
         sendData = bytearray()
         sendData += struct.pack(">H", 16)
-        raise_for_statement(0 <= protocol_version <= 2, LiveException("数据包协议版本错误，范围 0~2"))
+        # 原实现误将 LiveException 实例作为 msg 传入（异常类型不变，仍抛 StatementException），
+        # 改为直接传消息字符串，异常文本完全一致
+        raise_for_statement(0 <= protocol_version <= 2, "数据包协议版本错误，范围 0~2")
         sendData += struct.pack(">H", protocol_version)
-        raise_for_statement(datapack_type in [2, 7], LiveException("数据包类型错误，可用类型：2, 7"))
+        raise_for_statement(datapack_type in [2, 7], "数据包类型错误，可用类型：2, 7")
         sendData += struct.pack(">I", datapack_type)
         sendData += struct.pack(">I", 1)
         sendData += data
@@ -927,7 +936,7 @@ class LiveDanmaku(AsyncEvent):
         """
         解包数据
         """
-        ret = []
+        ret: list[dict[str, Any]] = []
         offset = 0
         header = struct.unpack(">IHHII", data[:16])
         if header[2] == LiveDanmaku.PROTOCOL_VERSION_BROTLI_JSON:
@@ -941,7 +950,7 @@ class LiveDanmaku(AsyncEvent):
         ):
             realData = realData[16:]
             # 心跳包协议特殊处理
-            recvData = {
+            recvData: dict[str, Any] = {
                 "protocol_version": header[2],
                 "datapack_type": header[3],
                 "data": {"view": struct.unpack(">I", realData[0:4])[0]},

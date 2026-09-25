@@ -219,7 +219,7 @@ Events:
 
 
 
-**Returns:** `LiveRoom`:  直播间对象
+**Returns:** `LiveRoom | None`:  直播间对象，连接建立前为 None。
 
 
 
