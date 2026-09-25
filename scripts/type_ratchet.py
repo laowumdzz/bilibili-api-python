@@ -26,13 +26,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 BASELINE: dict[str, int] = {
     "bad-argument-type": 59,
     "bad-assignment": 42,
-    "bad-function-definition": 14,
-    "bad-index": 223,
+    "bad-function-definition": 13,
+    "bad-index": 217,
     "bad-override": 20,
-    "bad-return": 375,
-    "missing-attribute": 29,
-    "not-iterable": 13,
-    "unsupported-operation": 121,
+    "bad-return": 321,
+    "missing-attribute": 28,
+    "not-iterable": 12,
+    "unsupported-operation": 119,
 }
 
 # 非豁免表内、但在强制检查中仍会现身的错误码：一律视为异常并阻断（曾经的

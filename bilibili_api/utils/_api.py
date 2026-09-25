@@ -459,6 +459,28 @@ class Api:
         # 单独评估（research.md R2 备选项 ③）。
         return cast(dict, result)
 
+    async def result_list(self) -> list:
+        """
+        获取请求结果并收窄为 list 类型返回。
+
+        供声明返回 list 的接口调用点使用的链尾类型化访问器，请求链路与
+        收窄策略与 result_dict() 完全一致（中心化收窄，research.md R2）。
+
+        Returns:
+            list: 接口返回的 data 或 result 字段数据。
+
+        Raises:
+            NetworkException: 网络错误或响应码非 200。
+            ResponseCodeException: 接口返回错误码。
+            WbiRetryTimesExceedException: wbi 重试次数超限。
+        """
+        result = await self.request()
+        if isinstance(result, list):
+            return result
+        # 中心收窄点（全局唯一批量豁口，research.md R2）：与 result_dict 同理，
+        # 按"声明返回 list 的端点契约"收窄，保持零运行时变更
+        return cast(list, result)
+
     @property
     async def result(self) -> int | str | dict | bytes | None:
         """
