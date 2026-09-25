@@ -604,13 +604,14 @@ class AudioUploader(AsyncEvent):
             lrc_url = await upload_lrc(song_id=self.__song_id, lrc=self.meta.lrc, credential=self.credential)
         else:
             lrc_url = ""
-        self.dispatch(AudioUploaderEvents.PRE_COVER)
+        # 事件名与其他事件统一为 .value 字符串（原实现漏写 .value，字符串监听者收不到该事件）
+        self.dispatch(AudioUploaderEvents.PRE_COVER.value)
         cover_url = ""
         if self.meta.cover:
             try:
                 cover_url = await self._upload_cover(self.meta.cover)
             except Exception as e:
-                self.dispatch(AudioUploaderEvents.COVER_FAILED, {"err": e})
+                self.dispatch(AudioUploaderEvents.COVER_FAILED.value, {"err": e})
                 raise e
             self.dispatch(AudioUploaderEvents.AFTER_COVER.value, cover_url)
         self.dispatch(AudioUploaderEvents.PRE_SUBMIT.value)
