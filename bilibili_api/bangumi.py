@@ -12,6 +12,7 @@ bilibili_api.bangumi
 
 import datetime
 from enum import Enum
+from typing import Any, cast
 
 from .exceptions import ApiException, ArgsException
 from .utils.aid_bvid_transformer import aid2bvid, bvid2aid
@@ -28,7 +29,7 @@ API = get_api("bangumi")
 API_video = get_api("video")
 
 
-episode_data_cache = {}
+episode_data_cache: dict[int, dict[str, Any]] = {}
 bangumi_ss_to_md = {}
 bangumi_md_to_ss = {}
 
@@ -70,7 +71,7 @@ async def get_timeline(type_: BangumiType, before: int = 7, after: int = 0) -> d
     """
     api = API["info"]["timeline"]
     params = {"types": type_.value, "before": before, "after": after}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 class IndexFilter:
@@ -754,7 +755,7 @@ class IndexFilterMeta:
             copyright: IndexFilter.Copyright = IndexFilter.Copyright.ALL,
             payment: IndexFilter.Payment = IndexFilter.Payment.ALL,
             season: IndexFilter.Season = IndexFilter.Season.ALL,
-            year: str = -1,
+            year: str | int = -1,
             style: IndexFilter.Style.Anime = IndexFilter.Style.Anime.ALL,
         ) -> None:
             """
@@ -797,7 +798,7 @@ class IndexFilterMeta:
         def __init__(
             self,
             area: IndexFilter.Area = IndexFilter.Area.ALL,
-            release_date: str = -1,
+            release_date: str | int = -1,
             style: IndexFilter.Style.Movie = IndexFilter.Style.Movie.ALL,
             payment: IndexFilter.Payment = IndexFilter.Payment.ALL,
         ) -> None:
@@ -827,7 +828,7 @@ class IndexFilterMeta:
 
         def __init__(
             self,
-            release_date: str = -1,
+            release_date: str | int = -1,
             style: IndexFilter.Style.Documentary = IndexFilter.Style.Documentary.ALL,
             payment: IndexFilter.Payment = IndexFilter.Payment.ALL,
             producer: IndexFilter.Producer = IndexFilter.Producer.ALL,
@@ -857,7 +858,7 @@ class IndexFilterMeta:
         def __init__(
             self,
             area: IndexFilter.Area = IndexFilter.Area.ALL,
-            release_date: str = -1,
+            release_date: str | int = -1,
             style: IndexFilter.Style.TV = IndexFilter.Style.TV.ALL,
             payment: IndexFilter.Payment = IndexFilter.Payment.ALL,
         ) -> None:
@@ -889,7 +890,7 @@ class IndexFilterMeta:
             finish_status: IndexFilter.Finish_Status = IndexFilter.Finish_Status.ALL,
             copyright: IndexFilter.Copyright = IndexFilter.Copyright.ALL,
             payment: IndexFilter.Payment = IndexFilter.Payment.ALL,
-            year: str = -1,
+            year: str | int = -1,
             style: IndexFilter.Style.GuoChuang = IndexFilter.Style.GuoChuang.ALL,
         ) -> None:
             """
@@ -989,7 +990,7 @@ async def get_index_info(
     # params["type"] 未知参数，为 1
     params["type"] = 1
 
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 class Bangumi:
@@ -1049,7 +1050,7 @@ class Bangumi:
         if self.__ssid == -1 and self.__epid == -1:
             api = API["info"]["meta"]
             params = {"media_id": self.__media_id}
-            meta = await Api(**api, credential=self.credential).update_params(**params).result
+            meta = await Api(**api, credential=self.credential).update_params(**params).result_dict()
             self.__ssid = meta["media"]["season_id"]
             params["media_id"] = self.__media_id
         # 处理正常情况
@@ -1061,7 +1062,7 @@ class Bangumi:
             api = API["info"]["collective_info_oversea"]
         else:
             api = API["info"]["collective_info"]
-        resp = await Api(**api, credential=self.credential).update_params(**params).result
+        resp = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         self.__raw = resp
         # 确认有结果后，取出数据
         self.__ssid = resp["season_id"]
@@ -1104,7 +1105,8 @@ class Bangumi:
         """
         if not self.__up_info:
             await self.__fetch_raw()
-        return self.__up_info
+        # __fetch_raw() 保证 __up_info 为 dict；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(dict, self.__up_info)
 
     async def get_raw(self) -> tuple[dict, bool]:
         """
@@ -1148,7 +1150,7 @@ class Bangumi:
 
         api = API["info"]["meta"]
         params = {"media_id": await self.get_media_id()}
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
     async def get_short_comment_list(
         self,
@@ -1174,7 +1176,7 @@ class Bangumi:
         if next is not None:
             params["cursor"] = next
 
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
     async def get_long_comment_list(
         self,
@@ -1200,7 +1202,7 @@ class Bangumi:
         if next is not None:
             params["cursor"] = next
 
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
     async def get_episode_list(self) -> dict:
         """
@@ -1234,7 +1236,7 @@ class Bangumi:
             credential = self.credential if self.credential is not None else Credential()
             api = API["info"]["episodes_list"]
             params = {"season_id": await self.get_season_id()}
-            return await Api(**api, credential=credential).update_params(**params).result
+            return await Api(**api, credential=credential).update_params(**params).result_dict()
 
     async def get_episodes(self) -> list["Episode"]:
         """
@@ -1265,7 +1267,7 @@ class Bangumi:
 
         api = API["info"]["season_status"]
         params = {"season_id": await self.get_season_id()}
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
     async def get_overview(self) -> dict:
         """
@@ -1280,7 +1282,7 @@ class Bangumi:
         else:
             api = API["info"]["collective_info"]
         params = {"season_id": await self.get_season_id()}
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def set_follow(bangumi: Bangumi, status: bool = True, credential: Credential | None = None) -> dict:
@@ -1302,7 +1304,7 @@ async def set_follow(bangumi: Bangumi, status: bool = True, credential: Credenti
 
     api = API["operate"]["follow_add"] if status else API["operate"]["follow_del"]
     data = {"season_id": await bangumi.get_season_id()}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def update_follow_status(bangumi: Bangumi, status: int, credential: Credential | None = None) -> dict:
@@ -1323,7 +1325,7 @@ async def update_follow_status(bangumi: Bangumi, status: int, credential: Creden
 
     api = API["operate"]["follow_status"]
     data = {"season_id": await bangumi.get_season_id(), "status": status}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 class Episode(Video):
@@ -1364,8 +1366,10 @@ class Episode(Video):
             self.__ep_bvid = aid2bvid(self.__ep_aid)
 
         super().__init__(bvid="BV1Am411y7iK", credential=self.credential)
-        self.set_aid = self.__set_aid_e
-        self.set_bvid = self.__set_bvid_e
+        # 有意以实例属性屏蔽父类的同步 mutator（Episode 的 aid/bvid 不可直接改写），
+        # 属性赋值与父类方法签名的差异为设计意图
+        self.set_aid = self.__set_aid_e  # pyrefly: ignore[bad-assignment]
+        self.set_bvid = self.__set_bvid_e  # pyrefly: ignore[bad-assignment]
 
     async def turn_to_video(self) -> Video:
         """
@@ -1385,7 +1389,8 @@ class Episode(Video):
         self.__ep_bvid = content["episode_info"]["bvid"]
         self.__ep_aid = bvid2aid(self.__ep_bvid)
 
-    async def get_bvid(self) -> str:
+    # 父类 get_bvid 为同步方法而 Episode 为异步（历史设计），对齐任一侧均破坏兼容，局部忽略
+    async def get_bvid(self) -> str:  # pyrefly: ignore[bad-override]
         """
         获取 BVID。
 
@@ -1394,18 +1399,21 @@ class Episode(Video):
         """
         if not self.__ep_bvid:
             await self.__fetch_bangumi()
-        return self.__ep_bvid
+        # __fetch_bangumi() 保证 __ep_bvid 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(str, self.__ep_bvid)
 
-    async def get_aid(self) -> str:
+    # 父类 get_aid 为同步方法而 Episode 为异步（历史设计），对齐任一侧均破坏兼容，局部忽略
+    async def get_aid(self) -> int:  # pyrefly: ignore[bad-override]
         """
         获取 AID。
 
         Returns:
-            str: AID。
+            int: AID。
         """
         if not self.__ep_aid:
             await self.__fetch_bangumi()
-        return self.__ep_aid
+        # __fetch_bangumi() 保证 __ep_aid 已赋值（JSON int）；await 之后收窄失效，此处为唯一收窄点
+        return cast(int, self.__ep_aid)
 
     async def __set_bvid_e(self) -> None:
         """
@@ -1425,9 +1433,12 @@ class Episode(Video):
         """
         return self.__epid
 
-    async def get_cid(self) -> int:
+    async def get_cid(self, page_index: int = 0) -> int:
         """
         获取稿件 cid
+
+        Args:
+            page_index (int, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to 0.
 
         Returns:
             int: cid
@@ -1476,7 +1487,8 @@ class Episode(Video):
         """
         if not self.bangumi:
             await self.__fetch_bangumi()
-        return self.bangumi
+        # __fetch_bangumi() 保证 self.bangumi 已构造；await 之后属性收窄失效，此处为唯一收窄点
+        return cast("Bangumi", self.bangumi)
 
     async def set_favorite(
         self, add_media_ids: list[int] | None = None, del_media_ids: list[int] | None = None
@@ -1507,11 +1519,23 @@ class Episode(Video):
             "add_media_ids": ",".join(str(x) for x in add_media_ids),
             "del_media_ids": ",".join(str(x) for x in del_media_ids),
         }
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
-    async def get_download_url(self) -> dict:
+    async def get_download_url(
+        self,
+        page_index: int | None = None,
+        cid: int | None = None,
+        html5: bool = False,
+    ) -> dict:
         """
         获取番剧剧集下载信息。
+
+        Args:
+            page_index (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
+            cid        (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
+            html5      (bool, optional)      : 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to False.
 
         Returns:
             dict: 调用 API 返回的结果。
@@ -1531,30 +1555,42 @@ class Episode(Video):
                 "isGaiaAvoided": "true",
                 "web_location": 1315873,
             }
-            self.__playurl = await Api(**api, credential=self.credential).update_params(**params).result
+            self.__playurl = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         return self.__playurl
 
-    async def get_danmaku_xml(self) -> str:
+    async def get_danmaku_xml(self, page_index: int | None = None, cid: int | None = None) -> str:
         """
         获取所有弹幕的 xml 源文件（非装填）
+
+        Args:
+            page_index (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
+            cid        (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
 
         Returns:
             str: 文件源
         """
         cid = await self.get_cid()
         url = f"https://comment.bilibili.com/{cid}.xml"
-        return (await Api(url=url, method="GET").request(byte=True)).decode("utf-8")
+        # byte=True 时 request() 按契约返回原始字节流，联合返回类型无法表达该模式约束，此处为唯一收窄点
+        return cast(bytes, await Api(url=url, method="GET").request(byte=True)).decode("utf-8")
 
-    async def get_danmaku_view(self) -> dict:
+    async def get_danmaku_view(self, page_index: int | None = None, cid: int | None = None) -> dict:
         """
         获取弹幕设置、特殊弹幕、弹幕数量、弹幕分段等信息。
+
+        Args:
+            page_index (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
+            cid        (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
 
         Returns:
             dict: 二进制流解析结果
         """
         return await super().get_danmaku_view(0)
 
-    async def get_danmakus(
+    # 父类首参为 page_index 而子类为 date，位置调用序无法两全，局部忽略
+    async def get_danmakus(  # pyrefly: ignore[bad-override]
         self,
         date: datetime.date | None = None,
         from_seg: int | None = None,
@@ -1575,7 +1611,8 @@ class Episode(Video):
         """
         return await super().get_danmakus(0, date, from_seg=from_seg, to_seg=to_seg)
 
-    async def get_history_danmaku_index(self, date: datetime.date | None = None) -> list[str] | None:
+    # 父类首参为 page_index 而子类为 date，位置调用序无法两全，局部忽略
+    async def get_history_danmaku_index(self, date: datetime.date | None = None) -> list[str] | None:  # pyrefly: ignore[bad-override]
         """
         获取特定月份存在历史弹幕的日期。
 
@@ -1587,7 +1624,8 @@ class Episode(Video):
         """
         return await super().get_history_danmaku_index(0, date)
 
-    async def send_danmaku(self, danmaku: Danmaku):
+    # 父类首参为 page_index 而子类为 danmaku，位置调用序无法两全，局部忽略
+    async def send_danmaku(self, danmaku: Danmaku) -> dict:  # pyrefly: ignore[bad-override]
         """
         发送弹幕。
 
@@ -1599,7 +1637,8 @@ class Episode(Video):
         """
         return await super().send_danmaku(0, danmaku)
 
-    async def recall_danmaku(self, dmid: int):
+    # 父类首参为 page_index 而子类为 dmid，位置调用序无法两全，局部忽略
+    async def recall_danmaku(self, dmid: int) -> dict:  # pyrefly: ignore[bad-override]
         """
         撤回弹幕。
 
@@ -1611,25 +1650,43 @@ class Episode(Video):
         """
         return await super().recall_danmaku(0, dmid)
 
-    async def get_player_info(self):
+    async def get_player_info(self, cid: int | None = None, epid: int | None = None) -> dict:
         """
         获取视频上一次播放的记录，字幕和地区信息。需要分集的 cid, 返回数据中含有json字幕的链接
+
+        Args:
+            cid  (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略，本方法始终使用分集 cid。Defaults to None.
+
+            epid (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略，本方法始终使用分集 epid。Defaults to None.
 
         Returns:
             dict: 调用 API 返回的结果
         """
         return await super().get_player_info(await self.get_cid(), self.get_epid())
 
-    async def get_subtitle(self):
+    async def get_subtitle(self, cid: int | None = None) -> dict:
         """
         获取字幕信息
 
-        Returns:
-            dict: 调用 API 返回的结果
-        """
-        return (await self.get_player_info()).get("subtitle")
+        Args:
+            cid (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略，本方法始终使用分集 cid。Defaults to None.
 
-    async def submit_subtitle(self, lan: str, data: dict, submit: bool, sign: bool):
+        Returns:
+            dict: 调用 API 返回的结果（沿用父类 dict 声明；分集字幕缺失时运行时为 None，属既有形态）。
+        """
+        subtitle = (await self.get_player_info()).get("subtitle")
+        # 声明与父类保持一致；字幕缺失时上游 .get 返回 None 为既有运行时形态，此处为唯一收窄点
+        return cast(dict, subtitle)
+
+    async def submit_subtitle(
+        self,
+        lan: str,
+        data: dict,
+        submit: bool,
+        sign: bool,
+        page_index: int | None = None,
+        cid: int | None = None,
+    ) -> dict:
         """
         上传字幕
 
@@ -1662,21 +1719,31 @@ class Episode(Video):
 
             sign       (bool)                : 是否署名
 
+            page_index (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
+            cid        (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
         Returns:
             dict: API 调用返回结果
         """
         return await super().submit_subtitle(lan, data, submit, sign, 0)
 
-    async def get_pbp(self):
+    async def get_pbp(self, page_index: int | None = None, cid: int | None = None) -> dict:
         """
         获取高能进度条
+
+        Args:
+            page_index (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
+
+            cid        (int | None, optional): 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None.
 
         Returns:
             dict: 调用 API 返回的结果
         """
         return await super().get_pbp(0)
 
-    async def get_ai_conclusion(self, up_mid: int | None = None):
+    # 父类前两参为 cid/page_index 而子类首参为 up_mid，位置调用序无法两全，局部忽略
+    async def get_ai_conclusion(self, up_mid: int | None = None) -> dict:  # pyrefly: ignore[bad-override]
         """
         获取稿件 AI 总结结果。
 
