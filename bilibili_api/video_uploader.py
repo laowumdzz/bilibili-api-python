@@ -319,7 +319,13 @@ class VideoPorderMeta:
                 [str(show_type.value) for show_type in ([] if show_types is None else show_types)]
             )
 
-    def __dict__(self) -> dict:
+    def to_dict(self) -> dict:
+        """
+        获取转账订单信息的字典形式。
+
+        Returns:
+            dict: 转账订单信息。
+        """
         return self.__info
 
 
@@ -494,7 +500,13 @@ class VideoMeta:
         self.porder = porder if isinstance(porder, dict) else None
         self.watermark = watermark
 
-    def __dict__(self) -> dict:
+    def to_dict(self) -> dict:
+        """
+        获取视频源数据的字典形式（用于上传提交）。
+
+        Returns:
+            dict: 视频源数据。
+        """
         meta = {
             "title": self.title,
             "copyright": 1 if self.original else 2,
@@ -514,7 +526,7 @@ class VideoMeta:
             "interactive": 0,
             "act_reserve_create": 0,  # unknown
             "no_disturbance": 0,  # unknown
-            "porder": None if self.porder is None else self.porder.__dict__(),
+            "porder": None if self.porder is None else self.porder.to_dict(),
             "adorder_type": 9,  # unknown
             "no_reprint": 1 if self.no_reprint else 0,
             "subtitle": (
@@ -1198,7 +1210,7 @@ class VideoUploader(AsyncEvent):
         Returns:
             dict: 含 bvid 和 aid 的字典
         """
-        meta = copy(self.meta.__dict__() if isinstance(self.meta, VideoMeta) else self.meta)
+        meta = copy(self.meta.to_dict() if isinstance(self.meta, VideoMeta) else self.meta)
         meta["cover"] = cover_url
         meta["videos"] = videos
 
