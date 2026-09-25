@@ -877,6 +877,9 @@ ExClimbWuzhi 失败异常
 
 关闭本地极验验证码服务
 
+Raises:
+GeetestException: 未创建验证码服务（请先调用 `start_geetest_server`）
+
 
 
 

@@ -11,6 +11,7 @@ import http.server
 import os
 import select
 import threading
+from typing import Any, cast
 
 from ..exceptions import GeetestException
 from .network import Api
@@ -42,8 +43,8 @@ class GeetestMeta:
     gt: str
     challenge: str
     token: str
-    seccode: str = ""
-    validate: str = ""
+    seccode: str | None = ""
+    validate: str | None = ""
 
 
 class DocHandler(http.server.BaseHTTPRequestHandler):
@@ -62,7 +63,7 @@ class DocHandler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(self.urlhandler(self.path, content_type).encode("utf-8"))  # type: ignore
 
-    def log_message(self, *args):
+    def log_message(self, format: str, *args: Any) -> None:
         # Don't log messages.
         pass
 
@@ -135,13 +136,13 @@ class Geetest:
 
     def __init__(self) -> None:
         self.gt = ""
-        self.validate = ""
-        self.seccode = ""
+        self.validate: str | None = ""
+        self.seccode: str | None = ""
         self.challenge = ""
         self.key = ""
-        self.thread = None
+        self.thread: ServerThread | None = None
         self.done = False
-        self.test_type = None
+        self.test_type: GeetestType | None = None
 
     async def generate_test(self, type_: GeetestType = GeetestType.LOGIN) -> None:
         """
@@ -151,7 +152,7 @@ class Geetest:
             type_ (GeetestType): 极验验证码类型。登录为 LOGIN，登录验证为 VERIFY. Defaults to GeetestType.LOGIN.
         """
         api = API[type_.value]["captcha"]
-        json_data = await Api(**api, no_csrf=True).result
+        json_data = await Api(**api, no_csrf=True).result_dict()
         if type_ == GeetestType.LOGIN:
             self.gt = json_data["geetest"]["gt"]
             self.challenge = json_data["geetest"]["challenge"]
@@ -174,7 +175,8 @@ class Geetest:
         """
         if not self.test_generated():
             raise GeetestException("未生成过测试。请调用 `generate_test`")
-        return self.test_type
+        # test_generated() 为真即 test_type 已赋值，此处为唯一收窄点
+        return cast(GeetestType, self.test_type)
 
     def test_generated(self) -> bool:
         """
@@ -300,11 +302,18 @@ class Geetest:
         """
         if not self.thread:
             raise GeetestException("未创建验证码服务。请调用 `start_geetest_server`")
-        return self.thread.url
+        # 服务启动后 url 必已赋值；thread 属性收窄经布尔判定成立，此处为唯一收窄点
+        return cast(str, self.thread.url)
 
     def close_geetest_server(self) -> None:
         """
         关闭本地极验验证码服务
+
+        Raises:
+            GeetestException: 未创建验证码服务（请先调用 `start_geetest_server`）
         """
+        if not self.thread:
+            # 与 get_server_url 的守卫保持一致（原实现为 AttributeError 崩溃）
+            raise GeetestException("未创建验证码服务。请调用 `start_geetest_server`")
         self.thread.stop()
         self.thread = None

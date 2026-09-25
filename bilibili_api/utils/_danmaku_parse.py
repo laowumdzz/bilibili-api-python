@@ -8,6 +8,7 @@ bilibili_api.utils._danmaku_parse
 """
 
 import json
+from typing import Any
 
 from ..exceptions import ResponseException
 from .BytesReader import BytesReader
@@ -27,14 +28,14 @@ def parse_danmaku_view(resp_data: bytes) -> dict:
     Returns:
         dict: 解析后的弹幕信息。
     """
-    json_data = {}
+    json_data: dict[str, Any] = {}
     reader = BytesReader(resp_data)
 
     # 解析二进制数据流
 
     def read_dm_seg(stream: bytes):
         reader_ = BytesReader(stream)
-        data = {}
+        data: dict[str, Any] = {}
         while not reader_.has_end():
             t = reader_.varint() >> 3
             if t == 1:
@@ -47,7 +48,7 @@ def parse_danmaku_view(resp_data: bytes) -> dict:
 
     def read_flag(stream: bytes):
         reader_ = BytesReader(stream)
-        data = {}
+        data: dict[str, Any] = {}
         while not reader_.has_end():
             t = reader_.varint() >> 3
             if t == 1:
@@ -62,7 +63,7 @@ def parse_danmaku_view(resp_data: bytes) -> dict:
 
     def read_command_danmakus(stream: bytes):
         reader_ = BytesReader(stream)
-        data = {}
+        data: dict[str, Any] = {}
         while not reader_.has_end():
             t = reader_.varint() >> 3
             if t == 1:
@@ -91,7 +92,7 @@ def parse_danmaku_view(resp_data: bytes) -> dict:
 
     def read_settings(stream: bytes):
         reader_ = BytesReader(stream)
-        data = {}
+        data: dict[str, Any] = {}
         while not reader_.has_end():
             t = reader_.varint() >> 3
             if t == 1:
@@ -150,7 +151,7 @@ def parse_danmaku_view(resp_data: bytes) -> dict:
         while not reader_.has_end():
             type_ = reader_.varint() >> 3
             if type_ == 1:
-                details_dict: dict[str, object] = {"texts": []}
+                details_dict: dict[str, Any] = {"texts": []}
                 img_details = reader_.bytes_string()
                 reader_details = BytesReader(img_details)
                 while not reader_details.has_end():

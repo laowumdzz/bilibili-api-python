@@ -75,6 +75,8 @@ from bilibili_api import audio_uploader
 
 
 
+**Returns:** `int | None`:  歌曲 id；上传被取消时为 None。
+
 
 
 
