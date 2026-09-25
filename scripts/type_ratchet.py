@@ -27,12 +27,12 @@ BASELINE: dict[str, int] = {
     "bad-argument-type": 59,
     "bad-assignment": 42,
     "bad-function-definition": 13,
-    "bad-index": 217,
+    "bad-index": 199,
     "bad-override": 20,
-    "bad-return": 321,
+    "bad-return": 281,
     "missing-attribute": 28,
     "not-iterable": 13,
-    "unsupported-operation": 119,
+    "unsupported-operation": 113,
 }
 
 # 非豁免表内、但在强制检查中仍会现身的错误码：一律视为异常并阻断（曾经的
