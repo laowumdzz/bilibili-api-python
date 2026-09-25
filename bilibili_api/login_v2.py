@@ -19,6 +19,7 @@ import qrcode_terminal
 import yarl
 
 from .exceptions import ArgsException, GeetestException, LoginError
+from .utils._types import BiliAPIResponse
 from .utils.geetest import Geetest, GeetestType
 from .utils.network import Api, Credential, get_buvid, get_client
 from .utils.picture import Picture
@@ -30,6 +31,23 @@ API = get_api("login")
 def encrypt(_hash, key, password) -> str:
     encryptor = PKCS1_v1_5.new(RSA.importKey(bytes(key, "utf-8")))
     return str(base64.b64encode(encryptor.encrypt(bytes(_hash + password, "utf-8"))), "utf-8")
+
+
+def _json_object(resp: BiliAPIResponse) -> dict:
+    """
+    将响应体解析为 JSON 对象（dict）。
+
+    本模块各登录端点响应恒为 JSON 对象（code / data / message 结构），而
+    BiliAPIResponse.json() 面向任意端点诚实地返回 object，本函数是模块内
+    统一的形状收窄点（spec 005 FR-004 的中心收窄，替代散落 cast）。
+
+    Args:
+        resp (BiliAPIResponse): 响应。
+
+    Returns:
+        dict: 解析后的 JSON 对象。
+    """
+    return cast(dict, resp.json())
 
 
 async def login_with_password(username: str, password: str, geetest: Geetest) -> Union[Credential, "LoginCheck"]:
@@ -51,7 +69,7 @@ async def login_with_password(username: str, password: str, geetest: Geetest) ->
     if not geetest.has_done():
         raise GeetestException("未完成验证。")
     api_token = API["password"]["get_token"]
-    token_data = await Api(**api_token).result
+    token_data = await Api(**api_token).result_dict()
     hash_ = token_data["hash"]
     key = token_data["key"]
     final_password = encrypt(hash_, key, password)
@@ -78,7 +96,7 @@ async def login_with_password(username: str, password: str, geetest: Geetest) ->
         headers=headers,
         cookies={"buvid3": (await get_buvid())[0]},
     )
-    login_data = resp.json()
+    login_data = _json_object(resp)
     if login_data["code"] == 0:
         if login_data["data"]["status"] == 1:
             return LoginCheck(login_data["data"]["url"])
@@ -283,7 +301,7 @@ async def send_sms(phonenumber: PhoneNumber, geetest: Geetest) -> str:
         headers=headers,
         cookies={"buvid3": (await get_buvid())[0]},
     )
-    return_data = res.json()
+    return_data = _json_object(res)
     if return_data["code"] == 0:
         return return_data["data"]["captcha_key"]
     else:
@@ -324,7 +342,7 @@ async def login_with_sms(phonenumber: PhoneNumber, code: str, captcha_id: str) -
         headers=headers,
         cookies={"buvid3": (await get_buvid())[0]},
     )
-    return_data = res.json()
+    return_data = _json_object(res)
     if return_data["code"] == 0 and return_data["data"]["status"] != 5:
         url = return_data["data"]["url"]
         cookies_list = url.split("?")[1].split("&")
@@ -391,12 +409,12 @@ class QrCodeLogin:
         Args:
             platform (QrCodeLoginChannel, optional): 平台. (web/tv) Defaults to QrCodeLoginChannel.WEB.
         """
-        self.__platform: str = platform
+        self.__platform: QrCodeLoginChannel = platform
         self.__qr_link: str = ""
         self.__qr_terminal: str = ""
-        self.__qr_picture: Picture = None
+        self.__qr_picture: Picture | None = None
         self.__qr_key: str = ""
-        self.__credential: Credential = None
+        self.__credential: Credential | None = None
 
     def has_qrcode(self) -> bool:
         """
@@ -424,14 +442,16 @@ class QrCodeLogin:
             Credential: 凭据
         """
         raise_for_statement(self.has_done())
-        return self.__credential
+        # has_done() 为真即已成功登录，__credential 必已赋值；该事实无法经
+        # raise_for_statement 向类型层传导，此处为唯一收窄点
+        return cast(Credential, self.__credential)
 
-    def get_qrcode_picture(self) -> Picture:
+    def get_qrcode_picture(self) -> Picture | None:
         """
         获取二维码的 Picture 类
 
         Returns:
-            Picture: 二维码
+            Picture | None: 二维码，尚未调用 generate_qrcode() 生成时为 None。
         """
         return self.__qr_picture
 
@@ -451,19 +471,21 @@ class QrCodeLogin:
         if self.__platform == QrCodeLoginChannel.TV:
             api = API["qrcode"]["tv"]["get_qrcode_and_auth_code"]
             data = {"local_id": 0, "ts": int(time.time())}
-            resp = await Api(credential=Credential(), no_csrf=True, **api).update_data(**data).result
+            resp = await Api(credential=Credential(), no_csrf=True, **api).update_data(**data).result_dict()
             self.__qr_link = resp["url"]
             self.__qr_key = resp["auth_code"]
         else:
             api = API["qrcode"]["web"]["get_qrcode_and_token"]
-            data = await Api(credential=Credential(), **api).result
+            data = await Api(credential=Credential(), **api).result_dict()
             self.__qr_link = data["url"]
             self.__qr_key = data["qrcode_key"]
         qr = qrcode.QRCode()
         qr.add_data(self.__qr_link)
         img = qr.make_image()
         img_dir = os.path.join(tempfile.gettempdir(), "qrcode.png")
-        img.save(img_dir)
+        # pypng 的 Image.save 运行时同样接受文件名字符串（内部自动转二进制流），
+        # qrcode 存根仅声明流形态，属工具误报，局部忽略（spec 005 FR-004）
+        img.save(img_dir)  # pyrefly: ignore[bad-argument-type]
         self.__qr_picture = Picture.from_file(img_dir)
         self.__qr_terminal = qrcode_terminal.qr_terminal_str(self.__qr_link)
 
@@ -494,7 +516,11 @@ class QrCodeLogin:
                     "mobi_app": "web_cn",
                 },
             }
-            events, cookies = await Api(credential=Credential(), **api).update_params(**params).request_with_cookies()
+            events_raw, cookies = (
+                await Api(credential=Credential(), **api).update_params(**params).request_with_cookies()
+            )
+            # poll 的 data 字段恒为 JSON 对象（含 code / refresh_token 等），此处统一收窄为 dict
+            events = cast(dict, events_raw)
             code = events["code"]
             if code == 86101:
                 return QrCodeLoginEvents.SCAN
@@ -504,8 +530,7 @@ class QrCodeLogin:
                 return QrCodeLoginEvents.TIMEOUT
             else:
                 # 登录 Cookie 由本响应 Set-Cookie 下发；响应体 url 已是不含 Cookie 的跳转链接，不可解析。
-                # poll 的 data 字段恒为 JSON 对象，refresh_token 恒为字符串，不存在非 dict 形态
-                kwargs: dict[str, str] = {"ac_time_value": str(cast(dict, events).get("refresh_token") or "")}
+                kwargs: dict[str, str] = {"ac_time_value": str(events.get("refresh_token") or "")}
                 for name, value in cookies.items():
                     field = name.lower()
                     if field in ("sessdata", "bili_jct", "dedeuserid", "buvid3", "buvid4"):
@@ -520,7 +545,9 @@ class QrCodeLogin:
         else:
             api = API["qrcode"]["tv"]["get_events"]
             data = {"auth_code": self.__qr_key, "ts": int(time.time()), "local_id": 0}
-            events = await Api(credential=Credential(), no_csrf=True, **api).update_data(**data).request(raw=True)
+            events_raw = await Api(credential=Credential(), no_csrf=True, **api).update_data(**data).request(raw=True)
+            # TV 轮询响应体恒为 JSON 对象（含 code 与 data.cookie_info），此处统一收窄为 dict
+            events = cast(dict, events_raw)
             code = events["code"]
             if code == 86039:
                 return QrCodeLoginEvents.SCAN
@@ -548,7 +575,7 @@ class LoginCheck:
         self.__yarl = yarl.URL(self.__url)
         self.__token = self.__yarl.query["tmp_token"]
         self.__id = self.__yarl.query.get("request_id")
-        self.__captcha_key = None
+        self.__captcha_key: str | None = None
 
     async def fetch_info(self) -> dict:
         """
@@ -559,7 +586,7 @@ class LoginCheck:
         """
         api = API["safecenter"]["check_info"]
         params = {"tmp_code": self.__token}
-        return await Api(**api).update_params(**params).result
+        return await Api(**api).update_params(**params).result_dict()
 
     async def send_sms(self, geetest: Geetest) -> None:
         """
@@ -582,7 +609,7 @@ class LoginCheck:
             "gee_validate": geetest.validate,
             "gee_seccode": geetest.seccode,
         }
-        res = await Api(**api, no_csrf=True).update_data(**data).result
+        res = await Api(**api, no_csrf=True).update_data(**data).result_dict()
         self.__captcha_key = res["captcha_key"]
 
     async def complete_check(self, code: str) -> Credential:
@@ -618,7 +645,7 @@ class LoginCheck:
                 "captcha_key": self.__captcha_key,
                 "code": code,
             }
-        exchange_code = (await Api(**api, no_csrf=True, headers=headers).update_data(**data).result)["code"]
+        exchange_code = (await Api(**api, no_csrf=True, headers=headers).update_data(**data).result_dict())["code"]
         exchange_url = API["safecenter"]["get_cookies"]["url"]
         exchange_data = {"code": exchange_code}
         if self.__id is None:
@@ -636,6 +663,6 @@ class LoginCheck:
             bili_jct=resp.cookies["bili_jct"],
             buvid3=None,
             dedeuserid=resp.cookies["DedeUserID"],
-            ac_time_value=(resp.json())["data"]["refresh_token"],
+            ac_time_value=_json_object(resp)["data"]["refresh_token"],
         )
         return credential

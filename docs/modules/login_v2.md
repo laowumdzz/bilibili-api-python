@@ -169,7 +169,7 @@ Raises:
 
 
 
-**Returns:** `Picture`:  二维码
+**Returns:** `Picture | None`:  二维码，尚未调用 generate_qrcode() 生成时为 None。
 
 
 
