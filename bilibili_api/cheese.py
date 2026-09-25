@@ -13,7 +13,7 @@ bilibili_api.cheese
 """
 
 import datetime
-from typing import Any
+from typing import Any, cast
 
 from .exceptions import ArgsException, DanmakuClosedException, NetworkException
 from .utils._danmaku_parse import parse_danmaku_segment, parse_danmaku_view
@@ -63,7 +63,7 @@ class CheeseList:
         # self.season_id = str(sync(self.get_meta())["season_id"])
         api = API["info"]["meta"]
         params = {"ep_id": self.__ep_id}
-        meta = await Api(**api, credential=self.credential).update_params(**params).result
+        meta = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         self.__season_id = int(meta["season_id"])
 
     async def set_season_id(self, season_id: int) -> None:
@@ -105,7 +105,7 @@ class CheeseList:
         """
         api = API["info"]["meta"]
         params = {"season_id": await self.get_season_id()}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_list_raw(self):
         """
@@ -128,7 +128,7 @@ class CheeseList:
         global cheese_video_meta_cache
         api = API["info"]["list"]
         params = {"season_id": await self.get_season_id(), "pn": 1, "ps": 1000}
-        lists = await Api(**api, credential=self.credential).update_params(**params).result
+        lists = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         cheese_videos = []
         for c in lists["items"]:
             c["ssid"] = await self.get_season_id()
@@ -169,10 +169,10 @@ class CheeseVideo:
             self.__cid = meta["cid"]
         self.credential: Credential = credential if credential else Credential()
 
-    async def __fetch_meta(self) -> int:
+    async def __fetch_meta(self) -> None:
         api = API["info"]["meta"]
         params = {"ep_id": self.__epid}
-        metadata = await Api(**api).update_params(**params).result
+        metadata = await Api(**api).update_params(**params).result_dict()
         for v in metadata["episodes"]:
             if v["id"] == self.__epid:
                 self.__aid = v["aid"]
@@ -189,7 +189,8 @@ class CheeseVideo:
         """
         if not self.__aid:
             await self.__fetch_meta()
-        return self.__aid
+        # __fetch_meta() 保证 __aid 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(int, self.__aid)
 
     async def get_cid(self) -> int:
         """
@@ -200,7 +201,8 @@ class CheeseVideo:
         """
         if not self.__cid:
             await self.__fetch_meta()
-        return self.__cid
+        # __fetch_meta() 保证 __cid 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(int, self.__cid)
 
     async def get_meta(self) -> dict:
         """
@@ -211,7 +213,8 @@ class CheeseVideo:
         """
         if not self.__meta:
             await self.__fetch_meta()
-        return self.__meta
+        # __fetch_meta() 保证 __meta 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(dict, self.__meta)
 
     async def get_cheese(self) -> "CheeseList":
         """
@@ -222,7 +225,8 @@ class CheeseVideo:
         """
         if not self.cheese:
             await self.__fetch_meta()
-        return self.cheese
+        # __fetch_meta() 保证 cheese 已构造；await 之后属性收窄失效，此处为唯一收窄点
+        return cast("CheeseList", self.cheese)
 
     async def set_epid(self, epid: int) -> None:
         """
@@ -259,7 +263,7 @@ class CheeseVideo:
             "fnval": 4048,
             "fourk": 1,
         }
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_stat(self) -> dict:
         """
@@ -270,7 +274,7 @@ class CheeseVideo:
         """
         api = API_video["info"]["stat"]
         params = {"aid": await self.get_aid()}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_pages(self) -> dict:
         """
@@ -281,7 +285,7 @@ class CheeseVideo:
         """
         api = API_video["info"]["pages"]
         params = {"aid": await self.get_aid()}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_danmaku_view(self) -> dict:
         """
@@ -295,7 +299,10 @@ class CheeseVideo:
         params = {"type": 1, "oid": cid, "pid": await self.get_aid()}
 
         try:
-            resp_data = await Api(**api, credential=self.credential).update_params(**params).request(byte=True)
+            # byte=True 时 request() 按契约返回原始字节流，此处为唯一收窄点
+            resp_data = cast(
+                bytes, await Api(**api, credential=self.credential).update_params(**params).request(byte=True)
+            )
         except Exception as e:
             raise NetworkException(-1, str(e)) from e
 
@@ -359,7 +366,8 @@ class CheeseVideo:
                 # 视频弹幕被关闭
                 raise DanmakuClosedException()
 
-            danmakus.extend(parse_danmaku_segment(data))
+            # byte=True 契约收窄（同上）
+            danmakus.extend(parse_danmaku_segment(cast(bytes, data)))
         return danmakus
 
     async def get_pbp(self) -> dict:
@@ -372,7 +380,8 @@ class CheeseVideo:
         cid = await self.get_cid()
         api = API_video["info"]["pbp"]
         params = {"cid": cid}
-        return await Api(**api, credential=self.credential).update_params(**params).request(raw=True)
+        # raw=True 时 request() 按契约返回完整 JSON 响应体（本端点恒为 JSON 对象），此处为唯一收窄点
+        return cast(dict, await Api(**api, credential=self.credential).update_params(**params).request(raw=True))
 
     async def send_danmaku(self, danmaku: Danmaku | None = None):
         """
@@ -434,7 +443,7 @@ class CheeseVideo:
 
         api = API_video["info"]["get_pay_coins"]
         params = {"aid": await self.get_aid()}
-        return (await Api(**api, credential=self.credential).update_params(**params).result)["multiply"]
+        return (await Api(**api, credential=self.credential).update_params(**params).result_dict())["multiply"]
 
     async def has_favoured(self):
         """
@@ -447,7 +456,7 @@ class CheeseVideo:
 
         api = API_video["info"]["has_favoured"]
         params = {"aid": await self.get_aid()}
-        return (await Api(**api, credential=self.credential).update_params(**params).result)["favoured"]
+        return (await Api(**api, credential=self.credential).update_params(**params).result_dict())["favoured"]
 
     async def like(self, status: bool = True):
         """
@@ -530,4 +539,5 @@ class CheeseVideo:
         """
         cid = await self.get_cid()
         url = f"https://comment.bilibili.com/{cid}.xml"
-        return (await Api(url=url, method="GET").request(byte=True)).decode("utf-8")
+        # byte=True 契约收窄（同上）
+        return cast(bytes, await Api(url=url, method="GET").request(byte=True)).decode("utf-8")
