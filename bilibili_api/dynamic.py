@@ -177,7 +177,7 @@ async def upload_image(image: Picture, credential: Credential, data: dict | None
         data = {"biz": "new_dyn", "category": "daily"}
 
     files = {"file_up": image._to_biliapifile()}
-    return_info = await Api(**api, credential=credential).update_data(**data).update_files(**files).result
+    return_info = await Api(**api, credential=credential).update_data(**data).update_files(**files).result_dict()
     return return_info
 
 
@@ -610,7 +610,10 @@ async def send_dynamic(info: BuildDynamic, credential: Credential):
     params = {"csrf": credential.bili_jct}
 
     send_result = (
-        await Api(**api, credential=credential, json_body=True).update_data(**data).update_params(**params).result
+        await Api(**api, credential=credential, json_body=True)
+        .update_data(**data)
+        .update_params(**params)
+        .result_dict()
     )
     return send_result
 
@@ -631,7 +634,7 @@ async def get_schedules_list(credential: Credential) -> dict:
     credential.raise_for_no_sessdata()
 
     api = API["schedule"]["list"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def send_schedule_now(draft_id: int, credential: Credential) -> dict:
@@ -650,7 +653,7 @@ async def send_schedule_now(draft_id: int, credential: Credential) -> dict:
 
     api = API["schedule"]["publish_now"]
     data = {"draft_id": draft_id}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def delete_schedule(draft_id: int, credential: Credential) -> dict:
@@ -669,7 +672,7 @@ async def delete_schedule(draft_id: int, credential: Credential) -> dict:
 
     api = API["schedule"]["delete"]
     data = {"draft_id": draft_id}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 class Dynamic:
@@ -718,7 +721,7 @@ class Dynamic:
                 "x-bili-device-req-json": '{"platform":"web","device":"pc"}',
                 "x-bili-web-req-json": '{"spm_id":"333.1368"}',
             }
-            self.__detail = await Api(**api, credential=self.credential).update_params(**params).result
+            self.__detail = await Api(**api, credential=self.credential).update_params(**params).result_dict()
             is_article = self.__detail["item"]["basic"]["comment_type"] == 12
             cache_pool.dynamic_is_article.set(self.__dynamic_id, is_article)
             if is_article:
@@ -906,7 +909,7 @@ class Dynamic:
 
         api = API["info"]["reaction"]
         params = {"web_location": "333.1369", "offset": offset, "id": self.__dynamic_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_reposts(self, offset: str = "0") -> dict:
         """
@@ -922,7 +925,7 @@ class Dynamic:
         params: dict[str, Any] = {"dynamic_id": self.__dynamic_id}
         if offset != "0":
             params["offset"] = offset
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_rid(self) -> int:
         """
@@ -947,7 +950,7 @@ class Dynamic:
         """
         api = API["info"]["likes"]
         params = {"dynamic_id": self.__dynamic_id, "pn": pn, "ps": ps}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def set_like(self, status: bool = True) -> dict:
         """
@@ -972,7 +975,7 @@ class Dynamic:
             "up": 1 if status else 2,
             "uid": self_uid,
         }
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def delete(self) -> dict:
         """
@@ -985,7 +988,7 @@ class Dynamic:
 
         api = API["operate"]["delete"]
         data = {"dynamic_id": self.__dynamic_id}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def repost(self, text: str = "转发动态") -> dict:
         """
@@ -1002,7 +1005,7 @@ class Dynamic:
         api = API["operate"]["repost"]
         data = await _get_text_data(text, self.credential)
         data["dynamic_id"] = self.__dynamic_id
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def set_favorite(self, status: bool = True) -> dict:
         """
@@ -1035,7 +1038,7 @@ class Dynamic:
             },
             "action": 3 if status else 4,
         }
-        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result_dict()
 
     async def get_lottery_info(self) -> dict:
         """
@@ -1054,7 +1057,7 @@ class Dynamic:
             "csrf": self.credential.bili_jct,
             "web_location": "333.1330",
         }
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def set_top(self) -> dict:
         """
@@ -1071,7 +1074,7 @@ class Dynamic:
             "csrf": self.credential.bili_jct,
         }
         data = {"dyn_str": str(self.get_dynamic_id())}
-        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result_dict()
 
     async def remove_top(self) -> dict:
         """
@@ -1088,7 +1091,7 @@ class Dynamic:
             "csrf": self.credential.bili_jct,
         }
         data = {"dyn_str": str(self.get_dynamic_id())}
-        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_params(**params).update_data(**data).result_dict()
 
 
 async def get_new_dynamic_users(credential: Credential | None = None) -> dict:
@@ -1104,7 +1107,7 @@ async def get_new_dynamic_users(credential: Credential | None = None) -> dict:
     credential = credential if credential else Credential()
     credential.raise_for_no_sessdata()
     api = API["info"]["attention_new_dynamic"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_live_users(size: int = 10, credential: Credential | None = None) -> dict:
@@ -1123,7 +1126,7 @@ async def get_live_users(size: int = 10, credential: Credential | None = None) -
     credential.raise_for_no_sessdata()
     api = API["info"]["attention_live"]
     params = {"size": size}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_dynamic_page_UPs_info(credential: Credential) -> dict:
@@ -1137,7 +1140,7 @@ async def get_dynamic_page_UPs_info(credential: Credential) -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["info"]["dynamic_page_UPs_info"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_dynamic_page_info(
@@ -1188,7 +1191,7 @@ async def get_dynamic_page_info(
     elif not host_mid:
         api["params"].pop("host_mid")
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_dynamic_page_list(
@@ -1239,5 +1242,5 @@ async def get_dynamic_page_list(
     elif not host_mid:
         api["params"].pop("host_mid")
 
-    dynmaic_data = await Api(**api, credential=credential).update_params(**params).result
+    dynmaic_data = await Api(**api, credential=credential).update_params(**params).result_dict()
     return [Dynamic(dynamic_id=int(dynamic["id_str"]), credential=credential) for dynamic in dynmaic_data["items"]]
