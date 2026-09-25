@@ -8,7 +8,7 @@ bilibili_api.watchroom
 
 from enum import Enum
 import time
-from typing import Union
+from typing import Union, cast
 
 from .utils.network import Api, Credential
 from .utils.utils import get_api
@@ -103,10 +103,10 @@ class WatchRoom:
     放映室类
     """
 
-    __season_id: int
-    __episode_id: int
+    __season_id: int | None
+    __episode_id: int | None
 
-    def __init__(self, room_id: int, credential: Credential = None) -> None:
+    def __init__(self, room_id: int, credential: Credential | None = None) -> None:
         """
         Args:
 
@@ -127,7 +127,7 @@ class WatchRoom:
 
     async def __fetch_meta(self) -> None:
         params = {"room_id": self.get_room_id(), "platform": "web"}
-        info: dict = await Api(credential=self.credential, **API["info"]["info"]).update_params(**params).result
+        info: dict = await Api(credential=self.credential, **API["info"]["info"]).update_params(**params).result_dict()
         self.set_season_id(info["status"]["season_id"])
         self.set_episode_id(info["status"]["episode_id"])
 
@@ -158,7 +158,8 @@ class WatchRoom:
         """
         if not self.__season_id:
             await self.__fetch_meta()
-        return self.__season_id
+        # __fetch_meta() 保证 __season_id 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(int, self.__season_id)
 
     async def get_episode_id(self) -> int:
         """
@@ -169,7 +170,8 @@ class WatchRoom:
         """
         if not self.__episode_id:
             await self.__fetch_meta()
-        return self.__episode_id
+        # __fetch_meta() 保证 __episode_id 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(int, self.__episode_id)
 
     def get_room_id(self) -> int:
         """
@@ -189,7 +191,7 @@ class WatchRoom:
         """
         api = API["info"]["info"]
         params = {"room_id": self.get_room_id(), "platform": "web"}
-        return await Api(credential=self.credential, **api).update_params(**params).result
+        return await Api(credential=self.credential, **api).update_params(**params).result_dict()
 
     async def open(self) -> None:
         """
@@ -202,7 +204,8 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
+        # 声明返回 None，无需返回 API 结果
+        await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def close(self) -> None:
         """
@@ -215,7 +218,8 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
+        # 声明返回 None，无需返回 API 结果
+        await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def progress(self, progress: int | None = None, status: int = 1) -> None:
         """
@@ -235,7 +239,8 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
+        # 声明返回 None，无需返回 API 结果
+        await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
 
     async def join(self, token: str = "") -> dict:
         """
@@ -255,7 +260,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        res = await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
+        res = await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result_dict()
         self.set_season_id(res["season_id"])
         self.set_episode_id(res["episode_id"])
         return res
@@ -280,7 +285,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
         }
         api = API["operate"]["send"]
-        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result_dict()
 
     async def kickout(self, uid: int) -> dict:
         """
@@ -300,7 +305,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result
+        return await Api(credential=self.credential, no_csrf=True, **api).update_data(**data).result_dict()
 
     async def share(self) -> str:
         """
@@ -317,7 +322,7 @@ class WatchRoom:
             "csrf": self.credential.bili_jct,
             "platform": "web",
         }
-        res = await Api(credential=self.credential, no_csrf=True, **api).update_params(**params).result
+        res = await Api(credential=self.credential, no_csrf=True, **api).update_params(**params).result_dict()
         return res["room_info"]["share_url"].split("&token=")[-1]
 
 
@@ -325,7 +330,7 @@ async def create(
     season_id: int,
     episode_id: int,
     is_open: bool = False,
-    credential: Credential = None,
+    credential: Credential | None = None,
 ) -> WatchRoom:
     """
     创建放映室
@@ -356,7 +361,7 @@ async def create(
         "csrf": credential.bili_jct,
         "platform": "web",
     }
-    room_id = (await Api(credential=credential, no_csrf=True, **api).update_data(**data).result)["room_id"]
+    room_id = (await Api(credential=credential, no_csrf=True, **api).update_data(**data).result_dict())["room_id"]
     watch_room_bangumi_cache[room_id] = [season_id, episode_id]
     return WatchRoom(room_id=room_id, credential=credential)
 
@@ -364,7 +369,7 @@ async def create(
 async def match(
     season_id: int,
     season_type: SeasonType = SeasonType.ANIME,
-    credential: Credential = None,
+    credential: Credential | None = None,
 ) -> WatchRoom:
     """
     匹配放映室
@@ -389,6 +394,6 @@ async def match(
         "platform": "web",
     }
     return WatchRoom(
-        (await Api(credential=credential, no_csrf=True, **api).update_data(**data).result)["room_id"],
+        (await Api(credential=credential, no_csrf=True, **api).update_data(**data).result_dict())["room_id"],
         credential=credential,
     )
