@@ -133,9 +133,11 @@ jobs:
   integration:
     name: Test (pytest, integration)
     runs-on: ubuntu-latest
-    # 全量集成用例（含写操作）需要真实凭据：仅手动触发、推送主干或每周定时运行，不参与 PR；
-    # PR 场景由上方 integration-readonly 只读子集覆盖。
-    if: github.event_name != 'pull_request'
+    # 全量集成用例（含写操作）需要真实凭据：仅每周定时与手动触发，不参与 PR 与推送主干；
+    # PR 场景由上方 integration-readonly 只读子集覆盖。不在推送时运行的原因：GitHub
+    # runner IP 被 B 站 412 风控拦截（NetworkException: 412），推送触发的全量集成必然
+    # 失败，且与每周定时覆盖重复；接口漂移追踪由 schedule 全量任务承担。
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout
