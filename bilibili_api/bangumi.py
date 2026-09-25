@@ -1223,7 +1223,8 @@ class Bangumi:
         if self.oversea:
             # 转换 ep_id->id ，index_title->longtitle ，index->title
             fix_ep_list = []
-            for item in self.ep_list:
+            # 海外接口可能缺失 episodes 字段（ep_list 为 None），空值兜底避免迭代崩溃
+            for item in self.ep_list or []:
                 item["id"] = item.get("ep_id")
                 item["longtitle"] = item.get("index_title")
                 item["title"] = item.get("index")
