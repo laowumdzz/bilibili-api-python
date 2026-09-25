@@ -10,6 +10,7 @@ from enum import Enum
 import json
 import os
 import time
+from typing import cast
 
 from . import user
 from .exceptions import ApiException, NetworkException
@@ -473,7 +474,7 @@ class AudioUploader(AsyncEvent):
 
     __song_id: int
     __upos_file: UposFile
-    __task: asyncio.Task
+    __task: asyncio.Task | None
 
     def _check_meta(self):
         raise_for_statement(self.meta.content_type is not None)
@@ -556,7 +557,8 @@ class AudioUploader(AsyncEvent):
             self.dispatch(AudioUploaderEvents.PREUPLOAD_FAILED.value, {"song": self.meta})
             raise NetworkException(resp.code, "")
 
-        preupload = resp.json()
+        # 该端点响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+        preupload = cast(dict, resp.json())
 
         if preupload["OK"] != 1:
             self.dispatch(AudioUploaderEvents.PREUPLOAD_FAILED.value, {"song": self.meta})
@@ -584,7 +586,8 @@ class AudioUploader(AsyncEvent):
             self.dispatch(AudioUploaderEvents.PREUPLOAD_FAILED.value, {"song": self.meta})
             raise ApiException("获取 upload_id 错误")
 
-        data = resp.json()
+        # JSON 对象收窄（同上）
+        data = cast(dict, resp.json())
 
         if data["OK"] != 1:
             self.dispatch(AudioUploaderEvents.PREUPLOAD_FAILED.value, {"song": self.meta})
@@ -647,53 +650,56 @@ class AudioUploader(AsyncEvent):
             "member_with_type": [
                 {
                     "m_type": 1,  # 歌手
-                    "members": [{"name": singer.name, "mid": singer.uid} for singer in self.meta.singer],
+                    "members": [{"name": singer.name, "mid": singer.uid} for singer in self.meta.singer or []],
                 },
                 {
                     "m_type": 2,  # 作词
-                    "members": [{"name": lyricist.name, "mid": lyricist.uid} for lyricist in self.meta.lyricist],
+                    "members": [{"name": lyricist.name, "mid": lyricist.uid} for lyricist in self.meta.lyricist or []],
                 },
                 {
                     "m_type": 3,
-                    "members": [{"name": composer.name, "mid": composer.uid} for composer in self.meta.composer],
+                    "members": [{"name": composer.name, "mid": composer.uid} for composer in self.meta.composer or []],
                 },  # 作曲
                 {
                     "m_type": 4,
-                    "members": [{"name": arranger.name, "mid": arranger.uid} for arranger in self.meta.arranger],
+                    "members": [{"name": arranger.name, "mid": arranger.uid} for arranger in self.meta.arranger or []],
                 },  # 编曲
                 {
                     "m_type": 5,
-                    "members": [{"name": mixer.name, "mid": mixer.uid} for mixer in self.meta.mixer],
+                    "members": [{"name": mixer.name, "mid": mixer.uid} for mixer in self.meta.mixer or []],
                 },  # 混音只能填一个人，你问我为什么我不知道
                 {
                     "m_type": 6,
                     "members": [
-                        {"name": cover_maker.name, "mid": cover_maker.uid} for cover_maker in self.meta.cover_maker
+                        {"name": cover_maker.name, "mid": cover_maker.uid}
+                        for cover_maker in self.meta.cover_maker or []
                     ],
                 },  # 本家作者
                 {
                     "m_type": 7,
                     "members": [
-                        {"name": cover_maker.name, "mid": cover_maker.uid} for cover_maker in self.meta.cover_maker
+                        {"name": cover_maker.name, "mid": cover_maker.uid}
+                        for cover_maker in self.meta.cover_maker or []
                     ],
                 },  # 封面
                 {
                     "m_type": 8,
                     "members": [
-                        {"name": sound_source.name, "mid": sound_source.uid} for sound_source in self.meta.sound_source
+                        {"name": sound_source.name, "mid": sound_source.uid}
+                        for sound_source in self.meta.sound_source or []
                     ],
                 },  # 音源
                 {
                     "m_type": 9,
-                    "members": [{"name": tuning.name, "mid": tuning.uid} for tuning in self.meta.tuning],
+                    "members": [{"name": tuning.name, "mid": tuning.uid} for tuning in self.meta.tuning or []],
                 },  # 调音
                 {
                     "m_type": 10,
-                    "members": [{"name": player.name, "mid": player.uid} for player in self.meta.player],
+                    "members": [{"name": player.name, "mid": player.uid} for player in self.meta.player or []],
                 },  # 演奏
                 {
                     "m_type": 11,
-                    "members": [{"name": instrument} for instrument in self.meta.instrument],
+                    "members": [{"name": instrument} for instrument in self.meta.instrument or []],
                 },  # 乐器
                 {
                     "m_type": 127,
@@ -708,11 +714,17 @@ class AudioUploader(AsyncEvent):
             "album_id": 0,
         }
         api = _API["submit_single_song"]
-        return await Api(**api, credential=self.credential, json_body=True, no_csrf=True).update_data(**data).result
+        # 端点 data 恒为歌曲 id（int），此处为唯一收窄点
+        return cast(
+            int, await Api(**api, credential=self.credential, json_body=True, no_csrf=True).update_data(**data).result
+        )
 
-    async def start(self) -> dict:
+    async def start(self) -> int | None:
         """
         开始上传
+
+        Returns:
+            int | None: 歌曲 id；上传被取消时为 None。
         """
         task = asyncio.create_task(self._main())
         self.__task = task
@@ -723,7 +735,7 @@ class AudioUploader(AsyncEvent):
             return result
         except asyncio.CancelledError:
             # 忽略 task 取消异常
-            pass
+            return None
         except Exception as e:
             self.dispatch(AudioUploaderEvents.FAILED.value, {"err": e})
             raise e
@@ -749,7 +761,8 @@ async def upload_lrc(lrc: str, song_id: int, credential: Credential) -> str:
     """
     api = _API["lrc"]
     data = {"song_id": song_id, "lrc": lrc}
-    return await Api(**api, credential=credential).update_data(**data).result
+    # 端点 data 恒为歌词上传后的回显 URL（str），此处为唯一收窄点
+    return cast(str, await Api(**api, credential=credential).update_data(**data).result)
 
 
 async def get_upinfo(param: int | str, credential: Credential) -> list[dict]:
@@ -763,7 +776,7 @@ async def get_upinfo(param: int | str, credential: Credential) -> list[dict]:
     """
     api = _API["upinfo"]
     data = {"param": param}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_list()
 
 
 async def upload_cover(cover: Picture, credential: Credential) -> str:
@@ -783,4 +796,5 @@ async def upload_cover(cover: Picture, credential: Credential) -> str:
     # 宽高比 1:1
     raise_for_statement(cover.width == cover.height, "width == height, 600 * 600 recommended")
     files = {"file": cover._to_biliapifile()}
-    return await Api(**api, credential=credential).update_files(**files).result
+    # 端点 data 恒为封面 URL（str），此处为唯一收窄点
+    return cast(str, await Api(**api, credential=credential).update_files(**files).result)
