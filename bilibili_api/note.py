@@ -14,7 +14,7 @@ from . import article
 from .article import BoldNode, ColorNode, FontSizeNode, ImageNode, Node
 from .exceptions import ApiException, ArgsException
 from .utils import cache_pool
-from .utils.initial_state import get_initial_state
+from .utils.initial_state import InitialDataType, get_initial_state
 from .utils.network import Api, Credential
 from .utils.picture import Picture, load_pictures
 from .utils.utils import get_api, raise_for_statement
@@ -38,7 +38,7 @@ async def upload_image(img: Picture, credential: Credential) -> dict:
     credential.raise_for_no_bili_jct()
     api = API["operate"]["upload_img"]
     files = {"file": img._to_biliapifile()}
-    return await Api(**api, credential=credential).update_files(**files).result
+    return await Api(**api, credential=credential).update_files(**files).result_dict()
 
 
 class NoteType(Enum):
@@ -179,7 +179,7 @@ class Note:
         api = API["private"]["detail"]
         # oid 为 0 时指 avid
         params = {"oid": self.get_aid(), "note_id": self.get_note_id(), "oid_type": 0}
-        resp = await Api(**api, credential=self.credential).update_params(**params).result
+        resp = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         # 存入 self.__info 中以备后续调用
         self.__info = resp
         return resp
@@ -196,7 +196,7 @@ class Note:
 
         api = API["public"]["detail"]
         params = {"cvid": self.get_cvid()}
-        resp = await Api(**api, credential=self.credential).update_params(**params).result
+        resp = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         # 存入 self.__info 中以备后续调用
         self.__info = resp
         cache_pool.article_is_note.set(self.__cvid, True)
@@ -229,14 +229,14 @@ class Note:
 
         return await load_pictures(await self.get_images_raw_info())
 
-    async def get_all(self) -> dict:
+    async def get_all(self) -> tuple[dict, InitialDataType]:
         """
         (仅供公开笔记)
 
         一次性获取专栏尽可能详细数据，包括原始内容、标签、发布时间、标题、相关专栏推荐等
 
         Returns:
-            dict: 调用 API 返回的结果
+            Tuple[dict, InitialDataType]: 前半部分为数据，后半部分为数据类型（__INITIAL_STATE__ 或 __NEXT_DATA）
         """
         raise_for_statement(self.__type == NoteType.PUBLIC)
         return await get_initial_state(f"https://www.bilibili.com/read/cv{self.__cvid}")
@@ -259,7 +259,7 @@ class Note:
 
         api = API_ARTICLE["operate"]["like"]
         data = {"id": self.__cvid, "type": 1 if status else 2}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def set_favorite(self, status: bool = True) -> dict:
         """
@@ -280,7 +280,7 @@ class Note:
         api = API_ARTICLE["operate"]["add_favorite"] if status else API_ARTICLE["operate"]["del_favorite"]
 
         data = {"id": self.__cvid}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def add_coins(self) -> dict:
         """
@@ -298,7 +298,7 @@ class Note:
         upid = (await self.get_info())["mid"]
         api = API_ARTICLE["operate"]["coin"]
         data = {"aid": self.__cvid, "multiply": 1, "upid": upid, "avtype": 2}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def fetch_content(self) -> None:
         """

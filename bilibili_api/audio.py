@@ -47,7 +47,7 @@ class Audio:
 
         api = API["audio_info"]["info"]
         params = {"sid": self.__auid}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_tags(self) -> dict:
         """
@@ -58,7 +58,7 @@ class Audio:
         """
         api = API["audio_info"]["tag"]
         params = {"sid": self.__auid}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_download_url(self) -> dict:
         """
@@ -69,7 +69,7 @@ class Audio:
         """
         api = API["audio_info"]["download_url"]
         params = {"sid": self.__auid, "privilege": 2, "quality": 2}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def add_coins(self, num: int = 2) -> dict:
         """
@@ -86,7 +86,7 @@ class Audio:
         api = API["audio_operate"]["coin"]
         data = {"sid": self.__auid, "multiply": num}
 
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     # TODO: 音频编辑
 
@@ -128,7 +128,7 @@ class AudioList:
 
         api = API["list_info"]["info"]
         params = {"sid": self.__amid}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_tags(self) -> dict:
         """
@@ -140,7 +140,7 @@ class AudioList:
 
         api = API["list_info"]["tag"]
         params = {"sid": self.__amid}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_song_list(self, pn: int = 1) -> dict:
         """
@@ -155,7 +155,7 @@ class AudioList:
         api = API["list_info"]["song_list"]
         params = {"sid": self.__amid, "pn": pn, "ps": 100}
 
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     # TODO: 歌单编辑
 
@@ -175,7 +175,7 @@ async def get_user_stat(uid: int, credential: Credential | None = None) -> dict:
     credential = credential if credential is not None else Credential()
     api = API["audio_info"]["user"]
     params = {"uid": uid}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_hot_song_list(pn: int = 1, credential: Credential | None = None) -> dict:
@@ -193,4 +193,4 @@ async def get_hot_song_list(pn: int = 1, credential: Credential | None = None) -
     credential = credential if credential is not None else Credential()
     api = API["list_info"]["hot"]
     params = {"pn": pn, "ps": 100}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()

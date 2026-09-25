@@ -91,7 +91,7 @@ async def get_zone_top10(tid: int, day: int = 7, credential: Credential | None =
 
     api = API["ranking"]["get_top10"]
     params = {"rid": tid, "day": day}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 def get_zone_list() -> list[dict]:
@@ -141,7 +141,7 @@ async def get_zone_videos_count_today(credential: Credential | None = None) -> d
     """
     credential = credential if credential else Credential()
     api = API["count"]
-    return (await Api(**api, credential=credential).result)["region_count"]
+    return (await Api(**api, credential=credential).result_dict())["region_count"]
 
 
 async def get_zone_new_videos(tid: int, page_num: int = 1, page_size: int = 10) -> dict:
@@ -160,10 +160,10 @@ async def get_zone_new_videos(tid: int, page_num: int = 1, page_size: int = 10) 
     """
     api = API["new"]
     params = {"rid": tid, "pn": page_num, "ps": page_size}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
-async def get_zone_hot_tags(tid: int) -> list[dict]:
+async def get_zone_hot_tags(tid: int) -> dict:
     """
     获取分区热门标签
 
@@ -171,12 +171,12 @@ async def get_zone_hot_tags(tid: int) -> list[dict]:
         tid        (int)              : 分区 id
 
     Returns:
-        List[dict]: 热门标签
+        dict: 热门标签（实测接口 data 字段为标签字典列表，本函数沿袭历史行为仅返回其中第一个元素）
     """
 
     api = API["get_hot_tags"]
     params = {"rid": tid}
-    return (await Api(**api).update_params(**params).result)[0]
+    return (await Api(**api).update_params(**params).result_list())[0]
 
 
 class VideoZoneTypes(enum.Enum):

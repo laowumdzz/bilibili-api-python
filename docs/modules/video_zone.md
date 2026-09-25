@@ -183,7 +183,7 @@ from bilibili_api import video_zone
 | - | - | - |
 | `tid` | `int` | 分区 id |
 
-**Returns:** `List[dict]`:  热门标签
+**Returns:** `dict`:  热门标签（实测接口 data 字段为标签字典列表，本函数沿袭历史行为仅返回其中第一个元素）
 
 
 

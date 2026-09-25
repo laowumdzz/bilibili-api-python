@@ -279,7 +279,9 @@ class VideoDownloadURLDataDetecter:
                 return [MP4StreamDownloadURL(url=self.__data["durl"][0]["url"])]
         else:
             # 正常情况
-            streams = []
+            streams: list[
+                VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL
+            ] = []
             videos_data = self.__data["dash"]["video"]
             audios_data = self.__data["dash"].get("audio")
             flac_data = self.__data["dash"].get("flac")
@@ -316,6 +318,9 @@ class VideoDownloadURLDataDetecter:
                             video_stream_codecs = val
                 if VideoCodecs.UNKNOWN not in codecs and video_stream_codecs == VideoCodecs.UNKNOWN:
                     continue
+                # sar 形如 "宽度:高度"（如 "1:1"），按声明契约解析为两元组
+                sar_parts = video_data["sar"].split(":")
+                sar_value = (int(sar_parts[0]), int(sar_parts[1])) if len(sar_parts) >= 2 else (1, 1)
                 video_stream = VideoStreamDownloadURL(
                     url=video_stream_url,
                     video_quality=video_stream_quality,
@@ -325,7 +330,7 @@ class VideoDownloadURLDataDetecter:
                     codecs=video_data["codecs"],
                     frame_rate=float(video_data["frame_rate"]),
                     scale=(video_data["width"], video_data["height"]),
-                    sar=tuple([int(x) for x in video_data["sar"].split(":")] if ":" in video_data["sar"] else (1, 1)),
+                    sar=sar_value,
                     mime_type=video_data["mime_type"],
                     segment_base_initialization=video_data["segment_base"]["initialization"],
                     segment_base_index_range=video_data["segment_base"]["index_range"],
@@ -398,7 +403,7 @@ class VideoDownloadURLDataDetecter:
         no_dolby_audio: bool = False,
         no_hdr: bool = False,
         no_hires: bool = False,
-    ) -> list[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL]:
+    ) -> list[VideoStreamDownloadURL | AudioStreamDownloadURL | FLVStreamDownloadURL | MP4StreamDownloadURL | None]:
         """
         提取出分辨率、音质等信息最好的音视频流。
 

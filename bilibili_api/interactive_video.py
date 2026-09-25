@@ -1013,6 +1013,8 @@ class InteractiveVideoDownloader(AsyncEvent):
                 cid_set.add(cid)
                 url = await self.__video.get_download_url(cid=cid)
                 streams = VideoDownloadURLDataDetecter(url).detect_best_streams(**self.__detect_params)
+                if streams[0] is None or streams[1] is None:
+                    raise ApiException("未匹配到可用的音视频流")
                 await self.__download_func(
                     streams[0].url,
                     tmp_dir_name + "/" + str(cid) + ".video.mp4",
@@ -1141,6 +1143,8 @@ class InteractiveVideoDownloader(AsyncEvent):
                 cid_set.add(cid)
                 url = await self.__video.get_download_url(cid=cid)
                 streams = VideoDownloadURLDataDetecter(url).detect_best_streams(**self.__detect_params)
+                if streams[0] is None or streams[1] is None:
+                    raise ApiException("未匹配到可用的音视频流")
                 await self.__download_func(
                     streams[0].url,
                     tmp_dir_name + "/" + str(cid) + " " + str(item["title"]) + ".video.mp4",
@@ -1400,6 +1404,8 @@ class InteractiveVideoDownloader(AsyncEvent):
                 cid_set.add(cid)
                 url = await self.__video.get_download_url(cid=cid)
                 streams = VideoDownloadURLDataDetecter(url).detect_best_streams(**self.__detect_params)
+                if streams[0] is None or streams[1] is None:
+                    raise ApiException("未匹配到可用的音视频流")
                 await self.__download_func(
                     streams[0].url,
                     tmp_dir_name + "/" + str(cid) + ".video.mp4",

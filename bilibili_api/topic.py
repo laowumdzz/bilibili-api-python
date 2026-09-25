@@ -39,7 +39,7 @@ async def get_hot_topics(numbers: int = 33) -> dict:
     """
     api = API["info"]["dynamic_page_topics"]
     params = {"page_size": numbers}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def search_topic(keyword: str, ps: int = 20, pn: int = 1) -> dict:
@@ -60,7 +60,7 @@ async def search_topic(keyword: str, ps: int = 20, pn: int = 1) -> dict:
     """
     api = API["info"]["search"]
     params = {"keywords": keyword, "page_size": ps, "page_num": pn}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 class Topic:
@@ -99,7 +99,7 @@ class Topic:
         """
         api = API["info"]["info"]
         params = {"topic_id": self.get_topic_id()}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_cards(
         self,
@@ -131,7 +131,7 @@ class Topic:
         }
         if offset:
             params.update({"offset": offset})
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def like(self, status: bool = True) -> dict:
         """
@@ -150,7 +150,7 @@ class Topic:
             "business": "topic",
             "up_mid": (await get_self_info(self.credential))["mid"],
         }
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def set_favorite(self, status: bool = True) -> dict:
         """
@@ -164,4 +164,4 @@ class Topic:
         """
         api = API["operate"]["add_favorite" if status else "cancel_favorite"]
         data = {"topic_id": self.get_topic_id()}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()

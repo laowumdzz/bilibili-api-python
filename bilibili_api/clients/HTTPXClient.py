@@ -6,7 +6,8 @@ HTTPXClient 实现
 
 import asyncio
 from collections import OrderedDict
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncIterator
+from typing import cast
 
 import httpx  # pylint: disable=E0401
 
@@ -15,6 +16,7 @@ from ..utils.network import (
     BiliAPIClient,
     BiliAPIFile,
     BiliAPIResponse,
+    BiliWsMsgType,
     request_log,
 )
 
@@ -66,7 +68,7 @@ class HTTPXClient(BiliAPIClient):
         # 任何配置变更（set_xxx）会清空该缓存，避免辅助会话持旧配置。
         self.__proxy_sessions: OrderedDict[str, httpx.AsyncClient] = OrderedDict()
         self.__downloads: dict[int, httpx.Response] = {}
-        self.__download_iter: dict[int, AsyncGenerator] = {}
+        self.__download_iter: dict[int, AsyncIterator[bytes]] = {}
         self.__download_cnt: int = 0
 
     @staticmethod
@@ -273,12 +275,14 @@ class HTTPXClient(BiliAPIClient):
         else:
             opened_files = []
         try:
+            # ABC 契约的 data 为 dict | str | bytes（httpx 运行时均支持，存根仅声明 Mapping），
+            # files 已由 _open_request_files 转换为 requests 风格元组字典，两处均为唯一收窄点
             resp: httpx.Response = await session.request(
                 method=method,
                 url=url,
                 params=params,
-                data=data,
-                files=files,
+                data=cast("dict | None", data),
+                files=cast(dict, files),
                 headers=headers,
                 cookies=cookies,
                 follow_redirects=allow_redirects,
@@ -297,7 +301,7 @@ class HTTPXClient(BiliAPIClient):
             headers=resp_headers,
             cookies=resp_cookies,
             raw=resp.content,
-            url=resp.url,
+            url=str(resp.url),
         )
         self._log_response(bili_api_resp)
         return bili_api_resp
@@ -382,7 +386,7 @@ class HTTPXClient(BiliAPIClient):
             {"id": cnt},
         )
 
-    async def ws_create(self, *args, **kwargs) -> None:
+    async def ws_create(self, url: str = "", params: dict | None = None, headers: dict | None = None) -> int:
         """
         httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>
         """
@@ -394,7 +398,7 @@ class HTTPXClient(BiliAPIClient):
         """
         raise ApiException("httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>")
 
-    async def ws_recv(self, *args, **kwargs) -> None:
+    async def ws_recv(self, cnt: int) -> tuple[bytes, BiliWsMsgType]:
         """
         httpx 库暂未实现 WebSocket。相关讨论：<https://github.com/encode/httpx/issues/304>
         """

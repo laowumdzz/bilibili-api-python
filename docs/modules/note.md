@@ -95,7 +95,7 @@ from bilibili_api import note
 
 
 
-**Returns:** `dict`:  调用 API 返回的结果
+**Returns:** `Tuple[dict, InitialDataType]`:  前半部分为数据，后半部分为数据类型（__INITIAL_STATE__ 或 __NEXT_DATA）
 
 
 

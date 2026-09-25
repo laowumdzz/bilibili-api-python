@@ -216,17 +216,17 @@ async def parse_link(
         if url.removeprefix("https:") == url:
             url = "https:" + url
 
-        # 转换为 yarl
-        url = URL(url)  # type: ignore
+        # 转换为 yarl（此后 url 变为 yarl.URL，str 阶段仅存在于其前）
+        parsed_url = URL(url)
 
         # 排除小黑屋
-        black_room = parse_black_room(url, credential)  # type: ignore
+        black_room = parse_black_room(parsed_url, credential)  # type: ignore
         if not black_room == -1:
             obj = (black_room, ResourceType.BLACK_ROOM)
             return obj  # type: ignore
 
         # 过滤 https://space.bilibili.com/
-        if (url.host == "space.bilibili.com" and url.path == "/") or url.path == "":  # type: ignore
+        if (parsed_url.host == "space.bilibili.com" and parsed_url.path == "/") or parsed_url.path == "":  # type: ignore
             try:
                 info = await get_self_info(credential)
             except (NetworkException, ResponseCodeException):
@@ -235,78 +235,78 @@ async def parse_link(
                 return (User(info["mid"], credential=credential), ResourceType.USER)
 
         channel = parse_season_series(
-            url,
+            parsed_url,
             credential,  # type: ignore
         )  # 不需要 real_url，提前处理
         if channel != -1:
             return (channel, ResourceType.CHANNEL_SERIES)  # type: ignore
 
-        url = await get_real_url(str(url))  # type: ignore
-        url = URL(url)  # type: ignore
+        parsed_url = await get_real_url(str(parsed_url))  # type: ignore
+        parsed_url = URL(parsed_url)
 
-        fl_space = await parse_space_favorite_list(url, credential)  # type: ignore
+        fl_space = await parse_space_favorite_list(parsed_url, credential)  # type: ignore
         if fl_space != -1:
             return fl_space  # type: ignore
-        game = parse_game(url, credential)  # type: ignore
+        game = parse_game(parsed_url, credential)  # type: ignore
         if game != -1:
             game.credential = credential  # type: ignore
             return (game, ResourceType.GAME)  # type: ignore
-        topic = parse_topic(url, credential)  # type: ignore
+        topic = parse_topic(parsed_url, credential)  # type: ignore
         if topic != -1:
             topic.credential = credential  # type: ignore
             return (topic, ResourceType.TOPIC)  # type: ignore
-        festival_video = await parse_festival(url, credential)  # type: ignore
+        festival_video = await parse_festival(parsed_url, credential)  # type: ignore
         if festival_video != -1:
             festival_video.credential = credential  # type: ignore
             return (festival_video, ResourceType.VIDEO)  # type: ignore
-        note = parse_note(url, credential)  # type: ignore
+        note = parse_note(parsed_url, credential)  # type: ignore
         if note != -1:
             return (note, ResourceType.NOTE)  # type: ignore
 
         obj = None
-        video = await parse_video(url, credential)  # type: ignore
+        video = await parse_video(parsed_url, credential)  # type: ignore
         if not video == -1:
             obj = video  # auto_convert_video 会判断类型
-        bangumi = parse_bangumi(url, credential)  # type: ignore
+        bangumi = parse_bangumi(parsed_url, credential)  # type: ignore
         if not bangumi == -1:
             obj = (bangumi, ResourceType.BANGUMI)
-        episode = await parse_episode(url, credential)  # type: ignore
+        episode = await parse_episode(parsed_url, credential)  # type: ignore
         if not episode == -1:
             obj = (episode, ResourceType.EPISODE)
-        favorite_list = parse_favorite_list(url, credential)  # type: ignore
+        favorite_list = parse_favorite_list(parsed_url, credential)  # type: ignore
         if not favorite_list == -1:
             obj = (favorite_list, ResourceType.FAVORITE_LIST)
-        cheese_video = await parse_cheese_video(url, credential)  # type: ignore
+        cheese_video = await parse_cheese_video(parsed_url, credential)  # type: ignore
         if not cheese_video == -1:
             obj = (cheese_video, ResourceType.CHEESE_VIDEO)
-        audio = parse_audio(url, credential)  # type: ignore
+        audio = parse_audio(parsed_url, credential)  # type: ignore
         if not audio == -1:
             obj = (audio, ResourceType.AUDIO)
-        audio_list = parse_audio_list(url, credential)  # type: ignore
+        audio_list = parse_audio_list(parsed_url, credential)  # type: ignore
         if not audio_list == -1:
             obj = (audio_list, ResourceType.AUDIO_LIST)
-        article = parse_article(url, credential)  # type: ignore
+        article = parse_article(parsed_url, credential)  # type: ignore
         if not article == -1:
             obj = (article, ResourceType.ARTICLE)
-        article_list = parse_article_list(url, credential)  # type: ignore
+        article_list = parse_article_list(parsed_url, credential)  # type: ignore
         if not article_list == -1:
             obj = (article_list, ResourceType.ARTICLE_LIST)
-        user = parse_user(url, credential)  # type: ignore
+        user = parse_user(parsed_url, credential)  # type: ignore
         if not user == -1:
             obj = (user, ResourceType.USER)
-        live = parse_live(url, credential)  # type: ignore
+        live = parse_live(parsed_url, credential)  # type: ignore
         if not live == -1:
             obj = (live, ResourceType.LIVE)
-        dynamic = parse_dynamic(url, credential)  # type: ignore
+        dynamic = parse_dynamic(parsed_url, credential)  # type: ignore
         if not dynamic == -1:
             obj = (dynamic, ResourceType.DYNAMIC)
-        manga = parse_manga(url, credential)  # type: ignore
+        manga = parse_manga(parsed_url, credential)  # type: ignore
         if not manga == -1:
             obj = (manga, ResourceType.MANGA)
-        opus_dynamic = parse_opus_dynamic(url, credential)  # type: ignore
+        opus_dynamic = parse_opus_dynamic(parsed_url, credential)  # type: ignore
         if not opus_dynamic == -1:
             obj = (opus_dynamic, ResourceType.OPUS)
-        garb = parse_garb(url, credential)
+        garb = parse_garb(parsed_url, credential)
         if not garb == -1:
             obj = (garb, ResourceType.DLC)
 
@@ -593,7 +593,7 @@ async def parse_space_favorite_list(
                 if len(url.parts) == 3 and url.query.get("fid") is None:  # query 中不存在 fid 则返回默认收藏夹
                     api = get_api("favorite-list")["info"]["list_list"]
                     params = {"up_mid": uid, "type": 2}
-                    favorite_lists = await Api(**api, credential=credential).update_params(**params).result
+                    favorite_lists = await Api(**api, credential=credential).update_params(**params).result_dict()
 
                     if favorite_lists is None:
                         return -1
@@ -735,7 +735,7 @@ def parse_nianshizhiwang(url: URL) -> None:
     # 貌似 parse_bnj 已经可以判断了
 
 
-def parse_opus_dynamic(url: URL, credential: Credential) -> Dynamic | int:
+def parse_opus_dynamic(url: URL, credential: Credential) -> Dynamic | Opus | int:
     # https://www.bilibili.com/opus/767674573455884292
     _ensure_submodules()
     if url.host == "www.bilibili.com" and url.parts[:2] == ("/", "opus"):

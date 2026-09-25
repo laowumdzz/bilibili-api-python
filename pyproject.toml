@@ -167,7 +167,6 @@ ignore-missing-imports = ["PyQt6", "fastapi", "PyInstaller", "PyInstaller.utils.
 bad-argument-type = false # 存量 69
 bad-assignment = false # 存量 57
 bad-index = false # 存量 286
-bad-override = false # 存量 20
 bad-return = false # 存量 387
 missing-attribute = false # 存量 35
 unsupported-operation = false # 存量 186

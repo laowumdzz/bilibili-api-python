@@ -181,7 +181,8 @@ class UposFileUploader:
         Returns:
             dict: 上传结果和分块信息。
         """
-        chunk_event_callback_data = {
+        # 回调数据累加器：后续会追加 str 型 info 字段，故标注为开放形状
+        chunk_event_callback_data: dict[str, Any] = {
             "offset": offset,
             "chunk_number": chunk_number,
             "total_chunk_count": total_chunk_count,
