@@ -1,0 +1,16 @@
+{
+  "banner": {
+    "banner": {
+      "url": "https://api.bilibili.com/x/web-show/region/banner",
+      "method": "GET",
+      "comment": "获取各分区的轮播图_web端"
+    }
+  },
+  "zone_upload": {
+    "online": {
+      "url": "https://api.bilibili.com/x/web-interface/online",
+      "method": "GET",
+      "comment": "获取分区当日投稿稿件数"
+    }
+  }
+}

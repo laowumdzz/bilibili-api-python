@@ -13,5 +13,16 @@
       },
       "comment": "获取活动列表"
     }
+  },
+  "activity_info": {
+    "info": {
+      "url": "https://api.bilibili.com/x/activity/subject/info",
+      "method": "GET",
+      "params": {
+        "sid": "int: 必填，活动 id",
+        "bvid": "str: 来源视频 bvid"
+      },
+      "comment": "主题信息"
+    }
   }
 }

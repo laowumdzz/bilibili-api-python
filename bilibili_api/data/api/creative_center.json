@@ -263,5 +263,452 @@
             },
             "comment": "获取稿件分 P 详细"
         }
+    },
+  "opus": {
+    "remove": {
+      "url": "https://api.bilibili.com/x/dynamic/feed/operate/remove",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token (即 Cookie 中 bili_jct)",
+        "platform": "str: 平台标识；如 `web`",
+        "dyn_id_str": "str: 必填，动态的 opus id",
+        "dyn_type": "int: 动态类型?",
+        "rid_str": "str:"
+      },
+      "comment": "删除动态"
+    },
+    "delete": {
+      "url": "https://member.bilibili.com/x/web/article/delete",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "aid": "int: 必填，文章cvid",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "删除专栏"
     }
+  },
+  "railgun": {
+    "info": {
+      "url": "https://api.bilibili.com/studio/up-rating/v3/rating/info",
+      "method": "GET",
+      "verify": true,
+      "comment": "获取电磁力等级（web端）"
+    },
+    "summary": {
+      "url": "https://api.bilibili.com/studio/up-rating/rating/summary",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token"
+      },
+      "comment": "（失效）获取电磁力详细数值（双端）"
+    },
+    "history": {
+      "url": "https://api.bilibili.com/studio/up-rating/rating/history",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "type": "int: 必填，目标数据类型；类型代码见下表"
+      },
+      "comment": "获取电磁力数值历史变化（双端）"
+    }
+  },
+  "season": {
+    "seasons": {
+      "url": "https://member.bilibili.com/x2/creative/web/seasons",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "pn": "int: 必填，页码；默认为 1",
+        "ps": "int: 必填，每页数量；默认为 30",
+        "order": "str: 排序方式；创建时间: ctime<br />修改时间: mtime",
+        "sort": "str: 排序方式；创建时间: asc<br />修改时间: desc",
+        "draft": "int: 1；作用尚不明确"
+      },
+      "comment": "获取合集列表"
+    },
+    "add": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/section/episodes/add",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token (即 Cookies 中 bili_jct )",
+        "episode": "list: 必填，视频列表",
+        "section_id": "int: 必填，合集小节 ID",
+        "aid": "int: 必填，视频 aid",
+        "cid": "int: 必填，稿件 cid",
+        "title": "str: 必填，合集内单集标题",
+        "charging_pay": "int: 0；作用尚不明确"
+      },
+      "comment": "添加视频到合集"
+    },
+    "edit": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/section/edit",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token (即 Cookies 中 bili_jct)",
+        "section": "dict: 必填，小节信息",
+        "sorts": "list: 必填，排序列表",
+        "id": "int: 必填，小节 ID",
+        "seasonId": "int: 必填，合集 ID",
+        "title": "str: 必填，小节标题",
+        "type": "int: 必填，1",
+        "order": "int: 必填，排序位置"
+      },
+      "comment": "编辑合集小节"
+    },
+    "edit_2": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/edit",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token (即 Cookies 中 bili_jct)",
+        "season": "dict: 必填，合集信息",
+        "sorts": "list: 必填，排序列表",
+        "id": "int: 必填，合集 ID",
+        "title": "str: 必填，合集标题",
+        "cover": "str: 必填，封面图；从 [上传封面](upload.md#上传封面) 处获取",
+        "desc": "str: 合集简介",
+        "season_price": "int: 0；作用尚不明确",
+        "isEnd": "int: 是否完结；0：未完结<br />1：完结",
+        "sort": "int: 必填，排序位置"
+      },
+      "comment": "编辑合集信息"
+    },
+    "del": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/del",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "id": "int: 必填，合集 ID",
+        "csrf": "str: 必填，CSRF Token (即 Cookie 中 bili_jct)"
+      },
+      "comment": "删除合集"
+    },
+    "section": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/section",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "id": "int: 必填，合集 ID"
+      },
+      "comment": "获取合集小节中的视频"
+    },
+    "switch": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/switch",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "t": "int: 当前时间；UNIX 毫秒时间戳",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)",
+        "aid": "int: 必填，视频 ID",
+        "season_id": "int: null；必要",
+        "section_id": "int: null；必要",
+        "title": "str: 必填，视频标题"
+      },
+      "comment": "编辑投稿视频合集"
+    },
+    "aid": {
+      "url": "https://member.bilibili.com/x2/creative/web/season/aid",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "id": "int: 必填，视频 aid"
+      },
+      "comment": "aid反查合集id"
+    }
+  },
+  "statistics_data": {
+    "stat": {
+      "url": "https://member.bilibili.com/x/web/index/stat",
+      "method": "GET",
+      "verify": true,
+      "comment": "UP主视频状态数据"
+    },
+    "compare": {
+      "url": "https://member.bilibili.com/x/web/data/archive_diagnose/compare",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "t": "int: 时间戳",
+        "size": "int: 比较最近的N条视频；似乎没有最大值，或者最大值很大"
+      },
+      "comment": "新版UP主视频数据比较"
+    },
+    "article": {
+      "url": "https://member.bilibili.com/x/web/data/article",
+      "method": "GET",
+      "verify": true,
+      "comment": "UP主专栏状态数据"
+    },
+    "pandect": {
+      "url": "https://member.bilibili.com/x/web/data/pandect",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "type": "int: 必填，目标数据类型；类型代码见下表"
+      },
+      "comment": "视频数据增量趋势"
+    },
+    "thirty": {
+      "url": "https://member.bilibili.com/x/web/data/article/thirty",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "type": "int: 必填，目标数据类型；类型代码见下表"
+      },
+      "comment": "专栏数据增量趋势"
+    },
+    "survey": {
+      "url": "https://member.bilibili.com/x/web/data/survey",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "type": "int: 必填，目标数据类型；类型代码见下表"
+      },
+      "comment": "稿件操作来源占比情况"
+    },
+    "playsource": {
+      "url": "https://member.bilibili.com/x/web/data/playsource",
+      "method": "GET",
+      "verify": true,
+      "comment": "播放来源占比情况（平台及方式）"
+    },
+    "base": {
+      "url": "https://member.bilibili.com/x/web/data/base",
+      "method": "GET",
+      "verify": true,
+      "comment": "播放分布情况（粉丝与路人）"
+    }
+  },
+  "upload": {
+    "up": {
+      "url": "https://member.bilibili.com/x/vu/web/cover/up",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "ts": "int: 当前时间；UNIX 毫秒时间戳",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)",
+        "cover": "str: 必填，视频封面；经过 base64 编码的图片数据"
+      },
+      "comment": "上传封面"
+    },
+    "tpls": {
+      "url": "https://member.bilibili.com/x/vupre/web/tpls",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "t": "int: 当前时间；UNIX 毫秒时间戳"
+      },
+      "comment": "获取上传模板列表"
+    },
+    "update": {
+      "url": "https://member.bilibili.com/x/vupre/web/tpl/update",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "t": "int: 当前时间；UNIX 毫秒时间戳",
+        "tid": "int: 必填，模板 ID",
+        "name": "str: 模板名称",
+        "title": "str: 标题",
+        "keywords": "str: 标签；多个标签用 `,` 分隔",
+        "description": "str: 描述",
+        "typeid": "int: 分区 ID",
+        "arctype": "str: 版权类型；\"Original\": 自制<br />\"Copy\": 转载",
+        "is_default": "int: 是否默认；0: 否<br />1: 是",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)"
+      },
+      "comment": "编辑上传模板"
+    },
+    "type": {
+      "url": "https://member.bilibili.com/x/vupre/web/topic/type",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "type_id": "int: 分区 ID",
+        "pn": "int: 必填，页码；从 0 开始",
+        "ps": "int: 必填，每页个数",
+        "title": "str: 视频标题",
+        "t": "int: 当前时间；UNIX 毫秒时间戳"
+      },
+      "comment": "查询话题"
+    },
+    "search": {
+      "url": "https://member.bilibili.com/x/vupre/web/topic/search",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page_size": "int: 每页个数",
+        "offset": "int: 个数偏移；并非页数",
+        "keywords": "str: 关键字",
+        "t": "int: 当前时间；UNIX 毫秒时间戳"
+      },
+      "comment": "话题搜索"
+    },
+    "check": {
+      "url": "https://member.bilibili.com/x/vupre/web/topic/tag/check",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "tag": "str: 必填，需要检查的标签"
+      },
+      "comment": "标签可用性检查"
+    },
+    "format": {
+      "url": "https://member.bilibili.com/x/vupre/web/archive/desc/format",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "typeid": "int: 必填，分区 ID",
+        "copyright": "int: 必填，版权类型；1：自制<br/>2：转载",
+        "t": "int: 当前时间；UNIX 毫秒时间戳"
+      },
+      "comment": "获取简介相关信息"
+    },
+    "preupload": {
+      "url": "https://member.bilibili.com/preupload?r=probe",
+      "method": "GET",
+      "comment": "获取上传线路"
+    },
+    "predict": {
+      "url": "https://member.bilibili.com/x/vupre/web/archive/types/predict",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "ts": "int: 当前时间；UNIX 毫秒时间戳",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)",
+        "filename": "str: 必填，视频文件名；从视频上传接口获取, 无后缀名, 可为空",
+        "title": "str: 视频标题",
+        "upload_id": "str: 上传 ID；如 `616368979_1723455540876_8794`"
+      },
+      "comment": "预测稿件类型"
+    },
+    "recommend": {
+      "url": "https://member.bilibili.com/x/vupre/web/tag/recommend",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "upload_id": "str: 同 [预测稿件类型](#预测稿件类型) 的 `upload_id`",
+        "subtype_id": "int: 子分区 ID",
+        "title": "str: 视频标题",
+        "filename": "str: 同 [预测稿件类型](#预测稿件类型) 的 `filename`",
+        "description": "str: 视频简介",
+        "cover_url": "str: 视频封面 URL；不含 `https:` 或 `http:` 字串",
+        "t": "int: 当前 UNIX 毫秒时间戳"
+      },
+      "comment": "预测稿件标签"
+    },
+    "add": {
+      "url": "https://member.bilibili.com/x/vu/web/add/v3",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "ts": "int: 当前时间；UNIX 毫秒时间戳",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)",
+        "videos": "list: 必填，视频信息；若为分 P 视频, 请注意数组元素顺序",
+        "cover": "str: 视频封面 URL；如果不传会自动取封面，参见[上传视频封面](#上传视频封面)",
+        "cover43": "str: 视频封面 URL (比例为 4:3)；可为空",
+        "title": "str: 必填，视频标题；最多 80 字",
+        "copyright": "int: 必填，1: 自制<br />2: 转载",
+        "tid": "int: 必填，分区 ID；Web端此参数已无法手动设置，参数值为从[预测稿件类型](#预测稿件类型)中获取第一个固定id",
+        "human_type2": "int: 新分区ID；从 [新分区ID](#获取新分区ID) 获取",
+        "tag": "str: 必填，视频标签；多个标签用 `,` 分隔, 最多 10 个",
+        "desc_format_id": "int: 必填，简介格式 ID?；9999: 纯文本",
+        "desc": "str: 视频简介；最多 2000 字",
+        "desc_v2": "str: 视频简介额外信息；比如有艾特操作时传递，见备注",
+        "recreate": "int: 必填，是否允许二创；-1: 允许(默认)<br />1: 不允许",
+        "dynamic": "str: 必填，粉丝动态",
+        "interactive": "int: 必填，互动视频?；0: 否",
+        "act_reserve_create": "int: 必填，活动预约?；0: 否",
+        "no_disturbance": "int: 必填，是否推送到动态；0：不推送，1：推送",
+        "no_reprint": "int: 必填，是否允许转载；1: 允许<br />0: 不允许",
+        "subtitle": "dict: 必填，字幕信息",
+        "dolby": "int: 必填，杜比音效；0: 否(默认)<br />1: 是",
+        "lossless_music": "int: 必填，无损音乐；0: 否(默认)<br />1: 是",
+        "up_selection_reply": "bool: 必填，精选评论",
+        "up_close_reply": "bool: 必填，关闭评论",
+        "up_close_danmu": "bool: 必填，关闭弹幕",
+        "web_os": "int: 必填，平台类型?；3",
+        "is_only_self": "int: 非必要",
+        "topic_id": "int: 非必要",
+        "mission_id": "int: 非必要",
+        "is_360": "int: 是否全景；-1：非全景<br/>1：全景",
+        "neutral_mark": "str: 创作者声明",
+        "filename": "str: 必填，视频文件名；从视频上传接口获取, 无后缀名",
+        "cid": "int: 必填，分 P cid；从视频上传接口获取, 即 `biz_id`",
+        "open": "int: 必填，是否启用字幕投稿；0: 启用(默认)<br />1: 不启用",
+        "lan": "str: 必填，字幕投稿语言；可为空"
+      },
+      "comment": "投递视频稿件（Web）"
+    },
+    "edit": {
+      "url": "https://member.bilibili.com/x/vu/web/edit",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "t": "int: 当前时间；UNIX 毫秒时间戳",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)",
+        "aid": "int: 必填，视频 ID",
+        "videos": "list: 必填，视频信息；若为分 P 视频, 请注意数组元素顺序",
+        "title": "str: 必填，视频标题；最多 80 字",
+        "cover": "str: 视频封面 URL；如果不传会自动取封面，参见[上传视频封面](#上传视频封面)",
+        "cover43": "str: 视频封面 URL (比例为 4:3)；可为空",
+        "copyright": "int: 必填，1: 自制<br />2: 转载",
+        "tid": "int: 必填，分区 ID",
+        "tag": "str: 必填，视频标签；多个标签用 `,` 分隔, 最多 10 个",
+        "desc_format_id": "int: 必填，简介格式 ID?；9999: 纯文本",
+        "desc": "str: 视频简介；最多 2000 字",
+        "desc_v2": "str: 视频简介额外信息；比如有艾特操作时传递，见上传视频",
+        "recreate": "int: 必填，是否允许二创；-1: 允许(默认)<br />1: 不允许",
+        "dynamic": "str: 必填，粉丝动态",
+        "interactive": "int: 必填，互动视频?；0: 否",
+        "act_reserve_create": "int: 必填，活动预约?；0: 否",
+        "no_disturbance": "int: 必填，是否推送到动态；0：不推送<br />1：推送",
+        "no_reprint": "int: 必填，是否允许转载；1: 允许<br />0: 不允许",
+        "subtitle": "dict: 必填，字幕信息",
+        "web_os": "int: 必填，操作系统；1: Web",
+        "mission_id": "int: 任务 ID；0: 无",
+        "new_web_edit": "int: 未知",
+        "is_360": "int: 是否全景；-1：非全景<br/>1：全景",
+        "is_only_self": "int: 非必要"
+      },
+      "comment": "编辑视频稿件（Web）"
+    },
+    "list": {
+      "url": "https://member.bilibili.com/x/vupre/web/archive/human/type2/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "t": "int: 当前时间；UNIX 毫秒时间戳",
+        "id": "int: 分区ID",
+        "name": "str: 分区名"
+      },
+      "comment": "获取新分区ID"
+    }
+  },
+  "videos": {
+    "sp": {
+      "url": "https://member.bilibili.com/x2/creative/web/archives/sp",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "pn": "int: 必填，页码；默认为 1",
+        "ps": "int: 必填，每页数量；默认为 10, 留空为 100"
+      },
+      "comment": "获取稿件列表"
+    },
+    "videos": {
+      "url": "https://member.bilibili.com/x/web/archive/videos",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "aid": "int: 必填，av 号"
+      },
+      "comment": "视频基础信息"
+    }
+  }
 }

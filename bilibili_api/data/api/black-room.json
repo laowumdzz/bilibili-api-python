@@ -72,5 +72,95 @@
             },
             "comment": "获取案件仲裁列表"
         }
+    },
+  "jury_action": {
+    "apply": {
+      "url": "https://api.bilibili.com/x/credit/v2/jury/apply",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，cookie中`bili_jct`的值"
+      },
+      "comment": "申请加入风纪委员会"
+    },
+    "apply_2": {
+      "url": "https://api.bilibili.com/x/credit/jury/apply",
+      "method": "POST",
+      "verify": true,
+      "comment": "申请加入风纪委员会"
+    },
+    "case_obtain": {
+      "url": "https://api.bilibili.com/x/credit/jury/caseObtain",
+      "method": "POST",
+      "verify": true,
+      "comment": "拉取新案件"
+    },
+    "vote": {
+      "url": "https://api.bilibili.com/x/credit/jury/vote",
+      "method": "POST",
+      "verify": true,
+      "comment": "进行仲裁投票"
     }
+  },
+  "jury_base_info": {
+    "kpi": {
+      "url": "https://api.bilibili.com/x/credit/v2/jury/kpi",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "term_id": "int: 任期 id；未传参或留空时，**只**返回最近一次已结束的任期的数据"
+      },
+      "comment": "统计信息"
+    },
+    "kpi_2": {
+      "url": "https://api.bilibili.com/x/credit/jury/kpi",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token"
+      },
+      "comment": "统计信息(旧API)"
+    },
+    "requirement": {
+      "url": "https://api.bilibili.com/x/credit/v2/jury/requirement",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token"
+      },
+      "comment": "检查申请风纪委员会资格"
+    }
+  },
+  "jury_judgement_info": {
+    "jury_case": {
+      "url": "https://api.bilibili.com/x/credit/jury/juryCase",
+      "method": "GET",
+      "verify": true,
+      "comment": "获取单个案件信息"
+    },
+    "case_info": {
+      "url": "https://api.bilibili.com/x/credit/jury/caseInfo",
+      "method": "GET",
+      "params": {
+        "cid": "int: 必填，案件id"
+      },
+      "comment": "查询案件众裁信息"
+    },
+    "case_list": {
+      "url": "https://api.bilibili.com/x/credit/jury/caseList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "pn": "int: 页码；默认为1",
+        "ps": "int: 每页显示数量；默认为30<br />最大30"
+      },
+      "comment": "查询案件众裁信息(旧 api)"
+    },
+    "opinion": {
+      "url": "https://api.bilibili.com/x/credit/jury/case/opinion",
+      "method": "GET",
+      "comment": "获取众议观点"
+    }
+  }
 }

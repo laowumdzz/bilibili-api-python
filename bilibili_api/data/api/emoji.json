@@ -37,5 +37,58 @@
             "csrf": "凭证"
         },
         "comment": "添加表情包"
+    },
+  "action": {
+    "add": {
+      "url": "https://api.bilibili.com/x/emote/package/add",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "package_id": "int: 必填，表情包id",
+        "business": "str: 必填，使用场景；reply：评论区<br />dynamic：动态",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "添加表情包"
+    },
+    "remove": {
+      "url": "https://api.bilibili.com/x/emote/package/remove",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "package_id": "int: 必填，表情包id",
+        "business": "str: 必填，使用场景；reply：评论区<br />dynamic：动态",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "移除表情包"
     }
+  },
+  "emoji_list": {
+    "web": {
+      "url": "https://api.bilibili.com/x/emote/user/panel/web",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "business": "str: 必填，使用场景；reply：评论区<br />dynamic：动态"
+      },
+      "comment": "获取我的表情列表"
+    },
+    "package": {
+      "url": "https://api.bilibili.com/x/emote/package",
+      "method": "GET",
+      "params": {
+        "business": "str: 必填，使用场景；reply：评论区<br />dynamic：动态",
+        "ids": "list: 必填，表情包id；id之间以`,`隔开"
+      },
+      "comment": "获取指定的表情包明细"
+    },
+    "panel": {
+      "url": "https://api.bilibili.com/x/emote/setting/panel",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "business": "str: 必填，使用场景；reply：评论区<br />dynamic：动态"
+      },
+      "comment": "获取所有表情包列表"
+    }
+  }
 }

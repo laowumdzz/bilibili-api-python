@@ -1,0 +1,167 @@
+{
+  "bcoin": {
+    "quick": {
+      "url": "https://api.bilibili.com/x/ugcpay/web/v2/trade/elec/pay/quick",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "bp_num": "int: 必填，贝壳数量；必须在2-9999之间",
+        "is_bp_remains_prior": "bool: 必填，是否优先扣除B币余额；[true,false]，B币充电请选择true",
+        "up_mid": "int: 必填，充电对象用户mid",
+        "otype": "str: 必填，充电来源；up：空间充电<br />archive：视频充电",
+        "oid": "int: 必填，充电来源代码；空间充电：充电对象用户mid<br />视频充电：稿件avid",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "新版本B币充电"
+    },
+    "quick_2": {
+      "url": "https://api.bilibili.com/x/ugcpay/trade/elec/pay/quick",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "elec_num": "int: 必填，充电电池数量；必须在2-9999之间",
+        "up_mid": "int: 必填，充电对象用户mid",
+        "otype": "str: 必填，充电来源；up：空间充电<br />archive：视频充电",
+        "oid": "int: 必填，充电来源代码；空间充电：充电对象用户mid<br />视频充电：稿件avid",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "老版本B币充电"
+    }
+  },
+  "charge_list": {
+    "list_for_customer_recharge_record": {
+      "url": "https://pay.bilibili.com/bk/brokerage/listForCustomerRechargeRecord",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "currentPage": "int: 必填，页数",
+        "pageSize": "int: 必填，分页大小；取值范围\\[1,50\\]",
+        "customerId": "int: 必填，(?)；目前为固定值：10026",
+        "beginTime": "str: 开始日期；yyyy-MM-dd",
+        "endTime": "str: 结束日期；yyyy-MM-dd"
+      },
+      "comment": "查询我收到的充电列表"
+    },
+    "recent": {
+      "url": "https://member.bilibili.com/x/h5/elec/rank/recent",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "pn": "int: 页数",
+        "ps": "int: 分页大小；取值范围\\[1,20\\]"
+      },
+      "comment": "查询历史充电数据"
+    }
+  },
+  "charge_msg": {
+    "message": {
+      "url": "https://api.bilibili.com/x/ugcpay/trade/elec/message",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "order_id": "str: 必填，留言token",
+        "message": "str: 必填，留言内容",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "发送充电留言"
+    },
+    "list": {
+      "url": "https://member.bilibili.com/x/web/elec/remark/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "begin": "str: 起始日期；默认2016-01-01",
+        "end": "str: 结束日期；默认2050-01-01",
+        "pn": "str: 页数",
+        "ps": "str: 分页大小；取值范围\\[1,12\\]"
+      },
+      "comment": "查询我收到的充电留言"
+    },
+    "detail": {
+      "url": "https://member.bilibili.com/x/web/elec/remark/detail",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "id": "int: 必填，留言id"
+      },
+      "comment": "查询充电留言详情"
+    },
+    "reply": {
+      "url": "https://member.bilibili.com/x/web/elec/remark/reply",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，csrf",
+        "id": "int: 必填，留言id",
+        "msg": "str: 必填，回复信息"
+      },
+      "comment": "回复充电留言"
+    }
+  },
+  "monthly": {
+    "get_charge_record": {
+      "url": "https://api.live.bilibili.com/xlive/revenue/v1/guard/getChargeRecord",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page": "int: 必填，页码",
+        "type": "int: 必填，充电状态；1：使用中<br />2：已过期"
+      },
+      "comment": "获取包月充电列表"
+    },
+    "detail": {
+      "url": "https://api.bilibili.com/x/upower/item/detail",
+      "method": "GET",
+      "params": {
+        "up_mid": "int: 必填，目标用户mid"
+      },
+      "comment": "UP主包月充电详情"
+    },
+    "info": {
+      "url": "https://api.bilibili.com/x/upower/charge/follow/info",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "up_mid": "int: 必填，目标用户mid"
+      },
+      "comment": "与UP主的包月充电关系"
+    },
+    "rank": {
+      "url": "https://api.bilibili.com/x/upower/up/member/rank/v2",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "up_mid": "int: 必填，目标用户mid",
+        "ps": "int: 必填，每页项数；最大为101",
+        "pn": "int: 必填，页码",
+        "privilege_type": "int: 充电档位代码；见[充电档位代码与定价](#充电档位代码privilege_type与定价)，默认为可以显示排名的档位中**最高定价**的档位"
+      },
+      "comment": "包月充电用户排名"
+    }
+  },
+  "we_chat_alipay": {
+    "create": {
+      "url": "https://api.bilibili.com/x/ugcpay/web/v2/trade/elec/pay/qr_code/create",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "bp_num": "int: 必填，充电B币数量；必须在2-9999之间",
+        "is_bp_remains_prior": "bool: 必填，是否优先扣除B币；true：是<br />false：否<br />在B币不足时剩余的部分利用支付平台支付",
+        "up_mid": "int: 必填，充电对象用户mid",
+        "otype": "str: 必填，充电来源；up：空间充电<br />archive：视频充电",
+        "oid": "int: 必填，充电来源代码；空间充电：充电对象用户mid<br />视频充电：稿件avid",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "申请充电二维码及扫码秘钥"
+    },
+    "status": {
+      "url": "https://api.bilibili.com/x/ugcpay/trade/elec/pay/order/status",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "qr_token": "str: 必填，扫码秘钥"
+      },
+      "comment": "检查扫码支付结果"
+    }
+  }
+}

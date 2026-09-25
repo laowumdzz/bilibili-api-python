@@ -26,5 +26,49 @@
       },
       "comment": "获取特殊开屏启动画面"
     }
+  },
+  "ver": {
+    "version": {
+      "url": "https://app.bilibili.com/x/v2/version",
+      "method": "GET",
+      "params": {
+        "mobi_app": "str: 目标客户端类型；留空为最新有更新的平台<br />android: Android 版<br />iphone: iPhone 版<br />ipad: iPad HD 版<br />win: UWP 版<br />android_tv_yst: TV 版<br />android_car: 车机版<br />pc_client: PC 客户端"
+      },
+      "comment": "获取版本信息"
+    },
+    "upgrade": {
+      "url": "https://app.bilibili.com/x/v2/version/fawkes/upgrade",
+      "method": "GET",
+      "params": {
+        "abi": "str: 设备 CPU ABI；如 `arm64-v8a`",
+        "appid": "str: 客户端类型；如 `tv.danmaku.bili`",
+        "brand": "str: 设备品牌；如 `google`",
+        "build": "int: 必填，当前 APP 版本号；如 `8000200`",
+        "channel": "str: 必填，APP 分发渠道；如 `master`",
+        "deviceid": "str: 设备唯一 ID；即 XU-Prefixed BUVID，见 [device_identity](../misc/device_identity.md)",
+        "env": "str: APP 分发环境；默认 `prod`",
+        "iv": "int: 当前 APP innerVer；如 `8000210`",
+        "mobi_app": "str: 必填，APP mobi_app；如 `android`",
+        "model": "str: 设备型号；如 `Pixel 2 XL`",
+        "nt": "str: 必填，-；默认 `1`",
+        "ov": "str: 必填，设备 OS 版本；安卓即 API Level，如 Android 11 为 `30`",
+        "platform": "str: 设备平台；如 `android`",
+        "screen": "str: 设备屏幕参数；如 `2712_1440@537.882_537.882`",
+        "sn": "int: 必填，当前 APP SN；如 `15088473`",
+        "vn": "str: 必填，当前 APP 版本名称；如 `8.0.0`",
+        "app-key": "str: 必填，APPKey 名称；大体等同于 [`mobi_app`](../misc/sign/APPKey.md)。特别地：64 位版本粉版客户端应为 `android64`",
+        "buvid": "str: 必填，BUVID；XU-Prefixed BUVID，见 [device_identity](../misc/device_identity.md)"
+      },
+      "comment": "版本升级"
+    },
+    "getappversion": {
+      "url": "https://api.bilibili.com/x/web-frontend/getappversion",
+      "method": "GET",
+      "params": {
+        "target": "str: 目标平台",
+        "cdn_url": "str: CDN URL"
+      },
+      "comment": "拼接最新版本下载地址"
+    }
   }
 }

@@ -1,0 +1,89 @@
+{
+  "action": {
+    "receive": {
+      "url": "https://api.bilibili.com/x/vip/privilege/receive",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "type": "int: 必填，兑换类型；1：B币券<br />2：会员购优惠券<br />3：漫画福利券<br />4：会员购包邮券<br />5：漫画商城优惠券<br />6：装扮体验卡<br />7：课堂优惠券",
+        "csrf": "str: 必填，CSRF Token (位于cookie)"
+      },
+      "comment": "兑换卡券"
+    },
+    "add": {
+      "url": "https://api.bilibili.com/x/vip/experience/add",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token (位于cookie)"
+      },
+      "comment": "大会员每日经验"
+    }
+  },
+  "center": {
+    "combine": {
+      "url": "https://api.bilibili.com/x/vip/web/vip_center/combine",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "platform": "str: 平台表示；web端：`web`<br />安卓APP：`android`",
+        "mobi_app": "str: APP 名称；安卓APP：`android`",
+        "build": "int: 构建 id"
+      },
+      "comment": "大会员中心信息"
+    },
+    "combine_2": {
+      "url": "https://api.biliapi.com/x/vip_point/homepage/combine",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token"
+      },
+      "comment": "大积分中心信息"
+    },
+    "list": {
+      "url": "https://api.bilibili.com/x/vip_point/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "change_type": "int: 改变类型；默认 `0` <br /> 0：所有类型<br />1：获取记录<br />2：消耗记录",
+        "pn": "int: 分页页数；默认 `1`",
+        "ps": "int: 分页大小；默认 `20`",
+        "code": "int: 响应码；0：成功<br />-101：账号未登录",
+        "message": "str: 0",
+        "ttl": "int: 1",
+        "data": "dict: 信息本体",
+        "total": "int: 总记录数",
+        "big_point_list": "list: 积分记录数组；不存在时为 null，而不是空数组",
+        "point": "int: 改变的积分数；消耗为负数",
+        "change_time": "int: 改变时间戳；秒",
+        "remark": "str: 批注，积分改变的原因",
+        "order_no": "str: 编号",
+        "image_url": "str: 商品图片；消耗时存在，获取时为空"
+      },
+      "comment": "大积分改变记录"
+    }
+  },
+  "clockin": {
+    "sign": {
+      "url": "https://api.bilibili.com/pgc/activity/score/task/sign",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "csrf": "str: CSRF Token (位于cookie)"
+      },
+      "comment": "大积分签到"
+    }
+  },
+  "info": {
+    "my": {
+      "url": "https://api.bilibili.com/x/vip/privilege/my",
+      "method": "GET",
+      "verify": true,
+      "comment": "卡券状态查询"
+    }
+  }
+}

@@ -166,5 +166,99 @@
       },
       "comment": "取消追漫"
     }
+  },
+  "activity": {
+    "share_comic": {
+      "url": "https://manga.bilibili.com/twirp/activity.v1.Activity/ShareComic",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "platform": "str: 必填，平台；android"
+      },
+      "comment": "分享漫画"
+    }
+  },
+  "point_shop": {
+    "get_user_point": {
+      "url": "https://manga.bilibili.com/twirp/pointshop.v1.Pointshop/GetUserPoint",
+      "method": "POST",
+      "verify": true,
+      "comment": "获取当前持有点数"
+    },
+    "list_product": {
+      "url": "https://manga.bilibili.com/twirp/pointshop.v1.Pointshop/ListProduct",
+      "method": "POST",
+      "comment": "获取兑换奖品列表"
+    },
+    "exchange": {
+      "url": "https://manga.bilibili.com/twirp/pointshop.v1.Pointshop/Exchange",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "product_id": "str: 必填，物品id",
+        "product_num": "int: 必填，兑换个数",
+        "point": "int: 必填，物品所需点数；现价（real_cost）"
+      },
+      "comment": "兑换物品"
+    },
+    "get_prize_list": {
+      "url": "https://manga.bilibili.com/twirp/activity.v1.Activity/GetPrizeList",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "act_id": "int: 必填，固定值：90018"
+      },
+      "comment": "获取兑换历史记录"
+    },
+    "get_exchange_rule": {
+      "url": "https://manga.bilibili.com/twirp/pointshop.v1.Pointshop/GetExchangeRule",
+      "method": "POST",
+      "comment": "获取玩法说明"
+    }
+  },
+  "season": {
+    "get_season_info": {
+      "url": "https://manga.bilibili.com/twirp/user.v1.Season/GetSeasonInfo",
+      "method": "POST",
+      "verify": true,
+      "comment": "获取赛季信息"
+    },
+    "take_season_gifts": {
+      "url": "https://manga.bilibili.com/twirp/user.v1.Season/TakeSeasonGifts",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "season_id": "int: 必填，赛季 id；必须为本赛季 id"
+      },
+      "comment": "赛季奖励领取"
+    }
+  },
+  "user": {
+    "get_coupons": {
+      "url": "https://manga.bilibili.com/twirp/user.v1.User/GetCoupons",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录凭证；使用APP鉴权方式时必填",
+        "pageNum": "int: 必填，页数",
+        "pageSize": "int: 必填，分页大小；默认20，取值范围[1,100]",
+        "notExpired": "bool: true",
+        "tabType": "int: 1",
+        "type": "int: 0"
+      },
+      "comment": "获取拥有的漫读券列表"
+    },
+    "get_auto_buy_comics": {
+      "url": "https://manga.bilibili.com/twirp/user.v1.User/GetAutoBuyComics",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "device": "str: 设备",
+        "platform": "str: 平台",
+        "page_num": "int: 必填，页数",
+        "page_size": "int: 必填，分页大小；默认15"
+      },
+      "comment": "获取已购漫画"
+    }
   }
 }

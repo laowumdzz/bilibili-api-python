@@ -91,5 +91,16 @@
       },
       "comment": "搜索频道"
     }
+  },
+  "hot": {
+    "square": {
+      "url": "https://api.bilibili.com/x/web-interface/wbi/search/square",
+      "method": "GET",
+      "params": {
+        "limit": "int: 必填，结果限制；范围 [1, 50]",
+        "platform": "str: 平台标识；web: web 端"
+      },
+      "comment": "获取热搜列表"
+    }
   }
 }

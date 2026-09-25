@@ -81,5 +81,79 @@
       },
       "comment": "获取指定用户的投稿的相簿"
     }
+  },
+  "action": {
+    "operate": {
+      "url": "https://api.vc.bilibili.com/link_draw/v2/Vote/operate",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "doc_id": "int: 必填，相簿id",
+        "type": "int: 必填，操作方式；1：点赞<br />2：取消赞",
+        "csrf_token": "str: CSRF Token（位于cookie）"
+      },
+      "comment": "~~点赞相簿~~"
+    },
+    "add": {
+      "url": "https://api.vc.bilibili.com/user_plus/v1/Fav/add",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "fav_id": "int: 必填，相簿id",
+        "biz_type": "int: 必填，2；作用尚不明确",
+        "csrf_token": "str: CSRF Token（位于cookie）"
+      },
+      "comment": "~~收藏相簿~~"
+    },
+    "delete": {
+      "url": "https://api.vc.bilibili.com/user_plus/v1/Fav/delete",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "fav_id": "int: 必填，相簿id",
+        "biz_type": "int: 必填，2；作用尚不明确",
+        "csrf_token": "str: CSRF Token（位于cookie）"
+      },
+      "comment": "取消收藏相簿"
+    }
+  },
+  "activity_list": {
+    "list": {
+      "url": "https://api.vc.bilibili.com/photo_activity/v2/Activity/list",
+      "method": "GET",
+      "params": {
+        "type": "int: 活动类型；0：全部<br/>1：展示类<br/>2：比赛类",
+        "biz": "int: 分区；0：全部<br />1：画友<br/>2：摄影<br />默认为0",
+        "page_num": "int: 页码；默认为4",
+        "page_size": "int: 每页项数；默认为0"
+      },
+      "comment": "获取相簿热门活动列表"
+    }
+  },
+  "list": {
+    "list": {
+      "url": "https://api.vc.bilibili.com/link_draw/v2/Doc/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "category": "str: 必填，类型；all：全部<br/>illustration：插画<br/>comic：漫画<br/>draw：其他",
+        "type": "str: 必填，排序方式；hot：最热<br/>new：最新",
+        "page_num": "int: 页码；默认为1",
+        "page_size": "int: 每页项数；默认为45"
+      },
+      "comment": "获取画友列表"
+    },
+    "list_2": {
+      "url": "https://api.vc.bilibili.com/link_draw/v2/Photo/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "category": "str: 必填，类型；cos：Cosplay<br/>sifu：私服",
+        "type": "str: 必填，排序方式；hot：最热<br/>new：最新",
+        "page_num": "int: 页码；默认为1",
+        "page_size": "int: 每页项数；默认为45"
+      },
+      "comment": "获取摄影列表"
+    }
   }
 }

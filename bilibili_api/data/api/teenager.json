@@ -1,0 +1,25 @@
+{
+  "teenager_mode": {
+    "update": {
+      "url": "https://app.bilibili.com/x/v2/account/teenagers/update",
+      "method": "POST",
+      "params": {
+        "appkey": "str: 必填，APP密钥",
+        "ts": "int: 必填，当前时间戳",
+        "sign": "str: 必填，APP签名",
+        "access_key": "str: 必填，APP登录Token",
+        "device_model": "str: 必填，设备 Model",
+        "channel": "str: 必填，APP下载渠道；比如yingyongbao",
+        "mobi_app": "str: 必填，APP 包类型",
+        "platform": "str: 必填，平台类型；android",
+        "c_locale": "str: 语言；zh_CN",
+        "s_locale": "str: 语言；zh_CN",
+        "statistics": "str: 必填，?；一般固定为{\"appId\":1,\"platform\":3,\"version\":\"7.27.0\",\"abtest\":\"\"},非key-value入参需要转URL编码",
+        "pwd": "int: 必填，密码；开启时为4位，关闭时必须为空",
+        "teenagers_mode": "int: 必填，开启/关闭模式；0为开启，1为关闭",
+        "teenagers_status": "int: 必填，当前模式状态；0为已经开启，1为目前关闭"
+      },
+      "comment": "开启/关闭"
+    }
+  }
+}

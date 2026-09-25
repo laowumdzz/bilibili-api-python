@@ -699,5 +699,391 @@
         "description": "str"
       }
     }
+  },
+  "user_info": {
+    "card": {
+      "url": "https://api.bilibili.com/x/web-interface/card",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，目标用户mid",
+        "photo": "bool: 是否请求用户主页头图；true：是<br />false：否"
+      },
+      "comment": "用户名片信息"
+    },
+    "cards": {
+      "url": "https://api.bilibili.com/x/polymer/pc-electron/v1/user/cards",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "uids": "list: 必填，目标用户的mid列表；每个成员间用`,`分隔，最多50个成员"
+      },
+      "comment": "多用户详细信息"
+    },
+    "cards_2": {
+      "url": "https://api.vc.bilibili.com/account/v1/user/cards",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "uids": "list: 必填，目标用户的mid列表；每个成员间用`,`分隔，最多50个成员，若超过此限制则返回的`data`数组为空"
+      },
+      "comment": "多用户详细信息2"
+    },
+    "user_infos": {
+      "url": "https://api.vc.bilibili.com/x/im/user_infos",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "uids": "list: 必填，目标用户的mid列表；每个成员间用`,`分隔"
+      },
+      "comment": "多用户详细信息3"
+    }
+  },
+  "register": {
+    "tel": {
+      "url": "https://passport.bilibili.com/web/reg/tel",
+      "method": "POST",
+      "params": {
+        "cid": "int: 必填，国际冠字码；可以从 [获取国际冠字码](../login/login_action/SMS.md#获取国际冠字码_web端) 接口中获取",
+        "tel": "int: 必填，手机号码",
+        "code": "int: 必填，短信验证码",
+        "nickName": "str: 必填，昵称",
+        "pwd": "str: 必填，密码；密码为明文",
+        "plat": "int: 必填，0；平台？",
+        "gourl": "str: 注册成功跳转地址；默认为主页`https://www.bilibili.com/`"
+      },
+      "comment": "提交注册请求"
+    }
+  },
+  "relation": {
+    "fans": {
+      "url": "https://api.bilibili.com/x/relation/fans",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "vmid": "int: 必填，目标用户 mid",
+        "ps": "int: 每页项数；默认为 50",
+        "pn": "int: 页码；默认为 1",
+        "offset": "str: 偏移量；从上次请求的响应数据中的 `data.offset` 获取<br />此项有效且不为 `rcmd` 时会从此偏移量开始返回粉丝列表，忽略参数 `pn`",
+        "last_access_ts": "int: 上次访问粉丝列表的时间；秒级时间戳，从[获取自己粉丝列表的未读状态](#获取自己粉丝列表的未读状态)接口获取<br />当按照**智能推荐算法**排序时，会优先展示此时间后关注的粉丝",
+        "from": "str: 请求来源；当为 `main` 且目标用户为自己时，粉丝列表按照**智能推荐算法**排序，此时响应数据中的 `data.list` 的成员中的 `rec_reason` 与 `track_id` 为非空"
+      },
+      "comment": "查询用户粉丝明细（新）"
+    },
+    "follower_list": {
+      "url": "https://line3-h5-mobile-api.biligame.com/game/center/h5/user/relationship/follower_list",
+      "method": "GET",
+      "params": {
+        "vmid": "int: 必填，目标用户 mid",
+        "ps": "int: 每页项数；默认为 20",
+        "pn": "int: 页码；默认为 1"
+      },
+      "comment": "查询用户粉丝明细"
+    },
+    "count": {
+      "url": "https://api.bilibili.com/x/relation/followers/unread/count",
+      "method": "GET",
+      "verify": true,
+      "comment": "获取自己粉丝列表的未读状态"
+    },
+    "followings": {
+      "url": "https://app.biliapi.net/x/v2/relation/followings",
+      "method": "GET",
+      "params": {
+        "vmid": "int: 必填，目标用户 mid",
+        "order": "str: 排序方式；按照降序排列：desc<br />按照升序排列：asc<br />默认降序排列",
+        "ps": "int: 每页项数；默认为 50",
+        "pn": "int: 页码；默认为 1<br />仅可查看前 5 页"
+      },
+      "comment": "查询用户关注明细2"
+    },
+    "following_list": {
+      "url": "https://line3-h5-mobile-api.biligame.com/game/center/h5/user/relationship/following_list",
+      "method": "GET",
+      "params": {
+        "vmid": "int: 必填，目标用户mid",
+        "ps": "int: 每页项数；默认为20",
+        "pn": "int: 页码；默认为1"
+      },
+      "comment": "查询用户关注明细3"
+    },
+    "search": {
+      "url": "https://api.bilibili.com/x/relation/followings/search",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "vmid": "str: 必填，目标用户 mid",
+        "name": "str: 搜索关键词",
+        "ps": "int: 每页项数；默认为 50",
+        "pn": "int: 页码；默认为 1"
+      },
+      "comment": "搜索关注明细"
+    },
+    "modify": {
+      "url": "https://api.bilibili.com/x/relation/batch/modify",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "fids": "list: 必填，目标用户 mid 列表；每个成员之间用 `,` 间隔，最多 50 个成员，不能包含自己的 mid",
+        "act": "int: 必填，操作代码；同上<br />仅可为 1 或 5，故只能进行批量关注和拉黑",
+        "re_src": "int: 关注来源代码；同上",
+        "csrf": "str: 必填，CSRF Token（位于 Cookie）"
+      },
+      "comment": "批量操作用户关系"
+    },
+    "relation": {
+      "url": "https://api.bilibili.com/x/relation",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "fid": "int: 必填，目标用户 mid"
+      },
+      "comment": "查询用户与自己关系（仅关注）"
+    },
+    "relations": {
+      "url": "https://api.bilibili.com/x/relation/relations",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "fids": "list: 必填，目标用户 mid；每个之间用`,`间隔，无成员限制"
+      },
+      "comment": "批量查询用户与自己关系"
+    },
+    "tag": {
+      "url": "https://api.bilibili.com/x/relation/tag",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "tagid": "int: 必填，分组 id；0：默认分组<br />-10：特别关注<br />-20：所有",
+        "order_type": "str: 排序方式；按照关注顺序排列：留空<br />按照最常访问排列：attention",
+        "ps": "int: 每页项数；默认为 20",
+        "pn": "int: 页数；默认为1"
+      },
+      "comment": "查询关注分组明细"
+    },
+    "copy_users": {
+      "url": "https://api.bilibili.com/x/relation/tags/copyUsers",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "fids": "list: 必填，待复制的用户 mid 列表；每个之间用`,`间隔",
+        "tagids": "list: 必填，目标分组 id 列表；每个之间用`,`间隔",
+        "csrf": "str: 必填，CSRF Token（位于 Cookie）"
+      },
+      "comment": "复制关注到分组"
+    },
+    "move_users": {
+      "url": "https://api.bilibili.com/x/relation/tags/moveUsers",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "beforeTagids": "list: 必填，原分组 id 列表；每个之间用`,`间隔",
+        "afterTagids": "list: 必填，新分组 id 列表；每个之间用`,`间隔",
+        "fids": "list: 必填，待移动的用户 mid 列表；每个之间用`,`间隔",
+        "csrf": "str: 必填，CSRF Token（位于 Cookie）"
+      },
+      "comment": "移动关注到分组"
+    }
+  },
+  "space": {
+    "set": {
+      "url": "https://api.bilibili.com/x/space/top/arc/set",
+      "method": "POST",
+      "verify": true,
+      "comment": "置顶视频"
+    },
+    "cancel": {
+      "url": "https://api.bilibili.com/x/space/top/arc/cancel",
+      "method": "POST",
+      "verify": true,
+      "comment": "置顶视频"
+    },
+    "add": {
+      "url": "https://api.bilibili.com/x/space/masterpiece/add",
+      "method": "POST",
+      "verify": true,
+      "comment": "代表作视频"
+    },
+    "cancel_2": {
+      "url": "https://api.bilibili.com/x/space/masterpiece/cancel",
+      "method": "POST",
+      "verify": true,
+      "comment": "代表作视频"
+    },
+    "tags": {
+      "url": "https://api.bilibili.com/x/space/acc/tags",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，目标用户mid"
+      },
+      "comment": "个人TAG"
+    },
+    "set_2": {
+      "url": "https://api.bilibili.com/x/space/acc/tags/set",
+      "method": "POST",
+      "verify": true,
+      "comment": "个人TAG"
+    },
+    "get_settings": {
+      "url": "http://space.bilibili.com/ajax/settings/getSettings",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，目标用户mid"
+      },
+      "comment": "主页板块布局与权限"
+    },
+    "getlist": {
+      "url": "https://space.bilibili.com/ajax/topphoto/getlist",
+      "method": "GET",
+      "comment": "主页板块布局与权限"
+    },
+    "set_toutu": {
+      "url": "https://space.bilibili.com/ajax/settings/setToutu",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "id": "int: 必填，头图 ID",
+        "csrf": "str: CSRF Token (即 Cookie bili_jct 值)"
+      },
+      "comment": "设置空间头图 (Web端)"
+    },
+    "set_index_order": {
+      "url": "http://space.bilibili.com/ajax/settings/setIndexOrder",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "index_order": "list: 必填，布局列表；每个值之间用\",\"（%2C）分隔<br />先左侧布局再右侧布局<br />值的意义见下表",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "设置空间头图 (Web端)"
+    },
+    "set_privacy": {
+      "url": "http://space.bilibili.com/ajax/settings/setPrivacy",
+      "method": "POST",
+      "verify": true,
+      "comment": "设置空间头图 (Web端)"
+    },
+    "lastplaygame": {
+      "url": "https://api.bilibili.com/x/space/lastplaygame",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "mid": "int: 必填，目标用户mid"
+      },
+      "comment": "查询用户最近访问内容"
+    },
+    "lastplaygame_2": {
+      "url": "https://api.bilibili.com/x/space/lastplaygame/v2",
+      "method": "GET",
+      "verify": true,
+      "comment": "查询用户最近访问内容"
+    },
+    "video": {
+      "url": "https://api.bilibili.com/x/space/coin/video",
+      "method": "GET",
+      "verify": true,
+      "comment": "查询用户最近访问内容"
+    },
+    "coinarc": {
+      "url": "https://app.bilibili.com/x/v2/space/coinarc",
+      "method": "GET",
+      "comment": "查询用户最近访问内容"
+    },
+    "video_2": {
+      "url": "https://api.bilibili.com/x/space/like/video",
+      "method": "GET",
+      "verify": true,
+      "comment": "查询用户最近访问内容"
+    },
+    "likearc": {
+      "url": "https://app.bilibili.com/x/v2/space/likearc",
+      "method": "GET",
+      "comment": "查询用户最近访问内容"
+    },
+    "cursor": {
+      "url": "https://app.biliapi.com/x/v2/space/archive/cursor",
+      "method": "GET",
+      "params": {
+        "vmid": "int: 必填，目标用户mid",
+        "aid": "int: 请求返回起始视频；填写上次请求返回最后视频的aid",
+        "order": "str: 排序方式；`click`代表最多播放，`pubdate`代表最新发布",
+        "sort": "str: 确有影响，但这是什么呢？；创建时间: asc<br />修改时间: desc",
+        "access_key": "str: 必填，APP登录Token",
+        "appkey": "str: 必填，APP密钥",
+        "build": "int: 必填，版本；可为`8130300`",
+        "c_locale": "str: 语言；zh_CN",
+        "channel": "int: 频道",
+        "fnval": "int: 视频流类型",
+        "fnver": "int: 请求时提供的fnver；可为 0",
+        "force_host": "int: 源url类型；0:无限制 1:使用http 2:使用https",
+        "fourk": "int: 是否允许 4K 视频；画质最高 1080P：0（默认）<br />画质最高 4K：1",
+        "include_cursor": "bool: 未知；可为false",
+        "mobi_app": "str: 平台标识；可为 `web`、`android` 等",
+        "platform": "str: 平台；可为`web`",
+        "ps": "int: 每页条数；默认为 `20`",
+        "pn": "int: 似乎不是页码；默认为 `32`",
+        "pn_policy": "int: 未知；可为 `1`",
+        "s_locale": "str: 语言；zh_CN",
+        "statistics": "str: 位置；可为{\"appId\":1,\"platform\":3,\"version\":\"8.13.0\",\"abtest\":\"\"}",
+        "ts": "int: 秒级时间戳",
+        "voice_balance": "int: 未知；默认为 `1`",
+        "sign": "str: 必填，APP签名"
+      },
+      "comment": "查询用户投稿明细（APP、无需wbi鉴权）"
+    },
+    "index": {
+      "url": "https://api.bilibili.com/x/space/album/index",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，目标用户mid",
+        "ps": "int: 获取的相簿量；默认为8 定义域 1-大于1700 (注意滥用风险)"
+      },
+      "comment": "查询用户投稿相簿预览"
+    },
+    "doc_list": {
+      "url": "https://api.bilibili.com/x/dynamic/feed/draw/doc_list",
+      "method": "GET",
+      "params": {
+        "uid": "int: 必填，目标用户mid",
+        "page_num": "int: 必填，页码；默认为0",
+        "page_size": "int: 必填，每页项数；默认为30",
+        "biz": "str: 查询类型；全部：all<br />绘画：draw<br />摄影：photo<br />日常：daily<br />默认为all"
+      },
+      "comment": "查询用户投稿相簿明细"
+    },
+    "get_list": {
+      "url": "http://space.bilibili.com/ajax/Bangumi/getList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "mid": "int: 必填，目标用户mid"
+      },
+      "comment": "查询用户追番预览列表"
+    },
+    "get_sub_list": {
+      "url": "http://space.bilibili.com/ajax/tags/getSubList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "mid": "int: 必填，目标用户mid"
+      },
+      "comment": "查询用户关注的TAG（话题）"
+    }
+  },
+  "status_number": {
+    "upload_count": {
+      "url": "https://api.vc.bilibili.com/link_draw/v1/doc/upload_count",
+      "method": "GET",
+      "params": {
+        "uid": "int: 必填，目标用户mid"
+      },
+      "comment": "相簿投稿数"
+    }
   }
 }

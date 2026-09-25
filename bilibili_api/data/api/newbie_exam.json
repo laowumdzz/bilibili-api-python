@@ -1,0 +1,109 @@
+{
+  "action": {
+    "check": {
+      "url": "https://api.bilibili.com/x/answer/v4/base/check",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "question_id": "int: 必填，题目id；从[拉取基础题api](fetch.md#拉取基础题)获得",
+        "ans_hash": "str: 必填，选项hash；从[拉取基础题api](fetch.md#拉取基础题)获得",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "提交基础题"
+    },
+    "check_2": {
+      "url": "https://api.bilibili.com/x/answer/v4/pro/check",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "question_id": "int: 必填，题目id；从[拉取基础题api](fetch.md#拉取基础题)获得",
+        "ans_hash": "str: 必填，选项hash；从[拉取基础题api](fetch.md#拉取基础题)获得",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "提交自选题"
+    },
+    "captcha": {
+      "url": "https://api.bilibili.com/x/answer/v4/captcha",
+      "method": "GET",
+      "verify": true,
+      "comment": "获取验证码"
+    },
+    "check_3": {
+      "url": "https://api.bilibili.com/x/answer/v4/captcha/check",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "types": "list: 自选题分类(旧版)；新版不需要此字段",
+        "type": "str: 验证码类型",
+        "bilibili_token": "str:",
+        "bilibili_code": "str:",
+        "geetest_challenge": "str: 极验key",
+        "geetest_seccode": "str: 极验结果+\\；非必要",
+        "geetest_validate": "str: 极验结果",
+        "csrf": "str: 必填，CSRF Token(位于cookie)"
+      },
+      "comment": "提交验证码"
+    },
+    "check_4": {
+      "url": "https://api.bilibili.com/x/answer/v4/pro/type/check",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "types": "list: 必填，自选题分类(新版)",
+        "csrf": "str: 必填，CSRF Token(位于cookie)"
+      },
+      "comment": "提交自选题分类"
+    },
+    "submit": {
+      "url": "https://api.bilibili.com/x/answer/v4/submit",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token(位于cookie)"
+      },
+      "comment": "提前交卷"
+    }
+  },
+  "fetch": {
+    "base": {
+      "url": "https://api.bilibili.com/x/answer/v4/base",
+      "method": "GET",
+      "verify": true,
+      "comment": "拉取基础题"
+    },
+    "extra": {
+      "url": "https://api.bilibili.com/x/answer/v4/extra",
+      "method": "GET",
+      "verify": true,
+      "comment": "拉取附加题"
+    },
+    "pro": {
+      "url": "https://api.bilibili.com/x/answer/v4/pro",
+      "method": "GET",
+      "verify": true,
+      "comment": "拉取自选题"
+    }
+  },
+  "info": {
+    "status": {
+      "url": "https://api.bilibili.com/x/answer/v4/status",
+      "method": "GET",
+      "verify": true,
+      "comment": "查询答题状态"
+    },
+    "type": {
+      "url": "https://api.bilibili.com/x/answer/v4/pro/type",
+      "method": "GET",
+      "verify": true,
+      "comment": "查询自选题分类"
+    },
+    "result": {
+      "url": "https://api.bilibili.com/x/answer/v4/result",
+      "method": "GET",
+      "params": {
+        "hid": "int: 必填，答题会话id"
+      },
+      "comment": "查询答题结果"
+    }
+  }
+}

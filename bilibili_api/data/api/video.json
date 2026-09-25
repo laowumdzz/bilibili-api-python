@@ -534,5 +534,510 @@
       },
       "comment": "撤回弹幕"
     }
+  },
+  "danmaku_action": {
+    "post": {
+      "url": "https://api.bilibili.com/x/v2/dm/command/post",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "type": "int: 必填，互动弹幕类型；1：UP主头像弹幕<br />2：关联视频弹幕<br />5：视频内嵌引导关注按钮",
+        "aid": "int: 必填，稿件avid",
+        "cid": "int: 必填，视频cid",
+        "progress": "int: 弹幕出现在视频内的时间；单位为毫秒<br />默认为0",
+        "plat": "int: 必填，平台标识；1：web端<br />2：安卓端<br />8：视频管理页面",
+        "data": "str: 必填，json序列",
+        "dmid": "int: 修改互动弹幕的弹幕id；注：修改弹幕`plat`必须为8",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "发送互动弹幕"
+    },
+    "post_2": {
+      "url": "https://api.bilibili.com/x/v2/dm/command/grade/post",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "aid": "int: 必填，稿件 aid",
+        "cid": "int: 必填，分 P cid",
+        "progress": "int: 必填，播放进度；单位为毫秒",
+        "grade_id": "int: 必填，打分 id",
+        "grade_score": "int: 分数",
+        "polaris_app_id": "int: 100",
+        "polaris_platfrom": "int: 5",
+        "spmid": "str: 333.788.0.0",
+        "from_spmid": "str: 来源 spmid",
+        "csrf": "str: 必填，CSRF Token (即 Cookie 中的 bili_jct)"
+      },
+      "comment": "发送打分弹幕"
+    },
+    "buy": {
+      "url": "https://api.bilibili.com/x/dm/adv/buy",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "mode": "str: 必填，sp",
+        "cid": "int: 必填，视频cid",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "购买高级弹幕发送权限"
+    },
+    "state": {
+      "url": "https://api.bilibili.com/x/dm/adv/state",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "mode": "str: 必填，sp",
+        "cid": "int: 必填，视频cid"
+      },
+      "comment": "检测高级弹幕发送权限"
+    },
+    "add": {
+      "url": "https://api.bilibili.com/x/dm/report/add",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "cid": "int: 必填，视频cid",
+        "dmid": "int: 必填，弹幕dmid",
+        "reason": "int: 必填，举报类型；**类型代码见下表**",
+        "content": "str: 其他举报备注；`reason=11`时有效",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "举报弹幕"
+    }
+  },
+  "danmaku_buzzword": {
+    "list": {
+      "url": "https://api.bilibili.com/x/v2/dm/buzzword/list",
+      "method": "GET",
+      "params": {
+        "type_id": "int: 必填，名词类型；如：4代表“哔哩哔哩热词图鉴”<br />5代表“语言类”",
+        "pn": "int: 页码；默认为1",
+        "ps": "int: 每页项数；默认为20"
+      },
+      "comment": "拉取名词解释列表"
+    },
+    "detail": {
+      "url": "https://api.bilibili.com/x/v2/dm/buzzword/detail",
+      "method": "GET",
+      "params": {
+        "id": "int: 必填，名词id；如：1代表“kksk”<br />2代表“打脸”"
+      },
+      "comment": "查询名词解释详情"
+    }
+  },
+  "danmaku_config": {
+    "config": {
+      "url": "https://api.bilibili.com/x/v2/dm/web/config",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "dm_switch": "bool: 弹幕开关；true：开启<br />false：关闭",
+        "blockscroll": "bool: 屏蔽类型-滚动；true：不屏蔽<br />false：屏蔽",
+        "blocktop": "bool: 屏蔽类型-顶部；同上",
+        "blockbottom": "bool: 屏蔽类型-底部；同上",
+        "blockcolor": "bool: 屏蔽类型-彩色；同上",
+        "blockspecial": "bool: 屏蔽类型-特殊；同上",
+        "ai_switch": "bool: 是否打开智能云屏蔽；true：开启<br />false：关闭",
+        "ai_level": "int: 智能云屏蔽等级；区间：[0-10]<br />0为默认等级（3级）",
+        "preventshade": "bool: 防挡弹幕（底部15%）；true：开启<br />false：关闭",
+        "dmask": "bool: 智能防挡弹幕（人像蒙版）；同上",
+        "opacity": "int: 弹幕不透明度；区间：[0-1]",
+        "dmarea": "int: 弹幕显示区域；100：不重叠<br />75：3/4屏<br />50：半瓶<br />25：1/4屏<br />0：不限",
+        "speedplus": "int: 弹幕速度；区间：[0.4-1.6]",
+        "fontsize": "int: 字体大小；区间：[0.4-1.6]",
+        "screensync": "bool: 跟随屏幕缩放比例；true：开启<br />false：关闭",
+        "speedsync": "bool: 根据播放倍速调整速度；同上",
+        "fontfamily": "str: 字体类型；未启用",
+        "bold": "bool: 粗体；未启用",
+        "fontborder": "int: 描边类型；0：重墨<br />1：描边<br />2：45°投影",
+        "drawType": "str: 渲染类型；未启用",
+        "ts": "int: 当前时间戳",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "修改弹幕个人配置（web端）"
+    }
+  },
+  "danmaku_xml": {
+    "list_so": {
+      "url": "https://api.bilibili.com/x/v1/dm/list.so",
+      "method": "GET",
+      "params": {
+        "oid": "int: 必填，视频cid"
+      },
+      "comment": "获取实时弹幕1"
+    },
+    "cid__xml": {
+      "url": "https://comment.bilibili.com/{cid}.xml",
+      "method": "GET",
+      "params": {
+        "cid": "int: 必填，视频cid"
+      },
+      "comment": "获取实时弹幕2"
+    }
+  },
+  "danmaku_history": {
+    "history": {
+      "url": "https://api.bilibili.com/x/v2/dm/history",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "type": "int: 必填，1",
+        "oid": "int: 必填，视频cid",
+        "date": "str: 必填，弹幕日期；YYYY-MM-DD"
+      },
+      "comment": "获取历史弹幕xml接口"
+    }
+  },
+  "action": {
+    "like": {
+      "url": "https://app.bilibili.com/x/v2/view/like",
+      "method": "POST",
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "aid": "int: 必填，稿件 avid",
+        "like": "int: 必填，操作方式；0：点赞<br />1：取消赞"
+      },
+      "comment": "点赞视频（APP端）"
+    },
+    "dislike": {
+      "url": "https://app.biliapi.net/x/v2/view/dislike",
+      "method": "POST",
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "aid": "int: 必填，视频 aid",
+        "dislike": "int: 必填，操作类型；0：点踩<br/>1：取消点踩"
+      },
+      "comment": "点踩视频（App端）"
+    },
+    "add": {
+      "url": "https://app.bilibili.com/x/v2/view/coin/add",
+      "method": "POST",
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "aid": "int: 必填，稿件 avid",
+        "multiply": "int: 必填，投币数量；上限为2",
+        "select_like": "int: 附加点赞；0：不点赞<br />1：同时点赞<br />默认为0"
+      },
+      "comment": "投币视频（APP端）"
+    },
+    "triple": {
+      "url": "https://app.bilibili.com/x/v2/view/like/triple",
+      "method": "POST",
+      "params": {
+        "access_key": "str: 必填，APP 登录 Token",
+        "aid": "int: 必填，稿件 avid"
+      },
+      "comment": "一键三连视频（APP端）"
+    }
+  },
+  "appeal": {
+    "tags": {
+      "url": "https://api.bilibili.com/x/web-interface/archive/appeal/tags",
+      "method": "GET",
+      "comment": "获取投诉类型"
+    }
+  },
+  "collection": {
+    "seasons_archives_list": {
+      "url": "https://api.bilibili.com/x/polymer/space/seasons_archives_list",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，用户 mid；创建者的 mid，但也可以是任意的非负整数",
+        "season_id": "int: 必填，视频合集 ID",
+        "sort_reverse": "bool: 排序方式；true: 升序排序<br />false: 默认排序",
+        "page_num": "int: 页码索引；默认为 1",
+        "page_size": "int: 单页内容数量；默认为 30",
+        "gaia_vtoken": "str: 风控验证?；若被风控则必要(如User-Agent不正常)",
+        "web_location": "str: 页面位置?；333.999",
+        "w_rid": "str: WBI 签名；参见 [WBI 签名](../misc/sign/wbi.md)",
+        "wts": "int: UNIX 秒级时间戳；参见 [WBI 签名](../misc/sign/wbi.md)"
+      },
+      "comment": "获取视频合集信息"
+    },
+    "seasons_series": {
+      "url": "https://api.bilibili.com/x/polymer/web-space/home/seasons_series",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，用户 mid",
+        "page_num": "int: 必填，页码索引",
+        "page_size": "int: 必填，单页内容数量",
+        "gaia_vtoken": "str: 风控验证?；若被风控则必要(如User-Agent不正常)",
+        "w_rid": "str: WBI 签名；参见 [WBI 签名](../misc/sign/wbi.md)",
+        "wts": "int: UNIX 秒级时间戳；参见 [WBI 签名](../misc/sign/wbi.md)"
+      },
+      "comment": "只获取系列视频"
+    },
+    "rec_archives_by_keywords": {
+      "url": "https://api.bilibili.com/x/series/recArchivesByKeywords",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，用户 mid",
+        "keywords": "str: 必填，关键词；可为空, 即获取所有视频",
+        "ps": "int: 每页视频数；默认为 0, 留空为 20，最大值 100",
+        "pn": "int: 页码；留空为 1，为 0 则直接忽略 ps 参数获取所有",
+        "orderby": "str: 排序方式；最新发布: pubdate(默认)<br />最多播放: views<br />senddate: 最新发布",
+        "series_id": "int: 系列 ID；用于过滤结果, 即若某一视频包含在系列内则不返回该视频"
+      },
+      "comment": "根据关键词查找视频"
+    },
+    "update": {
+      "url": "https://api.bilibili.com/x/series/series/update",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token (即 Cookies 中 bili_jct )",
+        "mid": "int: 必填，用户 mid",
+        "series_id": "int: 必填，视频列表 ID",
+        "name": "str: 必填，标题",
+        "keywords": "str: 关键词",
+        "description": "str: 简介",
+        "add_aids": "str: 视频 aid 列表；以 `,` 分隔",
+        "del_aids": "str: 视频 aid 列表",
+        "aids": "str: 空"
+      },
+      "comment": "编辑视频列表信息"
+    }
+  },
+  "video_info": {
+    "view": {
+      "url": "https://api.bilibili.com/x/web-interface/wbi/view",
+      "method": "GET",
+      "comment": "获取视频详细信息(web端)"
+    },
+    "ea0dd34bf41e23a68175680a00e3358cd249105f_jpg": {
+      "url": "https://i1.hdslb.com/bfs/archive/ea0dd34bf41e23a68175680a00e3358cd249105f.jpg",
+      "method": "GET",
+      "comment": "获取视频详细信息(web端)"
+    },
+    "detail": {
+      "url": "https://api.bilibili.com/x/web-interface/view/detail",
+      "method": "GET",
+      "comment": "获取视频超详细信息(web端)"
+    },
+    "desc": {
+      "url": "https://api.bilibili.com/x/web-interface/archive/desc",
+      "method": "GET",
+      "params": {
+        "aid": "int: 必填，稿件avid；avid与bvid任选一个",
+        "bvid": "str: 必填，稿件bvid；avid与bvid任选一个"
+      },
+      "comment": "获取视频简介"
+    }
+  },
+  "online": {
+    "online": {
+      "url": "https://app.bilibili.com/x/v2/view/video/online",
+      "method": "GET",
+      "params": {
+        "aid": "int: 必填，稿件avid",
+        "appkey": "str: 必填，APP密钥",
+        "cid": "int: 必填，视频cid；用于选择目标分P",
+        "ts": "int: 必填，当前时间戳",
+        "sign": "str: 必填，APP签名"
+      },
+      "comment": "获取视频在线人数_APP端"
+    }
+  },
+  "player": {
+    "player": {
+      "url": "https://api.bilibili.com/x/player/v2",
+      "method": "GET",
+      "params": {
+        "aid": "int: 必填，稿件 avid；aid 与 bvid 任选",
+        "bvid": "str: 必填，稿件 bvid；aid 与 bvid 任选",
+        "cid": "int: 必填，稿件 cid",
+        "season_id": "int: 番剧 season_id",
+        "ep_id": "int: 剧集 ep_id",
+        "w_rid": "str: WBI 签名",
+        "wts": "int: 当前 unix 时间戳"
+      },
+      "comment": "web 播放器信息"
+    },
+    "laser2": {
+      "url": "https://app.bilibili.com/x/resource/laser2",
+      "method": "POST",
+      "params": {
+        "mid": "int: 当前用户 mid；未登录为空",
+        "buvid": "str: 必填，BUVID (APP) 或 buvid3 (Web)；可为任意非空字符串",
+        "app_key": "str: 必填，APP 密钥；Web: web_player<br />可为任意非空字符串",
+        "url": "str: 日志 URL；从 [上传接口](../creativecenter/upload.md#上传接口) 得到的 upos 协议 URL",
+        "task_type": "int: 任务类型；300: 播放卡顿<br />301: 进度条君无法调戏<br />354: 校园网无法访问<br />303: 弹幕无法显示<br />553: 跳过首尾时间有误<br />304: 出现浮窗广告<br />305: 无限小电视<br />302: 音画不同步<br />306: 黑屏<br />307: 其他"
+      },
+      "comment": "播放反馈"
+    }
+  },
+  "recommend": {
+    "story": {
+      "url": "https://app.bilibili.com/x/v2/feed/index/story",
+      "method": "GET",
+      "params": {
+        "aid": "int: 点击视频的aid；所点击视频的aid，会影响到后续视频内容",
+        "display_id": "int: 视频列表页数；从1开始，第1页会得到比其他页多aid处所填视频",
+        "access_key": "str: 必填，APP登录Token",
+        "ad_extra": "str: 额外广告？",
+        "appkey": "str: 必填，APP密钥",
+        "auto_play": "int: 自动播放；可为0",
+        "build": "int: 必填，版本；可为`8130300`",
+        "bvid": "str: 视频的bv号；可为空，如果没有会导致返回不正常",
+        "c_locale": "str: 语言；zh_CN",
+        "channel": "int: 频道",
+        "cid": "int: 目标频道id",
+        "contain": "bool: 未知；可为false",
+        "creative_id": "int: 未知；默认为 `0`",
+        "device_name": "str: 设备名称；随意字符串都行",
+        "disable_rcmd": "int: 未知；默认为 `1`",
+        "epid": "int: 未知；默认为 `0`",
+        "feed_status": "int: 未知；默认为 `0`",
+        "fnval": "int: 视频流类型",
+        "fnver": "int: 请求时提供的fnver；可为 0",
+        "force_host": "int: 源url类型；0:无限制 1:使用http 2:使用https",
+        "fourk": "int: 是否允许 4K 视频；画质最高 1080P：0（默认）<br />画质最高 4K：1",
+        "from": "int: 未知；可为 `7`",
+        "from_spmid": "str: 未知；tm.recommend.0.0",
+        "goto": "str: 未知",
+        "mobi_app": "str: 平台标识；可为 `web`、`android` 等",
+        "network": "str: 网络；可为 `wifi`",
+        "ogv_style": "int: 未知；默认为 `0`",
+        "platform": "str: 平台；可为`web`或`android`",
+        "player_net": "int: 未知；默认为 `1`",
+        "pull": "int: 未知；默认为 `1`",
+        "pn": "int: 似乎不是页码；默认为 `32`",
+        "request_from": "int: 未知；默认为 `0`",
+        "s_locale": "str: 语言；zh_CN",
+        "spmid": "str: 未知；main.ugc-video-detail-vertical.0.0",
+        "statistics": "str: 位置；可为{\"appId\":1,\"platform\":3,\"version\":\"8.13.0\",\"abtest\":\"\"}",
+        "story_param": "str: 未知",
+        "trackid": "str: 路径id？未知",
+        "ts": "int: 秒级时间戳",
+        "video_mode": "int: 视频模式？未知；可为 `2`，应该是可以逆向出来的",
+        "voice_balance": "int: 未知；默认为 `1`",
+        "sign": "str: 必填，APP签名"
+      },
+      "comment": "根据点击视频获取的短视频播放列表"
+    },
+    "index": {
+      "url": "https://app.bilibili.com/x/v2/feed/index",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "fnval": "int: 视频流格式标识；默认为272",
+        "fnver": "int: 视频流版本标识；恒为1",
+        "force_host": "int: 源url类型；0:无限制 1:使用http 2:使用https",
+        "fourk": "int: 是否允许 4K 视频；画质最高 1080P：0（默认）<br />画质最高 4K：1",
+        "guidance": "int: 0",
+        "https_url_req": "int: 0",
+        "inline_danmu": "int: 2",
+        "inline_sound": "int: 1",
+        "interest_id": "int: 0",
+        "login_event": "int: 登录状态；0为登录 1为未登录",
+        "mobi_app": "int: android；设备类型",
+        "network": "int: wifi；网络类型",
+        "open_event": "int:",
+        "platform": "int: android；设备类型",
+        "pull": "bool: false",
+        "qn": "int: 32；似乎是画质",
+        "recsys_mode": "int: 0",
+        "s_locale": "str: zh_CN；语言",
+        "video_mode": "int: 1",
+        "accessKey": "str: 登录成功后返回的accessToken,添加此参数会返回个性化内容和横幅",
+        "voice_balance": "int: 音量均衡？；默认为1"
+      },
+      "comment": "获取短视频模式视频列表"
+    }
+  },
+  "report": {
+    "heartbeat": {
+      "url": "https://api.bilibili.com/x/click-interface/web/heartbeat",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "w_start_ts": "int: 参见请求正文同名无`w_`前缀参数；UNIX 秒级时间戳",
+        "w_mid": "int: 参见请求正文同名无`w_`前缀参数",
+        "w_aid": "int: 参见请求正文同名无`w_`前缀参数",
+        "w_dt": "int: 2",
+        "w_realtime": "int: 参见请求正文同名无`w_`前缀参数；单位 秒",
+        "w_playedtime": "int: 参见请求正文同名无`w_`前缀参数；单位 秒",
+        "w_real_played_time": "int: 参见请求正文同名无`w_`前缀参数；单位 秒",
+        "w_video_duration": "int: 参见请求正文同名无`w_`前缀参数；单位 秒",
+        "w_last_play_progress_time": "int: 参见请求正文同名无`w_`前缀参数；单位 秒",
+        "web_location": "int: 网页位置；视频详情页播放器: 1315873",
+        "w_rid": "int: WBI 签名；参见[WBI 签名](../misc/sign/wbi.md)",
+        "wts": "int: UNIX 秒级时间戳；参见[WBI 签名](../misc/sign/wbi.md)",
+        "aid": "int: 必填，稿件avid；avid与bvid任选一个(网页端请求默认仅使用aid)",
+        "bvid": "str: 必填，稿件bvid；avid与bvid任选一个",
+        "cid": "int: 视频cid；用于识别分P",
+        "epid": "int: 番剧epid",
+        "sid": "int: 番剧ssid",
+        "mid": "int: 当前用户mid",
+        "played_time": "int: 视频播放进度；单位 秒<br />播放完成为 -1",
+        "realtime": "int: 本轮页面会话真实播放时间；单位 秒",
+        "real_played_time": "int: 本轮页面会话真实视频播放持续时间；单位 秒",
+        "refer_url": "str: 与请求头 Referer 字段相同",
+        "quality": "int: 视频清晰度；参见[qn视频清晰度标识](videostream_url.md#qn视频清晰度标识)",
+        "video_duration": "int: 视频时长；单位 秒",
+        "last_play_progress_time": "int: play_time 与 本轮页面会话开始时 played_time  之和；单位 秒",
+        "max_play_progress_time": "int: 本轮页面会话所有最大 last_play_progress_time 与 本轮页面会话开始时 played_time  之和；单位 秒",
+        "start_ts": "int: 开始播放时刻；时间戳",
+        "type": "int: 视频类型；3：投稿视频<br />4：剧集<br />10：课程",
+        "sub_type": "int: 剧集副类型；0: 普通投稿视频<br />1：番剧<br />2：电影<br />3：纪录片<br />4：国创<br />5：电视剧<br />7：综艺",
+        "dt": "int: 2",
+        "outer": "int: 0",
+        "spmid": "str: 333.788.0.0；作用尚不明确",
+        "from_spmid": "str: 播放来源?；也可为空, 如: `444.41.list.card_archive.click` `333.999.0.0`",
+        "session": "str: 会话信息?；一串无分隔小写 UUID",
+        "extra": "dict: 额外信息, 如播放器版本；如: `{\"player_version\":\"4.8.36\"}`",
+        "play_type": "int: 播放动作；0：播放中<br />1：开始播放<br />2：暂停<br />3：继续播放<br />4: 结束播放",
+        "csrf": "str: CSRF Token (即 Cookie 中 bili_jct)"
+      },
+      "comment": "上报视频播放心跳（web端）"
+    }
+  },
+  "snapshot": {
+    "shot": {
+      "url": "https://app.bilibili.com/x/v2/view/video/shot",
+      "method": "GET",
+      "params": {
+        "aid": "int: 必填，稿件avid",
+        "appkey": "str: 必填，APP密钥",
+        "cid": "int: 必填，分P cid",
+        "ts": "int: 必填，当前时间戳",
+        "sign": "str: 必填，APP签名"
+      },
+      "comment": "获取视频快照（APP端）"
+    }
+  },
+  "status_number": {
+    "stat": {
+      "url": "https://api.bilibili.com/archive_stat/stat",
+      "method": "GET",
+      "params": {
+        "aid": "int: 必填，稿件avid"
+      },
+      "comment": "视频状态数（仅avid）"
+    }
+  },
+  "summary": {
+    "set": {
+      "url": "https://api.bilibili.com/x/web-interface/view/conclusion/set",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "w_rid": "str: 必填，Wbi 签名；详见 [Wbi 签名](../misc/sign/wbi.md)",
+        "wts": "int: 必填，当前时间戳；详见 [Wbi 签名](../misc/sign/wbi.md)",
+        "aid": "int: 必填，稿件 avid；avid与bvid任选一个",
+        "bvid": "str: 必填，稿件 bvid；avid与bvid任选一个",
+        "cid": "int: 必填，稿件 cid",
+        "up_mid": "int: UP主 mid",
+        "stid": "int: 必填，摘要 id",
+        "like_state": "int: 必填，执行操作；1: 点赞<br />2: 取消点赞<br />3: 点踩<br />4: 取消点踩",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "点赞&点踩摘要"
+    }
   }
 }

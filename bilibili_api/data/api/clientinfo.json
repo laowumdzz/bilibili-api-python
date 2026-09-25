@@ -1,0 +1,32 @@
+{
+  "ip": {
+    "zone": {
+      "url": "https://api.bilibili.com/x/web-interface/zone",
+      "method": "GET",
+      "comment": "根据请求IP确定属地"
+    },
+    "get_ip_info": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/index/getIpInfo",
+      "method": "GET",
+      "comment": "根据请求IP确定属地"
+    },
+    "ip": {
+      "url": "https://app.bilibili.com/x/resource/ip",
+      "method": "GET",
+      "comment": "根据请求IP确定属地"
+    },
+    "get_ip_addr": {
+      "url": "https://api.live.bilibili.com/ip_service/v1/ip_service/get_ip_addr",
+      "method": "GET",
+      "comment": "查询任意 IP 地址的归属地"
+    },
+    "get_info_new": {
+      "url": "https://api.live.bilibili.com/client/v1/Ip/getInfoNew",
+      "method": "GET",
+      "params": {
+        "ip": "str: IP地址；IPv4或IPv6地址不限, 留空与[根据请求IP确定地理位置](#根据请求ip确定地理位置)基本相同"
+      },
+      "comment": "查询任意 IP 地址的归属地"
+    }
+  }
+}

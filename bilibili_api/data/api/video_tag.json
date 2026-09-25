@@ -35,5 +35,39 @@
       },
       "comment": "获取从指定dynamic_id视频的后一位开始的相关的动态/视频, 先用get_list获取dynamic_id。"
     }
+  },
+  "tags": {
+    "tags": {
+      "url": "https://api.bilibili.com/x/tag/archive/tags",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "aid": "int: 必填，稿件avid；avid与bvid任选一个",
+        "bvid": "str: 必填，稿件bvid；avid与bvid任选一个"
+      },
+      "comment": "获取视频TAG信息（旧）"
+    },
+    "like2": {
+      "url": "https://api.bilibili.com/x/tag/archive/like2",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "aid": "int: 必填，稿件avid",
+        "tag_id": "int: 必填，tag_id",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "点赞&取消点赞视频TAG"
+    },
+    "hate2": {
+      "url": "https://api.bilibili.com/x/tag/archive/hate2",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "aid": "int: 必填，稿件avid",
+        "tag_id": "int: 必填，tag_id",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "点踩&取消点踩视频TAG"
+    }
   }
 }

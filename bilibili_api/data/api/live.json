@@ -486,5 +486,698 @@
       "verify": false,
       "comment": "[直播心跳包]"
     }
+  },
+  "danmaku": {
+    "get_dmconfig_by_group": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/dM/GetDMConfigByGroup",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "room_id": "int: 必填，直播间id",
+        "web_location": "str: (?)；作用尚不明确",
+        "w_rid": "str: wbi签名；不强制需要",
+        "wts": "int: 秒时间戳；不强制需要"
+      },
+      "comment": "获取当前用户对应直播间可发弹幕配置"
+    },
+    "gethistory": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/dM/gethistory",
+      "method": "GET",
+      "params": {
+        "roomid": "int: 必填，直播间短ID"
+      },
+      "comment": "获取直播间最近历史弹幕"
+    },
+    "ajax_set_config": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/dM/AjaxSetConfig",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "csrf\\_token": "str: 同csrf",
+        "room\\_id": "int: 必填，直播间id",
+        "color": "str: 必填，颜色值；color和mode任选一个",
+        "mode": "int: 必填，弹幕模式；color和mode任选一个"
+      },
+      "comment": "设置弹幕样式"
+    }
+  },
+  "follow_up_live": {
+    "following": {
+      "url": "https://api.live.bilibili.com/xlive/web-ucenter/user/following",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page": "int: 页码；默认为`1`",
+        "page_size": "int: 每页的数据数量；有效值`1`-`10`, 默认为`10`",
+        "ignoreRecord": "int: **尚不明确**<br />一般为`1`",
+        "hit_ab": "bool: **尚不明确**<br />建议用`true`, 不填为`false`"
+      },
+      "comment": "用户关注的所有UP的直播情况"
+    },
+    "get_web_list": {
+      "url": "https://api.live.bilibili.com/xlive/web-ucenter/v1/xfetter/GetWebList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "hit_ab": "bool: 会影响到json回复中部分字段的值，具体的影响效果会在下表列出。；默认为true，不填为false"
+      },
+      "comment": "用户关注的所有UP且正在直播的列表（PC端）"
+    }
+  },
+  "gift": {
+    "room_gift_list": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/giftPanel/roomGiftList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "platform": "str: 必填，web",
+        "room_id": "int: 必填，主播房间号",
+        "area_parent_id": "int: 直播分区；不填写可能会获取不到部分活动礼物",
+        "area_id": "int: 直播子分区；不填写可能会获取不到部分活动礼物"
+      },
+      "comment": "获取直播间内礼物"
+    },
+    "get_info": {
+      "url": "https://api.live.bilibili.com/xlive/general-interface/v1/blindFirstWin/getInfo",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "gift_id": "int:"
+      },
+      "comment": "获取盲盒概率"
+    }
+  },
+  "guard": {
+    "top_list_new": {
+      "url": "https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topListNew",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "roomid": "int: 必填，直播间号",
+        "page": "int: 必填，页数",
+        "ruid": "int: 必填，主播id",
+        "page_size": "int: 页大小；默认20，最大30，若超过则作为10处理",
+        "typ": "int: 排序方式；typ=3,4,5分别为按周/月/总航海亲密度排序"
+      },
+      "comment": "查询大航海成员"
+    },
+    "get_fans_members_rank": {
+      "url": "https://api.live.bilibili.com/xlive/general-interface/v1/rank/getFansMembersRank",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page": "int: 必填，页数",
+        "ruid": "int: 必填，主播id",
+        "page_size": "int: 必填，每页返回的数量；最大30，若超过则作为10处理",
+        "rank_type": "int: 排序方式；1：按照粉丝牌还亮着的粉丝团成员的亲密度排序<br> 2：按照**所有**没上过舰的粉丝团成员的亲密度排序",
+        "ts": "int: 必填，13位时间戳；该值>=1000即可"
+      },
+      "comment": "查询粉丝团成员"
+    }
+  },
+  "live_info": {
+    "get_info": {
+      "url": "https://api.live.bilibili.com/room/v1/Room/get_info",
+      "method": "GET",
+      "params": {
+        "room_id": "int: 必填，直播间号；可以为短号"
+      },
+      "comment": "获取直播间信息"
+    },
+    "get_room_info_old": {
+      "url": "https://api.live.bilibili.com/room/v1/Room/getRoomInfoOld",
+      "method": "GET",
+      "params": {
+        "mid": "int: 必填，目标用户mid"
+      },
+      "comment": "获取用户对应的直播间状态"
+    },
+    "room_init": {
+      "url": "https://api.live.bilibili.com/room/v1/Room/room_init",
+      "method": "GET",
+      "params": {
+        "id": "int: 必填，目标直播间号（短号）"
+      },
+      "comment": "获取房间页初始化信息"
+    },
+    "info": {
+      "url": "https://api.live.bilibili.com/live_user/v1/Master/info",
+      "method": "GET",
+      "params": {
+        "uid": "int: 必填，目标用户mid"
+      },
+      "comment": "获取主播信息"
+    },
+    "get_room_base_info": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/index/getRoomBaseInfo",
+      "method": "GET",
+      "params": {
+        "req_biz": "str: 必填，`web_room_componet`",
+        "room_ids": "int: 直播间短ID；多个重复该参数即可"
+      },
+      "comment": "获取直播间基本信息"
+    },
+    "get_status_info_by_uids": {
+      "url": "https://api.live.bilibili.com/room/v1/Room/get_status_info_by_uids",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "uids[]": "list: 必填，要查询的主播 mid",
+        "uids": "list: 必填，要查询的主播 mid"
+      },
+      "comment": "批量查询直播间状态"
+    },
+    "get_anchor_in_room": {
+      "url": "https://api.live.bilibili.com/live_user/v1/UserInfo/get_anchor_in_room",
+      "method": "GET",
+      "params": {
+        "roomid": "int: 必填，直播间号；可以为短号"
+      },
+      "comment": "获取直播间主播信息"
+    }
+  },
+  "live_bill": {
+    "get_gift_types": {
+      "url": "https://api.live.bilibili.com/gift/v1/master/getGiftTypes",
+      "method": "GET",
+      "verify": true,
+      "comment": "获取所有礼物列表"
+    },
+    "get_received_gift_stream_next_list": {
+      "url": "https://api.live.bilibili.com/xlive/revenue/v1/giftStream/getReceivedGiftStreamNextList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "limit": "int: 必填，一页有多少条目",
+        "coin_type": "int: 必填，礼物类型；0 为所有，1 为电池礼物，2 为银瓜子礼物",
+        "begin_time": "str: 必填，流水的日期；格式为 yyyy-MM-dd",
+        "uname": "str: 筛选的用户名",
+        "last_id": "int: 必填，上一页页末的礼物列表 id；见下方 `list` 数组说明",
+        "gift_id": "int: 筛选的礼物 id"
+      },
+      "comment": "获取流水"
+    }
+  },
+  "live_data": {
+    "stop_live_data": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/live/StopLiveData",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key；若不提供将会获得无效数据"
+      },
+      "comment": "获取直播场次的直播数据"
+    },
+    "overview": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/date/Overview",
+      "method": "GET",
+      "verify": true,
+      "comment": "获取直播表现"
+    }
+  },
+  "live_replay": {
+    "anchor_get_replay_list": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/AnchorGetReplayList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page": "int: 页码；默认第1页",
+        "page_size": "int: 每页内容数量；默认30项，最大30项"
+      },
+      "comment": "获取直播回放列表"
+    },
+    "get_other_slice_list": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/GetOtherSliceList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_uid": "int: 必填，目标主播的uid",
+        "time_range": "int: 回放列表的时间范围；默认获取近14天<br />1：近3天<br />2：近7天<br />3：近14天",
+        "page": "int: 页码；默认第1页",
+        "page_size": "int: 每页内容数量；默认30项，最大30项",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取某位主播的回放列表"
+    },
+    "anchor_get_video_slice_list": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/AnchorGetVideoSliceList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page": "int: 页码；默认第1页",
+        "page_size": "int: 每页内容数量；默认20项，最大20项"
+      },
+      "comment": "获取已发布片段的信息"
+    },
+    "get_published_list": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/GetPublishedList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_uid": "int: 必填，目标主播的uid",
+        "page": "int: 页码；默认第1页",
+        "page_size": "int: 每页内容数量；默认20项，最大20项",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取你为某位主播剪辑的已发布片段"
+    },
+    "get_draft_list": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/GetDraftList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page": "int: 页码；默认第1页",
+        "page_size": "int: 每页内容数量；默认30项，最大30项"
+      },
+      "comment": "获取回放剪辑草稿列表"
+    },
+    "get_draft_list_2": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/GetDraftList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_uid": "int: 必填，目标主播的uid",
+        "page": "int: 页码；默认第1页",
+        "page_size": "int: 每页内容数量；默认30项，最大30项",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取你为某位主播剪辑的草稿"
+    },
+    "delete_slice_draft": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/DeleteSliceDraft",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "draft_id": "int: 必填，回放剪辑id",
+        "csrf_token": "str: CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "删除某个回放剪辑草稿"
+    },
+    "delete_slice_draft_2": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/DeleteSliceDraft",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "draft_id": "int: 必填，回放剪辑id"
+      },
+      "comment": "删除为某个主播剪辑的草稿"
+    },
+    "anchor_video_download": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/AnchorVideoDownload",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "record_id": "int: 必填，直播回放id；`record_id`和`live_key`必选其一",
+        "live_key": "str: 必填，标记直播场次的key；`record_id`和`live_key`必选其一",
+        "csrf_token": "str: CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "请求整场直播回放下载链接"
+    },
+    "get_anchor_video_uid_records_subsect": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/GetAnchorVideoUidRecordsSubsect",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "record_id": "int: 必填，直播回放id"
+      },
+      "comment": "获取回放的信息"
+    },
+    "get_anchor_video_uid_record": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/GetAnchorVideoUidRecord",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "records": "str: 必填，直播回放id列表；用`,`分隔",
+        "csrf_token": "str: CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "轮询回放状态"
+    },
+    "get_slice_stream": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/GetSliceStream",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key；对应[获取直播回放列表](#获取直播回放列表)的`data.replay_info[i].live_key`",
+        "start_time": "int: 必填，直播开始时间戳；对应[获取直播回放列表](#获取直播回放列表)的`data.replay_info[i].start_time`",
+        "end_time": "int: 必填，直播结束时间戳；对应[获取直播回放列表](#获取直播回放列表)的`data.replay_info[i].end_time`",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取切片视频流"
+    },
+    "get_user_slice_stream": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/GetUserSliceStream",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key；对应[获取直播回放列表](#获取直播回放列表)的`data.replay_info[i].live_key`",
+        "start_time": "int: 必填，直播开始时间戳；对应[获取直播回放列表](#获取直播回放列表)的`data.replay_info[i].start_time`",
+        "end_time": "int: 必填，直播结束时间戳；对应[获取直播回放列表](#获取直播回放列表)的`data.replay_info[i].end_time`",
+        "live_uid": "int: 必填，目标主播的uid",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取某位主播的切片视频流"
+    },
+    "get_live_session_data": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/GetLiveSessionData",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key",
+        "start_tm": "str: 必填，开始时间；格式为`yyyy-mm-dd HH:MM:SS`，时区为`UTC+08:00`（中国标准时间）；取值对实际无影响",
+        "end_tm": "str: 必填，开始时间；格式为`yyyy-mm-dd HH:MM:SS`，时区为`UTC+08:00`（中国标准时间）；取值对实际无影响",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取直播会话数据"
+    },
+    "get_user_live_session_data": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/GetUserLiveSessionData",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key；需要提供目标主播的live_key",
+        "start_tm": "str: 必填，开始时间；格式为`yyyy-mm-dd HH:MM:SS`，时区为`UTC+08:00`（中国标准时间）；取值对实际无影响",
+        "end_tm": "str: 必填，开始时间；格式为`yyyy-mm-dd HH:MM:SS`，时区为`UTC+08:00`（中国标准时间）；取值对实际无影响",
+        "live_uid": "int: 必填，目标主播的uid",
+        "web_location": "str: (?)"
+      },
+      "comment": "获取某位主播的直播会话数据"
+    },
+    "user_get_manual_highlight_list": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/UserGetManualHighlightList",
+      "method": "GET",
+      "comment": "获取用户高光列表"
+    },
+    "user_get_manual_highlight_list_2": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/UserGetManualHighlightList",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key",
+        "manual_type": "int: 必填，查询类型；1：回溯录制<br />2：已保存片段",
+        "live_uid": "int: 必填，目标主播的uid；通过粉丝使用接口时必要",
+        "web_location": "str: (?)；作用尚不明确"
+      },
+      "comment": "获取用户高光列表"
+    },
+    "get_anchor_video_key_frame": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/GetAnchorVideoKeyFrame",
+      "method": "POST",
+      "comment": "获取某个时间的视频帧"
+    },
+    "get_anchor_video_key_frame_2": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/GetAnchorVideoKeyFrame",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "live_key": "str: 必填，标记直播场次的key",
+        "live_uid": "int: 必填，目标主播的uid；通过粉丝使用接口时必要",
+        "time_list": "str: 必填，秒时间戳列表，用`,`分隔；时间间隔低于30秒将会导致只提供部分内容"
+      },
+      "comment": "获取某个时间的视频帧"
+    },
+    "user_manual_save_highlight": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/UserManualSaveHighlight",
+      "method": "POST",
+      "comment": "手动保存高亮片段"
+    },
+    "user_manual_save_highlight_2": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/UserManualSaveHighlight",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key",
+        "start_ts": "int: 必填，开始时间戳；Unix 秒时间戳",
+        "end_ts": "int: 必填，结束时间戳；Unix 秒时间戳",
+        "live_uid": "int: 必填，目标主播的uid；通过粉丝使用接口时必要",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "手动保存高亮片段"
+    },
+    "anchor_publish_video_slice": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/anchorVideo/AnchorPublishVideoSlice",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "live_key": "str: 必填，标记直播场次的key；必须为自己的live_key",
+        "start_ts": "int: 必填，开始时间戳；开始和结束时间目前相差不能大于2小时",
+        "end_ts": "int: 必填，结束时间戳；开始和结束时间目前相差不能大于2小时",
+        "av_title": "str: 必填，切片标题；不能与现有标题重复",
+        "av_cover": "str: 必填，切片封面URL；必须为`.hdslb.com`域名下的图片，否则合成结束时会出错",
+        "av_highlight": "int: 高光绑定",
+        "with_subtitle": "int: 是否携带字幕；效果不明确",
+        "with_danmaku": "int: 是否带弹幕?；传递`1`时可能导致处于“发布中”状态时不在[获取已发布片段的信息](#获取已发布片段的信息)中显示",
+        "with_reserve": "int: 投稿携带下场直播提醒；0：不携带，1：携带",
+        "av_speed": "str: 倍速投稿；格式为 `倍速值 + \"x\"` ，使用非1x倍速时可能导致处于“发布中”状态时不在[获取已发布片段的信息](#获取已发布片段的信息)中显示<br />允许值: `0.5x` , `0.75x` , `1.0x` , `1.25x` , `1.5x` , `2.0x`",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "投稿直播回放片段"
+    },
+    "user_publish_other_video_slice": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/videoService/UserPublishOtherVideoSlice",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "live_uid": "int: 必填，目标主播的uid"
+      },
+      "comment": "给某位主播投稿直播回放片段"
+    }
+  },
+  "live_stream": {
+    "play_url": {
+      "url": "https://api.live.bilibili.com/room/v1/Room/playUrl",
+      "method": "GET",
+      "params": {
+        "cid": "int: 必填，目标真实直播间号；直播间的`room_id`（非短号）",
+        "platform": "str: 直播流格式；h5：hls方式<br />web：http-flv方式<br />默认为http-flv方式",
+        "quality": "int: 画质；`qn`与`quality`任选其一<br />2：流畅<br />3：高清<br />4：原画",
+        "qn": "str: 画质；`qn`与`quality`任选其一<br />80：流畅<br />150：高清<br />250：超清<br />400：蓝光<br />10000：原画<br />20000：4K<br />25000：默认<br />30000：杜比"
+      },
+      "comment": "根据真实直播间号获取直播视频流"
+    }
+  },
+  "live_vote": {
+    "vote_panel": {
+      "url": "https://api.live.bilibili.com/xlive/app-room/v1/dm/interaction/votePanel",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "room_id": "int: 必填，直播间id；必须为登录信息对应的直播间"
+      },
+      "comment": "查询投票信息"
+    },
+    "vote_history": {
+      "url": "https://api.live.bilibili.com/xlive/app-room/v1/dm/interaction/voteHistory",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "room_id": "int: 必填，直播间id；必须为登录信息对应的直播间"
+      },
+      "comment": "查询投票历史"
+    },
+    "create_vote": {
+      "url": "https://api.live.bilibili.com/xlive/app-room/v1/dm/interaction/createVote",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "room_id": "int: 必填，直播间id；必须为登录信息对应的直播间",
+        "duration": "int: 必填，持续时间；必须为整数，目前范围`0<d<10`",
+        "question": "str: 必填，投票问题",
+        "option_a": "str: 必填，选项A",
+        "option_b": "str: 必填，选项B",
+        "template_id": "int: 投票模板id",
+        "live_key": "str: 直播场次key；需要更多信息",
+        "sub_session_key": "str: (?)；需要更多信息",
+        "csrf_token": "str: CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "visit_id": "str: (?)；作用尚不明确"
+      },
+      "comment": "创建直播投票"
+    },
+    "terminate_vote": {
+      "url": "https://api.live.bilibili.com/xlive/app-room/v1/dm/interaction/terminateVote",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "interaction_id": "int: 必填，投票互动id；必须为该登录信息创建的投票",
+        "room_id": "int: 必填，直播间id；必须为登录信息对应的直播间",
+        "csrf_token": "str: CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "visit_id": "str: (?)；作用尚不明确"
+      },
+      "comment": "中断直播投票"
+    }
+  },
+  "manage": {
+    "create_room": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/preLive/CreateRoom",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "platform": "str: 必填，客户端？；默认值web",
+        "visit_id": "str: 未知；默认空",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "csrf_token": "str: CSRF Token（位于 cookie）"
+      },
+      "comment": "开通直播间"
+    },
+    "update": {
+      "url": "https://api.live.bilibili.com/room/v1/Room/update",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "csrf_token": "str: CSRF Token（位于 cookie）",
+        "platform": "str: 平台标识",
+        "visit_id": "str: (?)；某种标识？",
+        "room_id": "int: 必填，直播间id；必须为自己的直播间id",
+        "title": "str: 直播间标题；上限40个字符",
+        "area\\_id": "int: 直播分区id（子分区id）；详见[直播分区](live_area.md)",
+        "add\\_tag": "str: 要添加的标签；开播设置界面上限10个字符",
+        "del\\_tag": "str: 要删除的标签；若存在`add_tag`时不起作用"
+      },
+      "comment": "更新直播间信息"
+    },
+    "update_pre_live_info": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/preLive/UpdatePreLiveInfo",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "platform": "str: 必填，平台标识；似乎可随意提供<br />网页端: web",
+        "mobi_app": "str: 必填，平台标识?；似乎可随意提供<br />网页端: web",
+        "build": "int: 必填，构建标识?；建议取`1`，似乎可随意提供",
+        "cover": "str: 直播封面链接；图片链接需要在`.hdslb.com`域名下",
+        "title": "str: 直播间标题；参见[更新直播间信息](#更新直播间信息)的title参数",
+        "coverVertical": "str: (?)；作用尚不明确",
+        "liveDirectionType": "int: (?)；`1`",
+        "visit_id": "str: (?)；`\"\"`"
+      },
+      "comment": "预更新直播间信息"
+    },
+    "get_home_page_live_version": {
+      "url": "https://api.live.bilibili.com/xlive/app-blink/v1/liveVersionInfo/getHomePageLiveVersion",
+      "method": "GET",
+      "params": {
+        "appkey": "str: APP密钥；使用PC投稿工具的appkey和appsec",
+        "sign": "str: APP API签名得到的sign",
+        "system_version": "int: 必填，暂不清楚；可以直接写2",
+        "ts": "int: 10位时间戳"
+      },
+      "comment": "PC直播姬版本号获取"
+    }
+  },
+  "recommend": {
+    "get_more_rec_list": {
+      "url": "https://api.live.bilibili.com/xlive/web-interface/v1/webMain/getMoreRecList",
+      "method": "GET",
+      "params": {
+        "platform": "str: 必填，平台类型；默认为 `web`, 实测可为任意非空串",
+        "web_location": "str: `333.1007`"
+      },
+      "comment": "主页获取直播推荐"
+    }
+  },
+  "redpocket": {
+    "get_lottery_info_web": {
+      "url": "https://api.live.bilibili.com/xlive/lottery-interface/v1/lottery/getLotteryInfoWeb",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "roomid": "str: 必填，直播间id"
+      },
+      "comment": "获取指定直播间的红包信息"
+    }
+  },
+  "silent_user_manage": {
+    "del_room_block_user": {
+      "url": "https://api.live.bilibili.com/banned_service/v1/Silent/del_room_block_user",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "roomid": "str: 必填，直播间Id；注意该接口名称没有“_”",
+        "id": "str: 必填，禁言记录Id；GetSilentUserList 接口获取",
+        "csrf_token": "str: 必填，CSRF Token；cookie中的bili_jct字段",
+        "csrf": "str: 必填，CSRF Token；cookie中的bili_jct字段",
+        "visit_id": "str: 不明"
+      },
+      "comment": "解除禁言"
+    }
+  },
+  "user": {
+    "get_my_medals": {
+      "url": "https://api.live.bilibili.com/xlive/app-ucenter/v1/user/GetMyMedals",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "page_size": "int: 必填，每页的数量；最大为 10，超出 `1002002：参数异常`",
+        "page": "int: 必填，返回结果页数；两个参数不填返回空，只 page 不填或错误则 500 异常"
+      },
+      "comment": "获取自己持有的粉丝勋章信息"
+    },
+    "wear": {
+      "url": "https://api.live.bilibili.com/xlive/web-room/v1/fansMedal/wear",
+      "method": "POST",
+      "params": {
+        "medal_id": "int: 必填，勋章 id",
+        "csrf": "int: 必填，cookie 中 bili_jct 字段",
+        "csrf_token": "int: 必填，同上"
+      },
+      "comment": "佩戴勋章"
+    },
+    "do_sign": {
+      "url": "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/DoSign",
+      "method": "GET",
+      "verify": true,
+      "comment": "~~直播签到（已下线）~~"
+    },
+    "web_get_sign_info": {
+      "url": "https://api.live.bilibili.com/xlive/web-ucenter/v1/sign/WebGetSignInfo",
+      "method": "GET",
+      "verify": true,
+      "comment": "本月直播签到信息"
+    },
+    "get_last_month_sign_days": {
+      "url": "https://api.live.bilibili.com/sign/getLastMonthSignDays",
+      "method": "GET",
+      "verify": true,
+      "comment": "上月直播签到信息"
+    },
+    "get_online_gold_rank": {
+      "url": "https://api.live.bilibili.com//xlive/general-interface/v1/rank/getOnlineGoldRank",
+      "method": "GET",
+      "params": {
+        "roomId": "int: 必填，房间号",
+        "page": "int: 必填，返回结果页数",
+        "pageSize": "int: 必填，返回结果页大小；最大50",
+        "ruid": "int: 必填，主播uid"
+      },
+      "comment": "查询直播间贡献榜"
+    },
+    "guard_active": {
+      "url": "https://api.live.bilibili.com/xlive/general-interface/v1/guard/GuardActive",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "platform": "str: 必填，android",
+        "ruid": "int: 必填，主播uid"
+      },
+      "comment": "查询自己在某直播间观看时长"
+    },
+    "user": {
+      "url": "https://api.live.bilibili.com/xlive/app-ucenter/v2/card/user",
+      "method": "GET",
+      "params": {
+        "uid": "int: 必填，目标用户uid",
+        "ruid": "int: 必填，主播uid"
+      },
+      "comment": "查询用户在直播间的信息"
+    }
   }
 }

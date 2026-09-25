@@ -132,5 +132,99 @@
       },
       "comment": "取消收藏歌单"
     }
+  },
+  "action": {
+    "songs_coll": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/collections/songs-coll",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "sid": "int: 必填，音频auid"
+      },
+      "comment": "查询音频收藏状态"
+    },
+    "audio": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/coin/audio",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "sid": "int: 必填，音频auid"
+      },
+      "comment": "查询音频投币数"
+    }
+  },
+  "info": {
+    "song": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/member/song",
+      "method": "GET",
+      "params": {
+        "sid": "int: 必填，音频auid"
+      },
+      "comment": "查询歌曲创作成员列表"
+    },
+    "lyric": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/song/lyric",
+      "method": "GET",
+      "params": {
+        "sid": "int: 必填，音频auid"
+      },
+      "comment": "获取歌曲歌词"
+    }
+  },
+  "music_list": {
+    "list": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/collections/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "pn": "int: 必填，页码",
+        "ps": "int: 必填，每页项数"
+      },
+      "comment": "查询自己创建的歌单"
+    },
+    "info": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/collections/info",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "sid": "int: 必填，音频收藏夹mlid；必须为默认收藏夹mlid"
+      },
+      "comment": "查询音频收藏夹（默认歌单）信息"
+    },
+    "rank": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/menu/rank",
+      "method": "GET",
+      "params": {
+        "pn": "int: 必填，页码",
+        "ps": "int: 必填，每页项数"
+      },
+      "comment": "查询热门榜单"
+    }
+  },
+  "musicstream_url": {
+    "music_service_c": {
+      "url": "https://api.bilibili.com/audio/music-service-c/url",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "songid": "int: 必填，音频auid",
+        "quality": "int: 必填，音质代码；**详情见上表**",
+        "privilege": "int: 必填，必须为`2`",
+        "mid": "int: 必填，当前用户mid；可为任意值",
+        "platform": "str: 必填，平台标识；可为任意值"
+      },
+      "comment": "获取音频流URL（可获取付费音频）"
+    }
+  },
+  "status_number": {
+    "song": {
+      "url": "https://www.bilibili.com/audio/music-service-c/web/stat/song",
+      "method": "GET",
+      "params": {
+        "sid": "int: 必填，音频auid"
+      },
+      "comment": "歌曲状态数"
+    }
   }
 }

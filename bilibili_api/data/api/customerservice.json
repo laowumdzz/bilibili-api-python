@@ -1,0 +1,28 @@
+{
+  "msg": {
+    "heart_beat": {
+      "url": "https://customerservice.bilibili.com/x/custom/session_svr/v1/heart_beat",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "shop_id": "int: 0",
+        "shop_father_id": "int: 0",
+        "build": "int: 客户端版本；web: 0",
+        "mobi_app": "str: 客户端类型；如 `web`"
+      },
+      "comment": "心跳"
+    },
+    "upload": {
+      "url": "https://customerservice.bilibili.com/x/custom/msg_svr/v1/upload",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "file": "str: 必填，文件内容",
+        "filename": "str: 必填，文件名",
+        "mid": "int: 必填，用户 mid",
+        "csrf": "str: 必填，CSRF Token (位于 Cookie 中 bili_jct)"
+      },
+      "comment": "上传文件"
+    }
+  }
+}

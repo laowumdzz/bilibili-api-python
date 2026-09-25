@@ -205,5 +205,57 @@
       },
       "comment": "订阅全站音乐榜"
     }
+  },
+  "dynamic": {
+    "region": {
+      "url": "https://api.bilibili.com/x/web-interface/dynamic/region",
+      "method": "GET",
+      "params": {
+        "pn": "int: 页码；默认为1",
+        "ps": "int: 每页项数；默认为14, 留空为5",
+        "rid": "int: 必填，目标分区tid"
+      },
+      "comment": "获取分区最新视频列表"
+    },
+    "tag": {
+      "url": "https://api.bilibili.com/x/web-interface/dynamic/tag",
+      "method": "GET",
+      "params": {
+        "ps": "int: 视频数；默认为14, 留空为5",
+        "pn": "int: 列数；留空为1",
+        "rid": "int: 必填，目标分区id；参见[视频分区一览](../video/video_zone.md)",
+        "tag_id": "int: 必填，目标标签id"
+      },
+      "comment": "获取分区标签近期互动列表"
+    },
+    "newlist": {
+      "url": "https://api.bilibili.com/x/web-interface/newlist",
+      "method": "GET",
+      "params": {
+        "ps": "int: 视频数；默认为14, 留空为5",
+        "pn": "int: 页码；默认为1",
+        "rid": "int: 目标分区id；参见[视频分区一览](../video/video_zone.md)",
+        "type": "int: 类型?；默认为0"
+      },
+      "comment": "获取分区近期投稿列表"
+    },
+    "newlist_rank": {
+      "url": "https://api.bilibili.com/x/web-interface/newlist_rank",
+      "method": "GET",
+      "params": {
+        "main_ver": "str: 主页版本；默认为 `v3`",
+        "search_type": "str: 必填，搜索类型；默认为 `video`",
+        "view_type": "str: 必填，查看类型?；默认为 `hot_rank`",
+        "copy_right": "int: 版权?；默认为 `-1`",
+        "new_web_tag": "int: 标签?；默认为 `1`",
+        "order": "str: 排序方式；click: 按播放排序(默认)<br />scores: 按评论数排序<br />stow: 按收藏排序<br />coin: 按硬币数排序<br />dm: 按弹幕数排序",
+        "cate_id": "int: 必填，分区id；留空会导致响应中`data`中`result`为`null`, 参见[视频分区一览](../video/video_zone.md)",
+        "page": "int: 页码；默认以 `1` 开始",
+        "pagesize": "int: 必填，视频数；默认为 `30`, 留空会导致 -500",
+        "time_from": "int: 必填，起始时间；yyyyMMdd, 默认为 `time_to` - 7",
+        "time_to": "int: 必填，结束时间；yyyyMMdd, 默认为当前时间(大于起始时间)"
+      },
+      "comment": "获取分区近期投稿列表 (带排序)"
+    }
   }
 }

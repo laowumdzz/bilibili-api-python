@@ -71,5 +71,42 @@
         "csrf": "str: bili_jct"
       }
     }
+  },
+  "color": {
+    "query_skin_list_do": {
+      "url": "https://club.bilibili.com/api/query.skin.list.do",
+      "method": "GET",
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "appkey": "str: 必填，APP密钥",
+        "build": "int: 必填，版本；可为`6082000`",
+        "sign": "str: 必填，APP签名"
+      },
+      "comment": "获取主题色基本信息1"
+    },
+    "list": {
+      "url": "https://api.bilibili.com/x/garb/skin/color/list",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "mobi_app": "str: 平台标识；可为`android`",
+        "build": "int: 版本；可为`6082000`"
+      },
+      "comment": "获取主题色基本信息2"
+    }
+  },
+  "skin": {
+    "skin": {
+      "url": "https://app.bilibili.com/x/resource/show/skin",
+      "method": "GET",
+      "params": {
+        "access_key": "str: 必填，APP登录Token",
+        "appkey": "str: 必填，APP密钥",
+        "build": "int: 必填，版本；可为`6082000`",
+        "ts": "int: 必填，当前时间戳；可为`0`",
+        "sign": "str: 必填，APP签名"
+      },
+      "comment": "获取主题及加载动画"
+    }
   }
 }

@@ -105,5 +105,316 @@
         },
         "comment": "给用户发信息"
       }
+    },
+  "private_msg": {
+    "single_unread": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/single_unread",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "unread_type": "int: 未读类型；0：所有<br />1：仅已关注<br />2：仅未关注<br />3：仅被拦截 (须同时设置参数 `show_dustbin=1`)<br />默认为 `0`",
+        "show_unfollow_list": "int: 是否返回未关注人推送消息数；0：否<br />1：是",
+        "show_dustbin": "int: 是否返回被拦截私信数；0：否<br />1：是",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取未读私信数"
+    },
+    "my_group_unread": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/my_group_unread",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取未读粉丝团私信数"
+    },
+    "is_limit": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/is_limit",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "uid": "int: 必填，聊天对象mid",
+        "type": "int: 必填，1"
+      },
+      "comment": "获取会话限制状态"
+    },
+    "get_msg_dnd": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/get_msg_dnd",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "own_uid": "int: 必填，自己的mid",
+        "uids": "int: 用户mid；仅支持填入 **1 个** mid",
+        "group_ids": "int: 粉丝团id；仅支持填入 **1 个** id",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取会话免打扰状态"
+    },
+    "get_session_ss": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/get_session_ss",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "talker_uid": "int: 必填，聊天对象mid",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取会话推送设置"
+    },
+    "update_ack": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/update_ack",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "talker_id": "int: 必填，聊天对象的id；`session_type` 为 `1` 时表示用户 mid，为 `2` 时表示粉丝团 id",
+        "session_type": "int: 必填，聊天对象的类型；1：用户<br />2：粉丝团",
+        "ack_seqno": "int: 设置为已读的消息序列号；留空表示最新的消息",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "设置会话为已读"
+    },
+    "remove_session": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/remove_session",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "talker_id": "int: 必填，聊天对象的id；`session_type` 为 `1` 时表示用户 mid，为 `2` 时表示粉丝团 id",
+        "session_type": "int: 必填，聊天对象的类型；1：用户<br />2：粉丝团",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "移除指定会话"
+    },
+    "set_top": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/set_top",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "talker_id": "int: 必填，聊天对象的id；`session_type` 为 `1` 时表示用户 mid，为 `2` 时表示粉丝团 id",
+        "session_type": "int: 必填，聊天对象的类型；1：用户<br />2：粉丝团",
+        "op_type": "int: 必填，操作类型；0：置顶<br />1：取消置顶",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "修改会话置顶状态"
+    },
+    "set_msg_dnd": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/set_msg_dnd",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "uid": "int: 自己的mid",
+        "setting": "int: 必填，免打扰设置；0：取消免打扰<br />1：开启免打扰",
+        "dnd_uid": "int: 必填，用户mid；当聊天对象为用户时有效",
+        "dnd_group_id": "int: 必填，粉丝团id；当聊天对象为粉丝团时有效",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "修改会话免打扰状态"
+    },
+    "set_push_ss": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/set_push_ss",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "talker_uid": "int: 必填，聊天对象mid",
+        "setting": "int: 必填，推送设置；0：接收推送<br />1：不接收推送",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "修改会话推送设置"
+    },
+    "update_intercept": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/update_intercept",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "talker_id": "int: 必填，聊天对象mid",
+        "status": "int: 必填，拦截状态；0：取消拦截<br />1：设置拦截",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "修改会话拦截状态"
+    },
+    "batch_update_dustbin_ack": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/batch_update_dustbin_ack",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "设置所有拦截会话为已读"
+    },
+    "batch_rm_dustbin": {
+      "url": "https://api.vc.bilibili.com/session_svr/v1/session_svr/batch_rm_dustbin",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "移除所有拦截会话"
+    },
+    "infoweb": {
+      "url": "https://api.vc.bilibili.com/x/im/feed/infoweb",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "aids": "list: 必填，视频AV号列表；`aids`、`ep_ids` 与 `article_ids` 中须至少存在一个参数，每个成员间用 `,` 分隔，最多 50 个成员",
+        "ep_ids": "list: 必填，番剧epid列表；`aids`、`ep_ids` 与 `article_ids` 中须至少存在一个参数，每个成员间用 `,` 分隔，最多 50 个成员",
+        "article_ids": "list: 必填，专栏CV号列表；`aids`、`ep_ids` 与 `article_ids` 中须至少存在一个参数，每个成员间用 `,` 分隔，无成员限制",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 必填，平台标识；可为 `web` 等"
+      },
+      "comment": "获取多个视频、番剧、专栏的信息"
+    }
+  },
+  "settings": {
+    "set": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/set",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "show_unfollowed_msg": "int: 收起未关注人消息；0：不收起<br />1：收起",
+        "msg_notify": "int: 消息提醒；1：接收<br />3：不接收",
+        "set_like": "int: 收到的赞提醒；0：接收<br />5：不接收",
+        "set_comment": "int: 回复我的提醒；0：所有人<br />1：关注的人<br />2：不接受任何消息提醒",
+        "set_at": "int: @ 我的提醒；0：所有人<br />1：关注的人<br />2：不接受任何消息提醒",
+        "is_group_fold": "int: 收起应援团消息；0：不收起<br />1：收起",
+        "should_receive_group": "int: 接收应援团消息；0：不接收<br />1：接收",
+        "receive_unfollow_msg": "int: 接收未关注人消息；0：不接收<br />1：接收",
+        "followed_reply": "int: 被关注回复；需要有自动回复权限<br />0：关闭<br />1：开启",
+        "keys_reply": "int: 关键词回复；需要有自动回复权限<br />0：关闭<br />1：开启",
+        "recv_reply": "int: 收到消息回复；需要有自动回复权限<br />0：关闭<br />1：开启",
+        "voyage_reply": "int: 大航海上船回复；需要有自动回复权限<br />0：关闭<br />1：开启",
+        "recommend_followed_reply": "int: 被关注时自动推送作品；需要有自动回复权限<br />0：关闭<br />1：开启",
+        "ai_intercept": "int: 私信智能拦截；0：关闭<br />1：开启",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "修改用户偏好设置"
+    },
+    "get_block_words": {
+      "url": "https://api.vc.bilibili.com/x/im/link_setting/get_block_words",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取消息屏蔽词"
+    },
+    "add_block_word": {
+      "url": "https://api.vc.bilibili.com/x/im/link_setting/add_block_word",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "content": "str: 必填，屏蔽词内容；最多 20 个字符",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "添加消息屏蔽词"
+    },
+    "del_block_word": {
+      "url": "https://api.vc.bilibili.com/x/im/link_setting/del_block_word",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "content": "str: 必填，屏蔽词内容",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "删除消息屏蔽词"
+    },
+    "get_reply_text": {
+      "url": "https://api.vc.bilibili.com/x/im/auto_reply/get_reply_text",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "type\\[\\]": "int: 必填，自动回复类型；1：被关注回复<br />2：关键词回复<br />3：收到消息回复<br />5：大航海上船回复",
+        "uid": "int: 自己的mid",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取自动回复文本/关键词回复规则"
+    },
+    "set_reply_text": {
+      "url": "https://api.vc.bilibili.com/x/im/auto_reply/set_reply_text",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "type": "int: 必填，自动回复类型；1：被关注回复<br />2：关键词回复<br />3：收到消息回复<br />5：大航海上船回复",
+        "reply": "str: 必填，回复内容；最多 500 个字符",
+        "id": "str: 规则id；当类型为 “关键词回复” 时有效<br />为 `0` 或为空时新增回复规则，否则修改 id 对应的回复规则",
+        "title": "str: 必填，规则名称；当类型为 “关键词回复” 时有效，最多 30 个字符",
+        "key1": "str: 必填，精确匹配关键词；当类型为 “关键词回复” 时有效，`key1` 与 `key2` 须至少填一个参数<br />以中文逗号分隔每一个关键词，最多 20 项",
+        "key2": "str: 必填，模糊匹配关键词；当类型为 “关键词回复” 时有效，`key1` 与 `key2` 须至少填一个参数<br />以中文逗号分隔每一个关键词，最多 20 项",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "修改自动回复文本/关键词回复规则"
+    },
+    "del_reply_text": {
+      "url": "https://api.vc.bilibili.com/x/im/auto_reply/del_reply_text",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "id": "str: 必填，规则id",
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等",
+        "csrf_token": "str: 必填，CSRF Token（位于cookie）",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "删除关键词回复规则"
+    },
+    "get_sys_setting": {
+      "url": "https://api.vc.bilibili.com/link_setting/v1/link_setting/get_sys_setting",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取系统设置"
+    },
+    "show_create_group_icon": {
+      "url": "https://api.vc.bilibili.com/link_group/v1/member/show_create_group_icon",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "build": "int: 客户端内部版本号；默认为 `0`",
+        "mobi_app": "str: 平台标识；可为 `web` 等"
+      },
+      "comment": "获取创建粉丝团按钮可见性"
     }
   }
+}

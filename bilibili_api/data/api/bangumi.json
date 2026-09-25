@@ -148,5 +148,37 @@
       },
       "comment": "追番状态"
     }
+  },
+  "bangumi_info": {
+    "season": {
+      "url": "https://api.bilibili.com/pgc/view/web/season",
+      "method": "GET",
+      "params": {
+        "season_id": "int: 必填，番剧ssid；season_id与ep_id任选其一",
+        "ep_id": "int: 必填，剧集epid；season_id与ep_id任选其一"
+      },
+      "comment": "获取剧集明细（web端）（ssid/epid方式）"
+    }
+  },
+  "videostream_url": {
+    "playurl": {
+      "url": "https://api.bilibili.com/pgc/player/web/playurl",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "avid": "int: 稿件avid",
+        "bvid": "str: 稿件bvid",
+        "ep_id": "int: 必填，稿件epid；ep_id与cid任选一个",
+        "cid": "int: 必填，视频cid；ep_id与cid任选一个",
+        "qn": "int: 视频清晰度选择；未登录默认32（480P）<br />登录默认64（720P）<br />**值含义见上表**<br />注：dash方式无效",
+        "fnval": "int: 视频获取方式选择；默认为0<br />0 2：flv方式（可能会有分段）<br />1：低清mp4方式（仅240P与360P，且限速65K/s）<br />16 80：dash方式（音视频分流，支持H.265）",
+        "fnver": "int: 0；固定为0",
+        "fourk": "int: 是否允许4K视频；默认为0<br />画质最高1080P：0<br />画质最高4K：1",
+        "session": "str: 从视频播放页的网页源码中获取",
+        "from_client": "str: BROWSER",
+        "drm_tech_type": "int: 2"
+      },
+      "comment": "获取番剧视频流URL"
+    }
   }
 }

@@ -2,4 +2,8 @@
 
 由于使用通用的 JSON 格式存储，你可以在其他语言中使用这些文件，方便移植。
 
+增量接口定义同步自项目目录下的 `bilibili-api-registry` 子项目
+（由 [bilibili-API-collect](https://github.com/SocialSisterYi/bilibili-API-collect)
+文档批量抽取），同步工具为 `scripts/sync_api_registry.py`。
+
 你只需要标注一下该项目地址即可。无需通知作者。GPL 条约仍然有效。

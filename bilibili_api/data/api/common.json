@@ -233,5 +233,55 @@
       },
       "comment": "收藏夹修改"
     }
+  },
+  "comment_list": {
+    "cursor": {
+      "url": "https://api.bilibili.com/x/v2/reply/dialog/cursor",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录 Token",
+        "type": "int: 必填，评论区类型代码；[类型代码见表](readme.md#评论区类型代码)",
+        "oid": "int: 必填，目标评论区 id",
+        "root": "int: 必填，根回复 rpid",
+        "dialog": "int: 必填，对话树根 rpid",
+        "size": "int: 必填，每页最大项数",
+        "min_floor": "int: (?)"
+      },
+      "comment": "获取指定评论对话树"
+    },
+    "hot": {
+      "url": "https://api.bilibili.com/x/v2/reply/hot",
+      "method": "GET",
+      "verify": true,
+      "params": {
+        "access_key": "str: 必填，APP登录 Token",
+        "type": "int: 必填，评论区类型代码；[类型代码见表](readme.md#评论区类型代码)",
+        "oid": "int: 必填，目标评论区 id",
+        "root": "int: 必填，根回复 rpid",
+        "ps": "int: 每页项数；默认为20<br />定义域：1-49",
+        "pn": "int: 页码；默认为1"
+      },
+      "comment": "获取评论区热评"
+    },
+    "info": {
+      "url": "https://api.bilibili.com/x/v2/reply/info",
+      "method": "GET",
+      "params": {
+        "type": "int: 评论区类型代码；**[类型代码见表](readme.md#评论区类型代码)**",
+        "oid": "int: 目标评论区 id",
+        "rpid": "int: 必填，目标评论 rpid"
+      },
+      "comment": "获取指定评论信息"
+    },
+    "count": {
+      "url": "https://api.bilibili.com/x/v2/reply/count",
+      "method": "GET",
+      "params": {
+        "type": "int: 必填，评论区类型代码；**[类型代码见表](readme.md#评论区类型代码)**",
+        "oid": "int: 必填，目标评论区 id"
+      },
+      "comment": "获取评论区评论总数"
+    }
   }
 }

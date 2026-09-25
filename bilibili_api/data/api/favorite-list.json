@@ -178,5 +178,16 @@
       },
       "comment": "清理失效内容。"
     }
+  },
+  "fav_info": {
+    "infos": {
+      "url": "https://api.bilibili.com/x/v3/fav/resource/infos",
+      "method": "GET",
+      "params": {
+        "resources": "list: 必填，目标内容id列表；格式：{内容id}:{内容类型}<br />每个成员间用`,`分隔<br />类型：<br />2：视频稿件<br />12：音频<br />内容id：<br />视频稿件：视频稿件avid<br />音频：音频auid",
+        "platform": "str: 平台标识；可为web（影响内容列表类型）"
+      },
+      "comment": "批量获取指定收藏id的内容"
+    }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "info": {
+    "get_user_wallet": {
+      "url": "https://pay.bilibili.com/paywallet/wallet/getUserWallet",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "panelType": "int: 面板类型；默认为 3",
+        "platformType": "int: 必填，平台类型；任意有效数字, 默认为 3",
+        "timestamp": "int: 当前时间；UNIX 毫秒时间戳",
+        "traceId": "int: 追踪 ID；与 timestamp 值相同",
+        "version": "str: 版本；默认 `1.0`"
+      },
+      "comment": "获取用户钱包"
+    }
+  }
+}

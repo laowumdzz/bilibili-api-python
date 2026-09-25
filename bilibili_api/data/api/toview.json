@@ -37,5 +37,55 @@
             },
             "comment": "清空稍后再看列表"
         }
+    },
+  "history": {
+    "delete": {
+      "url": "https://api.bilibili.com/x/v2/history/delete",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "kid": "str: 必填，删除的目标记录，格式为`{业务类型}_{目标id}`详见备注；视频：archive\\_{稿件avid}<br />直播：live_{直播间id}<br />专栏：article\\_{专栏cvid}<br />剧集：pgc\\_{剧集ssid}<br />文集：article-list\\_{文集rlid}",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "删除历史记录"
+    },
+    "clear": {
+      "url": "https://api.bilibili.com/x/v2/history/clear",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "清空历史记录"
+    },
+    "set": {
+      "url": "https://api.bilibili.com/x/v2/history/shadow/set",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "switch": "bool: 停用开关；true：停用<br />false：正常<br />默认为false",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "停用历史记录"
+    },
+    "shadow": {
+      "url": "https://api.bilibili.com/x/v2/history/shadow",
+      "method": "GET",
+      "verify": true,
+      "comment": "查询历史记录停用状态"
     }
+  },
+  "toview": {
+    "add_all_to_view": {
+      "url": "https://space.bilibili.com/ajax/channel/addAllToView",
+      "method": "POST",
+      "verify": true,
+      "params": {
+        "cid": "int: 必填，目标频道id",
+        "mid": "int: 必填，目标频道所属的用户mid",
+        "csrf": "str: 必填，CSRF Token（位于cookie）"
+      },
+      "comment": "添加频道中所有视频到稍后再看"
+    }
+  }
 }
