@@ -152,7 +152,7 @@ async def get_music_index_info(
         "pn": page_num,
         "ps": page_size,
     }
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 class Music:

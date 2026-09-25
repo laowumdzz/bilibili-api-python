@@ -25,7 +25,7 @@ async def get_hot_videos(pn: int = 1, ps: int = 20) -> dict:
     """
     api = API_rank["info"]["hot"]
     params = {"ps": ps, "pn": pn, "web_location": "333.934"}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_weekly_hot_videos_list() -> dict:
@@ -37,7 +37,7 @@ async def get_weekly_hot_videos_list() -> dict:
     """
     api = API_rank["info"]["weekly_series"]
     params = {"web_location": "333.934"}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_weekly_hot_videos(week: int = 1) -> dict:
@@ -52,7 +52,7 @@ async def get_weekly_hot_videos(week: int = 1) -> dict:
     """
     api = API_rank["info"]["weekly_details"]
     params = {"web_location": "333.934", "number": week}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_history_popular_videos() -> dict:
@@ -64,7 +64,7 @@ async def get_history_popular_videos() -> dict:
     """
     api = API_rank["info"]["history_popular"]
     params = {"web_location": "333.934", "page_size": 85, "page": 1}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_hot_buzzwords(page_num: int = 1, page_size: int = 20) -> dict:
@@ -81,4 +81,4 @@ async def get_hot_buzzwords(page_num: int = 1, page_size: int = 20) -> dict:
     """
     api = API["buzzwords"]
     params = {"pn": page_num, "ps": page_size, "type_id": 4}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()

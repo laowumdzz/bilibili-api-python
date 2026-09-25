@@ -10,7 +10,7 @@ from .utils.utils import get_api
 API = get_api("emoji")
 
 
-async def get_emoji_list(business: str = "reply", credential: Credential = None) -> dict:
+async def get_emoji_list(business: str = "reply", credential: Credential | None = None) -> dict:
     """
     获取表情包列表
 
@@ -24,7 +24,7 @@ async def get_emoji_list(business: str = "reply", credential: Credential = None)
     credential = credential if credential else Credential()
     api = API["list"]
     params = {"business": business}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_emoji_detail(id: int | list[int], business: str = "reply") -> dict:
@@ -43,10 +43,10 @@ async def get_emoji_detail(id: int | list[int], business: str = "reply") -> dict
         "ids": ",".join([str(i) for i in id]) if isinstance(id, list) else id,
         "business": business,
     }
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
-async def get_all_emoji(business: str = "reply", credential: Credential = None) -> dict:
+async def get_all_emoji(business: str = "reply", credential: Credential | None = None) -> dict:
     """
     获取所有表情包
 
@@ -61,10 +61,10 @@ async def get_all_emoji(business: str = "reply", credential: Credential = None) 
     credential.raise_for_no_sessdata()
     api = API["all"]
     params = {"business": business}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
-async def add_emoji(package_id: int, credential: Credential = None) -> dict:
+async def add_emoji(package_id: int, credential: Credential | None = None) -> dict:
     """
     添加表情包
 
@@ -83,4 +83,4 @@ async def add_emoji(package_id: int, credential: Credential = None) -> dict:
         "business": "reply",
         "csrf": credential.bili_jct,
     }
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
