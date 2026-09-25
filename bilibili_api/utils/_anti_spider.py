@@ -11,6 +11,7 @@ import json
 import random
 import struct
 import time
+from typing import cast
 import urllib.parse
 
 from ..exceptions import (
@@ -66,7 +67,7 @@ class AntiSpiderCache:
                     self.invalidate_bili_ticket()
                 if self._bili_ticket == "":
                     self._bili_ticket = await _get_bili_ticket(credential)
-                    self._bili_ticket_expires = str(int(time.time()) + 3 * 86400)
+                    self._bili_ticket_expires = int(time.time()) + 3 * 86400
                     request_log.dispatch(
                         "ANTI_SPIDER",
                         "反爬虫",
@@ -97,7 +98,9 @@ async def _get_spi_buvid() -> dict:
     """
     api = API["info"]["spi"]
     client = get_client()
-    return (await client.request(method="GET", url=api["url"], headers=HEADERS.copy())).json()["data"]
+    resp = await client.request(method="GET", url=api["url"], headers=HEADERS.copy())
+    # spi 端点响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+    return cast(dict, resp.json())["data"]
 
 
 """
@@ -105,7 +108,7 @@ async def _get_spi_buvid() -> dict:
 """
 
 
-async def _active_buvid(buvid3: str, buvid4: str) -> dict:
+async def _active_buvid(buvid3: str, buvid4: str) -> None:
     """
     激活 buvid3/buvid4，模拟浏览器环境构造指纹 payload 并提交风控激活接口。
 
@@ -153,7 +156,7 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
         m = murmur3_x64_128(source, seed)
         return f"{hex(m & (MOD - 1))[2:]}{hex(m >> 64)[2:]}"
 
-    def murmur3_x64_128(source: io.BufferedIOBase, seed: int) -> str:
+    def murmur3_x64_128(source: io.BufferedIOBase, seed: int) -> int:
         """murmur3 x64 128 位哈希算法实现（纯 Python 移植，按 16 字节块处理）。"""
         C1 = 0x87C3_7B91_1142_53D5
         C2 = 0x4CF5_AD43_2745_937F
@@ -427,7 +430,8 @@ async def _active_buvid(buvid3: str, buvid4: str) -> dict:
             "_uuid": uuid,
         },
     )
-    data = resp.json()
+    # 激活接口响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+    data = cast(dict, resp.json())
     if data["code"] != 0:
         raise ExClimbWuzhiException(data["code"], data["msg"])
 
@@ -488,9 +492,9 @@ async def _get_bili_ticket(credential: Credential | None = None) -> str:
 
     def hmac_sha256(key: str, message: str) -> str:
         """计算 HMAC-SHA256 签名并返回十六进制字符串。"""
-        key = key.encode("utf-8")
-        message = message.encode("utf-8")
-        hmac_obj = hmac.new(key, message, hashlib.sha256)
+        key_bytes = key.encode("utf-8")
+        message_bytes = message.encode("utf-8")
+        hmac_obj = hmac.new(key_bytes, message_bytes, hashlib.sha256)
         return hmac_obj.digest().hex()
 
     credential = credential if credential else Credential()
@@ -510,7 +514,8 @@ async def _get_bili_ticket(credential: Credential | None = None) -> str:
         headers=HEADERS.copy(),
         cookies=credential.get_cookies(),
     )
-    return resp.json()["data"]["ticket"]
+    # bili_ticket 端点响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+    return cast(dict, resp.json())["data"]["ticket"]
 
 
 ################################################## END Anti-Spider ##################################################

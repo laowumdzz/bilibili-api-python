@@ -149,7 +149,7 @@ class VideoOnlineMonitor(AsyncEvent):
         self.logger.debug("获取服务器信息中...")
 
         api = API["info"]["video_online_broadcast_servers"]
-        resp = await Api(**api, credential=self.credential).result
+        resp = await Api(**api, credential=self.credential).result_dict()
 
         uri = f"wss://{resp['domain']}:{resp['wss_port']}/sub"
         self.__heartbeat_interval = resp["heartbeat"]

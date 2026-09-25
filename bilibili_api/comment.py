@@ -203,7 +203,7 @@ class Comment:
         self.credential.raise_for_no_bili_jct()
 
         api = API["comment"]["like"]
-        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result
+        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result_dict()
 
     async def hate(self, status: bool = True) -> dict:
         """
@@ -220,7 +220,7 @@ class Comment:
         self.credential.raise_for_no_bili_jct()
 
         api = API["comment"]["hate"]
-        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result
+        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result_dict()
 
     async def pin(self, status: bool = True) -> dict:
         """
@@ -236,7 +236,7 @@ class Comment:
         self.credential.raise_for_no_bili_jct()
 
         api = API["comment"]["pin"]
-        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result
+        return await Api(**api, credential=self.credential).update_data(**self.__get_data(status)).result_dict()
 
     async def delete(self) -> dict:
         """
@@ -251,7 +251,7 @@ class Comment:
         api = API["comment"]["del"]
         data = self.__get_data(True)
         del data["action"]
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def get_sub_comments(self, page_index: int = 1, page_size: int = 10) -> dict:
         """
@@ -276,7 +276,7 @@ class Comment:
             "root": self.__rpid,
         }
 
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def report(self, report_reason: ReportReason, content: str | None = None) -> dict:
         """
@@ -322,7 +322,7 @@ class Comment:
             "reason": report_reason.value,
             "content": content,
         }
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
 
 async def send_comment(
@@ -411,7 +411,7 @@ async def send_comment(
         raise ArgsException("root=None 时，parent 不得设置")
 
     api = API["comment"]["send"]
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def get_comments(
@@ -445,7 +445,8 @@ async def get_comments(
 
     api = API["comment"]["get"]
     params = {"pn": page_index, "type": type_.value, "oid": oid, "sort": order.value}
-    return await Api(**api, credential=credential).update_params(**params).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_comments_lazy(
@@ -485,4 +486,5 @@ async def get_comments_lazy(
         "pagination_str": offset,
         "web_location": "1315875",
     }
-    return await Api(**api, credential=credential).update_params(**params).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).update_params(**params).result_dict()

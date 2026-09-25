@@ -6,6 +6,7 @@ bilibili_api.game
 
 from enum import Enum
 import re
+from typing import cast
 
 from .exceptions import ApiException
 from .utils.network import Api, Credential
@@ -50,7 +51,7 @@ class Game:
         """
         api = API["info"]["info"]
         params = {"game_base_id": self.__game_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_up_info(self) -> dict:
         """
@@ -61,7 +62,7 @@ class Game:
         """
         api = API["info"]["UP"]
         params = {"game_base_id": self.__game_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_detail(self) -> dict:
         """
@@ -72,7 +73,7 @@ class Game:
         """
         api = API["info"]["detail"]
         params = {"game_base_id": self.__game_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_wiki(self) -> dict:
         """
@@ -83,7 +84,7 @@ class Game:
         """
         api = API["info"]["wiki"]
         params = {"game_base_id": self.__game_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_videos(self) -> dict:
         """
@@ -94,7 +95,7 @@ class Game:
         """
         api = API["info"]["videos"]
         params = {"game_base_id": self.__game_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     # async def get_score(self) -> dict:
     #     """
@@ -163,7 +164,7 @@ async def get_game_rank(rank_type: GameRankType, page_num: int = 1, page_size: i
         "page_num": page_num,
         "page_size": page_size,
     }
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_start_test_list(page_num: int = 1, page_size: int = 20) -> dict:
@@ -179,7 +180,7 @@ async def get_start_test_list(page_num: int = 1, page_size: int = 20) -> dict:
     """
     api = API["info"]["start_test"]
     params = {"x-fix-page-num": 1, "page_num": page_num, "page_size": page_size}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 def get_wiki_api_root(game_id: str) -> str:
@@ -206,20 +207,23 @@ async def game_name2id(game_name: str) -> str:
         str: 游戏编码
     """
     try:
-        wiki_page_title = (
+        # opensearch 端点返回 JSON 数组，raw=True 契约收窄（唯一收窄点）
+        search_result = cast(
+            list,
             await Api(
                 url=f"https://wiki.biligame.com/wiki/api.php?action=opensearch&format=json&formatversion=2&search={game_name}&namespace=0&limit=10",
                 method="GET",
-            ).request(raw=True)
-        )[3][0].removeprefix("https://wiki.biligame.com/wiki/")
+            ).request(raw=True),
+        )
+        wiki_page_title = search_result[3][0].removeprefix("https://wiki.biligame.com/wiki/")
     except IndexError as e:
         raise ApiException("未找到游戏") from e
-    wiki_page_content = (
-        await Api(
-            url=f"https://wiki.biligame.com/wiki/api.php?action=query&prop=revisions&titles={wiki_page_title}&rvprop=content&format=json",
-            method="GET",
-        ).request(byte=True)
-    ).decode("utf-8")
+    wiki_page_resp = await Api(
+        url=f"https://wiki.biligame.com/wiki/api.php?action=query&prop=revisions&titles={wiki_page_title}&rvprop=content&format=json",
+        method="GET",
+    ).request(byte=True)
+    # byte=True 契约收窄（同上）
+    wiki_page_content = cast(bytes, wiki_page_resp).decode("utf-8")
     wiki_page_template_re = re.compile(r"\{\{(.*?)\}\}")
     match = re.search(wiki_page_template_re, wiki_page_content)
     if match is None:
@@ -229,3 +233,5 @@ async def game_name2id(game_name: str) -> str:
     for prop in wiki_page_template_content.split("|"):
         if prop.startswith("WIKI域名="):
             return prop.removeprefix("WIKI域名=").rstrip()
+    # 模板缺失 WIKI域名 字段时由隐式 None 改为显式报错（与上方 match 判空守卫一致）
+    raise ApiException("获取游戏编码失败")

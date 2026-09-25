@@ -178,7 +178,7 @@ class Manga:
     #         await Api(**api, credential=self.credential, no_csrf=True, json_body=True)
     #         .update_params(**params)
     #         .update_data(**data)
-    #         .result
+    #         .result_dict()
     #     )
 
     # async def __get_info_cached(self) -> dict:
@@ -268,7 +268,7 @@ class Manga:
     #         await Api(**api, credential=self.credential, no_csrf=True)
     #         .update_params(**params)
     #         .update_data(**data)
-    #         .result
+    #         .result_dict()
     #     )
 
     # async def get_images(
@@ -392,12 +392,12 @@ async def set_follow_manga(manga: Manga, status: bool = True, credential: Creden
 
     params = {"device": "pc", "platform": "web", "nov": 25}
     data = {"comic_ids": str(manga.get_manga_id())}
-    return await Api(**api, credential=credential).update_params(**params).update_data(**data).result
+    return await Api(**api, credential=credential).update_params(**params).update_data(**data).result_dict()
 
 
 async def get_followed_manga(
     pn: int = 1, ps: int = 15, order: MangaOrderType = MangaOrderType.FOLLOW, credential: Credential | None = None
-) -> list[Manga]:
+) -> dict:
     """
     获取追漫列表
 
@@ -408,7 +408,7 @@ async def get_followed_manga(
         credential (Credential)    : 凭据类.
 
     Returns:
-        List[Manga]: 追漫列表
+        dict: 调用 API 返回的结果（追漫列表位于返回结果的 card_list 字段）
     """
     credential = credential if credential else Credential()
     credential.raise_for_no_sessdata()
@@ -416,7 +416,9 @@ async def get_followed_manga(
     params = {"device": "pc", "platform": "web", "nov": 25}
     data = {"page_num": pn, "page_size": ps}
     data.update(order.value)
-    return await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result
+    return (
+        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result_dict()
+    )
 
 
 # async def get_raw_manga_index(
@@ -518,7 +520,7 @@ async def get_manga_update(
     date: str | datetime.datetime | None = None,
     pn: int = 1,
     ps: int = 8,
-    credential: Credential = None,
+    credential: Credential | None = None,
 ) -> list[Manga]:
     """
     获取更新推荐的漫画
@@ -543,12 +545,14 @@ async def get_manga_update(
         date = date.strftime("%Y-%m-%d")
     data = {"date": date, "page_num": pn, "page_size": ps}
     manga_data = (
-        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result
+        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result_dict()
     )
     return [Manga(manga["comic_id"]) for manga in manga_data["list"]]
 
 
-async def get_manga_home_recommend(pn: int = 1, seed: str | None = "0", credential: Credential = None) -> list[Manga]:
+async def get_manga_home_recommend(
+    pn: int = 1, seed: str | None = "0", credential: Credential | None = None
+) -> list[Manga]:
     """
     获取首页推荐的漫画
 
@@ -567,6 +571,6 @@ async def get_manga_home_recommend(pn: int = 1, seed: str | None = "0", credenti
     params = {"device": "pc", "platform": "web", "nov": 25}
     data = {"page_num": pn, "seed": seed}
     manga_data = (
-        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result
+        await Api(**api, credential=credential, no_csrf=True).update_data(**data).update_params(**params).result_dict()
     )
     return [Manga(manga["comic_id"]) for manga in manga_data["list"]]

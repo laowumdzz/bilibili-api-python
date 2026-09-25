@@ -178,7 +178,7 @@ from bilibili_api import manga
 | `order` | `MangaOrderType` | 排序方式。Defaults to MangaOrderType.FOLLOW. |
 | `credential` | `Credential` | 凭据类. |
 
-**Returns:** `List[Manga]`:  追漫列表
+**Returns:** `dict`:  调用 API 返回的结果（追漫列表位于返回结果的 card_list 字段）
 
 
 
