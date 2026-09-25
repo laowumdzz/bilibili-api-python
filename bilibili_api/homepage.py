@@ -20,7 +20,7 @@ async def get_top_photo() -> dict:
     """
     api = API["info"]["top_photo"]
     params = {"resource_id": 142}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_links(credential: Credential | None = None) -> dict:
@@ -36,7 +36,8 @@ async def get_links(credential: Credential | None = None) -> dict:
     """
     api = API["info"]["links"]
     params = {"pf": 0, "ids": 4694}
-    return await Api(**api, credential=credential).update_params(**params).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_popularize(credential: Credential | None = None) -> dict:
@@ -52,7 +53,8 @@ async def get_popularize(credential: Credential | None = None) -> dict:
     """
     api = API["info"]["popularize"]
     params = {"pf": 0, "ids": 34}
-    return await Api(**api, credential=credential).update_params(**params).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_videos(credential: Credential | None = None) -> dict:
@@ -66,7 +68,8 @@ async def get_videos(credential: Credential | None = None) -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["info"]["videos"]
-    return await Api(**api, credential=credential).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_favorite_list_and_toview(credential: Credential) -> dict:
@@ -83,7 +86,7 @@ async def get_favorite_list_and_toview(credential: Credential) -> dict:
     """
     credential.raise_for_no_sessdata()
     api = API["list"]["folder"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_favorite_list_content(media_id: int, credential: Credential | None = None) -> dict:
@@ -101,4 +104,5 @@ async def get_favorite_list_content(media_id: int, credential: Credential | None
     """
     api = API["list"]["resource"]
     params = {"web_location": "333.1007", "platform": "web", "media_id": media_id}
-    return await Api(**api, credential=credential).update_params(**params).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).update_params(**params).result_dict()

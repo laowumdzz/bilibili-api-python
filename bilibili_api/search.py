@@ -5,6 +5,7 @@ bilibili_api.search
 """
 
 from enum import Enum
+from typing import Any, cast
 
 from .exceptions import ArgsException
 from .utils.network import Api, Credential
@@ -164,7 +165,7 @@ async def search(keyword: str, page: int = 1) -> dict:
     """
     api = API["search"]["web_search"]
     params = {"keyword": keyword, "page": page}
-    return await Api(**api, wbi=True).update_params(**params).result
+    return await Api(**api, wbi=True).update_params(**params).result_dict()
 
 
 async def search_by_type(
@@ -201,7 +202,7 @@ async def search_by_type(
     Returns:
         dict: 调用 API 返回的结果
     """
-    params = {"keyword": keyword, "page": page, "page_size": page_size}
+    params: dict[str, Any] = {"keyword": keyword, "page": page, "page_size": page_size}
     if search_type:
         params["search_type"] = search_type.value
     else:
@@ -247,7 +248,7 @@ async def search_by_type(
         params["pubtime_begin_s"] = time_stamp[0]
         params["pubtime_end_s"] = time_stamp[1]
     api = API["search"]["web_search_by_type"]
-    return await Api(**api, wbi=True).update_params(**params).result
+    return await Api(**api, wbi=True).update_params(**params).result_dict()
 
 
 async def get_default_search_keyword() -> dict:
@@ -258,7 +259,7 @@ async def get_default_search_keyword() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["search"]["default_search_keyword"]
-    return await Api(**api, wbi=True).result
+    return await Api(**api, wbi=True).result_dict()
 
 
 async def get_hot_search_keywords() -> dict:
@@ -269,7 +270,8 @@ async def get_hot_search_keywords() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["search"]["hot_search_keywords"]
-    return await Api(**api).request(raw=True)
+    # raw=True 契约收窄：该模式返回完整 JSON 对象而非提取 data 字段（唯一收窄点）
+    return cast(dict, await Api(**api).request(raw=True))
 
 
 async def get_suggest_keywords(keyword: str) -> list[str]:
@@ -285,7 +287,7 @@ async def get_suggest_keywords(keyword: str) -> list[str]:
     keywords = []
     api = API["search"]["suggest"]
     params = {"term": keyword}
-    res = await Api(**api).update_params(**params).result
+    res = await Api(**api).update_params(**params).result_dict()
     for key in res["tag"]:
         keywords.append(key["value"])
     return keywords
@@ -303,10 +305,12 @@ async def search_games(keyword: str) -> dict:
     """
     api = API["search"]["game"]
     params = {"keyword": keyword}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
-async def search_manga(keyword: str, page_num: int = 1, page_size: int = 9, credential: Credential = None):
+async def search_manga(
+    keyword: str, page_num: int = 1, page_size: int = 9, credential: Credential | None = None
+) -> dict:
     """
     搜索漫画特用函数
 
@@ -325,7 +329,7 @@ async def search_manga(keyword: str, page_num: int = 1, page_size: int = 9, cred
     credential = credential if credential else Credential()
     api = API["search"]["manga"]
     data = {"key_word": keyword, "page_num": page_num, "page_size": page_size}
-    return await Api(**api, credential=credential, no_csrf=True).update_data(**data).result
+    return await Api(**api, credential=credential, no_csrf=True).update_data(**data).result_dict()
 
 
 async def search_cheese(

@@ -85,7 +85,7 @@ class Opus:
         """
         return dynamic.Dynamic(dynamic_id=self.__id, credential=self.credential)
 
-    async def get_info(self):
+    async def get_info(self) -> dict:
         """
         获取图文基本信息
 
@@ -99,7 +99,7 @@ class Opus:
                 "id": self.__id,
                 "features": "onlyfansVote,onlyfansAssetsV2,decorationCard,htmlNewStyle,ugcDelete,editable,opusPrivateVisible",
             }
-            self.__info = await Api(**api, credential=self.credential).update_params(**params).result
+            self.__info = await Api(**api, credential=self.credential).update_params(**params).result_dict()
         if self.__info.get("fallback"):
             raise ArgsException("传入的 opus_id 不正确")
         is_article = self.__info["item"]["basic"]["comment_type"] == 12
@@ -118,12 +118,12 @@ class Opus:
         Returns:
             str: markdown 内容
         """
-        await self.get_info()
+        info = await self.get_info()
 
         title = {"module_title": {"text": ""}}
         content = {"module_content": {"paragraphs": []}}
 
-        for module in self.__info["item"]["modules"]:
+        for module in info["item"]["modules"]:
             if module.get("module_title"):
                 title = module
             if module.get("module_content"):
@@ -169,7 +169,7 @@ class Opus:
                 para_raw = f"<center>\n\n{para_raw}\n\n</center>"
             markdown += f"{para_raw}\n\n"
 
-        meta_yaml = yaml.safe_dump(self.__info, allow_unicode=True)
+        meta_yaml = yaml.safe_dump(info, allow_unicode=True)
         content = f"---\n{meta_yaml}\n---\n\n{markdown}"
         return content
 
@@ -180,12 +180,12 @@ class Opus:
         Returns:
             list: 图片信息
         """
-        await self.get_info()
+        info = await self.get_info()
 
         result = []
         content = {"module_content": {"paragraphs": []}}
 
-        for module in self.__info["item"]["modules"]:
+        for module in info["item"]["modules"]:
             if module.get("module_content"):
                 content = module
 

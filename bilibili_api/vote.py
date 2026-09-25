@@ -113,7 +113,7 @@ class Vote:
         """
         api = API["info"]["vote_info"]
         params = {"vote_id": self.get_vote_id()}
-        info = await Api(**api).update_params(**params).result
+        info = await Api(**api).update_params(**params).result_dict()
         self.title = info["info"]["title"]  # 为 dynmaic.BuildDnamic.add_vote 缓存 title
         return info
 
@@ -173,7 +173,7 @@ class Vote:
         data.update(choices.get_choices())
         if choice_cnt > len(choices.choices):
             raise ValueError("choice_cnt 大于 choices 选项数")
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
 
 async def create_vote(
@@ -217,5 +217,5 @@ async def create_vote(
     data.update(choices.get_choices())
     if choice_cnt > len(choices.choices):
         raise ValueError("choice_cnt 大于 choices 选项数")
-    vote_id = (await Api(**api, credential=credential).update_data(**data).result)["vote_id"]
+    vote_id = (await Api(**api, credential=credential).update_data(**data).result_dict())["vote_id"]
     return Vote(vote_id=vote_id, credential=credential)

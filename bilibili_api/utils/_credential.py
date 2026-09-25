@@ -5,6 +5,7 @@ bilibili_api.utils._credential — 凭据管理和 Cookies 刷新。
 import binascii
 import re
 import time
+from typing import cast
 import urllib.parse
 import uuid
 
@@ -300,12 +301,12 @@ https://socialsisteryi.github.io/bilibili-API-collect/docs/login/cookie_refresh.
 
 async def _check_valid(credential: Credential) -> bool:
     api = API["info"]["valid"]
-    return (await _get_Api()(**api, credential=credential).result)["isLogin"]
+    return (await _get_Api()(**api, credential=credential).result_dict())["isLogin"]
 
 
 async def _check_cookies(credential: Credential) -> bool:
     api = API["info"]["check_cookies"]
-    return (await _get_Api()(**api, credential=credential).result)["refresh"]
+    return (await _get_Api()(**api, credential=credential).result_dict())["refresh"]
 
 
 def _getCorrespondPath() -> str:
@@ -342,7 +343,7 @@ async def _get_refresh_csrf(credential: Credential) -> str:
         text = resp.utf8_text()
         refresh_csrf = re.findall('<div id="1-name">(.+?)</div>', text)[0]
         return refresh_csrf
-    elif resp.code != 200:
+    else:
         raise CookiesRefreshException("获取刷新 Cookies 的 csrf 失败。")
 
 
@@ -367,13 +368,17 @@ async def _refresh_cookies(credential: Credential) -> Credential:
         data=data,
         headers=HEADERS.copy(),
     )
-    if resp.code != 200 or resp.json()["code"] != 0:
+    if resp.code != 200:
+        raise CookiesRefreshException("刷新 Cookies 失败")
+    # 刷新接口响应恒为 JSON 对象，client 层 json() 诚实地返回 object，此处为唯一收窄点
+    resp_json = cast(dict, resp.json())
+    if resp_json["code"] != 0:
         raise CookiesRefreshException("刷新 Cookies 失败")
     new_credential = Credential(
         sessdata=resp.cookies["SESSDATA"],
         bili_jct=resp.cookies["bili_jct"],
         dedeuserid=resp.cookies["DedeUserID"],
-        ac_time_value=resp.json()["data"]["refresh_token"],
+        ac_time_value=resp_json["data"]["refresh_token"],
     )
     await _confirm_refresh(credential, new_credential)
     return new_credential

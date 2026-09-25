@@ -24,14 +24,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # 与 [tool.pyrefly.errors] 豁免表一一对应的存量基线（只减不增）
 BASELINE: dict[str, int] = {
-    "bad-argument-type": 17,
-    "bad-assignment": 10,
-    "bad-function-definition": 1,
-    "bad-index": 34,
+    "bad-argument-type": 13,
+    "bad-assignment": 9,
+    "bad-index": 11,
     "bad-override": 2,
-    "bad-return": 60,
-    "missing-attribute": 7,
-    "unsupported-operation": 27,
+    "bad-return": 46,
+    "missing-attribute": 6,
+    "unsupported-operation": 18,
 }
 
 # 非豁免表内、但在强制检查中仍会现身的错误码：一律视为异常并阻断（曾经的
