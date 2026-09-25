@@ -586,6 +586,9 @@ o----|xxx| (TEXT_RIGHT)
 获取稿件 cid
 
 
+| name | type | description |
+| - | - | - |
+| `page_index` | `int, optional` | 仅为与父类 Video 签名保持兼容，互动视频无分 P 概念，传入值会被忽略. Defaults to 0. |
 
 
 

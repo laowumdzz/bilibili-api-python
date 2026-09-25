@@ -183,7 +183,8 @@ async def get_rank(type_: RankType = RankType.All, day: RankDayType = RankDayTyp
     Returns:
         dict: 调用 API 返回的结果
     """
-    params = {"web_location": "333.934"}
+    # rid/season_type/day 为 int、web_location 为 str，显式声明避免字面量按 key 推导与新键写入冲突
+    params: dict[str, int | str] = {"web_location": "333.934"}
 
     # 确定 API 接口类型
     if type_.value["api_type"] == RankAPIType.V2.value:
@@ -196,7 +197,7 @@ async def get_rank(type_: RankType = RankType.All, day: RankDayType = RankDayTyp
     else:
         raise ArgsException("Unknown RankType")
 
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_music_rank_list() -> dict:
@@ -208,7 +209,7 @@ async def get_music_rank_list() -> dict:
     """
     api = API["info"]["music_weekly_series"]
     params = {"list_type": 1}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_music_rank_weekly_detail(week: int = 1) -> dict:
@@ -223,7 +224,7 @@ async def get_music_rank_weekly_detail(week: int = 1) -> dict:
     """
     api = API["info"]["music_weekly_details"]
     params = {"list_id": week}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_music_rank_weekly_musics(week: int = 1) -> dict:
@@ -238,7 +239,7 @@ async def get_music_rank_weekly_musics(week: int = 1) -> dict:
     """
     api = API["info"]["music_weekly_content"]
     params = {"list_id": week}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_vip_rank(type_: VIPRankType = VIPRankType.VIP) -> dict:
@@ -253,10 +254,10 @@ async def get_vip_rank(type_: VIPRankType = VIPRankType.VIP) -> dict:
     """
     api = API["info"]["VIP_rank"]
     params = {"rank_id": type_.value}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
-async def get_manga_rank(type_: MangeRankType = MangeRankType.NEW, credential: Credential = None) -> dict:
+async def get_manga_rank(type_: MangeRankType = MangeRankType.NEW, credential: Credential | None = None) -> dict:
     """
     获取漫画专属排行榜
 
@@ -272,7 +273,9 @@ async def get_manga_rank(type_: MangeRankType = MangeRankType.NEW, credential: C
     api = API["info"]["manga_rank"]
     params = {"device": "pc", "platform": "web"}
     data = {"id": type_.value}
-    return await Api(**api, no_csrf=True, credential=credential).update_data(**data).update_params(**params).result
+    return (
+        await Api(**api, no_csrf=True, credential=credential).update_data(**data).update_params(**params).result_dict()
+    )
 
 
 async def get_live_hot_rank() -> dict:
@@ -283,7 +286,7 @@ async def get_live_hot_rank() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["info"]["live_hot_rank"]
-    return await Api(**api).result
+    return await Api(**api).result_dict()
 
 
 async def get_live_sailing_rank() -> dict:
@@ -294,7 +297,7 @@ async def get_live_sailing_rank() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["info"]["live_sailing_rank"]
-    return await Api(**api).update_params(**{}).result
+    return await Api(**api).update_params(**{}).result_dict()
 
 
 async def get_live_energy_user_rank(
@@ -315,7 +318,7 @@ async def get_live_energy_user_rank(
     """
     api = API["info"]["live_energy_user_rank"]
     params = {"date": date.value, "page": pn, "page_size": ps}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_live_rank(_type: LiveRankType = LiveRankType.SAIL_BOAT_VALUE, pn: int = 1, ps: int = 20) -> dict:
@@ -340,7 +343,7 @@ async def get_live_rank(_type: LiveRankType = LiveRankType.SAIL_BOAT_VALUE, pn: 
         "is_trend": 1,
         "area_id": None,
     }
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def get_live_user_medal_rank(pn: int = 1, ps: int = 20) -> dict:
@@ -357,7 +360,7 @@ async def get_live_user_medal_rank(pn: int = 1, ps: int = 20) -> dict:
     """
     api = API["info"]["live_medal_level_rank"]
     params = {"page": pn, "page_size": ps}
-    return await Api(**api).update_params(**params).result
+    return await Api(**api).update_params(**params).result_dict()
 
 
 async def subscribe_music_rank(status: bool = True, credential: Credential | None = None) -> dict:
@@ -374,7 +377,7 @@ async def subscribe_music_rank(status: bool = True, credential: Credential | Non
     credential.raise_for_no_bili_jct()
     api = API["operate"]["subscribe"]
     data = {"list_id": 1, "state": (1 if status else 2)}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def get_playlet_rank_phases() -> dict:
@@ -385,7 +388,7 @@ async def get_playlet_rank_phases() -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["info"]["playlet_rank_phase"]
-    return await Api(**api, json_body=True, no_csrf=True).result
+    return await Api(**api, json_body=True, no_csrf=True).result_dict()
 
 
 async def get_playlet_rank_info(phase_id: int) -> dict:
@@ -402,4 +405,4 @@ async def get_playlet_rank_info(phase_id: int) -> dict:
     """
     api = API["info"]["playlet_rank_info"]
     data = {"phaseID": phase_id}
-    return await Api(**api, json_body=True, no_csrf=True).update_data(**data).result
+    return await Api(**api, json_body=True, no_csrf=True).update_data(**data).result_dict()

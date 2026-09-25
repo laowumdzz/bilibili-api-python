@@ -15,6 +15,7 @@ import os
 from random import randint as rand
 import shutil
 import time
+from typing import Any, cast
 from urllib import parse
 import zipfile
 
@@ -629,7 +630,7 @@ class InteractiveVideo(Video):
         credential = self.credential if self.credential else Credential()
         api = API["info"]["videolist"]
         params = {"bvid": self.get_bvid()}
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
     async def up_submit_story_tree(self, story_tree: str) -> dict:
         """
@@ -656,7 +657,7 @@ class InteractiveVideo(Video):
             await Api(**api, credential=credential, no_csrf=True)
             .update_data(data=data)
             .update_headers(**headers)
-            .result
+            .result_dict()
         )
 
     async def get_graph_version(self) -> int:
@@ -674,7 +675,7 @@ class InteractiveVideo(Video):
             url = "https://api.bilibili.com/x/player/v2"
             params = {"bvid": self.get_bvid(), "cid": cid}
 
-            resp = await Api(method="GET", url=url, credential=self.credential).update_params(**params).result
+            resp = await Api(method="GET", url=url, credential=self.credential).update_params(**params).result_dict()
             self.__version = resp["interaction"]["graph_version"]
         return self.__version
 
@@ -722,9 +723,12 @@ class InteractiveVideo(Video):
         data = {"mark": score, "bvid": self.get_bvid()}
         return await Api(**api, credential=self.credential).update_data(**data).result
 
-    async def get_cid(self) -> int:
+    async def get_cid(self, page_index: int = 0) -> int:
         """
         获取稿件 cid
+
+        Args:
+            page_index (int, optional): 仅为与父类 Video 签名保持兼容，互动视频无分 P 概念，传入值会被忽略. Defaults to 0.
         """
         return await super().get_cid(0)
 
@@ -888,11 +892,12 @@ class InteractiveVideoDownloader(AsyncEvent):
             """
             创建节点信息到 edges_info
             """
-            edges_info[edge_id] = {
+            node_info: dict[str, Any] = {
                 "title": None,
                 "cid": None,
                 "sub": [],
             }
+            edges_info[edge_id] = node_info
 
         def var2dict(var: InteractiveVariable):
             return {
@@ -904,7 +909,7 @@ class InteractiveVideoDownloader(AsyncEvent):
             }
 
         # 存储顶点信息
-        edges_info = {}
+        edges_info: dict[int, dict[str, Any]] = {}
 
         # 使用队列来遍历剧情图，初始为 None 是为了从初始顶点开始
         queue: list[InteractiveNode] = [await (await self.__video.get_graph()).get_root_node()]
@@ -1046,7 +1051,7 @@ class InteractiveVideoDownloader(AsyncEvent):
             """
             创建节点信息到 edges_info
             """
-            edges_info[edge_id] = {
+            node_info: dict[str, Any] = {
                 "title": None,
                 "cid": None,
                 "button": None,
@@ -1056,6 +1061,7 @@ class InteractiveVideoDownloader(AsyncEvent):
                 "command": None,
                 "sub": [],
             }
+            edges_info[edge_id] = node_info
 
         def var2dict(var: InteractiveVariable):
             return {
@@ -1067,7 +1073,7 @@ class InteractiveVideoDownloader(AsyncEvent):
             }
 
         # 存储顶点信息
-        edges_info = {}
+        edges_info: dict[int, dict[str, Any]] = {}
 
         # 使用队列来遍历剧情图，初始为 None 是为了从初始顶点开始
         queue: list[InteractiveNode] = [await (await self.__video.get_graph()).get_root_node()]
@@ -1137,11 +1143,11 @@ class InteractiveVideoDownloader(AsyncEvent):
                 streams = VideoDownloadURLDataDetecter(url).detect_best_streams(**self.__detect_params)
                 await self.__download_func(
                     streams[0].url,
-                    tmp_dir_name + "/" + str(cid) + " " + item["title"] + ".video.mp4",
+                    tmp_dir_name + "/" + str(cid) + " " + str(item["title"]) + ".video.mp4",
                 )
                 await self.__download_func(
                     streams[1].url,
-                    tmp_dir_name + "/" + str(cid) + " " + item["title"] + ".audio.mp4",
+                    tmp_dir_name + "/" + str(cid) + " " + str(item["title"]) + ".audio.mp4",
                 )
 
         self.dispatch("SUCCESS")
@@ -1157,7 +1163,9 @@ class InteractiveVideoDownloader(AsyncEvent):
             cid: int
             title: str
 
-            def __eq__(self, info: "node_info"):
+            def __eq__(self, info: object) -> bool:
+                # 既有实现假定比较对象必为 node_info；保持该行为，仅收窄类型
+                info = cast("node_info", info)
                 self.subs.sort()
                 info.subs.sort()
                 return (info.subs == self.subs) and (info.title == self.title) and (info.cid == self.cid)
@@ -1169,7 +1177,7 @@ class InteractiveVideoDownloader(AsyncEvent):
                 return self.cid > info.cid
 
         fetched_nodes_info: list[node_info] = []
-        node_info_dict = {}
+        node_info_dict: dict[int, Any] = {}
         scripts = []
         graph = await self.__video.get_graph()
         queue: list[InteractiveNode] = [await graph.get_root_node()]
@@ -1275,11 +1283,12 @@ class InteractiveVideoDownloader(AsyncEvent):
             """
             创建节点信息到 edges_info
             """
-            edges_info[edge_id] = {
+            node_info: dict[str, Any] = {
                 "title": None,
                 "cid": None,
                 "sub": [],
             }
+            edges_info[edge_id] = node_info
 
         def var2dict(var: InteractiveVariable):
             return {
@@ -1291,7 +1300,7 @@ class InteractiveVideoDownloader(AsyncEvent):
             }
 
         # 存储顶点信息
-        edges_info = {}
+        edges_info: dict[int, dict[str, Any]] = {}
 
         # 使用队列来遍历剧情图，初始为 None 是为了从初始顶点开始
         queue: list[InteractiveNode] = [await (await self.__video.get_graph()).get_root_node()]

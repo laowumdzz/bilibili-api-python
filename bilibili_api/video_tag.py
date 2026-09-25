@@ -4,6 +4,8 @@ bilibili_api.video_tag
 视频标签相关，部分的标签的 id 与同名的频道的 id 一模一样。
 """
 
+from typing import cast
+
 from .exceptions import ArgsException
 from .utils.network import Api, Credential
 from .utils.utils import get_api
@@ -47,7 +49,8 @@ class Tag:
         """
         if not self.__tag_id:
             await self.get_tag_info()
-        return self.__tag_id
+        # get_tag_info() 保证 __tag_id 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(int, self.__tag_id)
 
     async def get_tag_name(self) -> str:
         """
@@ -58,7 +61,8 @@ class Tag:
         """
         if not self.__tag_name:
             await self.get_tag_info()
-        return self.__tag_name
+        # get_tag_info() 保证 __tag_name 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(str, self.__tag_name)
 
     async def get_tag_info(self) -> dict:
         """
@@ -74,7 +78,7 @@ class Tag:
             params = {"tag_id": self.__tag_id}
         else:
             params = {"tag_name": self.__tag_name}
-        res = await Api(**api).update_params(**params).result
+        res = await Api(**api).update_params(**params).result_dict()
         if not self.__tag_id:
             self.__tag_id = res["tag_id"]
         if not self.__tag_name:
@@ -90,7 +94,7 @@ class Tag:
         """
         api = API["info"]["get_similar"]
         params = {"tag_id": await self.get_tag_id()}
-        return await Api(**api).update_params(**params).result
+        return await Api(**api).update_params(**params).result_dict()
 
     # async def get_cards(self) -> dict:
     #     """
@@ -101,7 +105,7 @@ class Tag:
     #     """
     #     api = API["info"]["get_list"]
     #     params = {"topic_id": await self.get_tag_id()}
-    #     return await Api(**api).update_params(**params).result
+    #     return await Api(**api).update_params(**params).result_dict()
 
     # async def get_history_cards(self, offset_dynamic_id: int) -> dict:
     #     """
@@ -112,7 +116,7 @@ class Tag:
     #     """
     #     api = API["info"]["get_history_list"]
     #     params = {"topic_id": await self.get_tag_id(), "offset_dynamic_id": offset_dynamic_id}
-    #     return await Api(**api).update_params(**params).result
+    #     return await Api(**api).update_params(**params).result_dict()
 
     async def subscribe_tag(self) -> dict:
         """
@@ -127,7 +131,7 @@ class Tag:
         api = API_video["operate"]["subscribe_tag"]
 
         data = {"tag_id": await self.get_tag_id()}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def unsubscribe_tag(self) -> dict:
         """
@@ -142,4 +146,4 @@ class Tag:
         api = API_video["operate"]["unsubscribe_tag"]
 
         data = {"tag_id": await self.get_tag_id()}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()

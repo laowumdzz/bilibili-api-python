@@ -177,7 +177,7 @@ async def get_blocked_list(
     params = {"pn": pn, "otype": type_.value}
     if from_.value is not None:
         params["btype"] = from_.value
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 class BlackRoom:
@@ -207,7 +207,7 @@ class BlackRoom:
         """
         api = API["black_room"]["detail"]
         params = {"id": self.__id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_reason(self) -> BlackReasonType:
         """
@@ -261,7 +261,7 @@ class JuryCase:
         """
         api = API["jury"]["detail"]
         params = {"case_id": self.case_id}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_opinions(self, pn: int = 1, ps: int = 20) -> dict:
         """
@@ -277,7 +277,7 @@ class JuryCase:
         """
         api = API["jury"]["opinion"]
         params = {"case_id": self.case_id, "pn": pn, "ps": ps}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def vote(
         self,
@@ -311,7 +311,7 @@ class JuryCase:
         }
         if reason:
             data["content"] = reason
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
 
 async def get_next_jury_case(credential: Credential) -> JuryCase:
@@ -326,7 +326,7 @@ async def get_next_jury_case(credential: Credential) -> JuryCase:
     """
     credential.raise_for_no_sessdata()
     api = API["jury"]["next_case"]
-    return JuryCase((await Api(**api, credential=credential).result)["case_id"], credential)
+    return JuryCase((await Api(**api, credential=credential).result_dict())["case_id"], credential)
 
 
 async def get_jury_case_raw(credential: Credential, pn: int = 1, ps: int = 20) -> dict:
@@ -345,7 +345,7 @@ async def get_jury_case_raw(credential: Credential, pn: int = 1, ps: int = 20) -
     """
     api = API["jury"]["case_list"]
     params = {"pn": pn, "ps": ps}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_jury_case_list(credential: Credential, pn: int = 1, ps: int = 20) -> list[JuryCase]:
@@ -364,7 +364,7 @@ async def get_jury_case_list(credential: Credential, pn: int = 1, ps: int = 20) 
     """
     api = API["jury"]["case_list"]
     params = {"pn": pn, "ps": ps}
-    info = await Api(**api, credential=credential).update_params(**params).result
+    info = await Api(**api, credential=credential).update_params(**params).result_dict()
     if info["list"] is None:
         return []
     return [JuryCase(case["case_id"], credential) for case in info["list"]]
