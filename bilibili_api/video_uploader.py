@@ -15,7 +15,7 @@ import os
 import re
 import time
 
-from .exceptions import ApiException, NetworkException, ResponseCodeException
+from .exceptions import ApiException, ArgsException, NetworkException, ResponseCodeException
 from .topic import Topic
 from .utils.aid_bvid_transformer import bvid2aid
 from .utils.AsyncEvent import AsyncEvent
@@ -311,8 +311,11 @@ class VideoPorderMeta:
         show_types: list[VideoPorderShowType] | None = None,
     ):
         self.flow_id = 1
-        self.__info = porden_type.value
+        # 商单信息模板 dict：dict() 拷贝避免后续写入污染枚举类共享的模板值
+        self.__info = dict(porden_type.value)
         if porden_type == VideoPorderType.OTHER:
+            if industry_type is None:
+                raise ArgsException("VideoPorderType.OTHER 需要提供 industry_type 参数")
             self.__info["industry"] = industry_type.value
             self.__info["brand_name"] = brand_name
             self.__info["show_types"] = ",".join(
