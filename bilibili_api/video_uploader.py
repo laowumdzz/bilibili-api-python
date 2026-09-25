@@ -1391,10 +1391,10 @@ class VideoEditor(AsyncEvent):
         self.dispatch(VideoEditorEvents.PRE_COVER.value, None)
         try:
             pic = self.cover_path if isinstance(self.cover_path, Picture) else Picture().from_file(self.cover_path)
-            resp = await upload_cover(pic, self.credential)
-            self.dispatch(VideoEditorEvents.AFTER_COVER.value, {"url": resp["url"]})
-            # not sure if this key changed to "url" as well
-            self.meta["cover"] = resp["image_url"]
+            # upload_cover 返回封面 URL 字符串，原实现对字符串下标取值必然 TypeError
+            url = await upload_cover(pic, self.credential)
+            self.dispatch(VideoEditorEvents.AFTER_COVER.value, {"url": url})
+            self.meta["cover"] = url
         except (NetworkException, ResponseCodeException) as e:
             self.dispatch(VideoEditorEvents.COVER_FAILED.value, {"err": e})
             raise e
