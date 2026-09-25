@@ -344,7 +344,7 @@ from bilibili_api import bangumi
 
 
 
-**Returns:** `str`:  AID。
+**Returns:** `int`:  AID。
 
 
 
@@ -387,6 +387,9 @@ from bilibili_api import bangumi
 获取稿件 cid
 
 
+| name | type | description |
+| - | - | - |
+| `page_index` | `int, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to 0. |
 
 **Returns:** `int`:  cid
 
@@ -398,6 +401,10 @@ from bilibili_api import bangumi
 获取弹幕设置、特殊弹幕、弹幕数量、弹幕分段等信息。
 
 
+| name | type | description |
+| - | - | - |
+| `page_index` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
 
 **Returns:** `dict`:  二进制流解析结果
 
@@ -409,6 +416,10 @@ from bilibili_api import bangumi
 获取所有弹幕的 xml 源文件（非装填）
 
 
+| name | type | description |
+| - | - | - |
+| `page_index` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
 
 **Returns:** `str`:  文件源
 
@@ -436,6 +447,11 @@ from bilibili_api import bangumi
 获取番剧剧集下载信息。
 
 
+| name | type | description |
+| - | - | - |
+| `page_index` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
+| `html5` | `bool, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to False. |
 
 **Returns:** `dict`:  调用 API 返回的结果。
 
@@ -481,6 +497,10 @@ from bilibili_api import bangumi
 获取高能进度条
 
 
+| name | type | description |
+| - | - | - |
+| `page_index` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
 
 **Returns:** `dict`:  调用 API 返回的结果
 
@@ -492,6 +512,10 @@ from bilibili_api import bangumi
 获取视频上一次播放的记录，字幕和地区信息。需要分集的 cid, 返回数据中含有json字幕的链接
 
 
+| name | type | description |
+| - | - | - |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略，本方法始终使用分集 cid。Defaults to None. |
+| `epid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略，本方法始终使用分集 epid。Defaults to None. |
 
 **Returns:** `dict`:  调用 API 返回的结果
 
@@ -503,8 +527,11 @@ from bilibili_api import bangumi
 获取字幕信息
 
 
+| name | type | description |
+| - | - | - |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略，本方法始终使用分集 cid。Defaults to None. |
 
-**Returns:** `dict`:  调用 API 返回的结果
+**Returns:** `dict`:  调用 API 返回的结果（沿用父类 dict 声明；分集字幕缺失时运行时为 None，属既有形态）。
 
 
 
@@ -595,6 +622,8 @@ from bilibili_api import bangumi
 | `data` | `Dict` | 字幕数据 |
 | `submit` | `bool` | 是否提交，不提交为草稿 |
 | `sign` | `bool` | 是否署名 |
+| `page_index` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
+| `cid` | `int \| None, optional` | 仅为与父类 Video 签名保持兼容；Episode 无分 P 概念，传入值会被忽略. Defaults to None. |
 
 **Returns:** `dict`:  API 调用返回结果
 
