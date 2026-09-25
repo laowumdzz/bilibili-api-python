@@ -525,7 +525,7 @@
     },
     "recall": {
       "url": "https://api.bilibili.com/x/dm/recall",
-      "method": "GET",
+      "method": "POST",
       "verify": false,
       "data": {
         "dmid": "int: 弹幕 ID",
