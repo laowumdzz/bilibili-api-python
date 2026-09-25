@@ -308,7 +308,7 @@ async def get_compare(credential: Credential) -> dict:
         dict: 视频对比数据。
     """
     api = API["overview"]["compare"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_graph(
@@ -335,7 +335,7 @@ async def get_graph(
         "s_locale": "zh_CN",
         "type": graph_type.value,
     }
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_overview(credential: Credential, period: GraphPeriod = GraphPeriod.WEEK) -> dict:
@@ -353,7 +353,7 @@ async def get_overview(credential: Credential, period: GraphPeriod = GraphPeriod
     api = API["overview"]["num"]
     # 不知道 tab 的作用是什么，但是不传会报错
     params = {"period": period.value, "s_locale": "zh_CN", "tab": 0}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_video_survey(credential: Credential) -> dict:
@@ -368,7 +368,7 @@ async def get_video_survey(credential: Credential) -> dict:
     """
     api = API["data-up"]["video"]["survey"]
     params = {"type": 1}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_video_playanalysis(credential: Credential, copyright: Copyright = Copyright.ALL) -> dict:
@@ -385,7 +385,7 @@ async def get_video_playanalysis(credential: Credential, copyright: Copyright = 
     """
     api = API["data-up"]["video"]["playanalysis"]
     params = {"copyright": copyright.value}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_video_source(credential: Credential) -> dict:
@@ -400,7 +400,7 @@ async def get_video_source(credential: Credential) -> dict:
     """
     api = API["data-up"]["video"]["source"]
     params = {"s_locale": "zh_CN"}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_fan_overview(credential: Credential, period: FanGraphPeriod = FanGraphPeriod.WEEK) -> dict:
@@ -417,7 +417,7 @@ async def get_fan_overview(credential: Credential, period: FanGraphPeriod = FanG
     """
     api = API["data-up"]["fan"]["overview"]
     params = {"period": period.value}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_fan_graph(
@@ -440,7 +440,7 @@ async def get_fan_graph(
     """
     api = API["data-up"]["fan"]["graph"]
     params = {"period": period.value, "type": graph_type.value}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_article_overview(credential: Credential) -> dict:
@@ -454,7 +454,7 @@ async def get_article_overview(credential: Credential) -> dict:
         dict: 文章概览数据。
     """
     api = API["data-up"]["article"]["overview"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_article_graph(credential: Credential, graph_type: ArticleInfoType = ArticleInfoType.READ) -> dict:
@@ -472,7 +472,7 @@ async def get_article_graph(credential: Credential, graph_type: ArticleInfoType 
 
     api = API["data-up"]["article"]["graph"]
     params = {"type": graph_type.value}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_article_rank(credential: Credential, rank_type: ArticleInfoType = ArticleInfoType.READ) -> dict:
@@ -490,7 +490,7 @@ async def get_article_rank(credential: Credential, rank_type: ArticleInfoType = 
 
     api = API["data-up"]["article"]["rank"]
     params = {"type": rank_type.value}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_article_source(credential: Credential) -> dict:
@@ -505,7 +505,7 @@ async def get_article_source(credential: Credential) -> dict:
     """
 
     api = API["data-up"]["article"]["source"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 """
@@ -527,7 +527,7 @@ async def get_video_draft_upload_manager_info(credential: Credential) -> dict:
     """
 
     api = API["upload-manager"]["video_draft"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_video_upload_manager_info(
@@ -570,7 +570,7 @@ async def get_video_upload_manager_info(
         "tid": tid.value if isinstance(tid, Enum) else tid,
     }
     api = API["upload-manager"]["video"]
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_article_upload_manager_info(
@@ -597,7 +597,7 @@ async def get_article_upload_manager_info(
 
     params = {"pn": pn, "group": status.value, "sort": sort.value, "mobi_app": "pc"}
     api = API["upload-manager"]["article"]
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_article_list_upload_manager_info(credential: Credential) -> dict:
@@ -612,7 +612,7 @@ async def get_article_list_upload_manager_info(credential: Credential) -> dict:
     """
 
     api = API["upload-manager"]["article_list"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 """
@@ -676,7 +676,7 @@ async def get_comments(
         params["oid"] = oid
 
     api = API["comment-manager"]["fulllist"]
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def del_comments(
@@ -736,7 +736,7 @@ async def get_recently_danmakus(credential: Credential, pn: int = 1, ps: int = 5
     params = {"pn": pn, "ps": ps}
 
     api = API["danmaku-manager"]["recent"]
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_danmakus(
@@ -831,7 +831,7 @@ async def get_danmakus(
     }
 
     api = API["danmaku-manager"]["search"]
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def del_danmaku(credential: Credential, oid: int, dmids: int | list[int]) -> dict:
@@ -874,7 +874,7 @@ async def edit_danmaku_state(
     }
 
     api = API["danmaku-manager"]["state"]
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def edit_danmaku_pool(
@@ -904,7 +904,7 @@ async def edit_danmaku_pool(
     }
 
     api = API["danmaku-manager"]["pool"]
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 """
@@ -927,7 +927,7 @@ async def get_archive_edits(video: Video) -> dict:
     """
     api = API["archive"]["edits"]
     params = {"bvid": video.get_bvid()}
-    return await Api(**api, credential=video.credential).update_params(**params).result
+    return await Api(**api, credential=video.credential).update_params(**params).result_dict()
 
 
 async def get_archive_parts(video: Video) -> dict:
@@ -942,4 +942,4 @@ async def get_archive_parts(video: Video) -> dict:
     """
     api = API["archive"]["pages"]
     params = {"aid": video.get_aid()}
-    return await Api(**api, credential=video.credential).update_params(**params).result
+    return await Api(**api, credential=video.credential).update_params(**params).result_dict()

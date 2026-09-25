@@ -11,7 +11,7 @@ from enum import Enum
 import json
 import logging
 import time
-from typing import Any
+from typing import Any, cast
 import warnings
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -59,7 +59,7 @@ async def fetch_session_msgs(
     }
     api = API["session"]["fetch"]
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def new_sessions(credential: Credential, begin_ts: int = int(time.time() * 1000000)) -> dict:
@@ -79,7 +79,7 @@ async def new_sessions(credential: Credential, begin_ts: int = int(time.time() *
     params = {"begin_ts": begin_ts, "build": 0, "mobi_app": "web"}
     api = API["session"]["new"]
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_sessions(credential: Credential, session_type: int = 4) -> dict:
@@ -106,7 +106,7 @@ async def get_sessions(credential: Credential, session_type: int = 4) -> dict:
     }
     api = API["session"]["get"]
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_session_detail(credential: Credential, talker_id: int, session_type: int = 1) -> dict:
@@ -128,7 +128,7 @@ async def get_session_detail(credential: Credential, talker_id: int, session_typ
     params = {"talker_id": talker_id, "session_type": session_type}
     api = API["session"]["get_session_detail"]
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_replies(
@@ -151,7 +151,7 @@ async def get_replies(
     """
     api = API["session"]["replies"]
     params = {"id": last_reply_id, "reply_time": reply_time}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_likes(credential: Credential, last_id: int | None = None, like_time: int | None = None) -> dict:
@@ -170,7 +170,7 @@ async def get_likes(credential: Credential, last_id: int | None = None, like_tim
     """
     api = API["session"]["likes"]
     params = {"id": last_id, "like_time": like_time}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_at(
@@ -193,7 +193,7 @@ async def get_at(
     if last_id is None:
         last_id = last_uid
     params = {"id": last_id, "at_time": at_time}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_unread_messages(credential: Credential) -> dict:
@@ -207,7 +207,7 @@ async def get_unread_messages(credential: Credential) -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["session"]["unread"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_system_messages(credential: Credential) -> dict:
@@ -221,7 +221,7 @@ async def get_system_messages(credential: Credential) -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["session"]["system_msg"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 async def get_session_settings(credential: Credential) -> dict:
@@ -235,7 +235,7 @@ async def get_session_settings(credential: Credential) -> dict:
         dict: 调用 API 返回的结果
     """
     api = API["session"]["session_settings"]
-    return await Api(**api, credential=credential).result
+    return await Api(**api, credential=credential).result_dict()
 
 
 class EventType(Enum):
@@ -383,8 +383,9 @@ async def send_msg(
     credential.raise_for_no_bili_jct()
 
     api = API["operate"]["send_msg"]
-    if credential.has_dedeuserid() and int(credential.dedeuserid) != 0:
-        sender_uid = int(credential.dedeuserid)
+    # has_dedeuserid() 为真时必为非空 str；or 0 兜底 None 形态，语义不变
+    if credential.has_dedeuserid() and int(credential.dedeuserid or 0) != 0:
+        sender_uid = int(credential.dedeuserid or 0)
     else:
         self_info = await get_self_info(credential)
         sender_uid = self_info["mid"]
@@ -395,6 +396,8 @@ async def send_msg(
         real_content = str(content)
     elif msg_type == EventType.PICTURE or msg_type == EventType.GROUPS_PICTURE:
         raise_for_statement(isinstance(content, Picture), "TypeError")
+        # raise_for_statement 校验后 content 必为 Picture，该事实无法向类型层传导，此处为唯一收窄点
+        content = cast(Picture, content)
         if content.url.startswith("file://") or content.url.startswith("bytes://"):
             await content.upload(credential=credential)
         real_content = json.dumps(
@@ -429,7 +432,7 @@ async def send_msg(
         "w_receiver_id": receiver_id,
     }
 
-    return await Api(**api, credential=credential).update_params(**query).update_data(**data).result
+    return await Api(**api, credential=credential).update_params(**query).update_data(**data).result_dict()
 
 
 class Session(AsyncEvent):
@@ -492,8 +495,10 @@ class Session(AsyncEvent):
             # 与旧必填位置参数的缺参行为保持一致（异常类型不变式）
             raise TypeError("Session.on() missing 1 required positional argument: 'event_name'")
         if isinstance(event_name, EventType):
-            event_name = event_name.value
-        return super().on(event_name=str(event_name))
+            event_name_str = str(event_name.value)
+        else:
+            event_name_str = str(event_name)
+        return super().on(event_name=event_name_str)
 
     def get_status(self) -> int:
         """
