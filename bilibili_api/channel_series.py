@@ -97,7 +97,7 @@ class ChannelSeries:
         else:
             api = API_USER["channel_series"]["info"]
             params = {"series_id": self.id_}
-        resp = await Api(**api).update_params(**params).result
+        resp = await Api(**api).update_params(**params).result_dict()
         if self.is_new:
             self.meta = resp["info"]
             self.meta["mid"] = resp["info"]["upper"]["mid"]
@@ -209,7 +209,7 @@ async def create_channel_series(
         "keywords": ",".join(keywords),
         "description": description,
     }
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def del_channel_series(series_id: int, credential: Credential) -> dict:
@@ -244,7 +244,7 @@ async def del_channel_series(series_id: int, credential: Credential) -> dict:
         "series_id": series_id,
         "aids": ",".join(str(x) for x in aids),
     }
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def add_aids_to_series(series_id: int, aids: list[int], credential: Credential) -> dict:
@@ -272,7 +272,7 @@ async def add_aids_to_series(series_id: int, aids: list[int], credential: Creden
         "series_id": series_id,
         "aids": ",".join(str(x) for x in aids),
     }
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def del_aids_from_series(series_id: int, aids: list[int], credential: Credential) -> dict:
@@ -300,7 +300,7 @@ async def del_aids_from_series(series_id: int, aids: list[int], credential: Cred
         "series_id": series_id,
         "aids": ",".join(str(x) for x in aids),
     }
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def set_follow_channel_season(season_id: int, status: bool = True, credential: Credential | None = None) -> dict:
@@ -312,6 +312,7 @@ async def set_follow_channel_season(season_id: int, status: bool = True, credent
 
         status    (bool): 是否订阅状态. Defaults to True.
     """
+    credential = credential if credential else Credential()
     api = API["operate"]["fav"] if status else API["operate"]["unfav"]
     data = {"season_id": season_id}
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()

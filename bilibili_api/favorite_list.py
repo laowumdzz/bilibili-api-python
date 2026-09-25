@@ -5,6 +5,7 @@ bilibili_api.favorite_list
 """
 
 from enum import Enum
+from typing import cast
 
 from . import user
 from .exceptions import ArgsException
@@ -120,7 +121,7 @@ class FavoriteList:
         api = API["info"]["info"]
         params = {"media_id": self.__media_id}
 
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_content_video(
         self,
@@ -149,9 +150,11 @@ class FavoriteList:
         """
         raise_for_statement(self.__type == FavoriteListType.VIDEO, "此函数仅在收藏夹为视频收藏家时可用")
         raise_for_statement(self.__media_id is not None, "视频收藏夹需要 media_id")
+        # 校验后 __media_id 必非 None，该事实无法经 raise_for_statement 向类型层传导
+        media_id = cast(int, self.__media_id)
 
         return await get_video_favorite_list_content(
-            self.__media_id,
+            media_id,
             page=page,
             keyword=keyword,
             order=order,
@@ -176,7 +179,9 @@ class FavoriteList:
             return await get_course_favorite_list(page, self.credential)
         elif self.__type == FavoriteListType.VIDEO:
             raise_for_statement(self.__media_id is not None, "视频收藏夹需要 media_id")
-            return await get_video_favorite_list_content(self.__media_id, page, credential=self.credential)
+            # 校验后 __media_id 必非 None，该事实无法经 raise_for_statement 向类型层传导
+            media_id = cast(int, self.__media_id)
+            return await get_video_favorite_list_content(media_id, page, credential=self.credential)
         else:
             raise ArgsException("无法识别传入的类型")
 
@@ -197,7 +202,7 @@ class FavoriteList:
             "platform": "web",
         }
 
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
 
 async def get_video_favorite_list(
@@ -218,13 +223,14 @@ async def get_video_favorite_list(
     Returns:
         dict: 调用 API 返回的结果
     """
+    credential = credential if credential else Credential()
     api = API["info"]["list_list"]
     params = {"up_mid": uid, "type": 2, "web_location": "333.1387"}
 
     if video is not None:
         params["rid"] = video.get_aid()
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_video_favorite_list_content(
@@ -274,7 +280,8 @@ async def get_video_favorite_list_content(
     if keyword is not None:
         params["keyword"] = keyword
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    credential = credential if credential else Credential()
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_topic_favorite_list(page: int = 1, credential: Credential | None = None) -> dict:
@@ -297,7 +304,7 @@ async def get_topic_favorite_list(page: int = 1, credential: Credential | None =
     api = API["info"]["list_topics"]
     params = {"page_num": page, "page_size": 16}
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_article_favorite_list(page: int = 1, credential: Credential | None = None) -> dict:
@@ -320,7 +327,7 @@ async def get_article_favorite_list(page: int = 1, credential: Credential | None
     api = API["info"]["list_articles"]
     params = {"pn": page, "ps": 16}
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_course_favorite_list(page: int = 1, credential: Credential | None = None) -> dict:
@@ -344,7 +351,7 @@ async def get_course_favorite_list(page: int = 1, credential: Credential | None 
     self_info = await user.get_self_info(credential)
     params = {"pn": page, "ps": 10, "mid": self_info["mid"]}
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_note_favorite_list(page: int = 1, credential: Credential | None = None) -> dict:
@@ -367,7 +374,7 @@ async def get_note_favorite_list(page: int = 1, credential: Credential | None = 
     api = API["info"]["list_notes"]
     params = {"pn": page, "ps": 16}
 
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def create_video_favorite_list(
@@ -405,7 +412,7 @@ async def create_video_favorite_list(
         "cover": "",
     }
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def modify_video_favorite_list(
@@ -448,7 +455,7 @@ async def modify_video_favorite_list(
         "media_id": media_id,
     }
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def delete_video_favorite_list(media_ids: list[int], credential: Credential) -> dict:
@@ -470,7 +477,7 @@ async def delete_video_favorite_list(media_ids: list[int], credential: Credentia
     data = {"media_ids": join(",", media_ids)}
     api = API["operate"]["delete"]
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def copy_video_favorite_list_content(
@@ -504,7 +511,7 @@ async def copy_video_favorite_list_content(
         "resources": ",".join(f"{x!s}:2" for x in aids),
     }
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def move_video_favorite_list_content(
@@ -535,7 +542,7 @@ async def move_video_favorite_list_content(
         "resources": ",".join(f"{x!s}:2" for x in aids),
     }
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def delete_video_favorite_list_content(media_id: int, aids: list[int], credential: Credential) -> dict:
@@ -561,7 +568,7 @@ async def delete_video_favorite_list_content(media_id: int, aids: list[int], cre
         "resources": ",".join(f"{x!s}:2" for x in aids),
     }
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def clean_video_favorite_list_content(media_id: int, credential: Credential) -> dict:
@@ -582,7 +589,7 @@ async def clean_video_favorite_list_content(media_id: int, credential: Credentia
 
     data = {"media_id": media_id}
 
-    return await Api(**api, credential=credential).update_data(**data).result
+    return await Api(**api, credential=credential).update_data(**data).result_dict()
 
 
 async def get_favorite_collected(
@@ -603,6 +610,7 @@ async def get_favorite_collected(
 
         credential (Credential | None, optional)       : Credential. Defaults to None.
     """
+    credential = credential if credential else Credential()
     api = API["info"]["collected"]
     params = {"up_mid": uid, "platform": "web", "pn": pn, "ps": ps}
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()

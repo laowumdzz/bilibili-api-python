@@ -8,10 +8,10 @@ from copy import copy
 from enum import Enum
 import html
 import re
-from typing import TYPE_CHECKING, TypeVar, overload
+from typing import TYPE_CHECKING, TypeVar, cast, overload
 from urllib.parse import unquote
 
-from bs4 import BeautifulSoup, element
+from bs4 import BeautifulSoup, Tag, element
 import yaml
 from yarl import URL
 
@@ -112,7 +112,7 @@ class ArticleList:
             credential (Credential | None, optional): 凭据类. Defaults to None.
         """
         self.__rlid = rlid
-        self.credential: Credential = credential
+        self.credential: Credential = credential if credential is not None else Credential()
 
     def get_rlid(self) -> int:
         """
@@ -134,7 +134,7 @@ class ArticleList:
 
         api = API["info"]["list"]
         params = {"id": self.__rlid}
-        return await Api(**api, credential=credential).update_params(**params).result
+        return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 class Article:
@@ -157,7 +157,7 @@ class Article:
         self.__meta = None
         self.__cvid = cvid
         self.__has_parsed: bool = False
-        self.__get_all_data: dict = None
+        self.__get_all_data: dict | None = None
 
     async def turn_to_dynamic(self) -> "dynamic.Dynamic":
         """
@@ -282,7 +282,7 @@ class Article:
 
         document = BeautifulSoup(f"<div>{resp['readInfo']['content']}</div>", "lxml")
 
-        async def parse(el: BeautifulSoup):
+        async def parse(el: BeautifulSoup | Tag):
             """
             递归解析专栏 HTML 元素为节点树。
 
@@ -399,7 +399,7 @@ class Article:
 
                                 if "aid" in img_el.attrs:
                                     # 各种卡片
-                                    aid = img_el.attrs["aid"]
+                                    aid = str(img_el.attrs["aid"])
 
                                     if "video-card" in className:
                                         # 视频卡片，考虑有两列视频
@@ -484,8 +484,8 @@ class Article:
                             node_list.append(node)
 
                             pre_el: BeautifulSoup = e.find("pre")  # type: ignore
-                            node.lang = pre_el.attrs["data-lang"].split("@")[0].lower()
-                            node.code = unquote(pre_el.attrs["codecontent"])
+                            node.lang = str(pre_el.attrs["data-lang"]).split("@")[0].lower()
+                            node.code = unquote(str(pre_el.attrs["codecontent"]))
 
                 elif e.name == "ol":
                     # 有序列表
@@ -513,7 +513,7 @@ class Article:
                     if len(e.contents) == 0:
                         from .utils.parse_link import ResourceType, parse_link
 
-                        parse_link_res = await parse_link(e.attrs["href"])
+                        parse_link_res = await parse_link(str(e.attrs["href"]))
                         if parse_link_res[1] == ResourceType.VIDEO:
                             node = VideoCardNode()
                             node.aid = parse_link_res[0].get_aid()
@@ -537,7 +537,7 @@ class Article:
                         node = AnchorNode()
                         node_list.append(node)
 
-                        node.url = e.attrs["href"]
+                        node.url = str(e.attrs["href"])
                         node.text = e.contents[0]  # type: ignore
 
                 elif e.name == "img":
@@ -563,7 +563,8 @@ class Article:
         self.__meta = copy(resp["readInfo"])
         del self.__meta["content"]
 
-        self.__children = await parse(document.find("div"))
+        # 构造时内容包于 <div> 中，root 必存在
+        self.__children = await parse(cast(Tag, document.find("div")))
         self.__has_parsed = True
 
     async def get_info(self) -> dict:
@@ -576,7 +577,7 @@ class Article:
 
         api = API["info"]["view"]
         params = {"id": self.__cvid}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_detail(self) -> dict:
         """
@@ -588,7 +589,7 @@ class Article:
 
         api = API["info"]["detail"]
         params = {"id": self.__cvid}
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
     async def get_all(self) -> dict:
         """
@@ -623,7 +624,7 @@ class Article:
 
         api = API["operate"]["like"]
         data = {"id": self.__cvid, "type": 1 if status else 2}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def set_favorite(self, status: bool = True) -> dict:
         """
@@ -640,7 +641,7 @@ class Article:
         api = API["operate"]["add_favorite"] if status else API["operate"]["del_favorite"]
 
         data = {"id": self.__cvid}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     async def add_coins(self) -> dict:
         """
@@ -654,7 +655,7 @@ class Article:
         upid = (await self.get_info())["mid"]
         api = API["operate"]["coin"]
         data = {"aid": self.__cvid, "multiply": 1, "upid": upid, "avtype": 2}
-        return await Api(**api, credential=self.credential).update_data(**data).result
+        return await Api(**api, credential=self.credential).update_data(**data).result_dict()
 
     # TODO: 专栏上传/编辑/删除
 

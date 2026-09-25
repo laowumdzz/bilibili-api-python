@@ -5,6 +5,7 @@ bilibili_api.garb
 """
 
 from enum import Enum
+from typing import cast
 
 from .utils.network import Api, Credential
 from .utils.utils import get_api
@@ -64,7 +65,7 @@ async def search_garb_dlc_raw(keyword: str, pn: int = 1, ps: int = 20, credentia
         "ps": ps,
         "csrf": credential.get_cookies()["bili_jct"],
     }
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 class DLC:
@@ -97,7 +98,7 @@ class DLC:
         """
         return self.__act_id
 
-    def set_act_id(self, act_id: int) -> int:
+    def set_act_id(self, act_id: int) -> None:
         """
         设置 act_id
 
@@ -119,7 +120,7 @@ class DLC:
                 "act_id": self.__act_id,
                 "csrf": self.credential.get_cookies()["bili_jct"],
             }
-            self.__basic_info = await Api(**api, credential=self.credential).update_params(**params).result
+            self.__basic_info = await Api(**api, credential=self.credential).update_params(**params).result_dict()
             self.__lottery_id = self.__basic_info["lottery_list"][0]["lottery_id"]
         return self.__basic_info
 
@@ -132,7 +133,8 @@ class DLC:
         """
         if not self.__lottery_id:
             await self.get_info()
-        return self.__lottery_id
+        # get_info() 保证 __lottery_id 已赋值；await 之后属性收窄失效，此处为唯一收窄点
+        return cast(int, self.__lottery_id)
 
     async def get_detail(self) -> dict:
         """
@@ -147,7 +149,7 @@ class DLC:
             "lottery_id": await self.get_lottery_id(),
             "csrf": self.credential.get_cookies()["bili_jct"],
         }
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
 
 class Garb:
@@ -197,7 +199,7 @@ class Garb:
             "item_id": self.__item_id,
             "csrf": self.credential.get_cookies()["bili_jct"],
         }
-        return await Api(**api, credential=self.credential).update_params(**params).result
+        return await Api(**api, credential=self.credential).update_params(**params).result_dict()
 
 
 async def search_garb_dlc_obj(
@@ -217,7 +219,7 @@ async def search_garb_dlc_obj(
     """
     credential = credential if credential else Credential()
     res = await search_garb_dlc_raw(keyword=keyword, pn=pn, ps=ps, credential=credential)
-    ret = []
+    ret: list[DLC | Garb] = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
             act_id = int(obj["properties"]["dlc_act_id"])
@@ -245,7 +247,7 @@ async def search_garb_dlc(
     """
     credential = credential if credential else Credential()
     res = await search_garb_dlc_raw(keyword=keyword, pn=pn, ps=ps, credential=credential)
-    ret = []
+    ret: list[tuple[dict, DLC | Garb]] = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
             act_id = int(obj["properties"]["dlc_act_id"])
@@ -285,7 +287,7 @@ async def get_garb_dlc_items_raw(
         "csrf": credential.get_cookies()["bili_jct"],
     }
     params.update(type_.value)
-    return await Api(**api, credential=credential).update_params(**params).result
+    return await Api(**api, credential=credential).update_params(**params).result_dict()
 
 
 async def get_garb_dlc_items_obj(
@@ -294,7 +296,7 @@ async def get_garb_dlc_items_obj(
     pn: int = 1,
     ps: int = 20,
     credential: Credential | None = None,
-) -> dict:
+) -> list["DLC | Garb"]:
     """
     装扮/收藏集列表
 
@@ -310,7 +312,7 @@ async def get_garb_dlc_items_obj(
     """
     credential = credential if credential else Credential()
     res = await get_garb_dlc_items_raw(type_=type_, sort=sort, pn=pn, ps=ps, credential=credential)
-    ret = []
+    ret: list[DLC | Garb] = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
             act_id = int(obj["properties"]["dlc_act_id"])
@@ -327,7 +329,7 @@ async def get_garb_dlc_items(
     pn: int = 1,
     ps: int = 20,
     credential: Credential | None = None,
-) -> dict:
+) -> list[tuple[dict, "DLC | Garb"]]:
     """
     装扮/收藏集列表
 
@@ -343,7 +345,7 @@ async def get_garb_dlc_items(
     """
     credential = credential if credential else Credential()
     res = await get_garb_dlc_items_raw(type_=type_, sort=sort, pn=pn, ps=ps, credential=credential)
-    ret = []
+    ret: list[tuple[dict, DLC | Garb]] = []
     for obj in res["list"]:
         if obj["item_id"] == 0:
             act_id = int(obj["properties"]["dlc_act_id"])
