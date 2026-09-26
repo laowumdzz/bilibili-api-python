@@ -100,7 +100,9 @@
 | test_video.py | send_danmaku、pay_coin、triple | 公开发布类（无删除）/ 资源消耗类 |
 | test_live.py | send_danmaku ×2、金 / 银 / 背包礼物、人气票、ban/unban（含 black_list 链合并*）、create_live_reserve | 资源消耗 / 身份特定 / 公开发布类 |
 | test_session.py | send_msg | 公开发布类 |
-| test_creative_center.py | 整文件（19 用例） | 身份特定类 |
+| test_article.py | add_coins | 资源消耗类 |
+| test_audio.py | add_coins | 资源消耗类 |
+| test_creative_center.py | 整文件（18 用例） | 身份特定类 |
 | test_rank.py | subscribe_music_rank（无取消订阅，残留） | 公开发布类（无删除） |
 | test_user.py | clear_toview_list、delete_viewed_videos_from_toview | 破坏性类 |
 | test_vote.py | 投票创建与更新*（create→update 合并；无删除 API） | 公开发布类（无删除） |

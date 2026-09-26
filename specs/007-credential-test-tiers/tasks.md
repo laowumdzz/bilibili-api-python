@@ -251,3 +251,12 @@ Task: "T043 新增 tests/test_offline_cred_tier_selection.py"
 - [X] T056 修正 `tests/test_live.py` 直播预约用例名实不符 per T038（partial）：test_ze_get_following_live 实际调用 create_live_reserve（重构遗留旧名），改名为 test_zf_create_live_reserve 或按意图恢复 following 读取断言为独立用例
 - [X] T057 修正 `tests/test_user.py` test_l_User_get_followings 调用错位 per US2 读回归覆盖（unrequested）：用例名为 get_followings 实际调用 get_followers()，followings 接口在 cred1 层未被真实行使，修正调用为 get_followings 并核对返回结构断言
 - [X] T058 去除 `tests/test_creative_center.py` test_m / test_n 完全重复用例 per 宪法 IV 分层测试质量（unrequested）：两用例逐字重复，合并为单用例，保持 cred3 模块标注不变
+
+---
+
+## Phase 11: Convergence
+
+**Purpose**: $speckit-converge 二轮收敛（2026-09-26，T055–T058 完成提交 218de80 后的独立核验产出；核验证据：四项收敛任务实施达标、严格模式收集零漏标零错标、535/571 收集 + 36 个 cred3 剔除、lint.py 全量门禁全绿）
+
+- [ ] T059 复跑受 T055 / T057 影响的验收使 SC-002 / SC-003 在最终代码上闭合 per SC-002 / SC-003（partial）：V2 / V3 验收记录基于改动前用例体，8 个 cred2 配对用例（新增恢复断言与 changed 标志位）与 1 个 cred1 用例（test_l_User_get_followings 新增 list 结构断言）改造后未复跑；V3 期间已两次遭遇状态传播延迟类问题（评论根索引延迟、live 504），新增断言（如点赞后立即 has_liked 读回）存在同类抖动风险——以默认限速运行 `BILI_COUNT_REQUESTS=1 BILI_ABORT_ON_RISK=1 uv run pytest -m "cred0 or cred1 or cred2"` 全绿（V3 口径含六态零残留抽查），结果回填 quickstart.md 验收记录（V2 / V3 追加复跑条目，注明基于 218de80 后代码）
+- [X] T060 同步 data-model.md cred3 权威映射表与代码现状 per FR-002 / T054 映射表双向不漂移义务（partial）：cred3 节缺 `test_article.py` add_coins（资源消耗类，research R7）与 `test_audio.py` add_coins（资源消耗类，research R7）两行；`test_creative_center.py` 行 "整文件（19 用例）" 应更正为 18（T058 去重后）——代码侧归层均正确（用例注释已引据），仅权威表漂移
