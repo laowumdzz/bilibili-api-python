@@ -20,10 +20,12 @@ def u(credential) -> user.User:
     return user.User(UID_Model_Test, credential=credential)
 
 
+@pytest.mark.cred0
 async def test_a_User_get_user_info(u):
     await u.get_user_info()
 
 
+@pytest.mark.cred0
 async def test_b_User_get_relation_info(u):
     await u.get_relation_info()
 

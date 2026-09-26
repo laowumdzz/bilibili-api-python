@@ -44,6 +44,7 @@ async def test_b_Video_set_aid(video):
     video.set_aid(AID)
 
 
+@pytest.mark.cred0
 async def test_c_Video_get_info(video):
     await video.get_info()
 
@@ -52,6 +53,7 @@ async def test_c_Video_get_info(video):
 #     await video.get_stat()
 
 
+@pytest.mark.cred0
 async def test_e_Video_get_tags(video):
     await video.get_tags()
 
@@ -68,6 +70,7 @@ async def test_g_Video_get_chargers(video):
     await video.get_chargers()
 
 
+@pytest.mark.cred0
 async def test_h_Video_get_pages(video):
     await video.get_pages()
 

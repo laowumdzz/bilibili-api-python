@@ -1,8 +1,11 @@
 # bilibili_api.search
 
+import pytest
+
 from bilibili_api import search, video_zone
 
 
+@pytest.mark.cred0
 async def test_a_search():
     await search.search("这是他的笑容发生的变化")
 

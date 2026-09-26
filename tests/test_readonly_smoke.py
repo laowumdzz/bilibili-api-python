@@ -6,6 +6,7 @@
 # 文件名不以 test_offline_ 开头，因此同时带 integration 标记，会被全量集成任务覆盖。
 # 反爬虫与公开接口用例无需登录凭据；依赖凭据的用例由 credential fixture 在缺凭据时自动 skip，
 # 不阻塞无凭据贡献者（含 fork PR）。
+# 同时附加 cred0 核心冒烟层标记（readonly 语义不变，两者并存，FR-013）。
 
 import re
 
@@ -15,7 +16,7 @@ from bilibili_api import hot, user
 from bilibili_api.utils._api import get_bili_ticket, get_buvid, get_wbi_mixin_key
 from bilibili_api.utils._wbi import WbiManager
 
-pytestmark = pytest.mark.readonly
+pytestmark = [pytest.mark.readonly, pytest.mark.cred0]
 
 
 async def test_get_buvid():

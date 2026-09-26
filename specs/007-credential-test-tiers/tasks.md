@@ -47,11 +47,11 @@
 
 **Independent Test**: `BILI_COUNT_REQUESTS=1 uv run pytest -m cred0` 全部通过、零写操作、计数器读数 ≤ 30（quickstart V1）
 
-- [ ] T004 [P] [US1] `tests/test_readonly_smoke.py` 附加 cred0 标记（模块级 pytestmark 追加 `pytest.mark.cred0`，保留 readonly 标记不删，FR-013）
-- [ ] T005 [P] [US1] `tests/test_video.py` 为 get_info / get_pages / get_tags 三个用例加用例级 `@pytest.mark.cred0` 标记（data-model cred0 表）
-- [ ] T006 [P] [US1] `tests/test_user.py` 为 get_user_info / get_relation_info 两个用例加 `@pytest.mark.cred0`
-- [ ] T007 [P] [US1] `tests/test_search.py` 为基础搜索用例（test_a）加 `@pytest.mark.cred0`
-- [ ] T008 [US1] US1 独立验证（quickstart V1 / SC-001）：`BILI_COUNT_REQUESTS=1 uv run pytest -m cred0` 全绿、除缺凭据外零跳过、读数 ≤ 30，结果记录于 `specs/007-credential-test-tiers/quickstart.md` 验收核对表
+- [x] T004 [P] [US1] `tests/test_readonly_smoke.py` 附加 cred0 标记（模块级 pytestmark 追加 `pytest.mark.cred0`，保留 readonly 标记不删，FR-013）
+- [x] T005 [P] [US1] `tests/test_video.py` 为 get_info / get_pages / get_tags 三个用例加用例级 `@pytest.mark.cred0` 标记（data-model cred0 表）
+- [x] T006 [P] [US1] `tests/test_user.py` 为 get_user_info / get_relation_info 两个用例加 `@pytest.mark.cred0`
+- [x] T007 [P] [US1] `tests/test_search.py` 为基础搜索用例（test_a）加 `@pytest.mark.cred0`
+- [x] T008 [US1] US1 独立验证（quickstart V1 / SC-001）：`BILI_COUNT_REQUESTS=1 uv run pytest -m cred0` 全绿、除缺凭据外零跳过、读数 ≤ 30，结果记录于 `specs/007-credential-test-tiers/quickstart.md` 验收核对表
 
 **Checkpoint**: MVP 达成——单账号下核心冒烟层一条命令稳定全绿
 

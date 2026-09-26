@@ -91,3 +91,7 @@ uv run pytest -m readonly
 | V5 | SC-005 | 抽样单跑 100% 通过 |
 | V6 | SC-006 | 自动跳过、零网络、离线结果不变 |
 | V7 | FR-013 + 宪法 III | lint 全绿、readonly 不变 |
+
+## 验收结果记录
+
+- **V1（SC-001）** ✅ 2026-09-26：`BILI_COUNT_REQUESTS=1 uv run pytest -m cred0` → 12 passed / 0 failed / 0 skipped，计数器读数 14（api.bilibili.com 13 + space.bilibili.com 1）≤ 30，412 类风控响应 0。
