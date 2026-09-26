@@ -8,11 +8,13 @@
 """
 
 from functools import partial
+import json
 import os
 from pathlib import Path
 import sys
 import time
 import warnings
+from urllib.parse import urlsplit
 
 import pytest
 
@@ -34,6 +36,166 @@ _COOKIE_FIELD_MAP = {
     "buvid4": "buvid4",
     "DedeUserID": "dedeuserid",
 }
+
+# cred 分层标记全集（特性 007，"恰好一层"判据）
+_CRED_MARKERS = ("cred0", "cred1", "cred2", "cred3")
+
+
+class _RiskControlAbort(KeyboardInterrupt):
+    """BILI_ABORT_ON_RISK=1 时检测到 412 类风控响应，中止整个测试会话。
+
+    继承 KeyboardInterrupt 以复用 pytest 的会话中断语义：库代码的
+    `except Exception` 不会吞掉它，pytest 以 Interrupted 状态结束会话
+    （exit code 2），sessionfinish 钩子照常执行、计数摘要照常输出。
+    """
+
+
+class _RequestCounter:
+    """会话级请求计数器（contracts §6）：per-send 全计数 + 412 类风控响应统计。
+
+    计数口径为服务端视角全计数：对实际发送的每次 HTTP 请求计 1（含重试
+    每次尝试与反爬参数预取；凭据链校验 / 刷新请求计入总数），WebSocket
+    连接建立计 1、连接内消息与心跳不计。仅输出计数与域名维度汇总，
+    不输出任何凭据值。
+    """
+
+    def __init__(self) -> None:
+        self.enabled = os.getenv("BILI_COUNT_REQUESTS") == "1"
+        self.abort_on_risk = os.getenv("BILI_ABORT_ON_RISK") == "1"
+        self.total = 0
+        self.by_domain: dict[str, int] = {}
+        self.risk_total = 0
+
+    def record_request(self, url: str) -> None:
+        """记录一次实际发送的请求（url 仅用于域名维度归并，不落日志）。"""
+        self.total += 1
+        domain = urlsplit(url).netloc or "unknown"
+        self.by_domain[domain] = self.by_domain.get(domain, 0) + 1
+
+    def record_risk(self) -> None:
+        """记录一次 412 类风控响应（HTTP 412 状态码或 -352 等效错误码）。"""
+        self.risk_total += 1
+
+    def summary_lines(self) -> list[str]:
+        """生成终端摘要输出行（总计数 + 域名维度汇总 + 风控计数单列）。"""
+        lines = [f"请求计数摘要：总请求数 {self.total}"]
+        for domain, count in sorted(self.by_domain.items(), key=lambda kv: (-kv[1], kv[0])):
+            lines.append(f"  {domain}: {count}")
+        lines.append(f"412 类风控响应（HTTP 412 / -352 等效码）：{self.risk_total}")
+        return lines
+
+
+_REQUEST_COUNTER: _RequestCounter | None = None
+
+
+def _inspect_risk_response(resp: object, url: str) -> None:
+    """检查单个响应是否为 412 类风控响应，必要时计数并按开关中止会话。
+
+    判定：HTTP 状态码 412，或响应体 JSON 携带 -352 等效风控错误码。
+    """
+    counter = _REQUEST_COUNTER
+    assert counter is not None
+    is_risk = getattr(resp, "code", None) == 412
+    if not is_risk:
+        raw = getattr(resp, "raw", None)
+        if raw:
+            try:
+                body = json.loads(raw)
+            except (ValueError, UnicodeDecodeError):
+                body = None
+            is_risk = isinstance(body, dict) and body.get("code") == -352
+    if not is_risk:
+        return
+    counter.record_risk()
+    if counter.abort_on_risk:
+        raise _RiskControlAbort(
+            f"检测到 412 类风控响应（BILI_ABORT_ON_RISK=1），已中止整个测试会话：{url}"
+        )
+
+
+def _install_request_counter() -> None:
+    """在请求客户端抽象层安装 per-send 计数与风控响应挂钩。
+
+    对三个内置客户端的 request / ws_create / download_create 做类级包装：
+    request 每次调用计 1 并检查风控响应（重试的每次尝试自然各计 1），
+    ws_create（连接建立）与 download_create（每次下载）各计 1；
+    连接内消息与心跳不经过这些方法，不计入。缺省（两个开关均未设置）
+    不安装任何挂钩，零开销。
+    """
+    global _REQUEST_COUNTER
+    counter = _RequestCounter()
+    _REQUEST_COUNTER = counter
+    if not counter.enabled and not counter.abort_on_risk:
+        return
+    import importlib
+
+    # 逐客户端导入并包装：未安装的客户端库（如 curl_cffi）跳过即可
+    client_specs = [
+        ("bilibili_api.clients.AioHTTPClient", "AioHTTPClient"),
+        ("bilibili_api.clients.CurlCFFIClient", "CurlCFFIClient"),
+        ("bilibili_api.clients.HTTPXClient", "HTTPXClient"),
+    ]
+
+    def _extract_url(args: tuple[object, ...], kwargs: dict[str, object], index: int) -> str:
+        url = kwargs.get("url")
+        if url is None and len(args) > index:
+            url = args[index]
+        return str(url) if url else ""
+
+    def _wrap(cls: type, name: str, *, url_index: int, inspect: bool) -> None:
+        original = getattr(cls, name)
+        if getattr(original, "_bili_count_wrapped", False):
+            return
+
+        async def wrapped(self: object, *args: object, **kwargs: object) -> object:
+            counter.record_request(_extract_url(args, kwargs, url_index))
+            resp = await original(self, *args, **kwargs)
+            if inspect:
+                _inspect_risk_response(resp, _extract_url(args, kwargs, url_index))
+            return resp
+
+        wrapped._bili_count_wrapped = True  # type: ignore[attr-defined]
+        setattr(cls, name, wrapped)
+
+    for module_name, class_name in client_specs:
+        try:
+            cls = getattr(importlib.import_module(module_name), class_name)
+        except ImportError:
+            continue
+        _wrap(cls, "request", url_index=1, inspect=True)
+        # ws_create / download_create 的 url 是 self 后第一个位置参数
+        _wrap(cls, "ws_create", url_index=0, inspect=False)
+        _wrap(cls, "download_create", url_index=0, inspect=False)
+
+
+def _check_tier_marking(config: pytest.Config, items: list[pytest.Item]) -> None:
+    """收集期漏标 / 错标防护（特性 007 FR-001，contracts §4）。
+
+    经 item.fixturenames 传递闭包识别需凭据用例（闭包含模块级 fixture 对
+    credential 的间接依赖）：未携带任一 cred 标记、或携带多个 cred 标记
+    （违反"恰好一层"）均告警（消息含文件与用例名，不含凭据值）；
+    BILI_STRICT_TIERS=1 时升级为收集错误中止会话。收集期实现保证
+    --collect-only 下同样生效。
+    """
+    violations: list[str] = []
+    for item in items:
+        fixturenames = getattr(item, "fixturenames", None)
+        if fixturenames is None or "credential" not in fixturenames:
+            continue
+        tiers = [name for name in _CRED_MARKERS if item.get_closest_marker(name) is not None]
+        if not tiers:
+            violations.append(f"{item.nodeid}: 需凭据用例未标注任何 cred 层级标记（cred0-cred3）")
+        elif len(tiers) > 1:
+            violations.append(f"{item.nodeid}: 携带多个 cred 层级标记（{'/'.join(tiers)}），违反恰好一层约束")
+    if not violations:
+        return
+    if os.getenv("BILI_STRICT_TIERS") == "1":
+        raise pytest.UsageError(
+            "BILI_STRICT_TIERS=1 严格模式下发现 cred 分层标注问题（共 "
+            f"{len(violations)} 处）：\n" + "\n".join(violations)
+        )
+    for violation in violations:
+        warnings.warn(UserWarning(violation), stacklevel=2)
 
 
 class _SessionCredentialState:
@@ -131,10 +293,12 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 
 
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
-    """为离线文件之外的所有用例自动打 integration 标记。"""
+    """为离线文件之外的所有用例自动打 integration 标记，并执行 cred 分层收集期检查。"""
     for item in items:
         if not os.path.basename(str(item.path)).startswith("test_offline_"):
             item.add_marker(pytest.mark.integration)
+    # 漏标 / 错标防护 MUST 先于后续可能的 cred3 收集剔除执行，保证被剔除的 cred3 用例同样受检
+    _check_tier_marking(config, items)
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
@@ -145,6 +309,8 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     保证纯离线运行不产生任何网络请求。
     """
     config = session.config
+    # 请求计数器 / 风控中止开关装配（缺省关闭，零开销）
+    _install_request_counter()
     login_type: str | None = config.getoption("--login")
     if login_type is not None:
         fields = run_temp_login(login_type, notify=partial(_notify, config), prompt=partial(_prompt, config))
@@ -169,6 +335,15 @@ def pytest_sessionstart(session: pytest.Session) -> None:
         )
     else:
         _SESSION_STATE.cache_fields = result.fields
+
+
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int | pytest.ExitCode) -> None:
+    """会话结束时输出请求计数摘要（仅 BILI_COUNT_REQUESTS=1 启用时；不含任何凭据值）。"""
+    counter = _REQUEST_COUNTER
+    if counter is None or not counter.enabled:
+        return
+    for line in counter.summary_lines():
+        _notify(session.config, line)
 
 
 @pytest.fixture(scope="session", autouse=True)
