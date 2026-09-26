@@ -82,6 +82,10 @@ asyncio_default_fixture_loop_scope = "function"
 markers = [
     "integration: 需要真实 B 站凭据（BILI_* 环境变量）的集成测试，缺凭据时自动 skip",
     "readonly: 只读集成测试子集（仅 GET 式读请求与反爬虫参数获取，无写操作），参与 PR 快速回路",
+    "cred0: 核心冒烟层（只读、≤30 请求、单账号必全绿）",
+    "cred1: 核心读回归层（只读，与 cred0 合计 ≤400 请求）",
+    "cred2: 自清理写生命周期层（六态零残留）",
+    "cred3: 高危显式门控层（真金 / 破坏性 / 身份特定；默认收集即排除，仅显式点名执行）",
 ]
 
 [tool.ruff]
