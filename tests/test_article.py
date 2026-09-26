@@ -48,6 +48,8 @@ async def test_d_Article_set_favorite(ar):
     await ar.set_favorite(False)
 
 
+# 资源消耗类（文章投币，消耗硬币资源，research R7）→ cred3
+@pytest.mark.cred3
 async def test_e_Article_add_coins(ar):
     try:
         await ar.add_coins()

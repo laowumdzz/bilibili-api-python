@@ -139,6 +139,7 @@ async def test_t_Video_get_history_danmaku_index(video):
     await video.get_history_danmaku_index(0, datetime.date(2022, 9, 1))
 
 
+@pytest.mark.cred3
 async def test_u_Video_send_danmaku(video):
     dm = Danmaku("TESTING" + str(int(time.time())))
     await video.send_danmaku(0, dm)
@@ -158,6 +159,7 @@ async def test_v_Video_like(video):
             raise e
 
 
+@pytest.mark.cred3
 async def test_w_Video_pay_coin(video):
     try:
         await video.pay_coin(2)
@@ -232,6 +234,7 @@ async def test_zf_get_subtitle(credential):
     await videos.get_subtitle(cid=281031471)
 
 
+@pytest.mark.cred3
 async def test_zg_triple(video):
     await video.triple()
 

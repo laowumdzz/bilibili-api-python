@@ -192,10 +192,12 @@ async def test_zc_get_toview_list(credential):
     await user.get_toview_list(credential)
 
 
+@pytest.mark.cred3
 async def test_zd_delete_viewed_video_in_toview_list(credential):
     await user.delete_viewed_videos_from_toview(credential)
 
 
+@pytest.mark.cred3
 async def test_ze_clean_toview_list(credential):
     await user.clear_toview_list(credential)
 

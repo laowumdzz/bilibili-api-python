@@ -93,6 +93,7 @@ async def test_o_get_live_user_medal_rank():
     await rank.get_live_user_medal_rank()
 
 
+@pytest.mark.cred3
 async def test_p_subscribe_music_rank(credential):
     await rank.subscribe_music_rank(status=True, credential=credential)
 

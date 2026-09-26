@@ -118,15 +118,15 @@ teardown 义务（FR-006，适用于本阶段全部生命周期任务）：无�
 
 ⚠️ 执行顺序红线：T036（收集排除逻辑）MUST 先于本阶段全部标注任务落地，防止标注后默认运行仍执行高危用例
 
-- [ ] T036 [US4] `tests/conftest.py` 实现 cred3 收集期排除（contracts §3）：在现有 `pytest_collection_modifyitems` 中新增规则——`config.option.markexpr` 含 token `cred3` 时保留，否则收集阶段剔除（deselect，非 skip）全部 cred3 用例，并经 terminal writer 输出一行剔除计数提示（如"已排除 N 个 cred3 高危用例（显式执行：pytest -m cred3）"）。同钩子内执行顺序：T002 的漏标/错标检查 MUST 先于本剔除规则，保证被剔除的 cred3 用例标注同样受检（T051 依赖）
-- [ ] T037 [P] [US4] `tests/test_video.py` send_danmaku、pay_coin、triple 加 `@pytest.mark.cred3`（无删除配对 / 资源消耗类，data-model 安全策略表）
-- [ ] T038 [P] [US4] `tests/test_live.py` 高危组加 `@pytest.mark.cred3`：弹幕发送 ×2、金/银/背包礼物、人气票、create_live_reserve；get_black_list→ban→unban 链（black_list 全局变量）合并为单用例后标 cred3
-- [ ] T039 [P] [US4] `tests/test_session.py` send_msg 加 `@pytest.mark.cred3`
-- [ ] T040 [P] [US4] `tests/test_creative_center.py` 整文件加模块级 `pytestmark = pytest.mark.cred3`（身份特定类，FR-007）
-- [ ] T041 [P] [US4] `tests/test_rank.py` subscribe_music_rank、`tests/test_user.py` clear_toview_list 与 delete_viewed_videos_from_toview 加 `@pytest.mark.cred3`（公开发布无清理 / 破坏性类）
-- [ ] T042 [P] [US4] `tests/test_vote.py` create→update 合并为单用例（消除 vote_id 全局依赖）并加 `@pytest.mark.cred3`（无删除 API）
-- [ ] T043 [P] [US4] 新增 `tests/test_offline_cred_tier_selection.py` 离线单测：构造带/不带 cred3 标记的收集项 × markexpr 含/不含 cred3 的四象限断言 deselect 行为与剔除计数；漏标（零 cred 标记）与错标（多 cred 标记）防护判定逻辑（不触网、不依赖真实凭据，符合宪法 IV 离线层边界）
-- [ ] T044 [US4] US4 独立验证（quickstart V4 / SC-004）：默认 `uv run pytest --collect-only -q` 输出剔除计数提示行（N > 0）；`uv run pytest -m cred3 --collect-only -q` 收集数恰为 N，两者互证"收集即排除"（收集节点 ID 不含 marker 名，禁用 `grep -c cred3` 口径）
+- [x] T036 [US4] `tests/conftest.py` 实现 cred3 收集期排除（contracts §3）：在现有 `pytest_collection_modifyitems` 中新增规则——`config.option.markexpr` 含 token `cred3` 时保留，否则收集阶段剔除（deselect，非 skip）全部 cred3 用例，并经 terminal writer 输出一行剔除计数提示（如"已排除 N 个 cred3 高危用例（显式执行：pytest -m cred3）"）。同钩子内执行顺序：T002 的漏标/错标检查 MUST 先于本剔除规则，保证被剔除的 cred3 用例标注同样受检（T051 依赖）
+- [x] T037 [P] [US4] `tests/test_video.py` send_danmaku、pay_coin、triple 加 `@pytest.mark.cred3`（无删除配对 / 资源消耗类，data-model 安全策略表）
+- [x] T038 [P] [US4] `tests/test_live.py` 高危组加 `@pytest.mark.cred3`：弹幕发送 ×2、金/银/背包礼物、人气票、create_live_reserve；get_black_list→ban→unban 链（black_list 全局变量）合并为单用例后标 cred3
+- [x] T039 [P] [US4] `tests/test_session.py` send_msg 加 `@pytest.mark.cred3`
+- [x] T040 [P] [US4] `tests/test_creative_center.py` 整文件加模块级 `pytestmark = pytest.mark.cred3`（身份特定类，FR-007）
+- [x] T041 [P] [US4] `tests/test_rank.py` subscribe_music_rank、`tests/test_user.py` clear_toview_list 与 delete_viewed_videos_from_toview 加 `@pytest.mark.cred3`（公开发布无清理 / 破坏性类）
+- [x] T042 [P] [US4] `tests/test_vote.py` create→update 合并为单用例（消除 vote_id 全局依赖）并加 `@pytest.mark.cred3`（无删除 API）
+- [x] T043 [P] [US4] 新增 `tests/test_offline_cred_tier_selection.py` 离线单测：构造带/不带 cred3 标记的收集项 × markexpr 含/不含 cred3 的四象限断言 deselect 行为与剔除计数；漏标（零 cred 标记）与错标（多 cred 标记）防护判定逻辑（不触网、不依赖真实凭据，符合宪法 IV 离线层边界）
+- [x] T044 [US4] US4 独立验证（quickstart V4 / SC-004）：默认 `uv run pytest --collect-only -q` 输出剔除计数提示行（N > 0）；`uv run pytest -m cred3 --collect-only -q` 收集数恰为 N，两者互证"收集即排除"（收集节点 ID 不含 marker 名，禁用 `grep -c cred3` 口径）
 
 **Checkpoint**: 高危操作与常规路径物理隔离，默认运行物理安全
 

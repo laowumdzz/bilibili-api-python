@@ -20,6 +20,7 @@ async def test_c_get_new_sessions(credential):
     await session.new_sessions(credential)
 
 
+@pytest.mark.cred3
 async def test_d_send_msg(credential):
     try:
         await session.send_msg(credential, 1666311555, session.EventType.TEXT, "THIS IS A TEST MSG. ")

@@ -36,6 +36,8 @@ async def test_d_Audio_get_download_url(audio):
     await audio.get_download_url()
 
 
+# 资源消耗类（音频投币，消耗硬币资源，research R7）→ cred3
+@pytest.mark.cred3
 async def test_e_Audio_add_coins(audio):
     try:
         await audio.add_coins()

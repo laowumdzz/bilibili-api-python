@@ -1,7 +1,12 @@
 # bilibili_api.creative_center
 
+import pytest
+
 from bilibili_api import creative_center
 from bilibili_api.exceptions import NetworkException, ResponseCodeException
+
+# 创作中心全量接口需 UP 主身份（身份特定类，FR-007 / data-model 安全策略表），整文件标 cred3
+pytestmark = pytest.mark.cred3
 
 
 async def test_a_get_compare(credential):

@@ -65,37 +65,33 @@ async def test_j_get_danmu_info(room):
     await room.get_danmu_info()
 
 
-async def test_k_ban_user(room):
-    try:
-        await room.ban_user(1, 1)
-    except ResponseCodeException as e:
-        # 1200000 / 100004：当前账号非该直播间房管，无禁言权限（账号状态问题，非本库 bug）
-        if e.code not in (1200000, 100004):
-            raise e
+@pytest.mark.cred3
+async def test_k_black_list_lifecycle(room):
+    """房管黑名单链合并单用例：查询 → 禁言 → 解禁（cred3 身份特定类，消除 black_list 全局依赖）。
 
-
-black_list = None
-
-
-async def test_l_get_black_list(room):
-    global black_list
+    需要房管身份才能完整执行；当前账号非房管时按身份容错码放行（账号状态问题，非本库 bug）。
+    """
     try:
         black_list = await room.get_black_list()
     except ResponseCodeException as e:
         # 10002 / 100004：当前账号非该直播间管理员，无黑名单权限（账号状态问题，非本库 bug）
         if e.code not in (10002, 100004):
             raise e
+        black_list = None
+    try:
+        await room.ban_user(1, 1)
+    except ResponseCodeException as e:
+        # 1200000 / 100004：当前账号非该直播间房管，无禁言权限（账号状态问题，非本库 bug）
+        if e.code not in (1200000, 100004):
+            raise e
+    if black_list is not None:
+        for item in black_list["data"]:
+            if item["tuid"] == 1:
+                await room.unban_user(item["id"])
+                break
 
 
-async def test_m_unban_user(room):
-    if black_list is None:
-        return
-    for item in black_list["data"]:
-        if item["tuid"] == 1:
-            await room.unban_user(item["id"])
-            return
-
-
+@pytest.mark.cred3
 async def test_n_send_danmaku(room):
     await room.send_danmaku(Danmaku(f"test_{random.randint(10000, 99999)}"))
 
@@ -107,6 +103,7 @@ async def test_p_sign_up_dahanghai(room):
     await room.sign_up_dahanghai()
 
 
+@pytest.mark.cred3
 async def test_q_send_gift_from_bag(room):
     try:
         await room.send_gift_from_bag(5702480, 255051127, 30607, 1)
@@ -170,6 +167,7 @@ async def test_x_get_gift_common(room):
 #     await room.get_gift_special(tab_id=2)
 
 
+@pytest.mark.cred3
 async def test_z_send_gift_gold(room):
     try:
         await room.send_gift_gold(5702480, 31060, 1, 100)
@@ -178,6 +176,7 @@ async def test_z_send_gift_gold(room):
             raise e
 
 
+@pytest.mark.cred3
 async def test_za_send_gift_silver(room):
     try:
         await room.send_gift_silver(5702480, 1, 1, 100)
@@ -206,6 +205,8 @@ async def test_zd_get_unlive_followers_info(credential):
     await live.get_unlive_followers_info(page=1, credential=credential)
 
 
+# 公开发布类（直播预约创建，对外可见且无删除配对）→ cred3（data-model 安全策略表）
+@pytest.mark.cred3
 async def test_ze_get_following_live(credential):
     await live.create_live_reserve(
         credential=credential,
@@ -219,6 +220,7 @@ async def test_zf_get_get_popular_ticket_num(room):
     await room.get_popular_ticket_num()
 
 
+@pytest.mark.cred3
 async def test_zg_popular_rank_free_score_incr(room):
     await room.send_popular_ticket()
 
@@ -228,5 +230,6 @@ async def test_zh_get_emoticons(room):
     await room.get_emoticons()
 
 
+@pytest.mark.cred3
 async def test_zi_send_emoticon(room):
     await room.send_danmaku(Danmaku("official_147"))

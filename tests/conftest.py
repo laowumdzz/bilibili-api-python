@@ -12,6 +12,7 @@ import asyncio
 import json
 import os
 from pathlib import Path
+import re
 import sys
 import time
 import warnings
@@ -293,13 +294,39 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
 
+def _cred3_markexpr_present(markexpr: str | None) -> bool:
+    """判断 -m 表达式是否含 token cred3（contracts §3：含 cred3 即保留，混排表达式同样生效）。"""
+    if not markexpr:
+        return False
+    return re.search(r"\bcred3\b", markexpr) is not None
+
+
+def _deselect_cred3(config: pytest.Config, items: list[pytest.Item]) -> None:
+    """cred3 收集期剔除（特性 007 FR-003 / contracts §3）。
+
+    -m 表达式不含 cred3 token 时（含无 -m 的默认运行），收集阶段即剔除
+    （deselect，非 skip）全部 cred3 用例，并向终端输出一行剔除计数提示；
+    显式点名（-m cred3 或混排表达式含 cred3）时保留。
+    """
+    if _cred3_markexpr_present(config.option.markexpr):
+        return
+    deselected = [item for item in items if item.get_closest_marker("cred3") is not None]
+    if not deselected:
+        return
+    config.hook.pytest_deselected(items=deselected)
+    items[:] = [item for item in items if item.get_closest_marker("cred3") is None]
+    _notify(config, f"已排除 {len(deselected)} 个 cred3 高危用例（显式执行：pytest -m cred3）")
+
+
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
     """为离线文件之外的所有用例自动打 integration 标记，并执行 cred 分层收集期检查。"""
     for item in items:
         if not os.path.basename(str(item.path)).startswith("test_offline_"):
             item.add_marker(pytest.mark.integration)
-    # 漏标 / 错标防护 MUST 先于后续可能的 cred3 收集剔除执行，保证被剔除的 cred3 用例同样受检
+    # 漏标 / 错标防护 MUST 先于 cred3 收集剔除执行，保证被剔除的 cred3 用例同样受检（FR-001 / T051）
     _check_tier_marking(config, items)
+    # cred3 高危层默认收集即排除（FR-003 / contracts §3）
+    _deselect_cred3(config, items)
 
 
 def pytest_sessionstart(session: pytest.Session) -> None:
