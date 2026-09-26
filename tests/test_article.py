@@ -31,21 +31,35 @@ async def test_b_Article_json_get_content(ar):
 
 
 @pytest.mark.cred2
-async def test_c_Article_set_like(ar):
-    # 可逆写配对单用例：点赞后立即取消点赞（FR-006 配对恢复）
+async def test_c_Article_set_like(ar, teardown_retry):
+    # 可逆写配对单用例：点赞后立即取消点赞（FR-006 配对恢复）；取消点赞为
+    # teardown 级清理义务（finally + teardown_retry，失败明确残留警告）
+    changed = False
     try:
-        await ar.set_like()
-        await ar.set_like(False)
-    except ResponseCodeException as e:
-        if e.code not in (65006,):
-            raise e
+        try:
+            await ar.set_like()
+        except ResponseCodeException as e:
+            # 65006：初始已点赞，状态未变，无需恢复
+            if e.code != 65006:
+                raise e
+        else:
+            changed = True
+    finally:
+        if changed:
+            await teardown_retry("文章点赞残留（article_id=17973349）", lambda: ar.set_like(False))
 
 
 @pytest.mark.cred2
-async def test_d_Article_set_favorite(ar):
-    # 可逆写配对单用例：收藏后补取消收藏调用（FR-006 配对恢复，原用例缺失取消步）
-    await ar.set_favorite()
-    await ar.set_favorite(False)
+async def test_d_Article_set_favorite(ar, teardown_retry):
+    # 可逆写配对单用例：收藏后取消收藏（FR-006 配对恢复）；取消收藏为
+    # teardown 级清理义务（finally + teardown_retry，失败明确残留警告）
+    changed = False
+    try:
+        await ar.set_favorite()
+        changed = True
+    finally:
+        if changed:
+            await teardown_retry("文章收藏残留（article_id=17973349）", lambda: ar.set_favorite(False))
 
 
 # 资源消耗类（文章投币，消耗硬币资源，research R7）→ cred3

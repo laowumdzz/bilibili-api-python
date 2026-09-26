@@ -85,11 +85,16 @@ async def test_k_User_get_followers(u):
 
 @pytest.mark.cred1
 async def test_l_User_get_followings(u):
+    # 修正调用错位（T057）：用例名为 get_followings，实际行使 followings 读接口并核对返回结构
     try:
-        await u.get_followers()
+        result = await u.get_followings()
     except ResponseCodeException as e:
+        # 22115：关注列表数量过多（上游限制，既有容错码保留）
         if e.code != 22115:
             raise e
+    else:
+        assert "list" in result, "关注列表返回应含 list 字段"
+        assert isinstance(result["list"], list), "关注列表 list 应为列表"
 
 
 @pytest.mark.cred1
@@ -128,11 +133,20 @@ async def test_s_User_get_overview_stat(u):
 
 
 @pytest.mark.cred2
-async def test_t_User_modify_relation(u):
-    # 可逆写配对单用例：关注后立即取关（FR-006 配对恢复），顺序无关（FR-009）
-    await u.modify_relation(user.RelationType.SUBSCRIBE)
-    await u.modify_relation(user.RelationType.UNSUBSCRIBE)
-    await asyncio.sleep(0.5)
+async def test_t_User_modify_relation(u, teardown_retry):
+    # 可逆写配对单用例：关注后立即取关（FR-006 配对恢复，FR-009 顺序无关）；取关为
+    # teardown 级清理义务（finally + teardown_retry，失败明确残留警告）
+    changed = False
+    try:
+        await u.modify_relation(user.RelationType.SUBSCRIBE)
+        changed = True
+        await asyncio.sleep(0.5)
+    finally:
+        if changed:
+            await teardown_retry(
+                f"关注残留（mid={UID_Model_Test}）",
+                lambda: u.modify_relation(user.RelationType.UNSUBSCRIBE),
+            )
 
 
 @pytest.mark.cred1

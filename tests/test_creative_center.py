@@ -62,10 +62,7 @@ async def test_l_get_article_rank(credential):
 
 
 async def test_m_get_video_draft_upload_manager_info(credential):
-    await creative_center.get_video_draft_upload_manager_info(credential)
-
-
-async def test_n_get_video_draft_upload_manager_info(credential):
+    # 与原 test_n 逐字重复（T058），合并为单用例（宪法 IV 分层测试质量）
     await creative_center.get_video_draft_upload_manager_info(credential)
 
 

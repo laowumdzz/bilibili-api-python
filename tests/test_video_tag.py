@@ -25,7 +25,13 @@ async def test_b_get_similar_tags(tag):
 
 
 @pytest.mark.cred2
-async def test_d_subscribe_tag(tag):
-    # 可逆写配对单用例：订阅后立即取消订阅（FR-006 配对恢复，FR-009 顺序无关）
-    await tag.subscribe_tag()
-    await tag.unsubscribe_tag()
+async def test_d_subscribe_tag(tag, teardown_retry):
+    # 可逆写配对单用例：订阅后立即取消订阅（FR-006 配对恢复，FR-009 顺序无关）；
+    # 取消订阅为 teardown 级清理义务（finally + teardown_retry，失败明确残留警告）
+    changed = False
+    try:
+        await tag.subscribe_tag()
+        changed = True
+    finally:
+        if changed:
+            await teardown_retry("标签订阅残留（tag_name=真白花音）", tag.unsubscribe_tag)

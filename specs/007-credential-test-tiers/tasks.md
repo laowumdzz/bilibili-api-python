@@ -240,3 +240,14 @@ Task: "T043 新增 tests/test_offline_cred_tier_selection.py"
 - 验收运行环境口径（SC-002）：默认限速 + 单一共享账号；cred3 永不真机执行
 - `tests/conftest.py` 的既有凭据装配链（--login > TEMP 缓存 > BILI_* > .bilibili.cookie）与缺凭据 skip 语义全程不动
 - 离线套件行为基线：T022 更名后 `uv run pytest -m "not integration"` 用例数 +2（原 initial_state 2 个并入），其余结果应与重构前一致
+
+---
+
+## Phase 10: Convergence
+
+**Purpose**: $speckit-converge 差距收敛（2026-09-26，实现与 V1–V7 验收完成后的独立核验产出；核验证据：严格模式收集检查零漏标零错标、535/572 收集 + 37 个 cred3 剔除、离线套件 281 通过 0 失败）
+
+- [X] T055 补齐 8 个配对型 cred2 写用例的 teardown 级清理义务与恢复断言 per FR-006 / US3 / 检查单 CHK021 裁决（partial）：`tests/test_video.py`（点赞 on/off、稍后再看增删）、`tests/test_article.py`（set_like / set_favorite）、`tests/test_dynamic.py`（set_like）、`tests/test_topic.py`（like / set_favorite）、`tests/test_video_tag.py`（订阅 / 取消）、`tests/test_manga.py`（set_follow_manga）、`tests/test_user.py`（modify_relation 订阅 / 取关）——恢复调用移入 try/finally（或经 conftest 的 teardown_retry），恢复结果加断言或失败时明确残留警告；参照已达标的 `tests/test_video.py` set_favorite 用例（双向断言）与三个生命周期用例（try/finally + teardown_retry）写法
+- [X] T056 修正 `tests/test_live.py` 直播预约用例名实不符 per T038（partial）：test_ze_get_following_live 实际调用 create_live_reserve（重构遗留旧名），改名为 test_zf_create_live_reserve 或按意图恢复 following 读取断言为独立用例
+- [X] T057 修正 `tests/test_user.py` test_l_User_get_followings 调用错位 per US2 读回归覆盖（unrequested）：用例名为 get_followings 实际调用 get_followers()，followings 接口在 cred1 层未被真实行使，修正调用为 get_followings 并核对返回结构断言
+- [X] T058 去除 `tests/test_creative_center.py` test_m / test_n 完全重复用例 per 宪法 IV 分层测试质量（unrequested）：两用例逐字重复，合并为单用例，保持 cred3 模块标注不变

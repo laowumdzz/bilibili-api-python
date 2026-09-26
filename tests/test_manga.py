@@ -15,10 +15,19 @@ def comic(credential) -> manga.Manga:
 
 
 @pytest.mark.cred2
-async def test_d_set_follow_manga(comic):
-    # 可逆写配对单用例：追漫后取消追漫（FR-006 配对恢复）
-    await manga.set_follow_manga(manga=comic, status=True)
-    await manga.set_follow_manga(manga=comic, status=False)
+async def test_d_set_follow_manga(comic, teardown_retry):
+    # 可逆写配对单用例：追漫后取消追漫（FR-006 配对恢复）；取消追漫为
+    # teardown 级清理义务（finally + teardown_retry，失败明确残留警告）
+    changed = False
+    try:
+        await manga.set_follow_manga(manga=comic, status=True)
+        changed = True
+    finally:
+        if changed:
+            await teardown_retry(
+                f"追漫残留（manga_id={comic.get_manga_id()}）",
+                lambda: manga.set_follow_manga(manga=comic, status=False),
+            )
 
 
 # async def test_e_get_manga_index(credential):

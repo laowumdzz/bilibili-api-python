@@ -53,15 +53,22 @@ async def test_f_Dynamic_get_reposts(dy):
 
 
 @pytest.mark.cred2
-async def test_g_Dynamic_set_like(dy):
-    # 可逆写配对单用例：点赞后补取消点赞调用，结束态为未点赞（FR-006 配对恢复）
+async def test_g_Dynamic_set_like(dy, teardown_retry):
+    # 可逆写配对单用例：点赞后取消点赞，结束态为未点赞（FR-006 配对恢复）；取消点赞为
+    # teardown 级清理义务（finally + teardown_retry，失败明确残留警告）
+    changed = False
     try:
-        await dy.set_like()
-        await dy.set_like(False)
-    except ResponseCodeException as e:
-        # 65006：重复点赞 / 取消未点赞（幂等目标态，容忍）
-        if e.code != 65006:
-            raise
+        try:
+            await dy.set_like()
+        except ResponseCodeException as e:
+            # 65006：初始已点赞，状态未变，无需恢复
+            if e.code != 65006:
+                raise
+        else:
+            changed = True
+    finally:
+        if changed:
+            await teardown_retry("动态点赞残留（dynamic_id=959229822831165446）", lambda: dy.set_like(False))
 
 
 # async def test_i_Dynamic_delete(dy):

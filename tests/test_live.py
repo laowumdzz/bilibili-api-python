@@ -207,7 +207,9 @@ async def test_zd_get_unlive_followers_info(credential):
 
 # 公开发布类（直播预约创建，对外可见且无删除配对）→ cred3（data-model 安全策略表）
 @pytest.mark.cred3
-async def test_ze_get_following_live(credential):
+async def test_ze_create_live_reserve(credential):
+    # 修正名实不符（T056）：原用例名 test_ze_get_following_live 为重构遗留旧名，
+    # 实际调用 create_live_reserve；following 读取覆盖由 test_zc / test_zd 承担
     await live.create_live_reserve(
         credential=credential,
         title="测试",
