@@ -1,5 +1,6 @@
 # bilibili_api.video
 
+import asyncio
 import datetime
 import time
 
@@ -147,23 +148,33 @@ async def test_u_Video_send_danmaku(video):
 @pytest.mark.cred2
 async def test_v_Video_like(video, teardown_retry):
     # 可逆写配对单用例：先探测初始点赞态，完成一次点赞 / 取消点赞配对（FR-006 配对恢复）；
-    # 恢复为 teardown 级清理义务（finally + teardown_retry，失败明确残留警告，检查单 CHK021 裁决）
-    was_liked = await video.has_liked()
+    # 恢复为 teardown 级清理义务（finally + teardown_retry，失败明确残留警告，检查单 CHK021 裁决）。
+    # 读回断言带状态传播等待（T059 复跑实证：like 写入后立即 has_liked 读回可能读到
+    # 未传播的旧值，与评论根索引延迟同类）
+
+    async def _assert_liked(expected: bool, what: str) -> None:
+        for _ in range(5):
+            if bool(await video.has_liked()) == expected:
+                return
+            await asyncio.sleep(1)
+        raise AssertionError(f"{what}（等待 5s 后 has_liked 仍与预期不符）")
+
+    was_liked = bool(await video.has_liked())
     try:
         if was_liked:
             # 初始已点赞：取消 → 断言生效 → finally 加回（恢复初始态）
             await video.like(False)
-            assert not await video.has_liked(), "取消点赞后 has_liked 应为 False"
+            await _assert_liked(False, "取消点赞后 has_liked 应为 False")
         else:
             # 初始未点赞：点赞 → 断言生效 → finally 取消（恢复初始态）
             await video.like(True)
-            assert await video.has_liked(), "点赞后 has_liked 应为 True"
+            await _assert_liked(True, "点赞后 has_liked 应为 True")
     finally:
         if was_liked:
             await teardown_retry(f"视频取消点赞残留（aid={AID}）", lambda: video.like(True))
         else:
             await teardown_retry(f"视频点赞残留（aid={AID}）", lambda: video.like(False))
-    assert await video.has_liked() == was_liked, "结束点赞态应与运行前一致"
+    await _assert_liked(was_liked, "结束点赞态应与运行前一致")
 
 
 @pytest.mark.cred3
