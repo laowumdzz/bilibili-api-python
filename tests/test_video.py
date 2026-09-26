@@ -1,6 +1,5 @@
 # bilibili_api.video
 
-import asyncio
 import datetime
 import time
 

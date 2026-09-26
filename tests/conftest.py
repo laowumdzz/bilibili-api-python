@@ -10,16 +10,16 @@
 显式设置该环境变量（含 0 关闭限速）按设置值生效。
 """
 
-from functools import partial
 import asyncio
+from functools import partial
 import json
 import os
 from pathlib import Path
 import re
 import sys
 import time
-import warnings
 from urllib.parse import urlsplit
+import warnings
 
 import pytest
 
@@ -416,7 +416,7 @@ def teardown_retry():
             try:
                 await step()
                 return
-            except Exception as e:  # noqa: BLE001  # 清理兜底：任何清理失败都不得逃逸掩盖原始失败
+            except Exception as e:  # 清理兜底：任何清理失败都不得逃逸掩盖原始失败
                 last_exc = e
                 await asyncio.sleep(1.0)
         warnings.warn(

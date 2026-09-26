@@ -162,12 +162,12 @@ teardown 义务（FR-006，适用于本阶段全部生命周期任务）：无�
 
 **Purpose**: 文档、CI、门禁与全量验收
 
-- [ ] T049 [P] 重写 `AGENTS.md` 测试节（FR-014）：四级体系与各级判据、命令矩阵（照抄 contracts §2）、账号安全策略五类判定表 + 白名单治理（封闭枚举/证据义务/从严回退，照抄 data-model）、限速默认 1.5 与覆盖、请求计数口径、已知集成覆盖缺口条目（login_v2 集成、视频上传链路——spec Assumptions 指定的追踪去向）
-- [ ] T050 [P] 核对 `.github/workflows/ci.yml`：readonly 任务行为不变（`pytest -m readonly`）；schedule/manual 的 integration 任务改用 `pytest -m "cred0 or cred1 or cred2"` 口径（保持可回退注释）
-- [ ] T051 以 `BILI_STRICT_TIERS=1 uv run pytest --collect-only -q` 终态检查零漏标与零错标（FR-001"恰好一层"严格门禁；收集期检查对全部用例生效——含被剔除的 cred3 用例，无需凭据与网络，退出码 0 即通过）
-- [ ] T052 运行 `uv run python scripts/lint.py` 全绿（宪法 III 强制门禁：ruff check / format / tests-scripts 阻断检查 / pyrefly / 文档漂移）
-- [ ] T053 全量验收：按 `specs/007-credential-test-tiers/quickstart.md` V1–V7 逐场景执行，结果回填验收核对表（SC-001 ~ SC-007 全项），V4 采用收集口径不真机执行 cred3
-- [ ] T054 [P] 映射表漂移终检：以 `grep -c "pytest.mark.cred" tests/*.py` 统计各文件标注数，与 `specs/007-credential-test-tiers/data-model.md` 权威分层映射表逐文件比对，修正任一侧漂移
+- [x] T049 [P] 重写 `AGENTS.md` 测试节（FR-014）：四级体系与各级判据、命令矩阵（照抄 contracts §2）、账号安全策略五类判定表 + 白名单治理（封闭枚举/证据义务/从严回退，照抄 data-model）、限速默认 1.5 与覆盖、请求计数口径、已知集成覆盖缺口条目（login_v2 集成、视频上传链路——spec Assumptions 指定的追踪去向）
+- [x] T050 [P] 核对 `.github/workflows/ci.yml`：readonly 任务行为不变（`pytest -m readonly`）；schedule/manual 的 integration 任务改用 `pytest -m "cred0 or cred1 or cred2"` 口径（保持可回退注释）
+- [x] T051 以 `BILI_STRICT_TIERS=1 uv run pytest --collect-only -q` 终态检查零漏标与零错标（FR-001"恰好一层"严格门禁；收集期检查对全部用例生效——含被剔除的 cred3 用例，无需凭据与网络，退出码 0 即通过）
+- [x] T052 运行 `uv run python scripts/lint.py` 全绿（宪法 III 强制门禁：ruff check / format / tests-scripts 阻断检查 / pyrefly / 文档漂移）
+- [x] T053 全量验收：按 `specs/007-credential-test-tiers/quickstart.md` V1–V7 逐场景执行，结果回填验收核对表（SC-001 ~ SC-007 全项），V4 采用收集口径不真机执行 cred3
+- [x] T054 [P] 映射表漂移终检：以 `grep -c "pytest.mark.cred" tests/*.py` 统计各文件标注数，与 `specs/007-credential-test-tiers/data-model.md` 权威分层映射表逐文件比对，修正任一侧漂移
 
 ---
 
