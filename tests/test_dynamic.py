@@ -33,14 +33,17 @@ def dy(credential) -> dynamic.Dynamic:
 # 见L61
 
 
+@pytest.mark.cred1
 async def test_b_get_schedules_list(credential):
     await dynamic.get_schedules_list(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_e_Dynamic_get_info(dy):
     await dy.get_info()
 
 
+@pytest.mark.cred1
 async def test_f_Dynamic_get_reposts(dy):
     try:
         await dy.get_reposts()
@@ -63,30 +66,37 @@ async def test_g_Dynamic_set_like(dy):
 # 暂时停止动态发送、删除相关操作
 
 
+@pytest.mark.cred1
 async def test_j_get_new_dynamic_users(credential):
     await dynamic.get_new_dynamic_users(credential)
 
 
+@pytest.mark.cred1
 async def test_k_get_live_users(credential):
     await dynamic.get_live_users(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_l_get_dynamic_page_UPs_info(credential):
     await dynamic.get_dynamic_page_UPs_info(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_m_get_dynamic_page_info_by_type(credential):
     await dynamic.get_dynamic_page_info(credential=credential, _type=dynamic.DynamicType.ALL)
 
 
+@pytest.mark.cred1
 async def test_n_get_dynamic_page_info_by_mid(credential):
     await dynamic.get_dynamic_page_info(credential=credential, host_mid=12434430)
 
 
+@pytest.mark.cred1
 async def test_p_get_reaction(dy):
     await dy.get_reaction()
 
 
+@pytest.mark.cred1
 async def test_q_get_lottery_info(dy):
     try:
         await dy.get_lottery_info()

@@ -30,34 +30,42 @@ async def test_b_User_get_relation_info(u):
     await u.get_relation_info()
 
 
+@pytest.mark.cred1
 async def test_c_User_get_up_info(u):
     await u.get_up_stat()
 
 
+@pytest.mark.cred1
 async def test_d_User_get_live_info(u):
     await u.get_live_info()
 
 
+@pytest.mark.cred1
 async def test_e_User_get_videos(u):
     await u.get_videos()
 
 
+@pytest.mark.cred1
 async def test_e_User_get_media_list(u):
     await u.get_media_list()
 
 
+@pytest.mark.cred1
 async def test_f_User_get_audios(u):
     await u.get_audios()
 
 
+@pytest.mark.cred1
 async def test_g_User_get_articles(u):
     await u.get_articles()
 
 
+@pytest.mark.cred1
 async def test_h_User_article_list(u):
     await u.get_article_list()
 
 
+@pytest.mark.cred1
 async def test_l_User_get_dynamics(u):
     try:
         await u.get_dynamics()
@@ -70,10 +78,12 @@ async def test_l_User_get_dynamics(u):
 #    await u.get_subscribed_bangumi()
 
 
+@pytest.mark.cred1
 async def test_k_User_get_followers(u):
     await u.get_followers()
 
 
+@pytest.mark.cred1
 async def test_l_User_get_followings(u):
     try:
         await u.get_followers()
@@ -82,30 +92,37 @@ async def test_l_User_get_followings(u):
             raise e
 
 
+@pytest.mark.cred1
 async def test_m_User_get_all_followers(u):
     await u.get_all_followings()
 
 
+@pytest.mark.cred1
 async def test_n_User_get_cheese(u):
     await u.get_cheese()
 
 
+@pytest.mark.cred1
 async def test_o_User_get_channel_series(u):
     await u.get_channels()
 
 
+@pytest.mark.cred1
 async def test_p_User_get_channel_video_series(u):
     await u.get_channel_videos_series(589023)
 
 
+@pytest.mark.cred1
 async def test_q_User_get_channel_video_season(u):
     await u.get_channel_videos_season(193515)
 
 
+@pytest.mark.cred1
 async def test_r_User_get_top_followers(u):
     await u.top_followers()
 
 
+@pytest.mark.cred1
 async def test_s_User_get_overview_stat(u):
     await u.get_overview_stat()
 
@@ -117,6 +134,7 @@ async def test_t_User_modify_relation(u):
     await asyncio.sleep(0.5)
 
 
+@pytest.mark.cred1
 async def test_u_User_get_elec_user_monthly(u):
     await u.get_elec_user_monthly()
 
@@ -145,14 +163,17 @@ async def test_u_User_get_elec_user_monthly(u):
 # FIXME: 关注分组API问题
 
 
+@pytest.mark.cred1
 async def test_y_get_self_info(credential):
     await user.get_self_info(credential)
 
 
+@pytest.mark.cred1
 async def test_z_get_self_history(credential):
     await user.get_self_history(page_num, per_page_item, credential)
 
 
+@pytest.mark.cred1
 async def test_z_get_self_history_new(credential):
     await user.get_self_history_new(credential)
 
@@ -160,10 +181,12 @@ async def test_z_get_self_history_new(credential):
 # test_za_get_self_events 已移除：user.get_self_events 已从库中删除（上游接口下线）
 
 
+@pytest.mark.cred1
 async def test_zb_get_self_coins(credential):
     await user.get_self_coins(credential)
 
 
+@pytest.mark.cred1
 async def test_zc_get_toview_list(credential):
     await user.get_toview_list(credential)
 
@@ -181,10 +204,12 @@ async def test_ze_clean_toview_list(credential):
 # FIXME: 重试达到最大次数
 
 
+@pytest.mark.cred1
 async def test_zg_get_album(u):
     await u.get_album()
 
 
+@pytest.mark.cred1
 async def test_zh_get_user_fav_tag():
     try:
         await user.User(UID4).get_user_fav_tag()
@@ -194,10 +219,12 @@ async def test_zh_get_user_fav_tag():
             raise e
 
 
+@pytest.mark.cred1
 async def test_zi_get_user_medal(u):
     await u.get_user_medal()
 
 
+@pytest.mark.cred1
 async def test_zj_get_user_top_videos(u):
     try:
         await u.get_top_videos()
@@ -207,10 +234,12 @@ async def test_zj_get_user_top_videos(u):
             raise e
 
 
+@pytest.mark.cred1
 async def test_zk_get_reservation(u):
     await u.get_reservation()
 
 
+@pytest.mark.cred1
 async def test_zl_name2uid(credential):
     await user.name2uid("田所こうじ", credential=credential)
 
@@ -237,45 +266,56 @@ async def test_zl_name2uid(credential):
 # 迁移至test_channel_series
 
 
+@pytest.mark.cred1
 async def test_zr_get_self_same_followings(u):
     await u.get_self_same_followers()
 
 
+@pytest.mark.cred1
 async def test_zs_get_self_black_list(credential):
     await user.get_self_black_list(credential)
 
 
+@pytest.mark.cred1
 async def test_zt_get_self_friends(credential):
     await user.get_self_friends(credential)
 
 
+@pytest.mark.cred1
 async def test_zu_get_self_whisper_followings(credential):
     await user.get_self_whisper_followings(credential)
 
 
+@pytest.mark.cred1
 async def test_zv_get_self_special_followings(credential):
     await user.get_self_special_followings(credential)
 
 
+@pytest.mark.cred1
 async def test_zw_get_self_jury_info(credential):
     await user.get_self_jury_info(credential)
 
 
+@pytest.mark.cred1
 async def test_zx_get_relation(u):
     await u.get_relation()
 
 
+@pytest.mark.cred1
 async def test_zy_get_masterpiece(u):
     await u.get_masterpiece()
 
 
+@pytest.mark.cred1
 async def test_zz_get_login_log(credential):
     await user.get_self_login_log(credential)
 
 
+@pytest.mark.cred1
 async def test_zza_get_moral_log(credential):
     await user.get_self_moral_log(credential)
 
 
+@pytest.mark.cred1
 async def test_zzb_get_exp_log(credential):
     await user.get_self_experience_log(credential)

@@ -65,21 +65,21 @@
 
 ⚠️ 重构期间安全提示：在 T036（cred3 收集排除）落地前，验证一律带 `-m` 选择运行，禁止不带 `-m` 的默认全量运行（高危用例尚未门控）
 
-- [ ] T009 [US2] `tests/test_video.py` 其余全部读用例加 `@pytest.mark.cred1`（弹幕 view/list/history/xml/snapshot/index、pbp、字幕、related、chargers、has_liked、get_pay_coins、has_favoured、relation、online、snapshot、get_cid_info；写用例留待 US3/US4 不动）
-- [ ] T010 [P] [US2] `tests/test_user.py` 其余全部读用例（约 39 个）加 `@pytest.mark.cred1`
-- [ ] T011 [P] [US2] `tests/test_dynamic.py` 全部读用例加 `@pytest.mark.cred1`（set_like 留 US3）
-- [ ] T012 [P] [US2] `tests/test_live.py` 全部读用例加 `@pytest.mark.cred1`（写用例留 US3/US4）
-- [ ] T013 [P] [US2] `tests/test_comment.py` get_comments 加 `@pytest.mark.cred1`；`tests/test_favorite_list.py` 全部读接口加 `@pytest.mark.cred1`（生命周期留 US3）
-- [ ] T014 [P] [US2] `tests/test_session.py` 九个读接口加 `@pytest.mark.cred1`（send_msg 留 US4）
-- [ ] T015 [P] [US2] `tests/test_search.py` 其余 8 个用例与 `tests/test_note.py` 全部 6 个用例加 `@pytest.mark.cred1`
-- [ ] T016 [P] [US2] `tests/test_homepage.py`（顺手删除 test_d 中对 get_popularize 的重复调用）、`tests/test_app.py`、`tests/test_show.py` 全部用例加 `@pytest.mark.cred1`
-- [ ] T017 [P] [US2] `tests/test_article.py` / `tests/test_audio.py` / `tests/test_topic.py` / `tests/test_video_tag.py` / `tests/test_manga.py` 各自读用例加 `@pytest.mark.cred1`（写用例留 US3/US4）
-- [ ] T018 [P] [US2] `tests/test_interactive_video.py` 读用例加 `@pytest.mark.cred1`，图遍历用例循环体内加 `await asyncio.sleep(0.5)` 节流（research R8；mark_score 留 US3）
-- [ ] T019 [US2] `tests/test_rank.py`：其余用例加 `@pytest.mark.cred1`；test_a 由 24 个 RankType 全遍历改为采样 5 个代表分区（含默认 + 边缘类型）；test_j 采样 3 个漫画榜；get_music_rank_list 与 phase 消费链合并为单用例（消除 phase_id 全局依赖）；全部循环体内加 0.5s 节流（subscribe_music_rank 留 US4）
-- [ ] T020 [US2] `tests/test_root_functions.py`：parse_link 用例由约 40 个 URL 采样为 20 个代表性形态、循环内加 0.5s 节流，两用例加 `@pytest.mark.cred1`（research R8）
-- [ ] T021 [P] [US2] `tests/test_ass.py` 生成的本地文件（.ass/.srt/.lrc/.json）改用 pytest `tmp_path` 写入，不再污染仓库工作目录（research R10）
-- [ ] T022 [P] [US2] `git mv tests/test_initial_state.py tests/test_offline_initial_state.py`——纯本地解析用例离线化，摘除 integration 标记与限速（宪法 IV 修正，research R10）
-- [ ] T023 [US2] US2 独立验证（quickstart V2 / SC-002 / SC-007）：`BILI_COUNT_REQUESTS=1 BILI_ABORT_ON_RISK=1 uv run pytest -m "cred0 or cred1"` 全绿、摘要 412 类风控计数 = 0（含 -352 等效码，FR-005 全统计口径；任一发生则会话已中止、该次运行判为验收失败）、读数 ≤ 400；T047 完成后以默认限速复跑确认时长 ≤ 30 分钟
+- [x] T009 [US2] `tests/test_video.py` 其余全部读用例加 `@pytest.mark.cred1`（弹幕 view/list/history/xml/snapshot/index、pbp、字幕、related、chargers、has_liked、get_pay_coins、has_favoured、relation、online、snapshot、get_cid_info；写用例留待 US3/US4 不动）
+- [x] T010 [P] [US2] `tests/test_user.py` 其余全部读用例（约 39 个）加 `@pytest.mark.cred1`
+- [x] T011 [P] [US2] `tests/test_dynamic.py` 全部读用例加 `@pytest.mark.cred1`（set_like 留 US3）
+- [x] T012 [P] [US2] `tests/test_live.py` 全部读用例加 `@pytest.mark.cred1`（写用例留 US3/US4）
+- [x] T013 [P] [US2] `tests/test_comment.py` get_comments 加 `@pytest.mark.cred1`；`tests/test_favorite_list.py` 全部读接口加 `@pytest.mark.cred1`（生命周期留 US3）
+- [x] T014 [P] [US2] `tests/test_session.py` 九个读接口加 `@pytest.mark.cred1`（send_msg 留 US4）
+- [x] T015 [P] [US2] `tests/test_search.py` 其余 8 个用例与 `tests/test_note.py` 全部 6 个用例加 `@pytest.mark.cred1`
+- [x] T016 [P] [US2] `tests/test_homepage.py`（顺手删除 test_d 中对 get_popularize 的重复调用）、`tests/test_app.py`、`tests/test_show.py` 全部用例加 `@pytest.mark.cred1`
+- [x] T017 [P] [US2] `tests/test_article.py` / `tests/test_audio.py` / `tests/test_topic.py` / `tests/test_video_tag.py` / `tests/test_manga.py` 各自读用例加 `@pytest.mark.cred1`（写用例留 US3/US4）
+- [x] T018 [P] [US2] `tests/test_interactive_video.py` 读用例加 `@pytest.mark.cred1`，图遍历用例循环体内加 `await asyncio.sleep(0.5)` 节流（research R8；mark_score 留 US3）
+- [x] T019 [US2] `tests/test_rank.py`：其余用例加 `@pytest.mark.cred1`；test_a 由 24 个 RankType 全遍历改为采样 5 个代表分区（含默认 + 边缘类型）；test_j 采样 3 个漫画榜；get_music_rank_list 与 phase 消费链合并为单用例（消除 phase_id 全局依赖）；全部循环体内加 0.5s 节流（subscribe_music_rank 留 US4）
+- [x] T020 [US2] `tests/test_root_functions.py`：parse_link 用例由约 40 个 URL 采样为 20 个代表性形态、循环内加 0.5s 节流，两用例加 `@pytest.mark.cred1`（research R8）
+- [x] T021 [P] [US2] `tests/test_ass.py` 生成的本地文件（.ass/.srt/.lrc/.json）改用 pytest `tmp_path` 写入，不再污染仓库工作目录（research R10）
+- [x] T022 [P] [US2] `git mv tests/test_initial_state.py tests/test_offline_initial_state.py`——纯本地解析用例离线化，摘除 integration 标记与限速（宪法 IV 修正，research R10）
+- [x] T023 [US2] US2 独立验证（quickstart V2 / SC-002 / SC-007）：`BILI_COUNT_REQUESTS=1 BILI_ABORT_ON_RISK=1 uv run pytest -m "cred0 or cred1"` 全绿、摘要 412 类风控计数 = 0（含 -352 等效码，FR-005 全统计口径；任一发生则会话已中止、该次运行判为验收失败）、读数 ≤ 400；T047 完成后以默认限速复跑确认时长 ≤ 30 分钟
 
 **Checkpoint**: 冒烟 + 读回归两层全绿，重要读覆盖收敛到预算内
 

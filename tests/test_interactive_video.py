@@ -1,5 +1,6 @@
 # bilibili_api.interactive_video
 
+import asyncio
 
 import pytest
 
@@ -11,14 +12,17 @@ def v(credential) -> interactive_video.InteractiveVideo:
     return interactive_video.InteractiveVideo("BV1Dt411N7LY", credential=credential)
 
 
+@pytest.mark.cred1
 async def test_a_InteractiveVideo_get_graph_version(v):
     await v.get_graph_version()
 
 
+@pytest.mark.cred1
 async def test_b_InteractiveVideo_get_edge_info(v):
     await v.get_edge_info()
 
 
+@pytest.mark.cred1
 async def test_c_get_all_nodes(v):
     edges_info = {}
 
@@ -31,6 +35,8 @@ async def test_c_get_all_nodes(v):
         edges_info[edge_id] = {"title": None, "cid": None, "option": None}
 
     while queue:
+        # 节点间 0.5s 节流，避免图遍历连发请求触发风控（research R8）
+        await asyncio.sleep(0.5)
         now_node = queue.pop()
 
         now_node.get_jumping_condition().get_result()

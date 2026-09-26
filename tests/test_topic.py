@@ -11,10 +11,12 @@ def t(credential) -> topic.Topic:
     return topic.Topic(66571, credential)
 
 
+@pytest.mark.cred1
 async def test_a_Topic_get_info(t):
     await t.get_info()
 
 
+@pytest.mark.cred1
 async def test_b_Topic_get_cards(t):
     await t.get_cards(sort_by=topic.TopicCardsSortBy.NEW)
 
@@ -33,9 +35,11 @@ async def test_d_Topic_set_favorite(t):
     await t.set_favorite(status=True)
 
 
+@pytest.mark.cred1
 async def test_e_get_hot_topics():
     await topic.get_hot_topics()
 
 
+@pytest.mark.cred1
 async def test_f_search_topic():
     await topic.search_topic("bilibili-api")

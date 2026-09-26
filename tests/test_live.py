@@ -15,42 +15,52 @@ def room(credential) -> live.LiveRoom:
     return live.LiveRoom(22544798, credential)
 
 
+@pytest.mark.cred1
 async def test_a_get_room_info(room):
     await room.get_room_info()
 
 
+@pytest.mark.cred1
 async def test_b_get_room_play_info(room):
     await room.get_room_play_info()
 
 
+@pytest.mark.cred1
 async def test_c_get_room_play_info_v2(room):
     await room.get_room_play_info_v2()
 
 
+@pytest.mark.cred1
 async def test_d_get_room_play_url(room):
     await room.get_room_play_url()
 
 
+@pytest.mark.cred1
 async def test_e_get_user_info_in_room(room):
     await room.get_user_info_in_room()
 
 
+@pytest.mark.cred1
 async def test_f_get_dahanghai(room):
     await room.get_dahanghai()
 
 
+@pytest.mark.cred1
 async def test_g_get_serven_rank(room):
     await room.get_seven_rank()
 
 
+@pytest.mark.cred1
 async def test_h_get_fans_medal_rank(room):
     await room.get_fans_medal_rank()
 
 
+@pytest.mark.cred1
 async def test_i_get_self_info(credential):
     await live.get_self_info(credential)
 
 
+@pytest.mark.cred1
 async def test_j_get_danmu_info(room):
     await room.get_danmu_info()
 
@@ -106,6 +116,7 @@ async def test_r_receive_reward(room):
     await room.receive_reward(2)
 
 
+@pytest.mark.cred1
 async def test_s_get_general_info(room):
     await room.get_general_info()
 
@@ -114,14 +125,17 @@ async def test_s_get_general_info(room):
 #     await room.update_news("hello\nit's me")
 
 
+@pytest.mark.cred1
 async def test_t_get_self_live_info(credential):
     await live.get_self_live_info(credential)
 
 
+@pytest.mark.cred1
 async def test_u_get_self_guards(credential):
     await live.get_self_dahanghai_info(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_v_get_self_bag(credential):
     try:
         await live.get_self_bag(credential)
@@ -131,10 +145,12 @@ async def test_v_get_self_bag(credential):
             raise e
 
 
+@pytest.mark.cred1
 async def test_w_get_gift_config():
     await live.get_gift_config()
 
 
+@pytest.mark.cred1
 async def test_x_get_gift_common(room):
     await room.get_gift_common()
 
@@ -159,18 +175,22 @@ async def test_za_send_gift_silver(room):
             raise e
 
 
+@pytest.mark.cred1
 async def test_zb_get_area_info():
     await live.get_area_info()
 
 
+@pytest.mark.cred1
 async def test_zc_get_gaonengbang(room):
     await room.get_gaonengbang()
 
 
+@pytest.mark.cred1
 async def test_zc_get_live_followers_info(credential):
     await live.get_live_followers_info(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_zd_get_unlive_followers_info(credential):
     await live.get_unlive_followers_info(page=1, credential=credential)
 
@@ -183,6 +203,7 @@ async def test_ze_get_following_live(credential):
     )
 
 
+@pytest.mark.cred1
 async def test_zf_get_get_popular_ticket_num(room):
     await room.get_popular_ticket_num()
 
@@ -191,6 +212,7 @@ async def test_zg_popular_rank_free_score_incr(room):
     await room.send_popular_ticket()
 
 
+@pytest.mark.cred1
 async def test_zh_get_emoticons(room):
     await room.get_emoticons()
 

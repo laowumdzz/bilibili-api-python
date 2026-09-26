@@ -1,16 +1,20 @@
 # bilibili_api.ass
 
+import pytest
+
 from bilibili_api import ass, video
+
+pytestmark = pytest.mark.cred1
 
 v = video.Video("BV1or4y1u7fk")
 
 
-async def test_a_ass_danmakus_protobuf():
-    await ass.make_ass_file_danmakus_protobuf(v, page=0, out="danmakus_protobuf.ass")
+async def test_a_ass_danmakus_protobuf(tmp_path):
+    await ass.make_ass_file_danmakus_protobuf(v, page=0, out=str(tmp_path / "danmakus_protobuf.ass"))
 
 
-async def test_b_ass_danmakus_xml():
-    await ass.make_ass_file_danmakus_xml(v, page=0, out="danmakus_xml.ass")
+async def test_b_ass_danmakus_xml(tmp_path):
+    await ass.make_ass_file_danmakus_xml(v, page=0, out=str(tmp_path / "danmakus_xml.ass"))
 
 
 async def test_base_ass_json_data(credential):
@@ -23,17 +27,19 @@ async def test_base_ass_json_data(credential):
     assert a.to_simple_json_str() is not None
 
 
-async def test_c_ass_subtitle(credential):
-    await ass.make_ass_file_subtitle(v, lan_name="中文（中国）", out="subtitle.ass", credential=credential)
+async def test_c_ass_subtitle(tmp_path, credential):
+    await ass.make_ass_file_subtitle(v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.ass"), credential=credential)
 
 
-async def test_c_srt_subtitle(credential):
-    await ass.make_srt_file_subtitle(v, lan_name="中文（中国）", out="subtitle.srt", credential=credential)
+async def test_c_srt_subtitle(tmp_path, credential):
+    await ass.make_srt_file_subtitle(v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.srt"), credential=credential)
 
 
-async def test_c_lrc_subtitle(credential):
-    await ass.make_lrc_file_subtitle(v, lan_name="中文（中国）", out="subtitle.lrc", credential=credential)
+async def test_c_lrc_subtitle(tmp_path, credential):
+    await ass.make_lrc_file_subtitle(v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.lrc"), credential=credential)
 
 
-async def test_c_json_subtitle(credential):
-    await ass.make_simple_json_file_subtitle(v, lan_name="中文（中国）", out="subtitle.json", credential=credential)
+async def test_c_json_subtitle(tmp_path, credential):
+    await ass.make_simple_json_file_subtitle(
+        v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.json"), credential=credential
+    )

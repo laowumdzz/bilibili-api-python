@@ -5,6 +5,8 @@ import pytest
 from bilibili_api import bvid2aid, note
 from bilibili_api.exceptions.ResponseCodeException import ResponseCodeException
 
+pytestmark = pytest.mark.cred1
+
 
 @pytest.fixture(scope="module")
 def public_note(credential) -> note.Note:

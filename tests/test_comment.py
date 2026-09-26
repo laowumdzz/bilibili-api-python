@@ -3,6 +3,8 @@
 import asyncio
 import random
 
+import pytest
+
 from bilibili_api import comment
 
 BVID = "BV1xx411c7Xg"
@@ -11,6 +13,7 @@ AID = 271
 comment_id = None
 
 
+@pytest.mark.cred1
 async def test_a_get_comments():
     await comment.get_comments(oid=AID, type_=comment.CommentResourceType.VIDEO)
 

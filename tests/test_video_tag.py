@@ -10,10 +10,12 @@ def tag(credential) -> video_tag.Tag:
     return video_tag.Tag(tag_name="真白花音", credential=credential)
 
 
+@pytest.mark.cred1
 async def test_a_get_tag_info(tag):
     await tag.get_tag_info()
 
 
+@pytest.mark.cred1
 async def test_b_get_similar_tags(tag):
     await tag.get_similar_tags()
 

@@ -1,7 +1,11 @@
 # bilibili_api.app
 
+import pytest
+
 from bilibili_api import app
 from bilibili_api.exceptions.ResponseCodeException import ResponseCodeException
+
+pytestmark = pytest.mark.cred1
 
 
 async def test_a_get_loading_images(credential):

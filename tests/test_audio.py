@@ -16,18 +16,22 @@ def audio_list(credential) -> AudioList:
     return AudioList(26241, credential)
 
 
+@pytest.mark.cred1
 async def test_a_Audio_get_info(audio):
     await audio.get_info()
 
 
+@pytest.mark.cred1
 async def test_b_Audio_get_tags(audio):
     await audio.get_tags()
 
 
+@pytest.mark.cred1
 async def test_c_get_user_stat(credential):
     await get_user_stat(660303135, credential)
 
 
+@pytest.mark.cred1
 async def test_d_Audio_get_download_url(audio):
     await audio.get_download_url()
 
@@ -40,17 +44,21 @@ async def test_e_Audio_add_coins(audio):
             raise e
 
 
+@pytest.mark.cred1
 async def test_f_AudioList_get_info(audio_list):
     await audio_list.get_info()
 
 
+@pytest.mark.cred1
 async def test_g_AudioList_get_song_list(audio_list):
     await audio_list.get_song_list()
 
 
+@pytest.mark.cred1
 async def test_h_AudioList_get_tags(audio_list):
     await audio_list.get_tags()
 
 
+@pytest.mark.cred1
 async def test_j_get_hot_song_list():
     await get_hot_song_list()

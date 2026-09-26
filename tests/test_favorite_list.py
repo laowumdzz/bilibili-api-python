@@ -2,6 +2,8 @@
 
 import random
 
+import pytest
+
 from bilibili_api import bvid2aid, favorite_list, video
 
 media_id = None
@@ -10,18 +12,22 @@ uid = 1666311555
 default_media_id = 1626035955
 
 
+@pytest.mark.cred1
 async def test_a_get_video_favorite_list(credential):
     await favorite_list.get_video_favorite_list(uid, credential=credential)
 
 
+@pytest.mark.cred1
 async def test_b_get_video_favorite_list_content(credential):
     await favorite_list.get_video_favorite_list_content(1195349595, credential=credential)
 
 
+@pytest.mark.cred1
 async def test_c_get_topic_favorite_list(credential):
     await favorite_list.get_topic_favorite_list(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_d_get_article_favorite_list(credential):
     await favorite_list.get_article_favorite_list(credential=credential)
 
@@ -30,10 +36,12 @@ async def test_d_get_article_favorite_list(credential):
 #     await favorite_list.get_album_favorite_list(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_f_get_course_favorite_list(credential):
     await favorite_list.get_course_favorite_list(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_g_get_note_favorite_list(credential):
     await favorite_list.get_note_favorite_list(credential=credential)
 
@@ -91,9 +99,11 @@ async def test_n_delete_video_favorite_list(credential):
     await favorite_list.delete_video_favorite_list([media_id, default_media_id], credential)
 
 
+@pytest.mark.cred1
 async def test_get_favorite_collected_1(credential):
     await favorite_list.get_favorite_collected(uid, credential=credential)
 
 
+@pytest.mark.cred1
 async def test_get_favorite_collected_2(credential):
     await favorite_list.get_favorite_collected(uid, 1, 20, credential)

@@ -23,9 +23,11 @@ async def test_d_set_follow_manga(comic):
 #     await manga.get_manga_index(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_f_get_manga_update(credential):
     await manga.get_manga_update(credential=credential)
 
 
+@pytest.mark.cred1
 async def test_g_get_manga_home_recommend(credential):
     await manga.get_manga_home_recommend(credential=credential)

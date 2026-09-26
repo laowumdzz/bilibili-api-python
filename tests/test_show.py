@@ -1,6 +1,10 @@
 # bilibili_api.show
 
+import pytest
+
 from bilibili_api import show
+
+pytestmark = pytest.mark.cred1
 
 PROJECT_ID = 75650
 
