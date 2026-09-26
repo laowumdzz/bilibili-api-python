@@ -158,4 +158,7 @@ jobs:
           BILI_BUVID3: ${{ secrets.BILI_BUVID3 }}
           BILI_DEDEUSERID: ${{ secrets.BILI_DEDEUSERID }}
           BILI_RATELIMIT: "1.5"
-        run: uv run pytest -m integration
+        # 特性 007：integration 任务切换为 cred0-cred2 分层口径（高危 cred3 层默认收集即排除，
+        # 永不在 CI 执行）；如需回退到旧的全量集成口径，改回 `uv run pytest -m integration` 即可
+        # （两种口径下 cred3 均被收集期剔除）。
+        run: uv run pytest -m "cred0 or cred1 or cred2"

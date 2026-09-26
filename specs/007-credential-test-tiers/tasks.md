@@ -151,8 +151,8 @@ teardown 义务（FR-006，适用于本阶段全部生命周期任务）：无�
 
 **Independent Test**: 不设环境变量时相邻凭据用例存在默认间隔；`BILI_RATELIMIT=0` 覆盖后间隔消失（contracts §5）
 
-- [ ] T047 [US6] `tests/conftest.py` 将 `RATELIMIT` 缺省值由 0 改为 1.5（`float(os.getenv("BILI_RATELIMIT", 1.5))`，显式设置含 0 照常生效）；同步更新文件头部 docstring 说明默认值与覆盖语义（research R3）
-- [ ] T048 [US6] US6 独立验证：不设 env 运行 `uv run pytest -m cred0` 观察相邻用例间默认间隔生效（对照运行时长）；设 `BILI_RATELIMIT=0` 复跑确认覆盖生效；随后以默认限速复跑 T023 口径确认 cred0+cred1 ≤ 30 分钟（SC-002 时长项）
+- [x] T047 [US6] `tests/conftest.py` 将 `RATELIMIT` 缺省值由 0 改为 1.5（`float(os.getenv("BILI_RATELIMIT", 1.5))`，显式设置含 0 照常生效）；同步更新文件头部 docstring 说明默认值与覆盖语义（research R3）
+- [x] T048 [US6] US6 独立验证：不设 env 运行 `uv run pytest -m cred0` 观察相邻用例间默认间隔生效（对照运行时长）；设 `BILI_RATELIMIT=0` 复跑确认覆盖生效；随后以默认限速复跑 T023 口径确认 cred0+cred1 ≤ 30 分钟（SC-002 时长项）
 
 **Checkpoint**: 裸跑环境（无任何 env）下风控安全有默认保障
 

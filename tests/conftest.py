@@ -5,6 +5,9 @@
 --login 临时登录（实现委托 scripts/login_and_cache.py，本文件仅注入 pytest 终端 I/O 接缝）
 > TEMP 缓存文件（自动校验 / 刷新）> BILI_* 环境变量 > 项目根目录的 .bilibili.cookie 文件。
 全部来源不可用时 skip。
+
+集成用例间隔由 BILI_RATELIMIT 控制，缺省 1.5 秒（单账号安全默认值）；
+显式设置该环境变量（含 0 关闭限速）按设置值生效。
 """
 
 from functools import partial
@@ -24,8 +27,10 @@ from bilibili_api import Credential, request_settings
 from scripts._login_cache import REQUIRED_FIELDS, CacheStatus, get_cache_path, load_cache, merge_credential_values
 from scripts.login_and_cache import CacheCheckStatus, check_cache, run_temp_login
 
-# 集成用例之间的最小间隔秒数，防止触发 412 风控（沿用旧运行器语义）
-RATELIMIT = float(os.getenv("BILI_RATELIMIT", 0))
+# 集成用例之间的最小间隔秒数（沿用旧运行器语义）。缺省 1.5 为单账号安全默认值
+# （特性 007 FR-010 / research R3，与 CI 既有配置一致）；显式设置 BILI_RATELIMIT
+# （含 0 关闭限速）按设置值生效，覆盖语义不变。
+RATELIMIT = float(os.getenv("BILI_RATELIMIT", 1.5))
 
 # 项目根目录下的 Cookie 文件（内容为浏览器导出的标准 Cookie 字符串）
 COOKIE_FILE = Path(__file__).resolve().parent.parent / ".bilibili.cookie"
@@ -382,7 +387,11 @@ def test_env() -> None:
 
 @pytest.fixture(autouse=True)
 def ratelimit(request: pytest.FixtureRequest):
-    """集成用例之间按 BILI_RATELIMIT 限速。"""
+    """集成用例之间按 BILI_RATELIMIT 限速。
+
+    缺省 1.5 秒（单账号安全默认值，FR-010）；显式设置 BILI_RATELIMIT
+    （含 0 关闭限速）按设置值生效。仅对 integration 标记用例生效。
+    """
     yield
     if RATELIMIT > 0 and request.node.get_closest_marker("integration"):
         time.sleep(RATELIMIT)

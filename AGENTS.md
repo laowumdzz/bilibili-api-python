@@ -170,22 +170,71 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 
 全部测试统一由 pytest 运行（异步用例由 pytest-asyncio 驱动，见 `pyproject.toml` 的 `[tool.pytest.ini_options]`）。集成用例由 `tests/conftest.py` 自动打上 `integration` 标记，缺凭据时自动 skip。
 
+### 凭据测试四级分层体系（cred0–cred3）
+
+测试账号为**单一共享账号**，所有需凭据的集成用例按重要程度分为四层，每个需凭据用例**恰好归属一层**（以显式 marker 声明；漏标 / 错标由 conftest 收集期防护发现，`BILI_STRICT_TIERS=1` 时升级为收集错误）：
+
+| 层级 | 判据（全部满足） | 请求预算 | 清理要求 |
+|------|------------------|----------|----------|
+| `cred0` 核心冒烟 | 只读；接口稳定（不依赖容错码）；登录态 + 反爬链路 + 核心读的 minimal 集合 | 整层 ≤ 30 | 无写，无需清理 |
+| `cred1` 核心读回归 | 只读；核心模块主读路径；允许保留既有容错码（-404 / -352 / -403 等） | cred0+cred1 合计 ≤ 400 | 无写，无需清理 |
+| `cred2` 自清理写生命周期 | 仅限可逆写（配对恢复 + 断言）与"自身状态类"白名单操作 | 不设独立预算 | 六态零残留（关注 / 收藏 / 点赞 / 评论 / 弹幕 / 稍后再看） |
+| `cred3` 高危显式门控 | 资源消耗类 / 无清理可能的公开发布类 / 破坏性类 / 账号身份特定类 | 无（默认永不执行） | 无（不默认执行，无验收义务） |
+
+### 命令矩阵
+
 ```bash
-# 运行全部测试（无凭据时集成用例自动 skip，仅离线用例实际执行）
-uv run pytest
+# 仅 cred0 核心冒烟（单账号必全绿验收入口）
+uv run pytest -m cred0
 
-# 仅离线快速路径（不触碰网络与真实账号，无需 BILI_* 环境变量）
-uv run pytest -m "not integration"
+# 冒烟 + 读回归（重要读覆盖，合计 ≤ 400 请求）
+uv run pytest -m "cred0 or cred1"
 
-# 仅集成测试（需配置下方 BILI_* 环境变量）
-uv run pytest -m integration
+# 常规验证：离线 + 匿名集成 + cred0–cred2（cred3 收集即排除；不带 -m 的默认全量同义）
+uv run pytest -m "not cred3"
+
+# 仅 cred3 高危层（真金 / 破坏性 / 身份特定；牺牲账号专用，不在常规验收范围）
+uv run pytest -m cred3
 
 # 只读集成子集（readonly 标记，无写操作；参与 PR 验证，反爬用例无需凭据）
 uv run pytest -m readonly
 
+# 仅离线快速路径（不触碰网络与真实账号，无需 BILI_* 环境变量）
+uv run pytest -m "not integration"
+
 # 运行指定模块测试
 uv run pytest tests/test_video.py
 ```
+
+cred3 剔除发生在**收集期**（deselect，非 skip）：任何默认运行与不含 `cred3` token 的 `-m` 表达式都不会执行高危用例，终端会输出剔除计数提示（如 `已排除 37 个 cred3 高危用例`）。
+
+### 账号安全策略（操作类别判定表）
+
+新增或调整用例时按五类对号入座（权威判据）：
+
+| 类别 | 定义 | 归层 | 现有用例示例 |
+|------|------|------|--------------|
+| 可逆写 | 存在配对恢复 API，恢复结果可断言 | cred2（配对 + 断言） | like/unlike、fav/unfav、follow/unfollow、评论 send/delete（自有内容）、toview add/remove、收藏夹 CRUD、订阅/取消订阅 |
+| 自身状态类 | 不可逆但仅自身可见，不属于六态清单，无对外发布形态 | cred2（成文白名单） | 直播签到、观看上报、互动视频评分 |
+| 资源消耗类 | 消耗账号货币 / 付费资源 | cred3 | 投币、三连、金 / 银瓜子送礼、人气票 |
+| 公开发布类 | 对他人可见的内容发布 | cred2 仅当：目标为自有内容 **且** 有删除配对；否则 cred3 | 评论（自有视频 + delete → cred2）；弹幕（无 delete → cred3）、私信、投票创建（无 delete → cred3）、直播预约 |
+| 破坏性 / 身份特定类 | 不可逆清空账号数据，或需特定账号身份 | cred3 | 清空稍后再看、删除观看记录、创作中心全量、房管封禁 |
+
+- cred2 公开发布类写操作 MUST 以账号自有内容为对象（运行时经 `get_self_info` → `User(mid).get_videos()` 动态解析，**禁止硬编码**他人 mid / aid；解析不到则条件跳过）
+- "自身状态类"白名单为**封闭枚举**：新增成员须在权威映射表（`specs/007-credential-test-tiers/data-model.md`）条目中逐条给出三条件依据（仅自身可见的证据、六态清单对照、无对外发布形态的核查），由 PR 评审者核验；任一条件事后失效时自动降层至 cred3 并同步更新映射表
+- 兜底规则：无法对号入座或未完成举证的操作一律从严归 cred3 待裁
+
+### 限速与请求计数
+
+- `BILI_RATELIMIT` 缺省 **1.5** 秒（单账号安全默认值，与 CI 既有配置一致）；显式设置（含 0 关闭限速）按设置值生效。循环遍历型用例在循环体内 `await asyncio.sleep(0.5)` 节流
+- `BILI_COUNT_REQUESTS=1` 启用请求计数器：服务端视角全计数——对 bilibili 域名实际发送的每次 HTTP 请求计 1（含重试每次尝试与反爬参数预取 buvid / bili_ticket / wbi；凭据链校验 / 刷新请求计入总数；WebSocket 连接建立计 1，连接内消息与心跳不计）；会话结束在终端输出总计数与域名维度汇总（仅计数，不含凭据值）。层预算（cred0 ≤ 30、cred0+cred1 ≤ 400）以该计数器读数为准
+- `BILI_ABORT_ON_RISK=1`：首个 412 类风控响应（HTTP 412 或 -352 等效错误码）即中止整个会话；计数器同时单列统计该类响应
+
+### 已知集成覆盖缺口
+
+以下模块暂无集成覆盖，作为持续追踪去向（本分级重构不新增覆盖）：login_v2 登录链路集成、视频上传链路（`video_uploader` 仅有匿名 `get_missions` 读覆盖）。
+
+### 凭据来源
 
 集成测试凭据来源（优先级从高到低，由 `tests/conftest.py` 自动装配）：
 
@@ -199,7 +248,7 @@ BILI_SESSDATA=xxx        # SESSDATA cookie
 BILI_CSRF=xxx            # bili_jct cookie
 BILI_BUVID3=xxx          # BUVID3 cookie
 BILI_DEDEUSERID=xxx      # DedeUserID cookie
-BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控）
+BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关闭限速）
 ```
 
 全部来源均不可用时，集成用例自动 skip，仅离线用例执行。任何提示 / 错误 / 警告消息只描述状态，不得输出凭据字段值。
@@ -207,8 +256,9 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（可选，防止触发 412 风控
 **独立登录脚本（可选）**：不经过 pytest 预先完成登录——`uv run python scripts/login_and_cache.py qrcode`（扫码）或 `phone`（短信验证码），成功后凭据写入同一 TEMP 缓存文件，后续测试运行自动复用（零交互）。实现与 `--login` 同源（`scripts/login_and_cache.py`），缓存契约不变。
 
 - 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作；新增离线用例请放入 `tests/test_offline_*.py`
-- 只读集成用例（`readonly` 标记，如 `tests/test_readonly_smoke.py`）仅允许 GET 式读请求与反爬虫参数获取，严禁写操作；该子集在 CI 的 `integration-readonly` 任务中参与 PR 验证，缺凭据时自动降级为警告而不阻塞合入
-- 集成用例通过 `conftest.py` 的 `credential` fixture 获取登录态；模块级共享对象用 module 作用域 fixture 构建；同文件内用例按定义顺序执行，存在顺序依赖时不要重排用例
+- 只读集成用例（`readonly` 标记，如 `tests/test_readonly_smoke.py`）仅允许 GET 式读请求与反爬虫参数获取，严禁写操作；该子集在 CI 的 `integration-readonly` 任务中参与 PR 验证，缺凭据时自动降级为警告而不阻塞合入；`readonly` 与 `cred0` 标记可并存（核心冒烟层是其超集）
+- 集成用例通过 `conftest.py` 的 `credential` fixture 获取登录态；模块级共享对象用 module 作用域 fixture 构建
+- 全部凭据用例**顺序无关**：所需资源在用例或其夹具内创建并在结束时清理（生命周期合并单用例 + teardown 级清理义务，`teardown_retry` fixture），任意子集（含单用例）独立运行均可通过
 
 ## 常见陷阱
 
