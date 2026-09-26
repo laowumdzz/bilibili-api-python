@@ -14,7 +14,9 @@ def comic(credential) -> manga.Manga:
 #     await comic.get_images(1)
 
 
+@pytest.mark.cred2
 async def test_d_set_follow_manga(comic):
+    # 可逆写配对单用例：追漫后取消追漫（FR-006 配对恢复）
     await manga.set_follow_manga(manga=comic, status=True)
     await manga.set_follow_manga(manga=comic, status=False)
 

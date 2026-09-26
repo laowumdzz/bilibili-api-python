@@ -52,10 +52,14 @@ async def test_f_Dynamic_get_reposts(dy):
         pass
 
 
+@pytest.mark.cred2
 async def test_g_Dynamic_set_like(dy):
+    # 可逆写配对单用例：点赞后补取消点赞调用，结束态为未点赞（FR-006 配对恢复）
     try:
         await dy.set_like()
+        await dy.set_like(False)
     except ResponseCodeException as e:
+        # 65006：重复点赞 / 取消未点赞（幂等目标态，容忍）
         if e.code != 65006:
             raise
 

@@ -8,6 +8,7 @@
 """
 
 from functools import partial
+import asyncio
 import json
 import os
 from pathlib import Path
@@ -358,6 +359,36 @@ def ratelimit(request: pytest.FixtureRequest):
     yield
     if RATELIMIT > 0 and request.node.get_closest_marker("integration"):
         time.sleep(RATELIMIT)
+
+
+@pytest.fixture
+def teardown_retry():
+    """teardown 级清理义务辅助（特性 007 FR-006）。
+
+    cred2 生命周期用例在用例内 try/finally 中调用：执行单个清理步骤，失败
+    有限重试，重试耗尽后发出含具体残留物描述的 UserWarning，不掩盖用例
+    原始失败（finally 中的清理失败只告警、不上抛）。
+
+    Returns:
+        Callable: ``async def _retry(describe: str, step: Callable[[], Awaitable[None]], attempts: int = 3)``，
+        describe 为含具体残留物标识的描述（如资源 ID），step 为清理协程工厂。
+    """
+
+    async def _retry(describe: str, step, attempts: int = 3) -> None:
+        last_exc: Exception | None = None
+        for _ in range(attempts):
+            try:
+                await step()
+                return
+            except Exception as e:  # noqa: BLE001  # 清理兜底：任何清理失败都不得逃逸掩盖原始失败
+                last_exc = e
+                await asyncio.sleep(1.0)
+        warnings.warn(
+            UserWarning(f"清理步骤重试 {attempts} 次仍失败，可能残留：{describe}（最后错误：{last_exc!r}）"),
+            stacklevel=2,
+        )
+
+    return _retry
 
 
 @pytest.fixture(scope="session")

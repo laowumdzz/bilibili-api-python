@@ -144,7 +144,9 @@ async def test_u_Video_send_danmaku(video):
     await video.send_danmaku(0, dm)
 
 
+@pytest.mark.cred2
 async def test_v_Video_like(video):
+    # 可逆写配对单用例：点赞后立即取消点赞（FR-006 配对恢复）
     try:
         await video.like(True)
 
@@ -190,20 +192,32 @@ async def test_w_Video_pay_coin(video):
 #     await video.unsubscribe_tag(8583026)
 
 
+@pytest.mark.cred2
 async def test_za_Video_set_favorite(video, credential):
+    # 可逆写配对单用例：先探测初始收藏态，两个方向各完成一次收藏 / 取消收藏配对，
+    # 结束态与初始态一致（FR-006 配对恢复；无条件移除会挤掉预存收藏）
     # 使用本账号自己的收藏夹，避免依赖其他账号的硬编码收藏夹 id
     fav_list = await favorite_list.get_video_favorite_list(int(credential.dedeuserid), credential=credential)
     media_id = fav_list["list"][0]["id"]
-    await video.set_favorite([media_id])
-    await asyncio.sleep(0.5)
-    await video.set_favorite(del_media_ids=[media_id])
+    was_favoured = await video.has_favoured()
+    if was_favoured:
+        # 初始已收藏：移除 → 断言生效 → 加回（恢复初始态）
+        await video.set_favorite(del_media_ids=[media_id])
+        assert not await video.has_favoured(), "移除收藏后 has_favoured 应为 False"
+        await video.set_favorite([media_id])
+        assert await video.has_favoured(), "加回收藏后 has_favoured 应为 True"
+    else:
+        # 初始未收藏：收藏 → 断言生效 → 移除（恢复初始态）
+        await video.set_favorite([media_id])
+        assert await video.has_favoured(), "收藏后 has_favoured 应为 True"
+        await video.set_favorite(del_media_ids=[media_id])
+        assert not await video.has_favoured(), "取消收藏后 has_favoured 应为 False"
 
 
-async def test_zb_Video_add_to_toview(video):
+@pytest.mark.cred2
+async def test_zb_Video_toview_lifecycle(video):
+    # 可逆写配对单用例：加入稍后再看后立即删除（FR-006 配对恢复）
     await video.add_to_toview()
-
-
-async def test_zc_Video_delete_from_toview(video):
     await video.delete_from_toview()
 
 
@@ -247,9 +261,15 @@ async def test_zk_get_online(video):
     await video.get_online()
 
 
+@pytest.mark.cred2
 async def test_zl_report_watch_history(video):
+    # 自身状态类白名单（data-model 安全策略表）：不可逆但仅自身可见（历史记录），
+    # 不属于六态清单、无对外发布形态，成文归 cred2
     await video.report_watch_history()
 
 
+@pytest.mark.cred2
 async def test_zm_report_start_watching(video):
+    # 自身状态类白名单（data-model 安全策略表）：不可逆但仅自身可见（观看上报），
+    # 不属于六态清单、无对外发布形态，成文归 cred2
     await video.report_start_watching()

@@ -80,5 +80,8 @@ async def test_c_get_all_nodes(v):
     assert edges_info, "应至少遍历到一个互动视频节点"
 
 
+@pytest.mark.cred2
 async def test_d_mark_score(v):
+    # 自身状态类白名单（data-model 安全策略表）：互动视频评分仅自身可见（可重复评分覆盖），
+    # 不属于六态清单、无对外发布形态，成文归 cred2
     await v.mark_score(5)

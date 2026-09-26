@@ -127,8 +127,9 @@ async def test_s_User_get_overview_stat(u):
     await u.get_overview_stat()
 
 
+@pytest.mark.cred2
 async def test_t_User_modify_relation(u):
-    # 后面 test_r_set_subscribe_group 会用到
+    # 可逆写配对单用例：关注后立即取关（FR-006 配对恢复），顺序无关（FR-009）
     await u.modify_relation(user.RelationType.SUBSCRIBE)
     await u.modify_relation(user.RelationType.UNSUBSCRIBE)
     await asyncio.sleep(0.5)

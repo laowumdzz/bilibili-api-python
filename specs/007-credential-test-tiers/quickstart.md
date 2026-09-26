@@ -96,3 +96,4 @@ uv run pytest -m readonly
 
 - **V1（SC-001）** ✅ 2026-09-26：`BILI_COUNT_REQUESTS=1 uv run pytest -m cred0` → 12 passed / 0 failed / 0 skipped，计数器读数 14（api.bilibili.com 13 + space.bilibili.com 1）≤ 30，412 类风控响应 0。
 - **V2（SC-002 / SC-007）** ✅ 2026-09-26：`BILI_COUNT_REQUESTS=1 BILI_ABORT_ON_RISK=1 uv run pytest -m "cred0 or cred1"`（过渡期显式 BILI_RATELIMIT=1.5）→ 190 passed / 0 failed / 0 skipped，计数器读数 247 ≤ 400，412 类风控响应 0（含 -352 口径），中止开关未触发；默认限速口径复跑见 T048（时长 6:04 @1.5s 限速，≤ 30 分钟余量充足）。
+- **V3（SC-003）** ✅ 2026-09-26：`BILI_COUNT_REQUESTS=1 uv run pytest -m "cred0 or cred1 or cred2"`（BILI_RATELIMIT=1.5）→ 210 passed / 0 failed；六态比对：关注 66→66、收藏（默认收藏夹条目数）184→184、稍后再看 2→2 程序化读回一致；点赞 / 评论 / 弹幕三态由用例内配对断言与 teardown 清理保证（清理失败告警计数 0，弹幕写入属 cred3 默认永不执行）。修复过程：评论生命周期补根评论索引延迟等待；set_favorite 用例改为初始态感知的双向配对（修复无条件移除挤掉预存收藏的残留风险）；live general_info 补上游偶发 504 容错。

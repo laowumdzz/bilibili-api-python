@@ -30,7 +30,9 @@ async def test_b_Article_json_get_content(ar):
     ar.json()
 
 
+@pytest.mark.cred2
 async def test_c_Article_set_like(ar):
+    # 可逆写配对单用例：点赞后立即取消点赞（FR-006 配对恢复）
     try:
         await ar.set_like()
         await ar.set_like(False)
@@ -39,8 +41,11 @@ async def test_c_Article_set_like(ar):
             raise e
 
 
+@pytest.mark.cred2
 async def test_d_Article_set_favorite(ar):
+    # 可逆写配对单用例：收藏后补取消收藏调用（FR-006 配对恢复，原用例缺失取消步）
     await ar.set_favorite()
+    await ar.set_favorite(False)
 
 
 async def test_e_Article_add_coins(ar):

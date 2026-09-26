@@ -93,18 +93,18 @@
 
 teardown 义务（FR-006，适用于本阶段全部生命周期任务）：无论用例成功、失败、超时或中断，清理步骤 MUST 照常运行；清理失败有限重试后输出含具体残留物的警告
 
-- [ ] T024 [P] [US3] `tests/test_comment.py` 评论链（send→reply→like→hate→delete）合并为单个生命周期用例并加 `@pytest.mark.cred2`：目标运行时动态解析自有视频（`get_self_info` 取 mid → `User(mid).get_videos()` 取首个 aid，禁硬编码，缺失则条件跳过并说明原因——FR-008，替换现行 av271 目标）；消除 comment_id 全局变量
-- [ ] T025 [P] [US3] `tests/test_favorite_list.py` 收藏夹链（create→set_favorite→modify→copy→move→clean→delete）合并为单个生命周期用例并加 `@pytest.mark.cred2`；消除 media_id / default_media_id 全局变量
-- [ ] T026 [P] [US3] `tests/test_watchroom.py` 观影房链（create→join→share→progress→close→send msgs）合并为单个生命周期用例并加 `@pytest.mark.cred2`；消除 room 全局变量
-- [ ] T027 [P] [US3] `tests/test_video.py` 写用例改造并加 `@pytest.mark.cred2`：like(True/False)、set_favorite add/remove、add_to_toview/delete_from_toview 三组各自成配对单用例；report_watch_history、report_start_watching 标 cred2（自身状态类白名单，用例注释成文依据）
-- [ ] T028 [P] [US3] `tests/test_user.py` modify_relation 订阅→取关闭环单用例加 `@pytest.mark.cred2`（消除对后续用例的顺序依赖注释）
-- [ ] T029 [P] [US3] `tests/test_article.py` set_like(True/False) 与 set_favorite(True/False)（补取消收藏调用）配对单用例加 `@pytest.mark.cred2`；add_coins 留 US4
-- [ ] T030 [P] [US3] `tests/test_topic.py` like on/off 与 fav on/off 配对单用例加 `@pytest.mark.cred2`
-- [ ] T031 [P] [US3] `tests/test_video_tag.py` subscribe/unsubscribe、`tests/test_manga.py` follow(True/False) 配对单用例加 `@pytest.mark.cred2`
-- [ ] T032 [P] [US3] `tests/test_dynamic.py` set_like(True/False)（补取消点赞调用）配对单用例加 `@pytest.mark.cred2`
-- [ ] T033 [P] [US3] `tests/test_live.py` sign_up_dahanghai 与 receive_reward 加 `@pytest.mark.cred2`（自身状态类白名单，用例注释引用 data-model 安全策略表）
-- [ ] T034 [P] [US3] `tests/test_interactive_video.py` mark_score 加 `@pytest.mark.cred2`（自身状态类白名单注释）
-- [ ] T035 [US3] US3 独立验证（quickstart V3 / SC-003）：运行前采集六态基线 → `uv run pytest -m "cred0 or cred1 or cred2"` 全绿 → 运行后逐项比对六态零残留
+- [x] T024 [P] [US3] `tests/test_comment.py` 评论链（send→reply→like→hate→delete）合并为单个生命周期用例并加 `@pytest.mark.cred2`：目标运行时动态解析自有视频（`get_self_info` 取 mid → `User(mid).get_videos()` 取首个 aid，禁硬编码，缺失则条件跳过并说明原因——FR-008，替换现行 av271 目标）；消除 comment_id 全局变量
+- [x] T025 [P] [US3] `tests/test_favorite_list.py` 收藏夹链（create→set_favorite→modify→copy→move→clean→delete）合并为单个生命周期用例并加 `@pytest.mark.cred2`；消除 media_id / default_media_id 全局变量
+- [x] T026 [P] [US3] `tests/test_watchroom.py` 观影房链（create→join→share→progress→close→send msgs）合并为单个生命周期用例并加 `@pytest.mark.cred2`；消除 room 全局变量
+- [x] T027 [P] [US3] `tests/test_video.py` 写用例改造并加 `@pytest.mark.cred2`：like(True/False)、set_favorite add/remove、add_to_toview/delete_from_toview 三组各自成配对单用例；report_watch_history、report_start_watching 标 cred2（自身状态类白名单，用例注释成文依据）
+- [x] T028 [P] [US3] `tests/test_user.py` modify_relation 订阅→取关闭环单用例加 `@pytest.mark.cred2`（消除对后续用例的顺序依赖注释）
+- [x] T029 [P] [US3] `tests/test_article.py` set_like(True/False) 与 set_favorite(True/False)（补取消收藏调用）配对单用例加 `@pytest.mark.cred2`；add_coins 留 US4
+- [x] T030 [P] [US3] `tests/test_topic.py` like on/off 与 fav on/off 配对单用例加 `@pytest.mark.cred2`
+- [x] T031 [P] [US3] `tests/test_video_tag.py` subscribe/unsubscribe、`tests/test_manga.py` follow(True/False) 配对单用例加 `@pytest.mark.cred2`
+- [x] T032 [P] [US3] `tests/test_dynamic.py` set_like(True/False)（补取消点赞调用）配对单用例加 `@pytest.mark.cred2`
+- [x] T033 [P] [US3] `tests/test_live.py` sign_up_dahanghai 与 receive_reward 加 `@pytest.mark.cred2`（自身状态类白名单，用例注释引用 data-model 安全策略表）
+- [x] T034 [P] [US3] `tests/test_interactive_video.py` mark_score 加 `@pytest.mark.cred2`（自身状态类白名单注释）
+- [x] T035 [US3] US3 独立验证（quickstart V3 / SC-003）：运行前采集六态基线 → `uv run pytest -m "cred0 or cred1 or cred2"` 全绿 → 运行后逐项比对六态零残留
 
 **Checkpoint**: 三层常规验证（cred0–cred2）完整，账号状态可完全恢复
 
