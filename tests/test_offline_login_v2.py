@@ -157,7 +157,7 @@ _FULL_FAKE_COOKIES = {
 
 
 async def test_check_state_web_done_builds_credential_from_set_cookies(monkeypatch):
-    """登录成功时凭据从响应 Set-Cookie（服务端原名大小写）构造，四项必需字段非空，buvid 机会性填充。"""
+    """登录成功时凭据从响应 Set-Cookie（服务端原名大小写）构造，三项必需 Cookie 非空 + refresh_token 可选采集，buvid 机会性填充。"""
     login = _make_qrcode_login()
     _patch_web_poll(
         monkeypatch,
@@ -215,13 +215,41 @@ async def test_check_state_web_missing_cookie_raises(monkeypatch, missing):
     assert login.has_done() is False
 
 
-async def test_check_state_web_missing_refresh_token_raises(monkeypatch):
-    """响应体 refresh_token 缺失时同样按必需字段缺失处理。"""
+async def test_check_state_web_missing_refresh_token_succeeds(monkeypatch):
+    """响应体 refresh_token 缺失时登录照常成功：凭据三 Cookie 取下发值，ac_time_value 为空串。"""
     login = _make_qrcode_login()
-    _patch_web_poll(monkeypatch, {"code": 0}, _FULL_FAKE_COOKIES)
-    with pytest.raises(ArgsException, match="ac_time_value"):
-        await login.check_state()
-    assert login.has_done() is False
+    _patch_web_poll(monkeypatch, {"code": 0, "url": "https://passport.biligame.com/crossDomain"}, _FULL_FAKE_COOKIES)
+    assert await login.check_state() == QrCodeLoginEvents.DONE
+    assert login.has_done() is True
+    cred = login.get_credential()
+    assert cred.sessdata == "fake-sessdata"
+    assert cred.bili_jct == "fake-jct"
+    assert cred.dedeuserid == "fake-uid"
+    assert cred.ac_time_value == ""
+    assert cred.has_ac_time_value() is False
+
+
+async def test_check_state_web_empty_refresh_token_succeeds(monkeypatch):
+    """响应体 refresh_token 为空串视同缺失：登录照常成功，凭据 ac_time_value 为空串。"""
+    login = _make_qrcode_login()
+    _patch_web_poll(monkeypatch, {"code": 0, "refresh_token": ""}, _FULL_FAKE_COOKIES)
+    assert await login.check_state() == QrCodeLoginEvents.DONE
+    cred = login.get_credential()
+    assert cred.sessdata == "fake-sessdata"
+    assert cred.bili_jct == "fake-jct"
+    assert cred.dedeuserid == "fake-uid"
+    assert cred.ac_time_value == ""
+    assert cred.has_ac_time_value() is False
+
+
+async def test_check_state_web_non_string_refresh_token_normalized(monkeypatch):
+    """响应体 refresh_token 为非字符串真值时经 str() 归一写入凭据，不视作空。"""
+    login = _make_qrcode_login()
+    _patch_web_poll(monkeypatch, {"code": 0, "refresh_token": 12345}, _FULL_FAKE_COOKIES)
+    assert await login.check_state() == QrCodeLoginEvents.DONE
+    cred = login.get_credential()
+    assert cred.ac_time_value == "12345"
+    assert cred.has_ac_time_value() is True
 
 
 async def test_check_state_web_empty_cookie_value_raises(monkeypatch):

@@ -499,7 +499,7 @@ class QrCodeLogin:
             QrCodeLoginEvents: 二维码登录状态
 
         Raises:
-            ArgsException: WEB 通道登录成功响应缺少构造凭据所必需的字段（SESSDATA / bili_jct / DedeUserID / refresh_token 任一缺失或为空）。
+            ArgsException: WEB 通道登录成功响应缺少构造凭据所必需的字段（仅 SESSDATA / bili_jct / DedeUserID 任一缺失或为空串时抛出）；ac_time_value（refresh_token）为可选字段，缺失或为空时凭据该字段为空串、不报错。
         """
         if self.__platform == QrCodeLoginChannel.WEB:
             api = API["qrcode"]["web"]["get_events"]
@@ -535,9 +535,7 @@ class QrCodeLogin:
                     field = name.lower()
                     if field in ("sessdata", "bili_jct", "dedeuserid", "buvid3", "buvid4"):
                         kwargs[field] = value
-                missing = [
-                    field for field in ("sessdata", "bili_jct", "dedeuserid", "ac_time_value") if not kwargs.get(field)
-                ]
+                missing = [field for field in ("sessdata", "bili_jct", "dedeuserid") if not kwargs.get(field)]
                 if missing:
                     raise ArgsException(f"二维码登录响应缺少必要字段: {', '.join(missing)}")
                 self.__credential = Credential(**kwargs)
