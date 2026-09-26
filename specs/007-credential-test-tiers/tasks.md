@@ -138,8 +138,8 @@ teardown 义务（FR-006，适用于本阶段全部生命周期任务）：无�
 
 **Independent Test**: 生命周期用例与各层抽样用例 `-k` / 文件级单跑 100% 通过（quickstart V5）
 
-- [ ] T045 [US5] 全局变量依赖终检：`grep -n` 扫描 `tests/*.py` 中残留的模块级可变资源 ID（comment_id / media_id / default_media_id / room / vote_id / phase_id / black_list），逐一确认已在 US3/US4/US2 阶段消除或就地收敛，清理残留引用
-- [ ] T046 [US5] US5 独立验证（quickstart V5 / SC-005）：单跑评论生命周期、收藏夹生命周期、watchroom 生命周期用例 + 从 cred0/cred1/cred2 各抽 2 个普通用例以 `-k` 单跑，全部通过
+- [x] T045 [US5] 全局变量依赖终检：`grep -n` 扫描 `tests/*.py` 中残留的模块级可变资源 ID（comment_id / media_id / default_media_id / room / vote_id / phase_id / black_list），逐一确认已在 US3/US4/US2 阶段消除或就地收敛，清理残留引用
+- [x] T046 [US5] US5 独立验证（quickstart V5 / SC-005）：单跑评论生命周期、收藏夹生命周期、watchroom 生命周期用例 + 从 cred0/cred1/cred2 各抽 2 个普通用例以 `-k` 单跑，全部通过
 
 **Checkpoint**: 子集运行与层级选择任意组合均不因顺序依赖失败
 
