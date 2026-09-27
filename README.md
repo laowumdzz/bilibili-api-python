@@ -1,31 +1,31 @@
-![bilibili-api logo](https://raw.githubusercontent.com/Nemo2011/bilibili-api/main/design/logo.png)
+![bilibili-api-python logo](design/logo.png)
 
 <div align="center">
 
-# bilibili-api
+# bilibili-api-python
 
 [![API 数量](https://img.shields.io/badge/API%20数量-400+-blue)][api.json]
 [![LICENSE](https://img.shields.io/badge/LICENSE-GPLv3+-red)][LICENSE]
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
-[![Stable Version](https://img.shields.io/pypi/v/bilibili-api-python?label=stable)][pypi]
-[![Pre-release Version](https://img.shields.io/github/v/release/Nemo2011/bilibili-api?label=pre-release&include_prereleases&sort=semver)][pypi-dev]
-[![STARS](https://img.shields.io/github/stars/nemo2011/bilibili-api?color=yellow&label=Github%20Stars)][stargazers]
-[![Testing](https://github.com/Nemo2011/bilibili-api/actions/workflows/testing.yml/badge.svg?branch=dev)](https://github.com/Nemo2011/bilibili-api/actions/workflows/testing.yml)
+[![Release](https://img.shields.io/github/v/release/laowumdzz/bilibili-api-python)](https://github.com/laowumdzz/bilibili-api-python/releases/latest)
+[![Testing](https://github.com/laowumdzz/bilibili-api-python/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/laowumdzz/bilibili-api-python/actions/workflows/ci.yml)
 
-**:warning: 接口可能改动，请及时更新最新版 [![Stable Version](https://img.shields.io/pypi/v/bilibili-api-python?label=stable)][pypi]**
+**:warning: 接口可能改动，请及时更新最新版 [![Release](https://img.shields.io/github/v/release/laowumdzz/bilibili-api-python?label=release)](https://github.com/laowumdzz/bilibili-api-python/releases/latest)**
 
 </div>
 
+> 注：本项目Fork自https://github.com/nemo2011/bilibili-api的commit SHA为027563d2fe7604967242986aac51d693c905的分支并由AI维护
+
 **注意事项：使用此模块时请仅用于学习和测试，禁止用于非法用途及其他恶劣的社区行为如：恶意刷屏、辱骂黄暴、各种形式的滥用等，违规此模块许可证 `GNU General Public License Version 3` 及此条注意事项而产生的任何后果自负，模块的所有贡献者不负任何责任。**
 
-开发文档: [bilibili_api 开发文档][docs] ([GitHub][docs-github])
+本项目 Github 仓库：[https://github.com/laowumdzz/bilibili-api-python](https://github.com/laowumdzz/bilibili-api-python)
 
-原仓库地址：[https://github.com/MoyuScript/bilibili-api](https://github.com/MoyuScript/bilibili-api) (*现已被删除)
+开发文档（上游）：[bilibili_api 上游开发文档][docs]（[上游 GitHub 仓库][docs-github]）；本项目文档见仓库 [docs/](docs/) 目录
 
-Github 仓库：[https://github.com/nemo2011/bilibili-api](https://github.com/nemo2011/bilibili-api)
-
-> 模块最早由 @MoyuScript 于 2020 年创建，于 2022 年宣布停止维护。本仓库是原仓库 fork，遵循 `GNU General Public License Version 3`。在此感谢早期的众多模块贡献者与 @MoyuScript 对新仓库的支持。
-> 见 `MoyuScript/bilibili-api` 的 [第一条 commit (2020.01.27)](https://github.com/Nemo2011/bilibili-api/commit/8dc3f9a05fa28ed9b060cafa6d5c23131a28a113)与 [最后一条 commit (2022.01.17)](https://github.com/Nemo2011/bilibili-api/commit/dc518016c7649be2a135ccb8badb091712754a3d)。
+> 上游原仓库地址：[https://github.com/MoyuScript/bilibili-api](https://github.com/MoyuScript/bilibili-api) (*现已被删除)
+>
+> 模块最早由 @MoyuScript 于 2020 年创建，于 2022 年宣布停止维护；上游 @nemo2011 的 [nemo2011/bilibili-api](https://github.com/nemo2011/bilibili-api)（即本项目 fork 的直接来源）随后 fork 延续维护。本仓库遵循 `GNU General Public License Version 3`。在此感谢早期的众多模块贡献者与 @MoyuScript 对新仓库的支持。
+> 见 `MoyuScript/bilibili-api` 在上游 fork 留存的 [第一条 commit (2020.01.27)](https://github.com/Nemo2011/bilibili-api/commit/8dc3f9a05fa28ed9b060cafa6d5c23131a28a113)与 [最后一条 commit (2022.01.17)](https://github.com/Nemo2011/bilibili-api/commit/dc518016c7649be2a135ccb8badb091712754a3d)。
 
 # 简介
 
@@ -42,20 +42,24 @@ Github 仓库：[https://github.com/nemo2011/bilibili-api](https://github.com/ne
 - 支持采用各种手段避免触发反爬虫风控[^5]。
 - **全部是异步操作**。
 - 默认支持 `aiohttp` / `httpx` / `curl_cffi`。
+- 需要 Python 3.10 及以上版本。
 
 # 快速上手
 
-首先使用以下指令安装本模块：
+首先使用以下指令安装本模块（本模块不在 PyPI 发布，均从本仓库安装）：
 
 ```
-# 主版本
-$ pip3 install bilibili-api-python
+# 从本仓库安装 main 分支最新代码
+$ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@main
 
-# 开发版本
-$ pip3 install bilibili-api-dev
+# 开发中代码在 dev 分支
+$ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@dev
 
-# 最新修改会在 dev 分支
-$ pip3 install git+https://github.com/Nemo2011/bilibili-api.git@dev
+# 或锁定某个发布版本（将 <tag> 替换为 GitHub Releases 页面中的 tag 名）
+$ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@<tag>
+
+# 或从 GitHub Releases 下载构建产物（.whl / .tar.gz）后本地安装
+$ pip3 install ./bilibili_api_python-<版本>-py3-none-any.whl
 ```
 
 然后需要**自行安装**一个支持异步的第三方请求库，如 `aiohttp` / `httpx` / `curl_cffi`。
@@ -68,7 +72,7 @@ $ pip3 install aiohttp
 $ pip3 install httpx
 
 # curl_cffi
-$ pip3 install "curl_cffi"
+$ pip3 install curl_cffi
 ```
 
 接下来我们来获取视频的播放量等信息：
@@ -112,7 +116,7 @@ if __name__ == "__main__":
 
 如何给这个视频点赞？我们需要登录自己的账号。
 
-这里设计是传入一个 Credential 类，获取所需的信息参照：[获取 Credential 类所需信息][get-credential]
+这里设计是传入一个 Credential 类，获取所需的信息参照上游文档：[获取 Credential 类所需信息（上游文档）][get-credential]。`SESSDATA` / `BILI_JCT` / `BUVID3` 均为占位符变量，取值方式见上述文档。
 
 下面的代码将会给视频点赞
 
@@ -146,7 +150,7 @@ if __name__ == '__main__':
 
 总的来说，异步比同步更有优势，所以不会的话可以去学一下，会发现新天地（误
 
-如果你仍然想继续使用同步代码，请参考 [同步执行异步代码](https://nemo2011.github.io/bilibili-api/#/sync-executor)
+如果你仍然想继续使用同步代码，请参考上游文档：[同步执行异步代码（上游文档）](https://nemo2011.github.io/bilibili-api/#/sync-executor)
 
 # 模块使用的请求库
 
@@ -208,17 +212,28 @@ request_settings.set_proxy("http://username:password@your-proxy.com") # 如果�
 
 **Q: 我想在项目中使用这个模块，但是我的项目使用其他请求库进行网络请求（如 `pycurl`），想要模块也同时使用它（们），可以吗？**
 
-A: 可以，但是你可能要自己动手实现模块和具体请求库的适配。详见 [自定义请求库](https://nemo2011.github.io/bilibili-api/#/request_client)
+A: 可以，但是你可能要自己动手实现模块和具体请求库的适配。详见上游文档：[自定义请求库（上游文档）](https://nemo2011.github.io/bilibili-api/#/request_client)
 
 **Q: 怎么没有我想要的功能？**
 
-A: 你可以发 Issue 来提交你的需求，但是，最好的办法是自己写（懒）
+A: 你可以到本仓库的 [Issue 入口][issues-new] 提交你的需求，但是，最好的办法是自己写（懒）
 
 <span id="contribute">**Q: 我有一个大胆的想法，如何给代码库贡献？**</span>
 
-A: 请先 clone 本仓库一份，然后从 main 分支新建一个分支，在该分支上工作。
-如果你觉得已经可以了，请向项目仓库的 develop 分支发起 Pull request。
-如果你不明白这些操作的话，可以百度。完整指南：[CONTRIBUTING.md](https://github.com/nemo2011/bilibili-api/blob/main/.github/CONTRIBUTING.md)
+A: 请先 clone 本仓库一份，并完成环境搭建：
+
+```
+$ git clone https://github.com/laowumdzz/bilibili-api-python.git
+$ cd bilibili-api-python
+$ uv sync                        # 创建 .venv 虚拟环境并安装全部依赖
+$ uv run python install.py       # 初始化 Git Hooks（commit-msg + pre-commit）
+$ uv run python scripts/lint.py  # 质量门禁自检（ruff + format + 类型检查 + 文档漂移）
+```
+
+然后从 main 分支新建一个分支，在该分支上工作。提交信息遵循 Conventional Commits 规范（Git Hook 会校验格式）。
+如果你觉得已经可以了，请向本仓库的 dev 分支发起 Pull Request。
+
+无需凭据即可运行的离线测试：`uv run pytest -m "not integration"`。分层测试与开发约定详见仓库 [AGENTS.md](AGENTS.md)。
 
 **Q: 稳定性怎么样？**
 
@@ -232,20 +247,7 @@ A: 由于该模块比较特殊，是爬虫模块，如果 b 站的接口变更�
 
 [docs]: https://nemo2011.github.io/bilibili-api
 [docs-github]: https://github.com/nemo2011/bilibili-api/tree/main/docs
-[api.json]: https://github.com/nemo2011/bilibili-api/tree/main/bilibili_api/data/api/
-[license]: https://github.com/nemo2011/bilibili-api/tree/main/LICENSE
-[stargazers]: https://github.com/nemo2011/bilibili-api/stargazers
-[issues-new]: https://github.com/Nemo2011/bilibili-api/issues/new/choose
+[api.json]: https://github.com/laowumdzz/bilibili-api-python/tree/main/bilibili_api/data/api/
+[license]: https://github.com/laowumdzz/bilibili-api-python/tree/main/LICENSE
+[issues-new]: https://github.com/laowumdzz/bilibili-api-python/issues/new/choose
 [get-credential]: https://nemo2011.github.io/bilibili-api/#/get-credential
-[pypi]: https://pypi.org/project/bilibili-api-python
-[pypi-dev]: https://pypi.org/project/bilibili-api-dev
-
-# Star History
-
-<a href="https://www.star-history.com/?type=date&repos=Nemo2011%2Fbilibili-api">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Nemo2011/bilibili-api&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Nemo2011/bilibili-api&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Nemo2011/bilibili-api&type=date&legend=top-left" />
- </picture>
-</a>
