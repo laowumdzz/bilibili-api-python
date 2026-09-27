@@ -52,7 +52,7 @@
 # 从本仓库安装 main 分支最新代码
 $ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@main
 
-# 开发中代码在 dev 分支
+# 开发中代码在 dev 分支（待 dev 分支建立后可用，当前请先用 main）
 $ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@dev
 
 # 或锁定某个发布版本（将 <tag> 替换为 GitHub Releases 页面中的 tag 名）
@@ -231,7 +231,7 @@ $ uv run python scripts/lint.py  # 质量门禁自检（ruff + format + 类型�
 ```
 
 然后从 main 分支新建一个分支，在该分支上工作。提交信息遵循 Conventional Commits 规范（Git Hook 会校验格式）。
-如果你觉得已经可以了，请向本仓库的 dev 分支发起 Pull Request。
+如果你觉得已经可以了，请向本仓库的 dev 分支发起 Pull Request（项目约定 PR 合入 dev；dev 分支建立前，可先通过 [Issue 入口][issues-new] 与维护者沟通）。
 
 无需凭据即可运行的离线测试：`uv run pytest -m "not integration"`。分层测试与开发约定详见仓库 [AGENTS.md](AGENTS.md)。
 

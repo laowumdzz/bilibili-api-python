@@ -180,3 +180,9 @@ Task: "T023 凭据零出现扫描与排版通查（FR-008/CHK022）"
 - REMOVED 判定一律以精确字符串零命中复核，不以肉眼为准
 - 每个故事 Checkpoint 可停下独立验收；提交粒度遵循"一个提交只做一件事"（宪章 V）
 - Avoid: 未登记处置、逐字注记被"规范化"、手写死版本号
+
+---
+
+## Phase 7: Convergence
+
+- [X] T026 裁决并落实 dev 分支策略：远端无 dev 分支（`git ls-remote --heads origin dev` 为空），README.md 快速上手的 `@dev` 安装行当前不可执行、FAQ 贡献指引的 PR 目标 dev 分支不存在（主安装路径 @main/@tag/Release 不受影响）。二选一：创建远端 dev 分支使 FR-005 / 契约 C5 表述成立；或为 `@dev` 行加"待 dev 分支建立后可用"限定并使分支指引与本仓库实际工作流一致（如需偏离 AGENTS.md 的 dev 约定，同步修订 AGENTS.md 并在提交说明） per SC-003/FR-005 (partial)
