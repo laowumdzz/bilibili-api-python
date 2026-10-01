@@ -4,13 +4,14 @@
 
 ## 项目概要
 
-`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。400+ API 接口，全部异步，支持多请求客户端（aiohttp / httpx / curl_cffi）。
+`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。800+ API 接口（52 个定义文件），全部异步，支持多请求客户端（aiohttp / httpx / curl_cffi）。
 
 - **语言:** Python ≥ 3.10（代码须兼容 CPython 3.10，不得使用更高版本独有特性）
 - **许可证:** GPL-3.0-or-later
 - **当前版本:** 见 `bilibili_api/__init__.py` 中的 `BILIBILI_API_VERSION`
-- **上游仓库:** https://github.com/LaowuClaw/bilibili-api-python
-- **PR 目标分支:** `dev`（不是 `main`）
+- **本仓库:** https://github.com/laowumdzz/bilibili-api-python（fork 自 [nemo2011/bilibili-api](https://github.com/nemo2011/bilibili-api)，由 AI 维护）
+- **接口信息主要来源:** `bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，抽取自 bilibili-API-collect 文档，详见"核心架构模式"）
+- **PR 目标分支:** `dev`（远端分支尚未建立；建立前外部贡献先通过 Issue 与维护者沟通）
 - **Python 环境:** 使用 uv 管理的 `.venv` 虚拟环境，所有命令用 `uv run` 前缀
 
 ## 项目结构
@@ -49,13 +50,17 @@ bilibili_api/            # 库源码
 │   ├── HTTPXClient.py
 │   └── CurlCFFIClient.py
 ├── data/
-│   ├── api/             # API 定义 JSON（URL / method / params / verify）
+│   ├── api/             # API 定义 JSON（URL / method / params / verify；主体由 bilibili-api-registry 同步生成）
 │   └── *.json           # 静态数据（分区、语言、标签等）
 └── tools/               # 附带工具（ivitools / parser）
+bilibili-api-registry/   # 接口信息注册表（独立嵌套 git 仓库，未纳入本仓库追踪；
+                         #   bilibili-API-collect 文档抽取，data/api 的同步来源）
 scripts/                 # 开发脚本
 ├── doc_gen.py           # 文档自动生成（从 docstring）
-├── lint.py              # ruff check + format + pyrefly 类型检查 + 豁免错误码存量棘轮（type_ratchet）+ 文档漂移校验（docs/modules/）
-├── type_ratchet.py      # pyrefly 豁免错误码存量棘轮校验（基线只减不增）
+├── lint.py              # ruff check + format + pyrefly 类型检查 + 文档漂移校验（docs/modules/）
+├── sync_api_registry.py # registry → data/api 增量同步（纯增量合并，支持 --dry-run）
+├── type_ratchet.py      # pyrefly 类型检查零容忍校验（豁免机制已退役，防回归）
+├── login_and_cache.py   # 独立登录脚本（扫码/短信，写 TEMP 凭据缓存）
 └── get_*.py             # 数据抓取脚本
 tests/                   # 测试套件（统一由 pytest 运行）
 ├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记 / --login 临时登录）
@@ -74,7 +79,22 @@ API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP
 
 调用链路：`get_api()` 加载 JSON → `Api(**api).update_params(**params).result` 发起请求 → 自动注入 Wbi 签名、buvid、bili_ticket 等反爬参数 → 返回解析后的 JSON。
 
-**新增 API 时：** 在对应的 `data/api/*.json` 中添加条目，然后在对应模块的 Python 文件中编写异步方法调用它。
+#### 接口信息主要来源：bilibili-api-registry
+
+`bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，未纳入本仓库追踪）是从 bilibili-API-collect 文档批量抽取的 API 注册表，是本项目接口信息的**主要来源**：
+
+- `<category>/<subtopic>.json` 按类别/子主题分文件（36 类别，~609 REST + 320 gRPC 条目），与源文档结构对应；`schema.json` 定义条目结构
+- 每个条目含 `doc_source`（源文档路径 + 标题锚点，可回溯）、`params[]`、`notes` 等字段
+- registry 自身的更新工具在 `bilibili-api-registry/scripts/`（`extract.py` 抽取器 / `extract_grpc.py` gRPC 抽取 / `validate.py` 校验统计）
+
+**新增 API 的标准流程：**
+
+1. 先查 `bilibili-api-registry/` 对应类别的 JSON，确认接口的 URL / method / params / 鉴权说明
+2. `uv run python scripts/sync_api_registry.py --dry-run` 预览，去掉参数实际执行——纯增量合并到 `data/api/*.json`（已存在的接口一律不动，仅追加缺失项；gRPC（本项目无运行时支持）与 method=OTHER 条目跳过）
+3. 在对应模块的 Python 文件中编写异步方法调用它
+4. 仅当 registry 未覆盖该接口时，才手工在 `data/api/*.json` 中添加条目，并优先考虑先补 registry
+
+注意：registry 的 `doc_source` / `notes` 等字段不会进入 `data/api/*.json`（`Api(**api)` 不接受未知键）；类别 → 目标文件的映射表与完整同步原则见 `scripts/sync_api_registry.py` 模块 docstring。
 
 ### 2. Credential 凭据体系
 
@@ -96,8 +116,8 @@ Wbi 签名（`recalculate_wbi`）、buvid 自动生成（`get_buvid`）、bili_t
 
 ### 风格
 
-- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行，末尾含 `scripts/type_ratchet.py` 豁免错误码存量棘轮与 docs/modules/ 文档漂移校验：豁免类别的存量计数只减不增，新增类型错误会被阻断）
-- **类型存量棘轮维护义务**：修复存量类型错误后仅向下更新 `scripts/type_ratchet.py` 基线；某错误码基线清零后，须同步从 `pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表移除该条目并从脚本基线中删除，恢复默认启用
+- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行，末尾含 `scripts/type_ratchet.py` 校验与 docs/modules/ 文档漂移校验）
+- **类型检查零容忍**：pyrefly 存量豁免机制已于 2026-09（特性 005）整体退役，`pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表已清空移除，类型检查默认全量启用，任何新增类型错误都会被门禁直接拦截
 - **下划线命名**，与现有代码保持一致
 - **全面类型注解**：函数参数、返回值均需类型注释
 - **docstring 必须完整**：每个公共函数都应有中文 docstring（Args / Returns / Raises），因为 `scripts/doc_gen.py` 会从 docstring 自动生成文档
@@ -159,10 +179,10 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 
 1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx / curl_cffi）
 2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
-3. 从 `dev` 分支切出新分支开发
-4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check` → 豁免错误码存量棘轮 `scripts/type_ratchet.py` → 文档漂移校验：重新运行 doc_gen 后以 git 检测 `docs/modules/` 是否与源码漂移并阻断；docstring 漂移总是检测，公开符号级漂移依赖 `.mypy_cache`，缺失时跳过、落后时仅提示，`DOCS_DRIFT_STRICT=1` 时两者均升级为失败）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`，类型存量变更需另跑 `uv run python scripts/type_ratchet.py` 确认基线只减不增
+3. 本地开发直接在 `main` 分支提交（本仓库现行惯例，不切分支）；推送远端仅在用户明确要求时进行
+4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check`（全量启用）→ `scripts/type_ratchet.py` 零容忍校验 → 文档漂移校验：重新运行 doc_gen 后以 git 检测 `docs/modules/` 是否与源码漂移并阻断；docstring 漂移总是检测，公开符号级漂移依赖 `.mypy_cache`，缺失时跳过、落后时仅提示，`DOCS_DRIFT_STRICT=1` 时两者均升级为失败）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`
 5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（脚本已兼容 Python 3.10+；依赖 mypy（含 stubgen）先生成 `.mypy_cache`，且 mypy 需以忽略错误的方式运行，否则含错误模块的缓存会被 mypy 删除）
-6. 向 `dev` 分支发起 PR
+6. 对外贡献的 PR 目标为 `dev` 分支（远端尚未建立；建立前先通过 Issue 与维护者沟通）
 
 > 没有 uv 的环境可回退到 `pip install -r requirements.txt` + 手动装 dev 工具。
 
@@ -266,7 +286,7 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关�
 - **Wbi 签名失效**：B 站会不定期更新 Wbi 密钥，如遇大批 API 失效优先检查 `recalculate_wbi` 逻辑
 - **Cookies 过期**：`Credential` 有 `check_refresh()` 方法可用于检查并刷新
 - **请求库缺失**：至少需安装 aiohttp / httpx / curl_cffi 之一，否则初始化报错
-- **b 站接口变更**：爬虫库的天然风险，API 可能随时失效，需跟进上游 `bilibili-API-collect` 的最新成果
+- **b 站接口变更**：爬虫库的天然风险，API 可能随时失效。接口信息以 `bilibili-api-registry/` 为主要来源（抽取自 bilibili-API-collect 文档），排查失效接口时先查 registry 条目的 `doc_source` 回溯源文档，批量补齐走 `uv run python scripts/sync_api_registry.py`
 
 ## 关键依赖
 
@@ -290,6 +310,6 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关�
 - ❌ 不要在库代码中硬编码凭据（SESSDATA 等）
 - ❌ 不要用 `print()` 调试，用 `logging`
 - ❌ 不要忽略 ruff check 报出的错误，不要跳过 `scripts/lint.py`
-- ❌ 不要向 `main` 分支直接提交，PR 目标永远是 `dev`
+- ❌ 不要主动 push 到远端（用户明确要求时才推送）；本地提交直接在 `main` 分支进行
 - ❌ 不要使用位置参数调用 API 函数，统一用关键字参数
 - ❌ 不要在异步代码中使用同步阻塞操作（`time.sleep`、`requests.get` 等）
