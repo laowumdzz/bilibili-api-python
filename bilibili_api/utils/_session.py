@@ -421,9 +421,7 @@ def select_client(name: str) -> None:
         name (str): 请求客户端类型名称，用户自定义命名。
 
     Raises:
-        ArgsException: 该名称未注册过时抛出；异常信息列出当前已注册的客户端
-            （按字典序排序，保证消息确定性、不依赖注册顺序）并给出自定义
-            注册提示；无任何已注册客户端时退化为"尚未安装"提示。
+        ArgsException: 该名称未注册过时抛出；异常信息列出当前已注册的客户端（按字典序排序，保证消息确定性、不依赖注册顺序）并给出自定义注册提示；无任何已注册客户端时退化为"尚未安装"提示。
     """
     if not sessions.get(name):
         if not sessions:

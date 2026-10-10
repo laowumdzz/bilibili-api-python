@@ -1899,6 +1899,7 @@ async def handle(desc: str, data: dict) -> None:
 | name | type | description |
 | - | - | - |
 | `name` | `str` | 请求客户端类型名称，用户自定义命名。 |
+| `Raises:` | `` |  |
 
 
 
