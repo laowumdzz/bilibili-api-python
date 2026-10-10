@@ -50,17 +50,28 @@ except ModuleNotFoundError:
 
 ## 4. 足迹检索（SC-003）
 
+机械命中检索（豁免写法不依赖 `./` 路径前缀与路径分隔符方向：`grep -rn` 输出行首首个冒号之前为路径段，`^[^:]*` 将豁免锚定在路径段内、不误伤内容命中；豁免片段一律不含路径分隔符——Windows Git Bash 的 `grep -r` 输出反斜杠路径，实测其括号类 `[\\/]` 无法匹配反斜杠，故弃用目录前缀式写法）：
+
 ```bash
 grep -rni "curl_cffi\|CurlCFFI\|curl-cffi" \
   --include="*.py" --include="*.toml" --include="*.md" --include="*.txt" --include="*.json" . \
-  | grep -v "bilibili-api-registry" \
-  | grep -v "^./CHANGELOGS/v17.md\|^./CHANGELOGS/v18.md" \
-  | grep -v "^./REFACTORING.spec.md" \
-  | grep -v "^./specs/00[1258]-" \
-  | grep -v "^./specs/009-"
+  | grep -v "^[^:]*bilibili-api-registry" \
+  | grep -v "^[^:]*v17\.md\|^[^:]*v18\.md\|^[^:]*UNRELEASED\.md" \
+  | grep -v "^[^:]*REFACTORING\.spec\.md" \
+  | grep -v "^[^:]*specs[^:]*00[12589]-" \
+  | grep -v "^[^:]*test_offline_client_selection\.py" \
+  | grep -v "^[^:]*request_client\.md" \
+  | grep -v "^[^:]*constitution\.md"
 ```
 
-期望：无输出。若 `uv.lock` 或 `docs/modules/client.md` 出现，说明 SYNC/REGEN 步骤未执行。
+**判定标准**：有效引用 = 将 CurlCFFI 描述为可用客户端的表述；命令输出为机械命中，逐条人工分类后计数。以下四类合规语境已在命令中按路径豁免（与 data-model §6 豁免清单保持一致）：
+
+- `CHANGELOGS/UNRELEASED.md` — 移除记录本体（影响面与迁移指引）；
+- `docs/request_client.md` — 自定义客户端教程节（research R5 裁决的"第三方自定义接入示例"教学语境）；豁免按文件整体放行，若命中超出教程节范围须人工重判；
+- `tests/test_offline_client_selection.py` — FR-007 移除契约锚定断言（断言 CurlCFFI 不可用）；
+- `.specify/memory/constitution.md` — 头部 Sync Impact Report 的 from→to 修订记载。
+
+期望：无输出（0 有效引用）。其余文件出现输出时按上述判定标准逐条人工分类；若 `uv.lock` 或 `docs/modules/client.md` 出现，说明 SYNC/REGEN 步骤未执行。
 
 ## 5. 真机冒烟（SC-001 / SC-002；需凭据）
 

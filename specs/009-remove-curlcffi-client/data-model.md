@@ -27,7 +27,7 @@
 | # | 表面 | 现状 | 目标态 | 类型 |
 |---|------|------|--------|------|
 | T1 | `tests/conftest.py` `_install_request_counter` | 包装清单 3 项含 CurlCFFIClient；docstring"三个内置客户端" | 清单 2 项；docstring"两个内置客户端" | EDIT |
-| T2 | `tests/test_offline_client_timeout_semantics.py` | `TestCurlCFFIClientTimeout`（4 用例）+ docstring curl 注记与 `CURL_CFFI_INFINITE` 常量 | 删 curl 类/常量/注记；aiohttp、httpx 用例与归一化断言保留 | EDIT |
+| T2 | `tests/test_offline_client_timeout_semantics.py` | `TestCurlCFFIClientTimeout`（4 用例）+ docstring curl 注记与 `CURL_CFFI_INFINITE` 常量〔勘误 2026-10-11〕实测该类为 3 用例，curl 相关用例合计 3+4=7 而非 4+4=8（WS 泄漏 4 例无误），以 tasks.md Implementation Completion Record T001 为据 | 删 curl 类/常量/注记；aiohttp、httpx 用例与归一化断言保留 | EDIT |
 | T3 | `tests/test_offline_ws_handle_leak.py` | `HAS_CURL_CFFI` 块、`FakeCurlWs`、`make_bare_curl_client`、4 个 curl 用例 | 全部删除；aiohttp 4 用例保留 | EDIT |
 | T4 | `tests/test_offline_client_selection.py` | 不存在 | FR-007 三场景离线覆盖：①清单契约（恰 aiohttp/httpx 两项且有序）②回退与默认选择（打桩导入：默认 aiohttp / 缺失回退 httpx / 全缺报"尚未安装(aiohttp\|httpx)"）③干净移除（模块导入 `ModuleNotFoundError`；`select_client("curl_cffi")` 报错含已注册清单；同名自定义注册生效并可注销还原） | APPEND |
 
@@ -41,7 +41,7 @@
 | U4 | `docs/configuration.md` | 设置支持表含 curl_cffi 列与 impersonate 行（L9 起） | 删 curl 列与 impersonate 行；http2 行保留（httpx） | EDIT |
 | U5 | `docs/examples/audio.md` | `from curl_cffi import requests`（L6）、"默认使用 curl_cffi"（L29） | 示例改 aiohttp；注释改"默认使用 aiohttp" | EDIT |
 | U6 | `.github/ISSUE_TEMPLATE/troubleshooting.md` | 候选项"curl_cffi / httpx / aiohttp / ..."（L24） | "aiohttp / httpx / ..." | EDIT |
-| U7 | `docs/modules/client.md` | 生成页含 CurlCFFIClient 段 | 重跑 `scripts/doc_gen.py` 后不含；入库 | REGEN |
+| U7 | `docs/modules/client.md` | 生成页含 CurlCFFIClient 段 | 重跑 `scripts/doc_gen.py` 后不含；入库〔勘误 2026-10-11〕本行前提与实态不符：`clients` 包从未进入 doc_gen 生成域，`docs/modules/client.md` 记录的是 `client.py`（IP 终端模块）且从不包含 CurlCFFIClient 段，重跑 doc_gen 对该页实为 no-op；本特性实际再生成页为 `docs/modules/bilibili_api.md`（docstring 单行兼容修复 dc986da 随附）——原文保留备查，详见 tasks.md Implementation Completion Record T010/T014 | REGEN |
 | U8 | `CHANGELOGS/` | 无本期记录 | 新版本节记录移除、影响面与迁移方式（BREAKING CHANGE 告知载体） | APPEND |
 
 ## 5. 治理文本
@@ -53,7 +53,7 @@
 
 ## 6. 豁免清单（EXEMPT，验证时排除）
 
-`CHANGELOGS/v17.md`、`CHANGELOGS/v18.md`、`REFACTORING.spec.md`、`specs/001-*`、`specs/002-*`、`specs/005-*`、`specs/008-*`、`specs/009-*`（本特性自述）、`bilibili-api-registry/`（独立嵌套仓库，与客户端适配无关）。
+`CHANGELOGS/v17.md`、`CHANGELOGS/v18.md`、`REFACTORING.spec.md`、`specs/001-*`、`specs/002-*`、`specs/005-*`、`specs/008-*`、`specs/009-*`（本特性自述）、`bilibili-api-registry/`（独立嵌套仓库，与客户端适配无关）。〔2026-10-11 勘误扩充，与 quickstart §4 豁免保持一致〕`CHANGELOGS/UNRELEASED.md`（移除记录本体）、`docs/request_client.md` 自定义客户端教程节（research R5 裁决的"第三方自定义接入示例"教学语境；节外命中仍须人工分类）、`tests/test_offline_client_selection.py`（FR-007 移除契约锚定断言）、`.specify/memory/constitution.md`（头部 Sync Impact Report 的 from→to 修订记载）。
 
 ## 状态一致性规则
 
