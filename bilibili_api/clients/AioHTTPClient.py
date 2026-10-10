@@ -421,7 +421,7 @@ class AioHTTPClient(BiliAPIClient):
         )
         ws = self.__wss.get(cnt)
         if ws is None:
-            # 条目不存在说明连接已关闭并被清理，静默跳过（与 CurlCFFIClient 行为一致）
+            # 条目不存在说明连接已关闭并被清理，静默跳过（既有语义，由离线用例锚定）
             return
         await ws.send_bytes(data)
 
