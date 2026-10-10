@@ -4,7 +4,7 @@
 
 ## 项目概要
 
-`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。800+ API 接口（52 个定义文件），全部异步，支持多请求客户端（aiohttp / httpx / curl_cffi）。
+`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。800+ API 接口（52 个定义文件），全部异步，支持多请求客户端（aiohttp / httpx）。
 
 - **语言:** Python ≥ 3.10（代码须兼容 CPython 3.10，不得使用更高版本独有特性）
 - **许可证:** GPL-3.0-or-later
@@ -47,8 +47,7 @@ bilibili_api/            # 库源码
 ├── exceptions/          # 异常体系（每个异常一个文件）
 ├── clients/             # 请求客户端适配
 │   ├── AioHTTPClient.py
-│   ├── HTTPXClient.py
-│   └── CurlCFFIClient.py
+│   └── HTTPXClient.py
 ├── data/
 │   ├── api/             # API 定义 JSON（URL / method / params / verify；主体由 bilibili-api-registry 同步生成）
 │   └── *.json           # 静态数据（分区、语言、标签等）
@@ -102,7 +101,7 @@ API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP
 
 ### 3. 请求客户端抽象
 
-`BiliAPIClient`（ABC）定义了 HTTP 请求、WebSocket、文件下载的统一接口。三种实现按优先级自动选择：`curl_cffi` > `aiohttp` > `httpx`。可通过 `select_client()` 切换，也可 `register_client()` 注册自定义实现。
+`BiliAPIClient`（ABC）定义了 HTTP 请求、WebSocket、文件下载的统一接口。两种实现按优先级自动选择：`aiohttp` > `httpx`。可通过 `select_client()` 切换，也可 `register_client()` 注册自定义实现。
 
 ### 4. 反爬虫机制
 
@@ -177,7 +176,7 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 
 本项目使用 **uv** 管理依赖和虚拟环境。
 
-1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx / curl_cffi）
+1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx）
 2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
 3. 本地开发直接在 `main` 分支提交（本仓库现行惯例，不切分支）；推送远端仅在用户明确要求时进行
 4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check`（全量启用）→ `scripts/type_ratchet.py` 零容忍校验 → 文档漂移校验：重新运行 doc_gen 后以 git 检测 `docs/modules/` 是否与源码漂移并阻断；docstring 漂移总是检测，公开符号级漂移依赖 `.mypy_cache`，缺失时跳过、落后时仅提示，`DOCS_DRIFT_STRICT=1` 时两者均升级为失败）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`
@@ -285,14 +284,14 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关�
 - **412 Precondition Failed**：请求过快，需降低并发或设置代理 `request_settings.set_proxy(...)`
 - **Wbi 签名失效**：B 站会不定期更新 Wbi 密钥，如遇大批 API 失效优先检查 `recalculate_wbi` 逻辑
 - **Cookies 过期**：`Credential` 有 `check_refresh()` 方法可用于检查并刷新
-- **请求库缺失**：至少需安装 aiohttp / httpx / curl_cffi 之一，否则初始化报错
+- **请求库缺失**：至少需安装 aiohttp / httpx 之一，否则初始化报错
 - **b 站接口变更**：爬虫库的天然风险，API 可能随时失效。接口信息以 `bilibili-api-registry/` 为主要来源（抽取自 bilibili-API-collect 文档），排查失效接口时先查 registry 条目的 `doc_source` 回溯源文档，批量补齐走 `uv run python scripts/sync_api_registry.py`
 
 ## 关键依赖
 
 | 依赖 | 用途 |
 |------|------|
-| `aiohttp` / `httpx` / `curl_cffi` | 异步 HTTP 客户端（三选一或多选） |
+| `aiohttp` / `httpx` | 异步 HTTP 客户端（二选一或多选） |
 | `beautifulsoup4` + `lxml` | HTML 解析（专栏爬取等） |
 | `yarl` | URL 处理 |
 | `pycryptodomex` | 加密（RSA 密码登录、Wbi 签名等） |

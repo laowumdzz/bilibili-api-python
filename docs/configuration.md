@@ -6,17 +6,16 @@ from bilibili_api import request_settings, request_log
 
 ## 配置项
 
-| name | type | default | is_bilibili_api_providing | curl_cffi | aiohttp | httpx |
-| - | - | - | - | - | - | - |
-| proxy | str | ` ` | ❌ | ✅ | ✅ | ✅ |
-| timeout | float | `30.0` | ❌ | ✅ | ✅ | ✅ |
-| verify_ssl | bool | `True` | ❌ | ✅ | ✅ | ✅ |
-| trust_env | bool | `True` | ❌ | ✅ | ✅ | ✅ |
-| impersonate | str | ` ` | ❌ | ✅ | ❌ | ❌ |
-| http2 | bool | `False` | ❌ | ✅ | ❌ | ✅ |
-| wbi_retry_times | int | `3` | ✅ | \\ | \\ | \\ |
-| enable_auto_buvid | bool | `True` | ✅ | \\ | \\ | \\ |
-| enable_bili_ticket | bool | `False` | ✅ | \\ | \\ | \\ |
+| name | type | default | is_bilibili_api_providing | aiohttp | httpx |
+| - | - | - | - | - | - |
+| proxy | str | ` ` | ❌ | ✅ | ✅ |
+| timeout | float | `30.0` | ❌ | ✅ | ✅ |
+| verify_ssl | bool | `True` | ❌ | ✅ | ✅ |
+| trust_env | bool | `True` | ❌ | ✅ | ✅ |
+| http2 | bool | `False` | ❌ | ❌ | ✅ |
+| wbi_retry_times | int | `3` | ✅ | \\ | \\ |
+| enable_auto_buvid | bool | `True` | ✅ | \\ | \\ |
+| enable_bili_ticket | bool | `False` | ✅ | \\ | \\ |
 
 
 ## 代理
@@ -111,7 +110,7 @@ refresh_bili_ticket() # 刷新 bili_ticket
 为了对这些字段进行处理，`request_settings` 提供 `set` 函数。
 
 ``` python
-request_settings.set("impersonate", "edge99") # 设置名为 impersonate 的设置为 edge99
+request_settings.set("http2", True) # 设置名为 http2 的设置为 True
 ```
 
 `set` 函数同样支持上面出现过的 `proxy` `timeout`。

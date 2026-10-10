@@ -41,7 +41,7 @@
 - 不仅仅是官方提供的 API！还附加：AV 号与 BV 号互转[^2]、连接直播弹幕 Websocket 服务器、视频弹幕反查、下载弹幕、字幕文件[^3]、专栏内容爬取、cookies 刷新等[^4]。
 - 支持采用各种手段避免触发反爬虫风控[^5]。
 - **全部是异步操作**。
-- 默认支持 `aiohttp` / `httpx` / `curl_cffi`。
+- 默认支持 `aiohttp` / `httpx`。
 - 需要 Python 3.10 及以上版本。
 
 # 快速上手
@@ -62,7 +62,7 @@ $ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@<tag>
 $ pip3 install ./bilibili_api_python-<版本>-py3-none-any.whl
 ```
 
-然后需要**自行安装**一个支持异步的第三方请求库，如 `aiohttp` / `httpx` / `curl_cffi`。
+然后需要**自行安装**一个支持异步的第三方请求库，如 `aiohttp` / `httpx`。
 
 ```
 # aiohttp
@@ -70,9 +70,6 @@ $ pip3 install aiohttp
 
 # httpx
 $ pip3 install httpx
-
-# curl_cffi
-$ pip3 install curl_cffi
 ```
 
 接下来我们来获取视频的播放量等信息：
@@ -154,25 +151,15 @@ if __name__ == '__main__':
 
 # 模块使用的请求库
 
-模块在允许的条件下，按照 `curl_cffi` `aiohttp` `httpx` 的优先级选择第三方请求库。
+模块在允许的条件下，按照 `aiohttp` `httpx` 的优先级选择第三方请求库。
 
 如果想要指定请求库，可以利用 `select_client` 进行切换。
 
 ``` python
 from bilibili_api import select_client
 
-select_client("curl_cffi") # 选择 curl_cffi，支持伪装浏览器的 TLS / JA3 / Fingerprint
 select_client("aiohttp") # 选择 aiohttp
 select_client("httpx") # 选择 httpx，不支持 WebSocket
-```
-
-curl_cffi 支持伪装浏览器的 TLS / JA3 / Fingerprint，但需要手动设置。
-
-``` python
-from bilibili_api import request_settings
-
-request_settings.set("impersonate", "chrome131") # 第二参数数值参考 curl_cffi 文档
-# https://curl-cffi.readthedocs.io/en/latest/impersonate.html
 ```
 
 # FA♂Q

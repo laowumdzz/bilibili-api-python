@@ -3,7 +3,7 @@
 ```python
 from bilibili_api import audio, sync, get_session
 import os
-from curl_cffi import requests
+import aiohttp
 
 AUDIO_LIST_ID = 10624
 
@@ -24,9 +24,9 @@ async def main():
         p += 1  # 抓取下一页
 
     # 2. 下载音频
-    sess: requests.AsyncSession = (
+    sess: aiohttp.ClientSession = (
         get_session()
-    )  # bilibili-api 默认使用 curl_cffi 作为请求客户端
+    )  # bilibili-api 默认使用 aiohttp 作为请求客户端
 
     # 创建歌单文件夹
     if not os.path.exists(str(AUDIO_LIST_ID)):
@@ -41,18 +41,15 @@ async def main():
         # 下载歌曲
         file = f"{AUDIO_LIST_ID}/{au['id']} - {au['title']}.m4a"
         print(f"下载 {au['title']}")
-        resp: requests.Response = await sess.get(
+        resp: aiohttp.ClientResponse = await sess.get(
             url,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
                 "Referer": "https://www.bilibili.com/",
             },
-            stream=True,
         )
         with open(file, "wb") as f:
-            async for chunk in resp.aiter_content():
-                if not chunk:
-                    break
+            async for chunk in resp.content.iter_chunked(65536):
                 f.write(chunk)
 
 

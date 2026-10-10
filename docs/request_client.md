@@ -10,16 +10,16 @@
 
 |           | 优先级 | request | stream | WebSocket | 额外网络请求设置                                                           |
 | --------- | ------ | ------- | ------ | --------- | -------------------------------------------------------------------------- |
-| curl_cffi | 3      | ✅      | ✅     | ✅        | - `impersonate` defaults to ` ` <br> - `http2` defaults to `False` |
-| aiohttp   | 2      | ✅      | ✅     | ✅        |                                                                            |
-| httpx     | 1      | ✅      | ✅     | ❌        | `http2` defaults to `False`                                                |
+|           | 优先级 | request | stream | WebSocket | 额外网络请求设置            |
+| --------- | ------ | ------- | ------ | --------- | --------------------------- |
+| aiohttp   | 2      | ✅      | ✅     | ✅        |                             |
+| httpx     | 1      | ✅      | ✅     | ❌        | `http2` defaults to `False` |
 
-名为 `impersonate` 的设置决定了 curl_cffi 模仿哪个浏览器的指纹，名为 `http2` 的设置决定了 curl_cffi / httpx 是否启用 HTTP2。[这些设置如何启用？](https://nemo2011.github.io/bilibili-api/#/configuration)
+名为 `http2` 的设置决定了 httpx 是否启用 HTTP2。[这些设置如何启用？](https://nemo2011.github.io/bilibili-api/#/configuration)
 
 ### 2、切换请求库
 
 ```python
-select_client("curl_cffi") # 选择 curl_cffi
 select_client("aiohttp") # 选择 aiohttp
 select_client("httpx") # 选择 httpx，不支持 WebSocket
 
@@ -46,9 +46,9 @@ set_session(sess) # 同样仅限于当前事件循环
 
 ## 2、模块使用第三方库底层逻辑简析
 
-bilibili_api 支持不同网络请求库的功能基于一个抽象类：`BiliAPIClient`。通过对这个抽象类的改写，可以实现**统一接口样式**的、**基于不同第三方请求库**的不同类，例如模块自带的 `bilibili_api.clients.AioHTTPClient.AioHTTPClient`, `bilibili_api.clients.CurlCFFIClient.CurlCFFIClient`, `bilibili_api.clients.HTTPXClient.HTTPXClient`，这些类会像第三方请求库的会话一样工作，但是它们是**统一接口样式**的。换种说法，这是对第三方请求库的会话对象**进行封装**。
+bilibili_api 支持不同网络请求库的功能基于一个抽象类：`BiliAPIClient`。通过对这个抽象类的改写，可以实现**统一接口样式**的、**基于不同第三方请求库**的不同类，例如模块自带的 `bilibili_api.clients.AioHTTPClient.AioHTTPClient`, `bilibili_api.clients.HTTPXClient.HTTPXClient`，这些类会像第三方请求库的会话一样工作，但是它们是**统一接口样式**的。换种说法，这是对第三方请求库的会话对象**进行封装**。
 
-现规定 `session` 表示 **第三方请求库（诸如 `curl_cffi`, `aiohttp`）在模块每次运行中使用可持久化的会话对象**，`client` 表示继承 `BiliAPIClient` 的类。
+现规定 `session` 表示 **第三方请求库（诸如 `aiohttp`, `httpx`）在模块每次运行中使用可持久化的会话对象**，`client` 表示继承 `BiliAPIClient` 的类。
 
 ### 1、模块如何发起请求
 
@@ -90,7 +90,7 @@ resp = await client.request(**config)
 
 > 其中 `web_location` 的默认值为 `"444.8"`，由 `bilibili_api.utils._wbi.WbiManager.get_end_result` 在调用方未显式传入时自动补充；若已显式提供 `web_location`，则以传入值为准，不会被覆盖。
 
-这就是正常情况下，为了访问这个接口，需要往 `httpx.get`, `aiohttp.get`, `curl_cffi.requests.get` 等第三方库中传入的参数。在浏览器控制台抓取到的真实请求也应该长这样子。
+这就是正常情况下，为了访问这个接口，需要往 `httpx.get`, `aiohttp.get` 等第三方库中传入的参数。在浏览器控制台抓取到的真实请求也应该长这样子。
 
 第二行，调用 `get_client`，这个函数会返回一个 `client` 实例。接着在第三行调用这个 `client` 的函数，`client` 会将参数传递到 `session`。
 
@@ -126,7 +126,7 @@ async def download(url: str, out: str, intro: str):
             if bts == tot:
                 break
     print()
-# 此函数在 aiohttp / httpx / curl_cffi 下都能正常运行。
+# 此函数在 aiohttp / httpx 下都能正常运行。
 ```
 
 接下来对 `BiliAPIClient` 内部函数进行介绍。
@@ -226,15 +226,15 @@ def download_content_length(self, cnt: int) -> int: ...
 
 ### 2、进阶
 
-有时会在自己编写的 `client` 类中添加设置，例如 `curl_cffi` 的 `impersonate` 参数便应当为设置项。如何实现这个功能？
+有时会在自己编写的 `client` 类中添加设置，例如第三方请求库 `curl_cffi` 的 `impersonate` 参数（浏览器指纹伪装）便应当为设置项。`curl_cffi` 并非模块内置携带的请求库（内置已不再携带其适配），但恰好是演示"如何为任意第三方库接入设置项"的例子——自定义接入仍然可行。如何实现这个功能？
 
-以此处的 `impersonate` 参数为例子，先在 `__init__` 中加上 `xxx` 参数（在 `__init__` 中加上 `impersonate` 参数），然后在 `client` 类中实现 `set_xxx` (在 `CurlCFFIClient` 中实现 `set_impersonate`) 即可。
+以此处的 `impersonate` 参数为例子，先在 `__init__` 中加上 `xxx` 参数（在 `__init__` 中加上 `impersonate` 参数），然后在 `client` 类中实现 `set_xxx` (在自定义的 `CurlCFFIClient` 中实现 `set_impersonate`) 即可。
 
 ### 3、注册
 
-前文提到 `client` 使用前需要注册，模块默认携带的 `AioHTTPClient` `CurlCFFIClient` `HTTPXClient` 也有注册的过程。
+前文提到 `client` 使用前需要注册，模块默认携带的 `AioHTTPClient` `HTTPXClient` 也有注册的过程。
 
-注册的函数为 `register_client`，第一项参数传入你喜欢的 `client` 的名字，第二项参数传入 `client` 的类，第三项参数需要传入 `client` 中额外使用到的设置项。以 `impersonate` 为例子，首先需要一个字典，然后将字典的 `impersonate` 项设置为你喜欢的 `impersonate` 设置项的默认值，最后将这个字典传入。
+注册的函数为 `register_client`，第一项参数传入你喜欢的 `client` 的名字，第二项参数传入 `client` 的类，第三项参数需要传入 `client` 中额外使用到的设置项。以第三方请求库 `curl_cffi` 的 `impersonate` 为例子（演示内置已移除后自定义接入仍然可行），首先需要一个字典，然后将字典的 `impersonate` 项设置为你喜欢的 `impersonate` 设置项的默认值，最后将这个字典传入。
 
 ```python
 class CurlCFFIClient(BiliAPIClient):

@@ -21,7 +21,7 @@ assignees: ''
 
 **解释器：** cpython / pypi / jython
 
-**使用的网络请求库：** curl_cffi / httpx / aiohttp / ...
+**使用的网络请求库：** aiohttp / httpx / ...
 
 <!--可使用 bilibili_api.get_selected_client() (>=17.0.0)  或 bilibili_api.settings.http_client (<17.0.0) 查询-->
 
