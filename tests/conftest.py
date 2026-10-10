@@ -115,15 +115,13 @@ def _inspect_risk_response(resp: object, url: str) -> None:
         return
     counter.record_risk()
     if counter.abort_on_risk:
-        raise _RiskControlAbort(
-            f"检测到 412 类风控响应（BILI_ABORT_ON_RISK=1），已中止整个测试会话：{url}"
-        )
+        raise _RiskControlAbort(f"检测到 412 类风控响应（BILI_ABORT_ON_RISK=1），已中止整个测试会话：{url}")
 
 
 def _install_request_counter() -> None:
     """在请求客户端抽象层安装 per-send 计数与风控响应挂钩。
 
-    对三个内置客户端的 request / ws_create / download_create 做类级包装：
+    对两个内置客户端的 request / ws_create / download_create 做类级包装：
     request 每次调用计 1 并检查风控响应（重试的每次尝试自然各计 1），
     ws_create（连接建立）与 download_create（每次下载）各计 1；
     连接内消息与心跳不经过这些方法，不计入。缺省（两个开关均未设置）
@@ -136,10 +134,9 @@ def _install_request_counter() -> None:
         return
     import importlib
 
-    # 逐客户端导入并包装：未安装的客户端库（如 curl_cffi）跳过即可
+    # 逐客户端导入并包装：未安装的客户端库跳过即可
     client_specs = [
         ("bilibili_api.clients.AioHTTPClient", "AioHTTPClient"),
-        ("bilibili_api.clients.CurlCFFIClient", "CurlCFFIClient"),
         ("bilibili_api.clients.HTTPXClient", "HTTPXClient"),
     ]
 

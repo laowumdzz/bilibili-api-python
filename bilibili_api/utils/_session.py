@@ -419,9 +419,19 @@ def select_client(name: str) -> None:
 
     Args:
         name (str): 请求客户端类型名称，用户自定义命名。
+
+    Raises:
+        ArgsException: 该名称未注册过时抛出；异常信息列出当前已注册的客户端
+            （按字典序排序，保证消息确定性、不依赖注册顺序）并给出自定义
+            注册提示；无任何已注册客户端时退化为"尚未安装"提示。
     """
     if not sessions.get(name):
-        raise ArgsException(f"未注册过 {name}。")
+        if not sessions:
+            raise ArgsException("尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (aiohttp|httpx)")
+        registered = ", ".join(sorted(sessions.keys()))
+        raise ArgsException(
+            f"未注册过 {name}。当前已注册的客户端：{registered}（或通过 register_client() 注册自定义客户端）。"
+        )
     global selected_client
     selected_client = name
 
@@ -434,9 +444,7 @@ def get_selected_client() -> tuple[str, type[BiliAPIClient]]:
         Tuple[str, Type[BiliAPIClient]]: 第 0 项为客户端名称，第 1 项为对应的类
     """
     if selected_client == "":
-        raise ArgsException(
-            "尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (curl_cffi|httpx|aiohttp)"
-        )
+        raise ArgsException("尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (aiohttp|httpx)")
     return selected_client, sessions[selected_client]
 
 
@@ -448,9 +456,7 @@ def get_available_settings() -> list[str]:
         List[str]: 支持的设置项名称
     """
     if selected_client == "":
-        raise ArgsException(
-            "尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (curl_cffi|httpx|aiohttp)"
-        )
+        raise ArgsException("尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (aiohttp|httpx)")
     return client_settings[selected_client]
 
 
@@ -482,9 +488,7 @@ def get_client() -> BiliAPIClient:
         BiliAPIClient: 请求客户端
     """
     if selected_client == "":
-        raise ArgsException(
-            "尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (curl_cffi|httpx|aiohttp)"
-        )
+        raise ArgsException("尚未安装第三方请求库或未注册自定义第三方请求库。\n$ pip3 install (aiohttp|httpx)")
     global session_pool
     pool = session_pool.get(selected_client)
     if pool is None:
