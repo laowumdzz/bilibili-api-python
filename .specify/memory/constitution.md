@@ -1,20 +1,18 @@
 <!--
 Sync Impact Report
 ==================
-- Version change: 1.0.0 → 1.0.1（PATCH：措辞澄清，原则集合不变）
+- Version change: 1.0.1 → 1.0.2（PATCH：事实澄清，原则集合不变）
 - Modified principles:
-  - III. 质量门禁：原"豁免错误码基线只减不增 + 基线清零后须从
-    pyproject.toml 豁免表移除条目"的维护义务条款，改写为豁免机制退役
-    后的终态描述（基线空表、豁免表已移除、类型检查默认全量启用），
-    并保留"不得重新引入豁免"的常设约束——这是原"只减不增"规则在
-    零基线终点上的自然延续，非原则重定义。
+  - I. 异步优先：客户端自动选择优先级链由 `curl_cffi > aiohttp > httpx`
+    改为 `aiohttp > httpx`——特性 009（specs/009-remove-curlcffi-client）
+    已将 CurlCFFI 内置客户端适配整体移除（干净移除，无报错桩），
+    自动选择回落为剩余两客户端且相对顺序不变；aiohttp 为运行时硬依赖，
+    正常安装路径下恒有可用内置客户端。
 - Added sections: 无
 - Removed sections: 无
+- 迁移事项: 无（面向下游的迁移指引由 CHANGELOGS 未发布节与用户文档
+  承载；宪章为治理文本，仅消除事实漂移）
 - Follow-up TODOs: 无
-- 修订依据：2026-09 特性 005（specs/005-pyrefly-type-debt）将 pyrefly
-  存量类型错误全部清零并整体退役豁免机制（scripts/type_ratchet.py 的
-  BASELINE 为空表，pyproject.toml 的 [tool.pyrefly.errors] 豁免表已
-  移除），宪法原文指向的豁免表已不存在，属治理文本与项目事实漂移。
 -->
 
 # bilibili-api-python Constitution
@@ -30,7 +28,7 @@ Sync Impact Report
 - 库代码中 MUST NOT 出现 `asyncio.run()`——事件循环由调用方负责启动。
 - 异步路径中 MUST NOT 使用同步阻塞操作（`time.sleep`、`requests.get` 等）。
 - HTTP 访问 MUST 经由 `BiliAPIClient` 抽象层，客户端实现按
-  `curl_cffi > aiohttp > httpx` 优先级自动选择；MUST NOT 绕过抽象层
+  `aiohttp > httpx` 优先级自动选择；MUST NOT 绕过抽象层
   直接依赖具体客户端。
 
 Rationale：统一的事件模型与客户端抽象是多客户端支持和下游易用性的根基。
@@ -143,4 +141,4 @@ Rationale：作为被下游广泛依赖的库，接口稳定性即是契约。
   分层测试与凭据安全三条不可协商红线）；复杂度引入 MUST 在 PR 描述中
   给出理由。
 
-**Version**: 1.0.1 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-09-25
+**Version**: 1.0.2 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-10-11
