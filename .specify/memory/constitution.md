@@ -1,18 +1,20 @@
 <!--
 Sync Impact Report
 ==================
-- Version change: (未批准的模板占位) → 1.0.0（首次批准）
-- Modified principles: 无（此前文件为未填充模板，本次为初始填充）
-- Added sections:
-  - Core Principles（I. 异步优先 / II. 声明式 API 定义 / III. 质量门禁 /
-    IV. 分层测试 / V. 兼容性与破坏性变更控制，全部新增）
-  - 技术与安全约束（新增）
-  - 开发工作流（新增）
-  - Governance（新增）
+- Version change: 1.0.0 → 1.0.1（PATCH：措辞澄清，原则集合不变）
+- Modified principles:
+  - III. 质量门禁：原"豁免错误码基线只减不增 + 基线清零后须从
+    pyproject.toml 豁免表移除条目"的维护义务条款，改写为豁免机制退役
+    后的终态描述（基线空表、豁免表已移除、类型检查默认全量启用），
+    并保留"不得重新引入豁免"的常设约束——这是原"只减不增"规则在
+    零基线终点上的自然延续，非原则重定义。
+- Added sections: 无
 - Removed sections: 无
-- Follow-up TODOs: 无（无故意保留的占位符）
-- 生成依据：应用户要求，根据项目内容（AGENTS.md、README.md、
-  scripts/lint.py 门禁链路、tests/conftest.py 测试分层）自动生成。
+- Follow-up TODOs: 无
+- 修订依据：2026-09 特性 005（specs/005-pyrefly-type-debt）将 pyrefly
+  存量类型错误全部清零并整体退役豁免机制（scripts/type_ratchet.py 的
+  BASELINE 为空表，pyproject.toml 的 [tool.pyrefly.errors] 豁免表已
+  移除），宪法原文指向的豁免表已不存在，属治理文本与项目事实漂移。
 -->
 
 # bilibili-api-python Constitution
@@ -55,8 +57,11 @@ Rationale：声明式定义让 400+ 接口可审计、可批量维护；统一�
 - 门禁链路：`ruff check` → `ruff format --check` → tests/scripts 阻断检查
   → `pyrefly check` → 类型豁免存量棘轮（`scripts/type_ratchet.py`）→
   文档漂移校验。
-- pyrefly 豁免错误码基线 MUST 只减不增；某错误码基线清零后 MUST 同步
-  从 `pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表移除该条目。
+- 类型豁免机制已于 2026-09 特性 005（specs/005-pyrefly-type-debt）
+  整体退役：`pyproject.toml` 不再配置 `[tool.pyrefly.errors]` 豁免表，
+  `scripts/type_ratchet.py` 基线为空表，类型检查默认全量启用、零容忍。
+- MUST NOT 重新引入类型豁免：不得恢复豁免表条目，不得将棘轮基线从零
+  上调；任何新增类型错误 MUST 就地修复而非豁免。
 - 新增或修改公共函数 MUST 提供完整中文 docstring（Args / Returns /
   Raises）并附全面类型注解；随后 MUST 重新运行 `scripts/doc_gen.py`
   生成文档。
@@ -138,4 +143,4 @@ Rationale：作为被下游广泛依赖的库，接口稳定性即是契约。
   分层测试与凭据安全三条不可协商红线）；复杂度引入 MUST 在 PR 描述中
   给出理由。
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-08-31
+**Version**: 1.0.1 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-09-25
