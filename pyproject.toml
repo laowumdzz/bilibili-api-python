@@ -140,6 +140,7 @@ ignore = [
 "scripts/login_and_cache.py" = ["T201"]
 # 上游有意在异步函数中使用阻塞 open/os.path（读取本地小文件），待后续引入 aiofiles 再改
 "bilibili_api/**" = ["ASYNC230", "ASYNC240"]
+".specify/scripts/python/**" = ["ALL"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
