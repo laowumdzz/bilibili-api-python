@@ -4,7 +4,7 @@
 
 # bilibili-api-python
 
-[![API 数量](https://img.shields.io/badge/API%20数量-400+-blue)][api.json]
+[![API 数量](https://img.shields.io/badge/API%20数量-800+-blue)][api.json]
 [![LICENSE](https://img.shields.io/badge/LICENSE-GPLv3+-red)][LICENSE]
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org)
 [![Release](https://img.shields.io/github/v/release/laowumdzz/bilibili-api-python)](https://github.com/laowumdzz/bilibili-api-python/releases/latest)
@@ -41,7 +41,7 @@
 - 不仅仅是官方提供的 API！还附加：AV 号与 BV 号互转[^2]、连接直播弹幕 Websocket 服务器、视频弹幕反查、下载弹幕、字幕文件[^3]、专栏内容爬取、cookies 刷新等[^4]。
 - 支持采用各种手段避免触发反爬虫风控[^5]。
 - **全部是异步操作**。
-- 默认支持 `aiohttp` / `httpx`。
+- 默认使用 `aiohttp`（运行时依赖，安装时自动引入），可选 `httpx`。
 - 需要 Python 3.10 及以上版本。
 
 # 快速上手
@@ -62,15 +62,14 @@ $ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@<tag>
 $ pip3 install ./bilibili_api_python-<版本>-py3-none-any.whl
 ```
 
-然后需要**自行安装**一个支持异步的第三方请求库，如 `aiohttp` / `httpx`。
+`aiohttp` 会作为运行时依赖随本模块自动安装，无需额外操作。如需改用 `httpx`，请自行安装：
 
 ```
-# aiohttp
-$ pip3 install aiohttp
-
-# httpx
+# 可选：httpx
 $ pip3 install httpx
 ```
+
+安装后可通过 `select_client("httpx")` 切换（`httpx` 不支持 WebSocket），详见下文「模块使用的请求库」。
 
 接下来我们来获取视频的播放量等信息：
 
@@ -151,7 +150,7 @@ if __name__ == '__main__':
 
 # 模块使用的请求库
 
-模块在允许的条件下，按照 `aiohttp` `httpx` 的优先级选择第三方请求库。
+模块默认使用随安装引入的 `aiohttp`；若还安装了可选的 `httpx`，仍按 `aiohttp` → `httpx` 的优先级自动选择（前者不可用时回落到后者）。
 
 如果想要指定请求库，可以利用 `select_client` 进行切换。
 

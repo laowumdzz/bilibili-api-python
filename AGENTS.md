@@ -4,7 +4,7 @@
 
 ## 项目概要
 
-`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。800+ API 接口（52 个定义文件），全部异步，支持多请求客户端（aiohttp / httpx）。
+`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。800+ API 接口（52 个定义文件），全部异步，支持多请求客户端（aiohttp 为运行时硬依赖，httpx 为可选实现）。
 
 - **语言:** Python ≥ 3.10（代码须兼容 CPython 3.10，不得使用更高版本独有特性）
 - **许可证:** GPL-3.0-or-later
@@ -12,6 +12,7 @@
 - **本仓库:** https://github.com/laowumdzz/bilibili-api-python（fork 自 [nemo2011/bilibili-api](https://github.com/nemo2011/bilibili-api)，由 AI 维护）
 - **接口信息主要来源:** `bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，抽取自 bilibili-API-collect 文档，详见"核心架构模式"）
 - **PR 目标分支:** `dev`（远端分支尚未建立；建立前外部贡献先通过 Issue 与维护者沟通）
+- **项目治理:** `.specify/memory/constitution.md`（宪章）是最高准则；本文件是运行时指引，冲突时以宪章为准
 - **Python 环境:** 使用 uv 管理的 `.venv` 虚拟环境，所有命令用 `uv run` 前缀
 
 ## 项目结构
@@ -19,7 +20,7 @@
 ```
 bilibili_api/            # 库源码
 ├── __init__.py          # 统一导出所有子模块
-├── video.py             # 视频（最大模块，2600+ 行）
+├── video.py             # 视频
 ├── live.py              # 直播 + 弹幕 WebSocket
 ├── user.py              # 用户
 ├── dynamic.py           # 动态
@@ -44,7 +45,7 @@ bilibili_api/            # 库源码
 │   ├── picture.py       # Picture 类
 │   ├── parse_link.py    # 链接解析
 │   └── ...
-├── exceptions/          # 异常体系（每个异常一个文件）
+├── exceptions/          # 异常体系（_simple.py 简单异常集合 + 独立异常文件）
 ├── clients/             # 请求客户端适配
 │   ├── AioHTTPClient.py
 │   └── HTTPXClient.py
@@ -55,18 +56,22 @@ bilibili_api/            # 库源码
 bilibili-api-registry/   # 接口信息注册表（独立嵌套 git 仓库，未纳入本仓库追踪；
                          #   bilibili-API-collect 文档抽取，data/api 的同步来源）
 scripts/                 # 开发脚本
+├── _login_cache.py      # 临时登录凭据缓存纯函数（路径 / base64 编解码 / 合法性判定 / 来源合并）
+├── check_commit_msg.py  # Conventional Commits 格式兜底校验（CI）
 ├── doc_gen.py           # 文档自动生成（从 docstring）
-├── lint.py              # ruff check + format + pyrefly 类型检查 + 文档漂移校验（docs/modules/）
+├── lint.py              # ruff check + format + pyrefly 类型检查 + 类型零容忍棘轮 + 文档漂移校验（docs/modules/）
+├── login_and_cache.py   # 独立登录脚本（扫码/短信，写 TEMP 凭据缓存）
+├── qrcode_login.py      # 二维码登录真机验收脚本
 ├── sync_api_registry.py # registry → data/api 增量同步（纯增量合并，支持 --dry-run）
 ├── type_ratchet.py      # pyrefly 类型检查零容忍校验（豁免机制已退役，防回归）
-├── login_and_cache.py   # 独立登录脚本（扫码/短信，写 TEMP 凭据缓存）
 └── get_*.py             # 数据抓取脚本
 tests/                   # 测试套件（统一由 pytest 运行）
-├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记 / --login 临时登录）
-├── _login_cache.py      # 临时登录凭据缓存纯函数（路径 / base64 编解码 / 合法性判定 / 来源合并）
+├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记 / 分层校验 / 请求计数 / --login）
 ├── test_offline_*.py    # 离线单元/冒烟测试（无需凭据与网络）
-└── test_*.py            # 各模块集成测试（需要 BILI_* 凭据，缺凭据自动 skip）
+└── test_*.py            # 各模块集成测试（需要凭据，缺凭据自动 skip）
 docs/                    # docsify 文档站
+.specify/                # Spec Kit 配置与宪章（memory/constitution.md）
+specs/                   # 特性规格文档（spec / plan / tasks / data-model 等）
 .githooks/               # commit-msg + pre-commit 钩子
 ```
 
@@ -82,7 +87,7 @@ API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP
 
 `bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，未纳入本仓库追踪）是从 bilibili-API-collect 文档批量抽取的 API 注册表，是本项目接口信息的**主要来源**：
 
-- `<category>/<subtopic>.json` 按类别/子主题分文件（36 类别，~609 REST + 320 gRPC 条目），与源文档结构对应；`schema.json` 定义条目结构
+- `<category>/<subtopic>.json` 按类别/子主题分文件（36 个 REST 类别 + 独立 `grpc/` 目录，当前约 594 REST + 320 gRPC 条目），与源文档结构对应；`schema.json` 定义条目结构
 - 每个条目含 `doc_source`（源文档路径 + 标题锚点，可回溯）、`params[]`、`notes` 等字段
 - registry 自身的更新工具在 `bilibili-api-registry/scripts/`（`extract.py` 抽取器 / `extract_grpc.py` gRPC 抽取 / `validate.py` 校验统计）
 
@@ -176,11 +181,11 @@ BREAKING CHANGE: Video.like() 移除了 deprecated 参数
 
 本项目使用 **uv** 管理依赖和虚拟环境。
 
-1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / aiohttp / httpx）
+1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / pytest / pytest-asyncio / httpx；aiohttp 在运行时依赖中）
 2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
 3. 本地开发直接在 `main` 分支提交（本仓库现行惯例，不切分支）；推送远端仅在用户明确要求时进行
 4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check`（全量启用）→ `scripts/type_ratchet.py` 零容忍校验 → 文档漂移校验：重新运行 doc_gen 后以 git 检测 `docs/modules/` 是否与源码漂移并阻断；docstring 漂移总是检测，公开符号级漂移依赖 `.mypy_cache`，缺失时跳过、落后时仅提示，`DOCS_DRIFT_STRICT=1` 时两者均升级为失败）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`
-5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（脚本已兼容 Python 3.10+；依赖 mypy（含 stubgen）先生成 `.mypy_cache`，且 mypy 需以忽略错误的方式运行，否则含错误模块的缓存会被 mypy 删除）
+5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（脚本已兼容 Python 3.10+）。脚本依赖 mypy 的 `stubgen` 与 `.mypy_cache`，而 mypy 未纳入 dev 依赖组：先用 `uv run --with mypy mypy --ignore-errors bilibili_api` 生成与 venv Python 版本一致的缓存，再用 `uv run --with mypy python scripts/doc_gen.py` 运行（`--with` 同时提供脚本内的 `stubgen`）；缓存缺失时脚本会因找不到 `.mypy_cache/<版本>/bilibili_api` 而失败
 6. 对外贡献的 PR 目标为 `dev` 分支（远端尚未建立；建立前先通过 Issue 与维护者沟通）
 
 > 没有 uv 的环境可回退到 `pip install -r requirements.txt` + 手动装 dev 工具。
@@ -225,7 +230,9 @@ uv run pytest -m "not integration"
 uv run pytest tests/test_video.py
 ```
 
-cred3 剔除发生在**收集期**（deselect，非 skip）：任何默认运行与不含 `cred3` token 的 `-m` 表达式都不会执行高危用例，终端会输出剔除计数提示（如 `已排除 37 个 cred3 高危用例`）。
+cred3 剔除发生在**收集期**（deselect，非 skip）：任何默认运行与不含 `cred3` token 的 `-m` 表达式都不会执行高危用例，终端会输出剔除计数提示（如 `已排除 36 个 cred3 高危用例`，数量随用例增减）。
+
+CI 口径：`integration-readonly` 任务在 PR 上运行 `-m readonly`；全量 `integration` 任务仅在 schedule / workflow_dispatch 触发，运行 `-m "cred0 or cred1 or cred2"`，cred3 永不进入 CI。
 
 ### 账号安全策略（操作类别判定表）
 
@@ -259,8 +266,7 @@ cred3 剔除发生在**收集期**（deselect，非 skip）：任何默认运行
 
 1. **`--login` 临时登录**：`uv run pytest --login qrcode`（终端扫码）或 `uv run pytest --login phone`（短信验证码，含极验滑块与风控二次验证）。显式传入时无条件重新登录，成功后凭据以 base64(JSON) 写入系统 TEMP 目录的 `bilibili_api_pytest_login.json` 缓存文件（本机临时目录，永不入库）；登录中止（用户中断 / 二维码连续 3 次超时 / 流程失败）则不写缓存、按后续来源回退，离线用例照常执行。交互只发生在显式传 `--login` 时。
 2. **TEMP 凭据缓存**：不带 `--login` 的普通运行自动尝试读取上述缓存文件——缺失则提示并回退；内容不合法则删除文件、报错并回退；合法则联网校验（仅在实际需要凭据时才发起）：有效直接使用（零交互），过期自动刷新（成功回写缓存，失败警告 + 删除 + 回退）。
-3. **`.bilibili.cookie` 文件（推荐，本项目已配置）**：项目根目录下的 `.bilibili.cookie` 存放测试账号的完整 Cookie（浏览器导出的标准 Cookie 字符串，含 `SESSDATA` / `bili_jct` / `buvid3` / `buvid4` / `DedeUserID`）。每次测试直接 `uv run pytest` 即可自动使用它进行全量测试。**该文件已加入 `.gitignore`，严禁提交到仓库。**
-4. **BILI_* 环境变量**（同名环境变量优先于 cookie 文件）：
+3. **BILI_* 环境变量**（优先于 `.bilibili.cookie` 文件）：
 
 ```bash
 BILI_SESSDATA=xxx        # SESSDATA cookie
@@ -269,6 +275,8 @@ BILI_BUVID3=xxx          # BUVID3 cookie
 BILI_DEDEUSERID=xxx      # DedeUserID cookie
 BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关闭限速）
 ```
+
+4. **`.bilibili.cookie` 文件（可选，长期本地测试推荐）**：项目根目录下的 `.bilibili.cookie` 存放测试账号的完整 Cookie（浏览器导出的标准 Cookie 字符串，含 `SESSDATA` / `bili_jct` / `buvid3` / `buvid4` / `DedeUserID`）；存在时自动读取（最低优先级）。**该文件已加入 `.gitignore`，严禁提交到仓库。**
 
 全部来源均不可用时，集成用例自动 skip，仅离线用例执行。任何提示 / 错误 / 警告消息只描述状态，不得输出凭据字段值。
 
@@ -284,19 +292,21 @@ BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关�
 - **412 Precondition Failed**：请求过快，需降低并发或设置代理 `request_settings.set_proxy(...)`
 - **Wbi 签名失效**：B 站会不定期更新 Wbi 密钥，如遇大批 API 失效优先检查 `recalculate_wbi` 逻辑
 - **Cookies 过期**：`Credential` 有 `check_refresh()` 方法可用于检查并刷新
-- **请求库缺失**：至少需安装 aiohttp / httpx 之一，否则初始化报错
+- **请求库缺失**：`aiohttp` 为运行时硬依赖，`httpx` 为可选实现；若两者都未安装，调用 `select_client` 会抛出 `ArgsException`（提示安装 aiohttp / httpx）
 - **b 站接口变更**：爬虫库的天然风险，API 可能随时失效。接口信息以 `bilibili-api-registry/` 为主要来源（抽取自 bilibili-API-collect 文档），排查失效接口时先查 registry 条目的 `doc_source` 回溯源文档，批量补齐走 `uv run python scripts/sync_api_registry.py`
 
 ## 关键依赖
 
 | 依赖 | 用途 |
 |------|------|
-| `aiohttp` / `httpx` | 异步 HTTP 客户端（二选一或多选） |
+| `aiohttp` | 异步 HTTP 客户端（运行时硬依赖） |
+| `httpx` | 可选 HTTP 客户端实现（dev 依赖组，未安装时自动回落 aiohttp） |
 | `beautifulsoup4` + `lxml` | HTML 解析（专栏爬取等） |
 | `yarl` | URL 处理 |
 | `pycryptodomex` | 加密（RSA 密码登录、Wbi 签名等） |
 | `PyJWT` | JWT 解析（用户信息） |
 | `brotli` | Brotli 解压（直播弹幕） |
+| `defusedxml` | 安全解析 XML（弹幕等不受信数据） |
 | `pillow` | 图片处理 |
 | `qrcode` / `qrcode_terminal` | 二维码生成（扫码登录） |
 | `APScheduler` | 定时任务（cookies 刷新等） |
