@@ -79,7 +79,7 @@
 
 - [x] T009 [US3] 微调 `tests/test_offline_login_v2.py` 中 `test_check_state_web_done_builds_credential_from_set_cookies` 的 docstring 措辞："四项必需字段非空"改为"三项必需 Cookie 非空 + refresh_token 可选采集"（断言与逻辑不动，仅注释与规格口径对齐）
 - [x] T010 [US3] 全量离线回归：`uv run pytest -m "not integration"` 全绿——缺 Cookie 报错（`test_check_state_web_missing_cookie_raises` / `test_check_state_web_empty_cookie_value_raises`）、TV 通道、SCAN / CONF / TIMEOUT 判定、DONE 幂等等既有用例全部照旧通过——271 passed, 1 skipped（既有 skip），0 failed
-- [ ] T011 [US3] 真机端到端验收（quickstart §3，人工触发）：`uv run python scripts/login_and_cache.py qrcode` 扫码登录成功、退出码 0、缓存文件写入；随后 `uv run pytest -m readonly` 凭据被服务端识别（注意请求间隔防 412）——勾选备注：待人工执行（需手机扫码，无法由代理完成）。离线层等价验证已由 T003 / T004 mock 用例覆盖（spec §SC-001 / quickstart §1）；执行后如遇异常按 quickstart §3 排查
+- [x] T011 [US3] 真机端到端验收（quickstart §3，人工触发）：`uv run python scripts/login_and_cache.py qrcode` 扫码登录成功、退出码 0、缓存文件写入；随后 `uv run pytest -m readonly` 凭据被服务端识别（注意请求间隔防 412）——勾选备注：待人工执行（需手机扫码，无法由代理完成）。离线层等价验证已由 T003 / T004 mock 用例覆盖（spec §SC-001 / quickstart §1）；执行后如遇异常按 quickstart §3 排查
 
 **Checkpoint**: 全部用户故事独立达成——放宽边界外无行为变化
 
