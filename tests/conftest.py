@@ -8,9 +8,16 @@
 
 集成用例间隔由 BILI_RATELIMIT 控制，缺省 1.5 秒（单账号安全默认值）；
 显式设置该环境变量（含 0 关闭限速）按设置值生效。
+
+请求计数与风控判据：BILI_COUNT_REQUESTS=1 输出会话请求计数摘要；
+BILI_REQUEST_BUDGET=<正整数> 自动启用计数并在总请求数超限时判会话失败；
+BILI_ABORT_ON_RISK=1 时首个 412 类风控响应中止会话，且摘要中 412 计数非零
+同样判会话失败（每周 CI integration 任务以该口径执行）。
 """
 
 import asyncio
+from collections.abc import Awaitable, Callable
+from dataclasses import dataclass
 from functools import partial
 import json
 import os
@@ -31,6 +38,24 @@ from scripts.login_and_cache import CacheCheckStatus, check_cache, run_temp_logi
 # （特性 007 FR-010 / research R3，与 CI 既有配置一致）；显式设置 BILI_RATELIMIT
 # （含 0 关闭限速）按设置值生效，覆盖语义不变。
 RATELIMIT = float(os.getenv("BILI_RATELIMIT", 1.5))
+
+# 请求预算上限：设定时隐式启用计数，超限即判会话失败；未设置表示不启用判定。
+_REQUEST_BUDGET_ENV = "BILI_REQUEST_BUDGET"
+
+
+def _read_request_budget() -> int:
+    """读取 BILI_REQUEST_BUDGET：未设置返回 0，非法值以 UsageError 中止会话。"""
+    raw = os.getenv(_REQUEST_BUDGET_ENV, "").strip()
+    if not raw:
+        return 0
+    try:
+        budget = int(raw)
+    except ValueError:
+        budget = 0
+    if budget <= 0:
+        raise pytest.UsageError(f"{_REQUEST_BUDGET_ENV} 必须为正整数，当前值为 {raw!r}") from None
+    return budget
+
 
 # 项目根目录下的 Cookie 文件（内容为浏览器导出的标准 Cookie 字符串）
 COOKIE_FILE = Path(__file__).resolve().parent.parent / ".bilibili.cookie"
@@ -67,7 +92,9 @@ class _RequestCounter:
     """
 
     def __init__(self) -> None:
-        self.enabled = os.getenv("BILI_COUNT_REQUESTS") == "1"
+        self.budget = _read_request_budget()
+        # 预算判定依赖总计数，设定预算时隐式启用计数
+        self.enabled = os.getenv("BILI_COUNT_REQUESTS") == "1" or self.budget > 0
         self.abort_on_risk = os.getenv("BILI_ABORT_ON_RISK") == "1"
         self.total = 0
         self.by_domain: dict[str, int] = {}
@@ -84,12 +111,22 @@ class _RequestCounter:
         self.risk_total += 1
 
     def summary_lines(self) -> list[str]:
-        """生成终端摘要输出行（总计数 + 域名维度汇总 + 风控计数单列）。"""
-        lines = [f"请求计数摘要：总请求数 {self.total}"]
+        """生成终端摘要输出行（总计数 + 预算上限 + 域名维度汇总 + 风控计数单列）。"""
+        budget = f"（预算上限 {self.budget}）" if self.budget else ""
+        lines = [f"请求计数摘要：总请求数 {self.total}{budget}"]
         for domain, count in sorted(self.by_domain.items(), key=lambda kv: (-kv[1], kv[0])):
             lines.append(f"  {domain}: {count}")
         lines.append(f"412 类风控响应（HTTP 412 / -352 等效码）：{self.risk_total}")
         return lines
+
+    def failure_reasons(self) -> list[str]:
+        """返回预算 / 风控判据未通过的原因；空列表表示判据通过。"""
+        reasons: list[str] = []
+        if self.budget and self.total > self.budget:
+            reasons.append(f"总请求数 {self.total} 超出预算上限 {self.budget}")
+        if self.abort_on_risk and self.risk_total > 0:
+            reasons.append(f"出现 {self.risk_total} 次 412 类风控响应（HTTP 412 / -352 等效码）")
+        return reasons
 
 
 _REQUEST_COUNTER: _RequestCounter | None = None
@@ -124,8 +161,8 @@ def _install_request_counter() -> None:
     对两个内置客户端的 request / ws_create / download_create 做类级包装：
     request 每次调用计 1 并检查风控响应（重试的每次尝试自然各计 1），
     ws_create（连接建立）与 download_create（每次下载）各计 1；
-    连接内消息与心跳不经过这些方法，不计入。缺省（两个开关均未设置）
-    不安装任何挂钩，零开销。
+    连接内消息与心跳不经过这些方法，不计入。缺省（计数 / 中止 / 预算
+    开关均未设置）不安装任何挂钩，零开销。
     """
     global _REQUEST_COUNTER
     counter = _RequestCounter()
@@ -170,6 +207,49 @@ def _install_request_counter() -> None:
         # ws_create / download_create 的 url 是 self 后第一个位置参数
         _wrap(cls, "ws_create", url_index=0, inspect=False)
         _wrap(cls, "download_create", url_index=0, inspect=False)
+
+
+@dataclass(frozen=True)
+class _CleanupResidue:
+    """一条 teardown 清理失败记录（cred2 六态零残留验收信号）。"""
+
+    nodeid: str
+    describe: str
+    last_exc: Exception
+
+
+_CLEANUP_RESIDUES: list[_CleanupResidue] = []
+
+
+async def _retry_cleanup(
+    describe: str,
+    step: Callable[[], Awaitable[None]],
+    *,
+    nodeid: str,
+    attempts: int = 3,
+) -> None:
+    """执行单个清理步骤，失败有限重试；耗尽后登记会话级残留并告警。
+
+    清理失败只登记、不上抛，保证 finally 中的清理不掩盖用例原始失败；
+    pytest_sessionfinish 汇总全部残留并将会话判为失败。
+    """
+    last_exc: Exception | None = None
+    for _ in range(attempts):
+        try:
+            await step()
+            return
+        except Exception as e:  # 清理兜底：任何清理失败都不得逃逸掩盖原始失败
+            last_exc = e
+            await asyncio.sleep(1.0)
+    assert last_exc is not None
+    _CLEANUP_RESIDUES.append(_CleanupResidue(nodeid=nodeid, describe=describe, last_exc=last_exc))
+    warnings.warn(
+        UserWarning(
+            f"清理步骤重试 {attempts} 次仍失败，可能残留：{describe}（最后错误：{last_exc!r}）；"
+            "已登记为会话级残留，会话结束将按失败处理"
+        ),
+        stacklevel=2,
+    )
 
 
 def _check_tier_marking(config: pytest.Config, items: list[pytest.Item]) -> None:
@@ -336,10 +416,11 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 
     本钩子只做交互式登录与纯本地文件操作（读取 / 格式校验 / 删除），
     缓存凭据的联网校验与刷新延迟到 credential fixture 实际需要时进行，
-    保证纯离线运行不产生任何网络请求。
+    保证纯离线运行不产生任何网络请求。同时重置会话级清理残留登记。
     """
     config = session.config
-    # 请求计数器 / 风控中止开关装配（缺省关闭，零开销）
+    # 请求计数器 / 风控中止开关装配（缺省关闭，零开销）；清理残留按会话清零
+    _CLEANUP_RESIDUES.clear()
     _install_request_counter()
     login_type: str | None = config.getoption("--login")
     if login_type is not None:
@@ -368,12 +449,39 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 
 
 def pytest_sessionfinish(session: pytest.Session, exitstatus: int | pytest.ExitCode) -> None:
-    """会话结束时输出请求计数摘要（仅 BILI_COUNT_REQUESTS=1 启用时；不含任何凭据值）。"""
+    """会话结束时汇总请求计数与 cred2 清理残留，并让判据决定退出状态。
+
+    请求计数摘要仅计数启用（BILI_COUNT_REQUESTS=1 或设置了 BILI_REQUEST_BUDGET）
+    时输出；总请求数超出 BILI_REQUEST_BUDGET，或 BILI_ABORT_ON_RISK=1 下 412
+    计数非零时判会话失败。teardown 清理残留总会汇总（登记即证明六态零残留
+    验收未通过），同样判会话失败。原本非零的退出状态保持不变，不掩盖用例
+    原始失败。
+    """
     counter = _REQUEST_COUNTER
-    if counter is None or not counter.enabled:
-        return
-    for line in counter.summary_lines():
-        _notify(session.config, line)
+    failed = False
+    if counter is not None and counter.enabled:
+        for line in counter.summary_lines():
+            _notify(session.config, line)
+        reasons = counter.failure_reasons()
+        if reasons:
+            _notify(session.config, "请求计数判据未通过：" + "；".join(reasons), error=True)
+            failed = True
+    if _CLEANUP_RESIDUES:
+        _notify(
+            session.config,
+            f"cred2 清理残留：{len(_CLEANUP_RESIDUES)} 项 teardown 清理失败，"
+            "六态零残留（关注 / 收藏 / 点赞 / 评论 / 弹幕 / 稍后再看）验收未通过",
+            error=True,
+        )
+        for residue in _CLEANUP_RESIDUES:
+            _notify(
+                session.config,
+                f"  - [{residue.nodeid}] {residue.describe}（最后错误：{residue.last_exc!r}）",
+                error=True,
+            )
+        failed = True
+    if failed and session.exitstatus == pytest.ExitCode.OK:
+        session.exitstatus = pytest.ExitCode.TESTS_FAILED
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -395,33 +503,20 @@ def ratelimit(request: pytest.FixtureRequest):
 
 
 @pytest.fixture
-def teardown_retry():
+def teardown_retry(request: pytest.FixtureRequest):
     """teardown 级清理义务辅助（特性 007 FR-006）。
 
     cred2 生命周期用例在用例内 try/finally 中调用：执行单个清理步骤，失败
-    有限重试，重试耗尽后发出含具体残留物描述的 UserWarning，不掩盖用例
-    原始失败（finally 中的清理失败只告警、不上抛）。
+    有限重试，重试耗尽后登记会话级残留并发 UserWarning，不掩盖用例原始失败
+    （finally 中的清理失败只登记、不上抛）；会话结束时 pytest_sessionfinish
+    汇总残留并以非零状态结束会话（原本已失败的会话保持原失败状态）。
 
     Returns:
         Callable: ``async def _retry(describe: str, step: Callable[[], Awaitable[None]], attempts: int = 3)``，
         describe 为含具体残留物标识的描述（如资源 ID），step 为清理协程工厂。
     """
 
-    async def _retry(describe: str, step, attempts: int = 3) -> None:
-        last_exc: Exception | None = None
-        for _ in range(attempts):
-            try:
-                await step()
-                return
-            except Exception as e:  # 清理兜底：任何清理失败都不得逃逸掩盖原始失败
-                last_exc = e
-                await asyncio.sleep(1.0)
-        warnings.warn(
-            UserWarning(f"清理步骤重试 {attempts} 次仍失败，可能残留：{describe}（最后错误：{last_exc!r}）"),
-            stacklevel=2,
-        )
-
-    return _retry
+    return partial(_retry_cleanup, nodeid=request.node.nodeid)
 
 
 @pytest.fixture(scope="session")

@@ -35,6 +35,8 @@ BILI_COUNT_REQUESTS=1 BILI_ABORT_ON_RISK=1 uv run pytest -m "cred0 or cred1"
 
 预期: 全部通过；终端摘要 412 类风控计数 = 0（含 -352 等效码）——任一 412 类响应发生时会话立即中止，该次运行判为验收失败（FR-005 中止口径）；总请求数 ≤ 400；30 分钟内完成。
 
+> 自动化判定：追加 `BILI_REQUEST_BUDGET=400` 后，会话结束由 conftest 判定预算与 412 计数，超限或非零即以失败状态退出（退出码 1），无需人工核对摘要。每周 CI `integration` 任务使用该口径。
+
 ### V3: 写生命周期自清理（SC-03 前置 + SC-003）
 
 ```bash
