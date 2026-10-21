@@ -1,324 +1,143 @@
 # AGENTS.md — bilibili-api-python
 
-> AI 编码助手工作指南。在此项目下工作时遵循这些规则。
+> AI 编码助手常驻工作指南。这里只保留每次会话都需要、且无法从仓库直接推断的规则；可延后内容按“权威文档”链接按需加载。项目治理最高准则为 `.specify/memory/constitution.md`，冲突时以宪章为准。
 
 ## 项目概要
 
-`bilibili-api-python` 是一个 Python 异步库，封装了 B 站（bilibili.com）的各类 API，涵盖视频、直播、用户、动态、专栏、番剧、音频、漫画等功能。800+ API 接口（52 个定义文件），全部异步，支持多请求客户端（aiohttp 为运行时硬依赖，httpx 为可选实现）。
+`bilibili-api-python` 是封装 B 站（bilibili.com）各类 API 的 Python 异步库，覆盖视频、直播、用户、动态、专栏、番剧、音频、漫画等；全部接口异步，请求客户端支持 aiohttp（运行时硬依赖）与 httpx（可选）。
 
-- **语言:** Python ≥ 3.10（代码须兼容 CPython 3.10，不得使用更高版本独有特性）
-- **许可证:** GPL-3.0-or-later
-- **当前版本:** 见 `bilibili_api/__init__.py` 中的 `BILIBILI_API_VERSION`
-- **本仓库:** https://github.com/laowumdzz/bilibili-api-python（fork 自 [nemo2011/bilibili-api](https://github.com/nemo2011/bilibili-api)，由 AI 维护）
-- **接口信息主要来源:** `bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，抽取自 bilibili-API-collect 文档，详见"核心架构模式"）
-- **PR 目标分支:** `dev`（远端分支尚未建立；建立前外部贡献先通过 Issue 与维护者沟通）
-- **项目治理:** `.specify/memory/constitution.md`（宪章）是最高准则；本文件是运行时指引，冲突时以宪章为准
-- **Python 环境:** 使用 uv 管理的 `.venv` 虚拟环境，所有命令用 `uv run` 前缀
+- **语言**：Python ≥ 3.10，代码须兼容 CPython 3.10，不得使用更高版本独有特性。
+- **许可**：GPL-3.0-or-later。
+- **版本**：见 `bilibili_api/__init__.py` 的 `BILIBILI_API_VERSION`。
+- **远端**：https://github.com/laowumdzz/bilibili-api-python（fork 自 nemo2011/bilibili-api，由 AI 维护）。
+- **贡献路径**：PR 目标分支为 `dev`（远端尚未建立；建立前外部贡献先通过 Issue 沟通）。本地维护性提交直接在 `main` 进行，推送远端仅在用户明确要求时执行。
+- **接口事实来源**：`bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，未纳入本仓库追踪，抽取自 bilibili-API-collect 文档；获取步骤见「接口来源与新增 API 流程」）。
+- **Python 环境**：uv 管理的 `.venv`；所有命令使用 `uv run` 前缀。
 
-## 项目结构
+## 权威文档（按需加载）
 
-```
-bilibili_api/            # 库源码
-├── __init__.py          # 统一导出所有子模块
-├── video.py             # 视频
-├── live.py              # 直播 + 弹幕 WebSocket
-├── user.py              # 用户
-├── dynamic.py           # 动态
-├── article.py           # 专栏
-├── bangumi.py           # 番剧
-├── login_v2.py          # 登录（密码/二维码/短信）
-├── video_uploader.py    # 视频上传
-├── interactive_video.py # 互动视频
-├── session.py           # 私信
-├── comment.py           # 评论
-├── search.py            # 搜索
-├── ...                  # 其他功能模块
-├── utils/
-│   ├── network.py       # 网络层兼容 re-export（Credential / Api / request_settings）
-│   ├── _api.py          # API 请求核心（反爬逻辑入口：recalculate_wbi / get_buvid / get_bili_ticket）
-│   ├── _anti_spider.py  # 反爬虫主体实现与参数缓存（AntiSpiderCache）
-│   ├── utils.py         # get_api() / 工具函数
-│   ├── sync.py          # 同步包装器 (@sync)
-│   ├── AsyncEvent.py    # 事件系统基类
-│   ├── danmaku.py       # 弹幕数据结构
-│   ├── danmaku2ass.py   # 弹幕转 ASS 字幕
-│   ├── picture.py       # Picture 类
-│   ├── parse_link.py    # 链接解析
-│   └── ...
-├── exceptions/          # 异常体系（_simple.py 简单异常集合 + 独立异常文件）
-├── clients/             # 请求客户端适配
-│   ├── AioHTTPClient.py
-│   └── HTTPXClient.py
-├── data/
-│   ├── api/             # API 定义 JSON（URL / method / params / verify；主体由 bilibili-api-registry 同步生成）
-│   └── *.json           # 静态数据（分区、语言、标签等）
-└── tools/               # 附带工具（ivitools / parser）
-bilibili-api-registry/   # 接口信息注册表（独立嵌套 git 仓库，未纳入本仓库追踪；
-                         #   bilibili-API-collect 文档抽取，data/api 的同步来源）
-scripts/                 # 开发脚本
-├── _login_cache.py      # 临时登录凭据缓存纯函数（路径 / base64 编解码 / 合法性判定 / 来源合并）
-├── check_commit_msg.py  # Conventional Commits 格式兜底校验（CI）
-├── doc_gen.py           # 文档自动生成（从 docstring）
-├── lint.py              # ruff check + format + pyrefly 类型检查 + 类型零容忍棘轮 + 文档漂移校验（docs/modules/）
-├── login_and_cache.py   # 独立登录脚本（扫码/短信，写 TEMP 凭据缓存）
-├── qrcode_login.py      # 二维码登录真机验收脚本
-├── sync_api_registry.py # registry → data/api 增量同步（纯增量合并，支持 --dry-run）
-├── type_ratchet.py      # pyrefly 类型检查零容忍校验（豁免机制已退役，防回归）
-└── get_*.py             # 数据抓取脚本
-tests/                   # 测试套件（统一由 pytest 运行）
-├── conftest.py          # 共享 fixtures（credential / 限速 / integration 标记 / 分层校验 / 请求计数 / --login）
-├── test_offline_*.py    # 离线单元/冒烟测试（无需凭据与网络）
-└── test_*.py            # 各模块集成测试（需要凭据，缺凭据自动 skip）
-docs/                    # docsify 文档站
-.specify/                # Spec Kit 配置与宪章（memory/constitution.md）
-specs/                   # 特性规格文档（spec / plan / tasks / data-model 等）
-.githooks/               # commit-msg + pre-commit 钩子
-```
+| 文档 | 用途 |
+|------|------|
+| `.specify/memory/constitution.md` | 项目宪章，最高准则 |
+| `specs/007-credential-test-tiers/data-model.md` | 凭据测试层级映射与账号安全判据（canonical owner） |
+| `specs/007-credential-test-tiers/contracts/test-tier-selection.md` | 测试命令矩阵、限速 / 计数 / 中止契约 |
+| `specs/007-credential-test-tiers/quickstart.md` | 分层验收步骤与记录 |
+| `specs/001-pytest-temp-login/contracts/cli-option.md`、`specs/003-login-cache-script/data-model.md` | `--login` 与凭据回退链细节 |
+| `docs/modules/` | 由 docstring 自动生成的 API 文档（禁止手改） |
+| `scripts/sync_api_registry.py` | registry → `bilibili_api/data/api` 同步规则（模块 docstring） |
 
-## 核心架构模式
+## 接口来源与新增 API 流程
 
-### 1. API 定义与调用
+`bilibili-api-registry/` 是接口信息的主要来源，也是 `bilibili_api/data/api/*.json` 的同步来源。它是项目根目录下的独立嵌套 git 仓库，**不纳入本仓库跟踪**（不是子模块，勿提交），新克隆中默认不存在。
 
-API 元信息存储在 `bilibili_api/data/api/*.json` 中，定义了 URL、HTTP 方法、参数和是否需要登录验证。运行时通过 `get_api("field")` 加载。
+**获取（新克隆 / 新环境）：**
 
-调用链路：`get_api()` 加载 JSON → `Api(**api).update_params(**params).result` 发起请求 → 自动注入 Wbi 签名、buvid、bili_ticket 等反爬参数 → 返回解析后的 JSON。
-
-#### 接口信息主要来源：bilibili-api-registry
-
-`bilibili-api-registry/`（项目根目录下的独立嵌套 git 仓库，未纳入本仓库追踪）是从 bilibili-API-collect 文档批量抽取的 API 注册表，是本项目接口信息的**主要来源**：
-
-- `<category>/<subtopic>.json` 按类别/子主题分文件（36 个 REST 类别 + 独立 `grpc/` 目录，当前约 594 REST + 320 gRPC 条目），与源文档结构对应；`schema.json` 定义条目结构
-- 每个条目含 `doc_source`（源文档路径 + 标题锚点，可回溯）、`params[]`、`notes` 等字段
-- registry 自身的更新工具在 `bilibili-api-registry/scripts/`（`extract.py` 抽取器 / `extract_grpc.py` gRPC 抽取 / `validate.py` 校验统计）
+1. 从维护者处获取内部 Git 服务上的 registry 仓库地址与访问权限；已有副本可用 `git -C bilibili-api-registry remote get-url origin` 查看地址。
+2. 在项目根目录克隆并固定到已知可用基线提交（2026-08-22，当前 `data/api` 与之同步）：
+   ```bash
+   git clone <registry-url> bilibili-api-registry
+   git -C bilibili-api-registry checkout df7a5f65e29e6b456253e529846059da57a10637
+   ```
+3. 验证：`bilibili-api-registry/schema.json` 存在，且 `uv run python scripts/sync_api_registry.py --dry-run` 能读出 registry 条目（而非报错）。目录缺失或为空时脚本会以非零状态退出并打印获取指引。
 
 **新增 API 的标准流程：**
 
-1. 先查 `bilibili-api-registry/` 对应类别的 JSON，确认接口的 URL / method / params / 鉴权说明
-2. `uv run python scripts/sync_api_registry.py --dry-run` 预览，去掉参数实际执行——纯增量合并到 `data/api/*.json`（已存在的接口一律不动，仅追加缺失项；gRPC（本项目无运行时支持）与 method=OTHER 条目跳过）
-3. 在对应模块的 Python 文件中编写异步方法调用它
-4. 仅当 registry 未覆盖该接口时，才手工在 `data/api/*.json` 中添加条目，并优先考虑先补 registry
+1. 先查 registry 对应类别 JSON 的 URL / method / params / 鉴权说明（`doc_source` 可回溯源文档）。
+2. `uv run python scripts/sync_api_registry.py --dry-run` 预览，确认后去掉 `--dry-run` 执行纯增量同步。
+3. 在对应模块编写异步方法调用。
+4. 仅当 registry 未覆盖该接口时，才手工编辑 `data/api/*.json`，并优先补齐 registry。
 
-注意：registry 的 `doc_source` / `notes` 等字段不会进入 `data/api/*.json`（`Api(**api)` 不接受未知键）；类别 → 目标文件的映射表与完整同步原则见 `scripts/sync_api_registry.py` 模块 docstring。
+registry 的 `doc_source` / `notes` 等字段不会进入 `data/api/*.json`；类别映射与完整同步原则见 `scripts/sync_api_registry.py` 模块 docstring。
 
-### 2. Credential 凭据体系
+## 常驻命令
 
-`Credential` 类（`utils/network.py`）封装登录态：`sessdata`、`bili_jct`、`buvid3`、`buvid4`、`dedeuserid`、`ac_time_value`。大部分写操作需要 Credential。通过 `credential.get_cached_cookies()` 获取完整 Cookies。
+环境与门禁：
 
-### 3. 请求客户端抽象
-
-`BiliAPIClient`（ABC）定义了 HTTP 请求、WebSocket、文件下载的统一接口。两种实现按优先级自动选择：`aiohttp` > `httpx`。可通过 `select_client()` 切换，也可 `register_client()` 注册自定义实现。
-
-### 4. 反爬虫机制
-
-Wbi 签名（`recalculate_wbi`）、buvid 自动生成（`get_buvid`）、bili_ticket 获取（`get_bili_ticket`）等反爬逻辑入口定义在 `utils/_api.py`，反爬主体实现与参数缓存（`AntiSpiderCache`）位于 `utils/_anti_spider.py`。`request_settings` 全局管理代理、超时、SSL 验证等配置。
-
-### 5. 异步事件系统
-
-`AsyncEvent`（`utils/AsyncEvent.py`）是事件总线基类，`LiveRoom`（直播弹幕）、`RequestLog`（请求日志）等均继承它。使用 `@event.on("EVENT_NAME")` 注册监听器。
-
-## 编码规范
-
-### 风格
-
-- **遵循 PEP 8**，使用 `ruff check` + `ruff format` 检查代码风格，`pyrefly check` 做类型检查（`scripts/lint.py` 一键执行，末尾含 `scripts/type_ratchet.py` 校验与 docs/modules/ 文档漂移校验）
-- **类型检查零容忍**：pyrefly 存量豁免机制已于 2026-09（特性 005）整体退役，`pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表已清空移除，类型检查默认全量启用，任何新增类型错误都会被门禁直接拦截
-- **下划线命名**，与现有代码保持一致
-- **全面类型注解**：函数参数、返回值均需类型注释
-- **docstring 必须完整**：每个公共函数都应有中文 docstring（Args / Returns / Raises），因为 `scripts/doc_gen.py` 会从 docstring 自动生成文档
-- **中英文之间加半角空格**（包括 docstring 和代码注释）
-
-### 异步
-
-- 所有 API 调用函数必须是 `async def`
-- 禁止在库代码中使用 `asyncio.run()`（由调用方负责）
-- 注意并发请求不要过快，会触发 412 风控
-
-### 参数传递
-
-- API 调用使用**关键字参数**（指名传参），不要用位置参数
-- 新增参数优先考虑设置默认值，避免破坏性变更
-
-### 异常
-
-- 使用项目自定义异常体系（`bilibili_api/exceptions/`），不要直接 `raise Exception`
-- 常用异常：`ArgsException`（参数错误）、`ResponseCodeException`（API 返回错误码）、`NetworkException`（网络错误）
-
-## 提交规范
-
-### Conventional Commits（强制）
-
-Git Hook 会校验 commit message 格式：
-
-```
-<type>(<scope>)?: <description>
-
-[optional body]
-
-[optional footer]
+```bash
+uv sync                                                   # 安装依赖（含 dev 组）
+uv run python install.py                                  # 初始化 Git Hooks
+uv run python scripts/lint.py                             # 全量门禁
+uv run --with "mypy==1.18.2" python scripts/doc_gen.py    # 改 docstring 后重新生成 docs/modules
 ```
 
-**允许的 type：** `build` `chore` `ci` `docs` `feat` `fix` `perf` `refactor` `release` `revert` `style` `test` `tests`
+`scripts/lint.py` 依次执行 ruff check / format、tests + scripts 阻断检查、pyrefly 全量类型检查、`scripts/type_ratchet.py` 零容忍校验与 `docs/modules/` 漂移校验（CI 设 `DOCS_DRIFT_STRICT=1`，漂移即失败）。不要跳过门禁。
 
-示例：
-- `feat: 新增视频评论区关键词搜索`
-- `fix(video): 修复 get_info 在无 bvid 时崩溃`
-- `docs: 更新 Credential 获取方式说明`
+测试：
 
-### 破坏性变更
-
-尽量避免。如必须，在 commit message 中标注：
-```
-fix!: Video.like() 参数变更
-
-BREAKING CHANGE: Video.like() 移除了 deprecated 参数
+```bash
+uv run pytest -m "not integration"   # 仅离线，无需凭据
+uv run pytest -m cred0               # 核心冒烟（单账号必全绿）
+uv run pytest -m "cred0 or cred1"    # 冒烟 + 读回归（合计 ≤ 400 请求）
+uv run pytest -m "not cred3"         # 常规验证（与不带 -m 的默认全量同义）
+uv run pytest -m readonly            # PR 只读回路
+uv run pytest -m cred3               # 高危层，仅在显式需要时使用
 ```
 
-### 提交粒度
+单模块测试：`uv run pytest tests/test_video.py`。cred3 在收集期被 deselect（不是 skip）：默认运行与不含 `cred3` token 的 `-m` 表达式都不会执行高危用例；只有显式 `-m cred3` 才收集。
 
-一个提交只做一件事。修 bug + 加功能 = 两个提交。
+CI 口径以 `.github/workflows/ci.yml` 为准：PR 跑 `-m readonly`；每周集成任务跑 `-m "cred0 or cred1 or cred2"`，并强制启用 `BILI_COUNT_REQUESTS=1` / `BILI_ABORT_ON_RISK=1` / `BILI_REQUEST_BUDGET=400`。
 
-## 开发流程
+## 测试与账号安全边界
 
-本项目使用 **uv** 管理依赖和虚拟环境。
-
-1. `uv sync` — 创建 `.venv` 并安装全部依赖（含 dev 组：ruff / pyrefly / pytest / pytest-asyncio / httpx；aiohttp 在运行时依赖中）
-2. `uv run python install.py` — 初始化 Git Hooks（commit-msg + pre-commit）
-3. 本地开发直接在 `main` 分支提交（本仓库现行惯例，不切分支）；推送远端仅在用户明确要求时进行
-4. 完成后运行 `uv run python scripts/lint.py`（门禁组成：`ruff check` → `ruff format --check` → tests/scripts 阻断检查 → `pyrefly check`（全量启用）→ `scripts/type_ratchet.py` 零容忍校验 → 文档漂移校验：重新运行 doc_gen 后以 git 检测 `docs/modules/` 是否与源码漂移并阻断；docstring 漂移总是检测，公开符号级漂移依赖 `.mypy_cache`，缺失时跳过、落后时仅提示，`DOCS_DRIFT_STRICT=1` 时两者均升级为失败）；也可单独执行 `uv run ruff check ./bilibili_api/` + `uv run ruff format --check ./bilibili_api/` + `uv run pyrefly check ./bilibili_api/`
-5. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档（脚本已兼容 Python 3.10+）。脚本依赖 mypy 的 `stubgen` 与 `.mypy_cache`，而 mypy 未纳入 dev 依赖组：先用 `uv run --with mypy mypy --ignore-errors bilibili_api` 生成与 venv Python 版本一致的缓存，再用 `uv run --with mypy python scripts/doc_gen.py` 运行（`--with` 同时提供脚本内的 `stubgen`）；缓存缺失时脚本会因找不到 `.mypy_cache/<版本>/bilibili_api` 而失败
-6. 对外贡献的 PR 目标为 `dev` 分支（远端尚未建立；建立前先通过 Issue 与维护者沟通）
-
-> 没有 uv 的环境可回退到 `pip install -r requirements.txt` + 手动装 dev 工具。
-
-## 测试
-
-全部测试统一由 pytest 运行（异步用例由 pytest-asyncio 驱动，见 `pyproject.toml` 的 `[tool.pytest.ini_options]`）。集成用例由 `tests/conftest.py` 自动打上 `integration` 标记，缺凭据时自动 skip。
-
-### 凭据测试四级分层体系（cred0–cred3）
-
-测试账号为**单一共享账号**，所有需凭据的集成用例按重要程度分为四层，每个需凭据用例**恰好归属一层**（以显式 marker 声明；漏标 / 错标由 conftest 收集期防护发现，`BILI_STRICT_TIERS=1` 时升级为收集错误）：
+测试账号为**单一共享账号**。每个需凭据用例**恰好归属一层**（以显式 marker 声明；漏标 / 错标由 conftest 收集期防护发现，`BILI_STRICT_TIERS=1` 时升级为收集错误）。层级语义：
 
 | 层级 | 判据（全部满足） | 请求预算 | 清理要求 |
 |------|------------------|----------|----------|
 | `cred0` 核心冒烟 | 只读；接口稳定（不依赖容错码）；登录态 + 反爬链路 + 核心读的 minimal 集合 | 整层 ≤ 30 | 无写，无需清理 |
 | `cred1` 核心读回归 | 只读；核心模块主读路径；允许保留既有容错码（-404 / -352 / -403 等） | cred0+cred1 合计 ≤ 400 | 无写，无需清理 |
-| `cred2` 自清理写生命周期 | 仅限可逆写（配对恢复 + 断言）与"自身状态类"白名单操作 | 不设独立预算 | 六态零残留（关注 / 收藏 / 点赞 / 评论 / 弹幕 / 稍后再看） |
+| `cred2` 自清理写生命周期 | 仅限可逆写（配对恢复 + 断言）与“自身状态类”白名单操作 | 不设独立预算 | 六态零残留（关注 / 收藏 / 点赞 / 评论 / 弹幕 / 稍后再看） |
 | `cred3` 高危显式门控 | 资源消耗类 / 无清理可能的公开发布类 / 破坏性类 / 账号身份特定类 | 无（默认永不执行） | 无（不默认执行，无验收义务） |
 
-### 命令矩阵
+完整规则与验收流程：`specs/007-credential-test-tiers/data-model.md`（层级 / 账号安全）、`specs/007-credential-test-tiers/contracts/test-tier-selection.md`（命令 / 计数）、`specs/007-credential-test-tiers/quickstart.md`（验收）。
 
-```bash
-# 仅 cred0 核心冒烟（单账号必全绿验收入口）
-uv run pytest -m cred0
+- **写操作边界**：`cred2` 仅允许可逆写（存在配对恢复 API 且恢复结果可断言）与“自身状态类”白名单；公开发布只有在目标为自有内容 **且** 有删除配对时才按可逆写归 `cred2`，否则归 `cred3`；资源消耗、破坏性与账号身份特定操作归 `cred3`，默认永不执行。
+- **自有内容**：`cred2` 公开发布类写操作 MUST 以账号自有内容为对象——运行时经 `get_self_info` → `User(mid).get_videos()` 动态解析，**禁止硬编码**他人 mid / aid；解析不到则条件跳过。
+- **白名单治理**：“自身状态类”为**封闭枚举**。新增成员须在 `specs/007-credential-test-tiers/data-model.md` 权威映射表条目中逐条给出三条件依据（仅自身可见的证据、六态清单对照、无对外发布形态的核查），由 PR 评审者核验；任一条件事后失效时自动降层至 `cred3` 并同步更新映射表。
+- **兜底规则**：无法对号入座或未完成举证的操作，一律从严归 `cred3` 待裁。
+- **限速与预算**：`BILI_RATELIMIT` 缺省 **1.5** 秒（显式设置含 0 按设置值生效）；循环遍历型用例在循环体内 `await asyncio.sleep(0.5)`。层预算以 `BILI_COUNT_REQUESTS=1` 的计数器读数为准（cred0 ≤ 30、cred0+cred1 ≤ 400）。`BILI_ABORT_ON_RISK=1` 时首个 412 类响应（HTTP 412 或 -352 等效码）即中止会话；`BILI_REQUEST_BUDGET=<n>` 超限以失败退出。完整计数口径见契约 §5–6。
+- **凭据来源**（优先级从高到低）：`--login qrcode|phone` 显式重新登录（成功写系统 TEMP 缓存）> TEMP 缓存 > `BILI_*` 环境变量（`BILI_SESSDATA` / `BILI_CSRF` / `BILI_BUVID3` / `BILI_DEDEUSERID`）> 项目根 `.bilibili.cookie`。全部不可用时集成用例自动 skip。**任何提示、错误、日志都不得输出凭据字段值**；`.bilibili.cookie` 与 TEMP 缓存永不入库。
+- **独立登录**：`uv run python scripts/login_and_cache.py qrcode`（扫码）或 `phone`（短信）。
+- **离线用例**：只验证纯本地逻辑，禁止网络请求、真实凭据或改变账号状态的操作；放在 `tests/test_offline_*.py`。
+- **只读集成**：`readonly` 标记仅允许 GET 式读请求与反爬参数获取，严禁写操作；可与 `cred0` 并存。
+- **顺序无关**：用例所需资源在用例或其夹具内创建并在结束时清理（`teardown_retry` fixture）；任意子集（含单用例）独立运行都应通过。
+- **已知覆盖缺口**：login_v2 登录链路、视频上传链路暂无集成覆盖（追踪见 `specs/007-credential-test-tiers/spec.md`）。
 
-# 冒烟 + 读回归（重要读覆盖，合计 ≤ 400 请求）
-uv run pytest -m "cred0 or cred1"
+## 编码规范
 
-# 常规验证：离线 + 匿名集成 + cred0–cred2（cred3 收集即排除；不带 -m 的默认全量同义）
-uv run pytest -m "not cred3"
+- 遵循 PEP 8；提交前 `scripts/lint.py` 必须全绿。
+- 类型检查零容忍：pyrefly 存量豁免已整体退役，`pyproject.toml` 的 `[tool.pyrefly.errors]` 豁免表已移除；任何新增类型错误都会被门禁拦截。
+- 函数参数与返回值全面类型注解；公共函数使用完整中文 docstring（Args / Returns / Raises），`scripts/doc_gen.py` 会据此生成文档。
+- 下划线命名，与现有代码保持一致；中英文之间加半角空格（含 docstring 与注释）。
+- 所有 API 调用函数使用 `async def`；库代码禁止 `asyncio.run()`（由调用方负责）。
+- 调用 API 使用**关键字参数**；新增参数优先设置默认值，避免破坏性变更。
+- 使用项目自定义异常（`bilibili_api/exceptions/`），不要直接 `raise Exception`；常用 `ArgsException`、`ResponseCodeException`、`NetworkException`。
+- 控制请求并发，避免触发 412 风控。
 
-# 仅 cred3 高危层（真金 / 破坏性 / 身份特定；牺牲账号专用，不在常规验收范围）
-uv run pytest -m cred3
+## 提交与分支
 
-# 只读集成子集（readonly 标记，无写操作；参与 PR 验证，反爬用例无需凭据）
-uv run pytest -m readonly
-
-# 仅离线快速路径（不触碰网络与真实账号，无需 BILI_* 环境变量）
-uv run pytest -m "not integration"
-
-# 运行指定模块测试
-uv run pytest tests/test_video.py
-```
-
-cred3 剔除发生在**收集期**（deselect，非 skip）：任何默认运行与不含 `cred3` token 的 `-m` 表达式都不会执行高危用例，终端会输出剔除计数提示（如 `已排除 36 个 cred3 高危用例`，数量随用例增减）。
-
-CI 口径：`integration-readonly` 任务在 PR 上运行 `-m readonly`；全量 `integration` 任务仅在 schedule / workflow_dispatch 触发，运行 `-m "cred0 or cred1 or cred2"`，cred3 永不进入 CI。
-
-### 账号安全策略（操作类别判定表）
-
-新增或调整用例时按五类对号入座（权威判据）：
-
-| 类别 | 定义 | 归层 | 现有用例示例 |
-|------|------|------|--------------|
-| 可逆写 | 存在配对恢复 API，恢复结果可断言 | cred2（配对 + 断言） | like/unlike、fav/unfav、follow/unfollow、评论 send/delete（自有内容）、toview add/remove、收藏夹 CRUD、订阅/取消订阅 |
-| 自身状态类 | 不可逆但仅自身可见，不属于六态清单，无对外发布形态 | cred2（成文白名单） | 直播签到、观看上报、互动视频评分 |
-| 资源消耗类 | 消耗账号货币 / 付费资源 | cred3 | 投币、三连、金 / 银瓜子送礼、人气票 |
-| 公开发布类 | 对他人可见的内容发布 | cred2 仅当：目标为自有内容 **且** 有删除配对；否则 cred3 | 评论（自有视频 + delete → cred2）；弹幕（无 delete → cred3）、私信、投票创建（无 delete → cred3）、直播预约 |
-| 破坏性 / 身份特定类 | 不可逆清空账号数据，或需特定账号身份 | cred3 | 清空稍后再看、删除观看记录、创作中心全量、房管封禁 |
-
-- cred2 公开发布类写操作 MUST 以账号自有内容为对象（运行时经 `get_self_info` → `User(mid).get_videos()` 动态解析，**禁止硬编码**他人 mid / aid；解析不到则条件跳过）
-- "自身状态类"白名单为**封闭枚举**：新增成员须在权威映射表（`specs/007-credential-test-tiers/data-model.md`）条目中逐条给出三条件依据（仅自身可见的证据、六态清单对照、无对外发布形态的核查），由 PR 评审者核验；任一条件事后失效时自动降层至 cred3 并同步更新映射表
-- 兜底规则：无法对号入座或未完成举证的操作一律从严归 cred3 待裁
-
-### 限速与请求计数
-
-- `BILI_RATELIMIT` 缺省 **1.5** 秒（单账号安全默认值，与 CI 既有配置一致）；显式设置（含 0 关闭限速）按设置值生效。循环遍历型用例在循环体内 `await asyncio.sleep(0.5)` 节流
-- `BILI_COUNT_REQUESTS=1` 启用请求计数器：服务端视角全计数——对 bilibili 域名实际发送的每次 HTTP 请求计 1（含重试每次尝试与反爬参数预取 buvid / bili_ticket / wbi；凭据链校验 / 刷新请求计入总数；WebSocket 连接建立计 1，连接内消息与心跳不计）；会话结束在终端输出总计数与域名维度汇总（仅计数，不含凭据值）。层预算（cred0 ≤ 30、cred0+cred1 ≤ 400）以该计数器读数为准
-- `BILI_ABORT_ON_RISK=1`：首个 412 类风控响应（HTTP 412 或 -352 等效错误码）即中止整个会话；计数器同时单列统计该类响应
-
-### 已知集成覆盖缺口
-
-以下模块暂无集成覆盖，作为持续追踪去向（本分级重构不新增覆盖）：login_v2 登录链路集成、视频上传链路（`video_uploader` 仅有匿名 `get_missions` 读覆盖）。
-
-### 凭据来源
-
-集成测试凭据来源（优先级从高到低，由 `tests/conftest.py` 自动装配）：
-
-1. **`--login` 临时登录**：`uv run pytest --login qrcode`（终端扫码）或 `uv run pytest --login phone`（短信验证码，含极验滑块与风控二次验证）。显式传入时无条件重新登录，成功后凭据以 base64(JSON) 写入系统 TEMP 目录的 `bilibili_api_pytest_login.json` 缓存文件（本机临时目录，永不入库）；登录中止（用户中断 / 二维码连续 3 次超时 / 流程失败）则不写缓存、按后续来源回退，离线用例照常执行。交互只发生在显式传 `--login` 时。
-2. **TEMP 凭据缓存**：不带 `--login` 的普通运行自动尝试读取上述缓存文件——缺失则提示并回退；内容不合法则删除文件、报错并回退；合法则联网校验（仅在实际需要凭据时才发起）：有效直接使用（零交互），过期自动刷新（成功回写缓存，失败警告 + 删除 + 回退）。
-3. **BILI_* 环境变量**（优先于 `.bilibili.cookie` 文件）：
-
-```bash
-BILI_SESSDATA=xxx        # SESSDATA cookie
-BILI_CSRF=xxx            # bili_jct cookie
-BILI_BUVID3=xxx          # BUVID3 cookie
-BILI_DEDEUSERID=xxx      # DedeUserID cookie
-BILI_RATELIMIT=1.5       # 用例间隔秒数（缺省即 1.5；显式设 0 关闭限速）
-```
-
-4. **`.bilibili.cookie` 文件（可选，长期本地测试推荐）**：项目根目录下的 `.bilibili.cookie` 存放测试账号的完整 Cookie（浏览器导出的标准 Cookie 字符串，含 `SESSDATA` / `bili_jct` / `buvid3` / `buvid4` / `DedeUserID`）；存在时自动读取（最低优先级）。**该文件已加入 `.gitignore`，严禁提交到仓库。**
-
-全部来源均不可用时，集成用例自动 skip，仅离线用例执行。任何提示 / 错误 / 警告消息只描述状态，不得输出凭据字段值。
-
-**独立登录脚本（可选）**：不经过 pytest 预先完成登录——`uv run python scripts/login_and_cache.py qrcode`（扫码）或 `phone`（短信验证码），成功后凭据写入同一 TEMP 缓存文件，后续测试运行自动复用（零交互）。实现与 `--login` 同源（`scripts/login_and_cache.py`），缓存契约不变。
-
-- 离线用例只验证纯本地逻辑（如 aid/bvid 互转、varint、纯解析函数），禁止在其中引入网络请求、真实凭据或会改变账号状态的操作；新增离线用例请放入 `tests/test_offline_*.py`
-- 只读集成用例（`readonly` 标记，如 `tests/test_readonly_smoke.py`）仅允许 GET 式读请求与反爬虫参数获取，严禁写操作；该子集在 CI 的 `integration-readonly` 任务中参与 PR 验证，缺凭据时自动降级为警告而不阻塞合入；`readonly` 与 `cred0` 标记可并存（核心冒烟层是其超集）
-- 集成用例通过 `conftest.py` 的 `credential` fixture 获取登录态；模块级共享对象用 module 作用域 fixture 构建
-- 全部凭据用例**顺序无关**：所需资源在用例或其夹具内创建并在结束时清理（生命周期合并单用例 + teardown 级清理义务，`teardown_retry` fixture），任意子集（含单用例）独立运行均可通过
+- 提交信息遵循 Conventional Commits（Git Hook + CI 校验）：`<type>(<scope>)?: <description>`。
+- 允许的 type：`build` `chore` `ci` `docs` `feat` `fix` `perf` `refactor` `release` `revert` `style` `test` `tests`。
+- 破坏性变更尽量避免；必须时用 `!` 并在 body 写 `BREAKING CHANGE:`。
+- 一个提交只做一件事（修 bug + 加功能 = 两个提交）。
+- 不要主动 push 到远端；本地维护性提交直接在 `main` 进行。
 
 ## 常见陷阱
 
-- **412 Precondition Failed**：请求过快，需降低并发或设置代理 `request_settings.set_proxy(...)`
-- **Wbi 签名失效**：B 站会不定期更新 Wbi 密钥，如遇大批 API 失效优先检查 `recalculate_wbi` 逻辑
-- **Cookies 过期**：`Credential` 有 `check_refresh()` 方法可用于检查并刷新
-- **请求库缺失**：`aiohttp` 为运行时硬依赖，`httpx` 为可选实现；若两者都未安装，调用 `select_client` 会抛出 `ArgsException`（提示安装 aiohttp / httpx）
-- **b 站接口变更**：爬虫库的天然风险，API 可能随时失效。接口信息以 `bilibili-api-registry/` 为主要来源（抽取自 bilibili-API-collect 文档），排查失效接口时先查 registry 条目的 `doc_source` 回溯源文档，批量补齐走 `uv run python scripts/sync_api_registry.py`
-
-## 关键依赖
-
-| 依赖 | 用途 |
-|------|------|
-| `aiohttp` | 异步 HTTP 客户端（运行时硬依赖） |
-| `httpx` | 可选 HTTP 客户端实现（dev 依赖组，未安装时自动回落 aiohttp） |
-| `beautifulsoup4` + `lxml` | HTML 解析（专栏爬取等） |
-| `yarl` | URL 处理 |
-| `pycryptodomex` | 加密（RSA 密码登录、Wbi 签名等） |
-| `PyJWT` | JWT 解析（用户信息） |
-| `brotli` | Brotli 解压（直播弹幕） |
-| `defusedxml` | 安全解析 XML（弹幕等不受信数据） |
-| `pillow` | 图片处理 |
-| `qrcode` / `qrcode_terminal` | 二维码生成（扫码登录） |
-| `APScheduler` | 定时任务（cookies 刷新等） |
-| `pyyaml` | YAML 解析 |
+- **412 Precondition Failed**：请求过快，降低并发或 `request_settings.set_proxy(...)`。
+- **Wbi 签名失效**：B 站不定期轮换密钥；大批 API 失效时优先检查 `recalculate_wbi`。
+- **Cookies 过期**：用 `Credential.check_refresh()` 检查 / 刷新。
+- **请求库缺失**：两者都未安装时 `select_client` 抛 `ArgsException`（提示安装 aiohttp / httpx）。
+- **接口变更**：先查 registry 条目的 `doc_source` 回溯源文档，再走同步脚本批量补齐。
 
 ## 不要做的事
 
-- ❌ 不要直接修改 `docs/` 下的 API 文档，改 docstring 后用 `doc_gen.py` 生成
-- ❌ 不要用 `pip install` 直接装包，统一用 `uv add` / `uv sync`
-- ❌ 不要在库代码中硬编码凭据（SESSDATA 等）
-- ❌ 不要用 `print()` 调试，用 `logging`
-- ❌ 不要忽略 ruff check 报出的错误，不要跳过 `scripts/lint.py`
-- ❌ 不要主动 push 到远端（用户明确要求时才推送）；本地提交直接在 `main` 分支进行
-- ❌ 不要使用位置参数调用 API 函数，统一用关键字参数
-- ❌ 不要在异步代码中使用同步阻塞操作（`time.sleep`、`requests.get` 等）
+- 不要直接修改 `docs/modules/` 或 `docs/` 下的 API 文档；改 docstring 后用 `scripts/doc_gen.py` 生成。
+- 不要用 `pip install` 直接装包，统一用 `uv add` / `uv sync`。
+- 不要在库代码或测试中硬编码凭据；不要把 `.bilibili.cookie` / TEMP 缓存提交到仓库。
+- 不要用 `print()` 调试，用 `logging`。
+- 不要忽略 ruff / pyrefly 错误，不要跳过 `scripts/lint.py`。
+- 不要主动 push 到远端；本地提交直接在 `main`。
+- 不要使用位置参数调用 API 函数，统一用关键字参数。
+- 不要在异步代码中使用同步阻塞操作（`time.sleep`、`requests.get` 等）。
+- 不要在 `cred0` / `cred1` 中引入写操作，或让 `cred3` 进入默认运行 / CI。
+- 不要在测试中硬编码他人 mid / aid 作为写目标。
