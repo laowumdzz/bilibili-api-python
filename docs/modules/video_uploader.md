@@ -18,10 +18,12 @@ from bilibili_api import video_uploader
 - [class VideoEditorEvents()](#class-VideoEditorEvents)
 - [class VideoMeta()](#class-VideoMeta)
   - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [def to\_dict()](#def-to\_dict)
   - [async def verify()](#async-def-verify)
 - [class VideoPorderIndustry()](#class-VideoPorderIndustry)
 - [class VideoPorderMeta()](#class-VideoPorderMeta)
   - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [def to\_dict()](#def-to\_dict)
 - [class VideoPorderShowType()](#class-VideoPorderShowType)
 - [class VideoPorderType()](#class-VideoPorderType)
 - [class VideoUploader()](#class-VideoUploader)
@@ -193,6 +195,17 @@ meta 参数示例: (保留 video, cover, tid, aid 字段)
 | `watermark` | `Optional[bool]` | 是否添加水印，可选，默认为没有水印 |
 
 
+### def to_dict()
+
+获取视频源数据的字典形式（用于上传提交）。
+
+
+
+**Returns:** `dict`:  视频源数据。
+
+
+
+
 ### async def verify()
 
 验证参数是否可用，仅供参考
@@ -244,6 +257,17 @@ meta 参数示例: (保留 video, cover, tid, aid 字段)
 
 ### def \_\_init\_\_()
 
+
+
+
+
+### def to_dict()
+
+获取转账订单信息的字典形式。
+
+
+
+**Returns:** `dict`:  转账订单信息。
 
 
 

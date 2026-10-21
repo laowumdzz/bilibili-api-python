@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import subprocess
 import sys
 
 sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
@@ -12,7 +13,27 @@ sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger("doc_gen")
 
-os.system("stubgen bilibili_api -o .doc_cache/ --include-docstrings")
+# doc_gen 的公开符号清单来自 mypy 的 JSON 缓存；mypy 1.19+ 已改为 SQLite 缓存，
+# 需用 1.18.x 生成。stubgen 既生成 .doc_cache/，也会写入 doc_gen 所需的
+# .mypy_cache/<Python 版本>/bilibili_api/*.data.json（普通 mypy check 不写根包条目）。
+MYPY_CACHE_PACKAGE_DIR = os.path.join(
+    ".mypy_cache", f"{sys.version_info.major}.{sys.version_info.minor}", "bilibili_api"
+)
+# 缓存存在也要重跑 stubgen：否则新增公开符号不会进入本次生成的符号清单。
+try:
+    subprocess.run(
+        ["stubgen", "bilibili_api", "-o", ".doc_cache/", "--include-docstrings"],
+        check=False,
+    )
+except FileNotFoundError:
+    logger.warning("未找到 stubgen，跳过 mypy 缓存刷新；本次生成使用现有缓存（可能遗漏新增公开符号）。")
+if not os.path.isfile(os.path.join(MYPY_CACHE_PACKAGE_DIR, "__init__.data.json")):
+    logger.error(
+        '找不到 mypy 缓存 %s。请先运行：uv run --with "mypy==1.18.2" python scripts/doc_gen.py'
+        "（由 stubgen 生成 JSON 缓存；mypy 1.19+ 的缓存格式与 doc_gen 不兼容）",
+        MYPY_CACHE_PACKAGE_DIR,
+    )
+    sys.exit(1)
 
 all_funcs = []
 funcs = []
@@ -232,7 +253,7 @@ def _origin_is_private(cross_ref: str) -> bool:
     return any(part.startswith("_") for part in parts[1:-1])
 
 
-modules = os.listdir(f".mypy_cache/{sys.version_info.major}.{sys.version_info.minor}/bilibili_api")
+modules = os.listdir(MYPY_CACHE_PACKAGE_DIR)
 modules.sort()
 for module in modules:
     if module.find("settings") != -1:
@@ -252,19 +273,13 @@ for module in modules:
         module_name = module[: -len(".data.json")]
         funcs.append((module_name, "bilibili_api." + module_name, "MODULE", 1))
         try:
-            module_all = set(
-                getattr(importlib.import_module(f"bilibili_api.{module_name}"), "__all__", None) or []
-            )
+            module_all = set(getattr(importlib.import_module(f"bilibili_api.{module_name}"), "__all__", None) or [])
         except Exception:
             module_all = set()
         for key in data["names"].keys():
             if key != ".class" and not key.startswith("_"):
                 node = data["names"][key]
-                if (
-                    node.get("cross_ref")
-                    and key in module_all
-                    and _origin_is_private(node["cross_ref"])
-                ):
+                if node.get("cross_ref") and key in module_all and _origin_is_private(node["cross_ref"]):
                     # 私有模块定义、经本模块 __all__ re-export 的公开符号：
                     # 私有模块本身不生成文档，故在其文档归属模块（re-export 所在模块）生成章节。
                     parse(node, 2, root=True)

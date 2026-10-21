@@ -52,6 +52,10 @@ jobs:
         run: uv sync
 
       - name: Run lint
+        env:
+          # 文档漂移门禁必须真正生效：缓存缺失时 lint.py 会用 mypy==1.18.2 的 stubgen 自动重建，
+          # 缓存落后于源码则视为失败（本地默认仅提示）。
+          DOCS_DRIFT_STRICT: "1"
         run: uv run python scripts/lint.py
 
   test:
@@ -158,6 +162,13 @@ jobs:
           BILI_BUVID3: ${{ secrets.BILI_BUVID3 }}
           BILI_DEDEUSERID: ${{ secrets.BILI_DEDEUSERID }}
           BILI_RATELIMIT: "1.5"
+          # 每周集成任务强制启用请求计数与 412 中止（特性 007 FR-004 / FR-005）：
+          # 会话结束由 conftest 输出总请求数 / 412 计数摘要，总请求数超过 400 或出现
+          # 412 类响应（HTTP 412 / -352 等效码）时以非零状态退出。400 为 cred0+cred1
+          # 验收预算，此处作为含 cred2 的全会话保守上限（T059 实测全会话 320）。
+          BILI_COUNT_REQUESTS: "1"
+          BILI_ABORT_ON_RISK: "1"
+          BILI_REQUEST_BUDGET: "400"
         # 特性 007：integration 任务切换为 cred0-cred2 分层口径（高危 cred3 层默认收集即排除，
         # 永不在 CI 执行）；如需回退到旧的全量集成口径，改回 `uv run pytest -m integration` 即可
         # （两种口径下 cred3 均被收集期剔除）。

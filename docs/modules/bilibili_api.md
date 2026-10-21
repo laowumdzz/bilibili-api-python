@@ -14,6 +14,8 @@ from bilibili_api import ...
 
 - [class Api()](#class-Api)
   - [async def request()](#async-def-request)
+  - [async def request\_with\_cookies()](#async-def-request\_with\_cookies)
+  - [async def result\_list()](#async-def-result\_list)
   - [def update\_data()](#def-update\_data)
   - [def update\_files()](#def-update\_files)
   - [def update\_headers()](#def-update\_headers)
@@ -31,7 +33,7 @@ from bilibili_api import ...
   - [def remove\_ignore\_events()](#def-remove\_ignore\_events)
 - [class BiliAPIClient()](#class-BiliAPIClient)
 - [class BiliAPIFile()](#class-BiliAPIFile)
-  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+- [class BiliAPIResponse()](#class-BiliAPIResponse)
   - [def json()](#def-json)
   - [def utf8\_text()](#def-utf8\_text)
 - [class BiliWsMsgType()](#class-BiliWsMsgType)
@@ -195,6 +197,50 @@ from bilibili_api import ...
 
 **Returns:** `int | str | dict | bytes | None`:  接口未返回数据时，返回 None，否则返回该接口提供的 data 或 result 字段的数据。
 
+
+
+
+### async def request_with_cookies()
+
+向接口发送请求，并在返回处理结果的同时携带本响应由服务端下发的 Cookie。
+
+请求链路与 request() 完全一致（状态码校验、code 校验、data / result
+字段提取、-403 时的 wbi 重试）；区别仅在返回值为二元组，适用于需要读取
+响应 Set-Cookie 的场景（如网页端二维码扫码登录）。Cookie 名保持服务端
+原始大小写；响应未下发 Cookie 时第 2 项为空字典；发生重试时返回最终
+成功那次响应的 Cookie。
+
+
+| name | type | description |
+| - | - | - |
+| `raw` | `bool` | 是否不提取 data 或 result 字段。 Defaults to False. |
+
+**Returns:** `tuple[int | str | dict | bytes | None, dict]`:  第 1 项与 request(raw=...) 的返回一致；第 2 项为本响应下发的 Cookie 字典。
+
+
+Raises:
+NetworkException: 网络错误或响应码非 200。
+ResponseCodeException: 接口返回错误码。
+WbiRetryTimesExceedException: wbi 重试次数超限。
+
+
+
+### async def result_list()
+
+获取请求结果并收窄为 list 类型返回。
+
+供声明返回 list 的接口调用点使用的链尾类型化访问器，请求链路与
+收窄策略与 result_dict() 完全一致（中心化收窄，research.md R2）。
+
+
+
+**Returns:** `list`:  接口返回的 data 或 result 字段数据。
+
+
+Raises:
+NetworkException: 网络错误或响应码非 200。
+ResponseCodeException: 接口返回错误码。
+WbiRetryTimesExceedException: wbi 重试次数超限。
 
 
 
@@ -389,10 +435,22 @@ API 基类异常。
 | `mime_type` | `str` | 文件类型 |
 
 
-### def \_\_init\_\_()
+---
+
+**@dataclasses.dataclass** 
+
+## class BiliAPIResponse()
+
+响应对象类。
 
 
-
+| name | type | description |
+| - | - | - |
+| `code` | `int` | 响应码 |
+| `headers` | `Dict` | 响应头 |
+| `cookies` | `Dict` | 当前状态的 cookies |
+| `raw` | `bytes` | 响应数据 |
+| `url` | `str` | 当前 url |
 
 
 ### def json()
