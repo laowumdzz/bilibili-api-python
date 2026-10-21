@@ -1,21 +1,3 @@
-<!--
-Sync Impact Report
-==================
-- Version change: 1.0.2 → 1.1.0（MINOR：原则内容实质性扩展，无删除或放宽）
-- Modified principles:
-  - II. 声明式 API 定义：确立 `bilibili-api-registry/` 为接口信息主要来源，
-    补充"先查 registry → 脚本增量同步 → 再写模块方法"的标准次序与
-    纯增量同步约束；接口规模口径由"400+"更正为"当前 800+（以 data/api
-    实际条目为准）"。
-  - IV. 分层测试：由三层（离线 / 只读 / 写操作）扩展为四级凭据分层
-    （cred0–cred3），纳入特性 007 已落地的层预算、六态零残留、账号安全
-    五类判定、限速与风控中止规则；原三层边界保持不变。
-- Added sections: 无
-- Removed sections: 无
-- 迁移事项: 无（新规则与当前代码、测试及 CI 实践一致，不要求存量改造）
-- Follow-up TODOs: 无
--->
-
 # bilibili-api-python Constitution
 
 ## Core Principles
@@ -28,9 +10,12 @@ Sync Impact Report
   `utils/sync.py` 的 `@sync` 装饰器提供。
 - 库代码中 MUST NOT 出现 `asyncio.run()`——事件循环由调用方负责启动。
 - 异步路径中 MUST NOT 使用同步阻塞操作（`time.sleep`、`requests.get` 等）。
-- HTTP 访问 MUST 经由 `BiliAPIClient` 抽象层，客户端实现按
-  `aiohttp > httpx` 优先级自动选择；MUST NOT 绕过抽象层
-  直接依赖具体客户端。
+- HTTP 访问 MUST 经由 `BiliAPIClient` 抽象层；内置客户端集合为 `aiohttp`
+  与 `httpx`，按 `aiohttp > httpx` 优先级自动选择。移除内置客户端或调整
+  选择优先级 MUST 按破坏性变更流程处理；新增内置客户端 MUST 同步更新依赖
+  声明、README 与测试。
+- 用户自定义客户端 MUST 经 `utils/_session.py` 的 `register_client()` 注册；
+  MUST NOT 绕过抽象层直接依赖具体客户端。
 
 Rationale：统一的事件模型与客户端抽象是多客户端支持和下游易用性的根基。
 
@@ -42,6 +27,8 @@ API 元信息（URL、HTTP 方法、参数、是否需要登录）MUST 集中声
 - 接口信息的主要来源 MUST 是项目根目录下的 `bilibili-api-registry/`
   （独立嵌套 git 仓库，抽取自 bilibili-API-collect 文档）；该目录
   MUST NOT 作为子模块或普通目录纳入本仓库追踪。
+- registry 缺失或未初始化时，MUST 先按 `AGENTS.md` 的获取流程恢复并固定
+  已知可用基线；MUST NOT 以手工编辑 `data/api/*.json` 作为长期替代。
 - 新增 API 的标准次序 MUST 为：先查 registry 对应条目的 URL / method /
   params / 鉴权说明；运行 `scripts/sync_api_registry.py`（先 `--dry-run`
   预览）纯增量同步缺失条目；再在对应模块编写异步方法调用。
@@ -56,7 +43,7 @@ API 元信息（URL、HTTP 方法、参数、是否需要登录）MUST 集中声
 - 登录态 MUST 由 `Credential` 类封装传递，MUST NOT 在库代码中硬编码凭据。
 
 Rationale：registry 以可回溯的 `doc_source` 提供接口单一事实源，纯增量
-同步让当前 800+ 接口可审计、可批量维护；统一调用链路保证反爬参数注入
+同步让当前 900+ 接口可审计、可批量维护；统一调用链路保证反爬参数注入
 不遗漏。（接口数量以 `data/api/*.json` 实际条目为准。）
 
 ### III. 质量门禁（NON-NEGOTIABLE）
@@ -72,9 +59,13 @@ Rationale：registry 以可回溯的 `doc_source` 提供接口单一事实源，
 - MUST NOT 重新引入类型豁免：不得恢复豁免表条目，不得将棘轮基线从零
   上调；任何新增类型错误 MUST 就地修复而非豁免。
 - 新增或修改公共函数 MUST 提供完整中文 docstring（Args / Returns /
-  Raises）并附全面类型注解；随后 MUST 重新运行 `scripts/doc_gen.py`
-  生成文档。
+  Raises）并附全面类型注解；随后 MUST 以固定版本重新生成文档：
+  `uv run --with "mypy==1.18.2" python scripts/doc_gen.py`
+  （doc_gen 依赖 mypy 1.18.x 的 JSON 缓存，1.19+ 的缓存格式不兼容）。
 - `docs/` 下的 API 文档 MUST NOT 手工编辑。
+- CI 的文档漂移校验 MUST 设置 `DOCS_DRIFT_STRICT=1`；mypy JSON 缓存缺失时，
+  门禁 MUST 以固定 `mypy==1.18.2` 自动重建后继续，MUST NOT 静默跳过漂移
+  校验。
 - MUST NOT 忽略 ruff 报错或跳过门禁脚本。
 
 Rationale：文档与类型由工具链从源码单一事实源生成，任何手工漂移都会
@@ -115,8 +106,14 @@ Rationale：文档与类型由工具链从源码单一事实源生成，任何�
   严禁入库）。
 - 集成用例 MUST 控制请求频率：`BILI_RATELIMIT` 缺省 1.5 秒，循环遍历型
   用例 MUST 在循环体内额外节流；`BILI_COUNT_REQUESTS=1` 时以服务端视角
-  计数，层预算以该读数为准；`BILI_ABORT_ON_RISK=1` 时首个 412 类风控
-  响应 MUST 中止整个会话。
+  计数，层预算以该读数为准。
+- 会话级失败判据 MUST 生效：`BILI_REQUEST_BUDGET=<n>` 隐式启用计数，
+  总请求数超限即判会话失败；`BILI_ABORT_ON_RISK=1` 时首个 412 类风控响应
+  MUST 中止整个会话，且 412 计数非零同样判会话失败；cred2 teardown 清理
+  失败 MUST 登记为会话级残留，存在残留即判会话失败（六态零残留为硬验收）。
+- 定时集成 CI MUST 强制启用 `BILI_COUNT_REQUESTS=1`、
+  `BILI_ABORT_ON_RISK=1` 与 `BILI_REQUEST_BUDGET=400`（400 为含 cred2 的
+  全会话保守上限）；PR 的集成验证 MUST 仅运行 `readonly` 只读子集。
 
 Rationale：分层让无凭据环境也能获得可信的快速反馈，同时以最小请求预算
 与自清理约束保护共享测试账号，避免触发 412 风控或留下账号残留。
@@ -138,11 +135,17 @@ Rationale：作为被下游广泛依赖的库，接口稳定性即是契约。
   （`uv sync` / `uv add`），MUST NOT 用 `pip install` 直接装包。
 - **许可证与用途**：GPL-3.0-or-later；本库仅用于学习与测试，MUST NOT
   用于非法用途或滥用行为（恶意刷屏、辱骂黄暴等社区破坏行为）。
-- **凭据安全**：SESSDATA、bili_jct 等凭据 MUST NOT 出现在任何提交内容
-  或日志输出中。
+- **Fork 归属与分发**：本仓库是上游 `nemo2011/bilibili-api` 的 fork；
+  README MUST 在首屏保留 fork 来源（上游仓库 URL 与来源 commit SHA）、
+  维护方式声明、GPL-3.0-or-later 许可声明与上游致谢；分发 MUST 经本仓库
+  （git 安装或 GitHub Release 构建资产），MUST NOT 上传 PyPI，MUST NOT
+  将上游 PyPI 包表述为本项目安装渠道。
+- **凭据安全**：SESSDATA、bili_jct 等凭据 MUST NOT 出现在任何提交内容、
+  提示、错误或日志输出中；`.bilibili.cookie` 与 TEMP 登录缓存等任何形式的
+  凭据缓存 MUST NOT 入库。
 - **反爬集中管理**：Wbi 签名、buvid、bili_ticket 逻辑集中在
-  `utils/_api.py` 与 `utils/_anti_spider.py`；反爬失效时 MUST 优先在该层
-  排查修复，MUST NOT 在业务模块散落补丁。
+  `utils/_api.py`、`utils/_anti_spider.py` 与 `utils/_wbi.py`；反爬失效时
+  MUST 优先在该层排查修复，MUST NOT 在业务模块散落补丁。
 - **解析与临时文件安全**：解析不受信数据（如弹幕 XML）MUST 使用
   `defusedxml` 等安全解析器；临时文件 MUST 使用 `tempfile` 生成且
   外部输入的后缀 MUST 经白名单过滤。
@@ -154,16 +157,20 @@ Rationale：作为被下游广泛依赖的库，接口稳定性即是契约。
    `dev` 远端建立前，外部贡献 MUST 先通过 Issue 与维护者沟通。维护者
    在本地 `main` 上的维护性直提交（chore / fix 等，见既有 git 实践）
    不视为违规，但 SHOULD 保持"一个提交只做一件事"的粒度。
-2. 完成后运行 `uv run python scripts/lint.py` 全量门禁。
-3. 新增功能后运行 `uv run python scripts/doc_gen.py` 重新生成文档。
-4. 提交信息遵循 Conventional Commits（Git Hook 强制校验），允许的
-   type：`build` `chore` `ci` `docs` `feat` `fix` `perf` `refactor`
-   `release` `revert` `style` `test` `tests`。
+2. 完成后运行 `uv run python scripts/lint.py` 全量门禁；CI MUST 在
+   Python 3.10 与 3.13 两端运行离线门禁与测试。
+3. 新增功能后 MUST 运行
+   `uv run --with "mypy==1.18.2" python scripts/doc_gen.py` 重新生成文档。
+4. 提交信息遵循 Conventional Commits（Git Hook 强制校验，CI 对 PR 增量
+   提交兜底校验），允许的 type：`build` `chore` `ci` `docs` `feat` `fix`
+   `perf` `refactor` `release` `revert` `style` `test` `tests`。
 5. 测试命令：离线 `uv run pytest -m "not integration"`；常规验证
    `uv run pytest`（cred3 收集期自动排除）；核心冒烟
    `uv run pytest -m cred0`；读回归 `uv run pytest -m "cred0 or cred1"`；
-   高危层仅在显式需要时 `uv run pytest -m cred3`。CI 集成任务使用
-   `uv run pytest -m "cred0 or cred1 or cred2"`。
+   高危层仅在显式需要时 `uv run pytest -m cred3`；PR 集成回路
+   `uv run pytest -m readonly`；定时集成任务
+   `uv run pytest -m "cred0 or cred1 or cred2"`（预算与风控环境变量
+   口径见 IV）。
 6. 跟进 b 站接口变更时，MUST 以 `bilibili-api-registry/` 为主要来源：
    先查条目 `doc_source` 回溯源文档，批量补齐运行
    `uv run python scripts/sync_api_registry.py`。
@@ -179,12 +186,15 @@ Rationale：作为被下游广泛依赖的库，接口稳定性即是契约。
   `specs/007-credential-test-tiers/data-model.md`；宪章、`AGENTS.md` 与
   测试 marker 的层级描述 MUST 与该表保持一致。
 - 修订程序：修订 MUST 通过独立提交完成，提交信息以
-  `docs: amend constitution to vX.Y.Z ...` 说明变更内容，并在文件头部
-  附 Sync Impact Report（版本变化、增删原则、迁移事项）。
-- 版本策略遵循语义化版本：原则删除或重新定义为 MAJOR；新增原则或
-  章节为 MINOR；措辞与澄清为 PATCH。
+  `docs: amend constitution to vX.Y.Z ...` 说明变更内容；评审期可在文件
+  头部附 Sync Impact Report（版本变化、增删原则、迁移事项），该报告为
+  临时材料，MUST 在提交前移除，持久变更记录由提交信息承载。
+- 版本策略遵循语义化版本：原则删除或重新定义为 MAJOR；新增原则、章节或
+  实质性扩充既有约束为 MINOR；措辞与澄清为 PATCH。
+- `.github/workflows/` 中的 CI MUST 落实本宪章的质量门禁与测试分层要求；
+  修改 CI 口径的 PR MUST 在描述中说明与宪章条款的对应关系。
 - 合规审查：每次 PR review MUST 核对宪章合规性（尤其是质量门禁、
   分层测试与凭据安全三条不可协商红线）；复杂度引入 MUST 在 PR 描述中
   给出理由。
 
-**Version**: 1.1.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-10-17
+**Version**: 1.2.0 | **Ratified**: 2026-08-31 | **Last Amended**: 2026-10-21
