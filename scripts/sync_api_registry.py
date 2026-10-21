@@ -4,6 +4,10 @@
 抽取的接口注册表）读取 REST 接口定义，将本项目 data/api 中尚不存在的
 接口以新增顶层 section 的方式合并进对应 JSON 文件。
 
+前置条件：项目根目录存在 ``bilibili-api-registry/``（未纳入本仓库跟踪的独立
+git 仓库）。目录缺失或未读到 REST 条目时，脚本以非零状态退出并输出获取指引；
+获取步骤见 AGENTS.md「接口来源与新增 API 流程」。
+
 同步原则：
 
 - 纯增量：已存在的接口（按规范化 URL 判断）一律不动，仅追加缺失项；
@@ -35,6 +39,17 @@ logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REGISTRY_DIR = REPO_ROOT / "bilibili-api-registry"
 API_DIR = REPO_ROOT / "bilibili_api" / "data" / "api"
+
+# 已知可用基线；与 AGENTS.md「接口来源与新增 API 流程」保持一致。
+REGISTRY_BASELINE_COMMIT = "df7a5f65e29e6b456253e529846059da57a10637"
+REGISTRY_HINT = (
+    "bilibili-api-registry/ 是未纳入本仓库跟踪的独立 git 仓库，需单独获取：\n"
+    "  1. 向维护者获取内部仓库地址与访问权限"
+    "（已有副本可用 `git -C bilibili-api-registry remote get-url origin` 查看）；\n"
+    "  2. 在项目根目录克隆：git clone <registry-url> bilibili-api-registry\n"
+    f"  3. 固定基线提交：git -C bilibili-api-registry checkout {REGISTRY_BASELINE_COMMIT}\n"
+    "详见 AGENTS.md「接口来源与新增 API 流程」。"
+)
 
 VALID_METHODS = {"GET", "POST", "PUT", "DELETE", "PATCH"}
 
@@ -304,9 +319,17 @@ def count_leaves(text: str) -> int:
 
 
 def main(argv: list[str]) -> int:
-    """执行同步；返回 0 表示成功。"""
+    """执行同步；返回 0 表示成功，1 表示 registry 不可用。"""
     dry_run = "--dry-run" in argv
+    if not REGISTRY_DIR.is_dir():
+        logger.error("未找到 registry 目录：%s", REGISTRY_DIR)
+        logger.error("%s", REGISTRY_HINT)
+        return 1
     endpoints = load_registry()
+    if not endpoints:
+        logger.error("未能从 %s 读到任何 REST 条目，registry 可能为空或结构不完整。", REGISTRY_DIR)
+        logger.error("%s", REGISTRY_HINT)
+        return 1
     raws, known_urls, file_sections = load_current_files()
 
     # 文件名 → {section: {键: 条目}}（保持 registry 遍历顺序，确定性输出）。
