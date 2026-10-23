@@ -11,7 +11,6 @@ bilibili_api.bangumi
 + episode_id: 每集的 ID，如 https://www.bilibili.com/bangumi/play/ep374717
 
 
-
 ``` python
 from bilibili_api import bangumi
 ```
@@ -1032,7 +1031,6 @@ from bilibili_api import bangumi
 + OFFICE: 职场
 + PET: 萌宠
 + CULTIVATE: 养成
-
 
 
 

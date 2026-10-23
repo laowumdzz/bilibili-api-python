@@ -309,6 +309,7 @@ API 基类异常。
 
 
 
+
 ---
 
 ## class AsyncEvent()
@@ -731,6 +732,7 @@ Cookies 刷新错误。
 
 
 
+
 ---
 
 ## class CredentialNoBiliJctException()
@@ -738,6 +740,7 @@ Cookies 刷新错误。
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 凭据缺少有效的 bili_jct（csrf token）时抛出，写操作均需要该字段。
+
 
 
 
@@ -751,6 +754,7 @@ Cookies 刷新错误。
 
 
 
+
 ---
 
 ## class CredentialNoBuvid4Exception()
@@ -758,6 +762,7 @@ Cookies 刷新错误。
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 凭据缺少有效的 buvid4（设备指纹）时抛出。
+
 
 
 
@@ -771,6 +776,7 @@ Cookies 刷新错误。
 
 
 
+
 ---
 
 ## class CredentialNoSessdataException()
@@ -778,6 +784,7 @@ Cookies 刷新错误。
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 凭据缺少有效的 sessdata（登录会话）时抛出，登录态操作均需要该字段。
+
 
 
 
@@ -857,6 +864,7 @@ Cookies 刷新错误。
 
 
 
+
 ---
 
 ## class DmFontSize()
@@ -902,6 +910,7 @@ Cookies 刷新错误。
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 动态携带的图片数量超过上限时抛出。
+
 
 
 
@@ -1056,6 +1065,7 @@ GeetestException: 未创建验证码服务（请先调用 `start_geetest_server`
 
 
 
+
 ---
 
 **@dataclasses.dataclass** 
@@ -1097,6 +1107,7 @@ NOTE: `gt`, `challenge`, `token` 为验证码基本字段。`seccode`, `validate
 
 
 
+
 ---
 
 ## class LoginError()
@@ -1104,6 +1115,7 @@ NOTE: `gt`, `challenge`, `token` 为验证码基本字段。`seccode`, `validate
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 登录流程出错时抛出（如密码错误、二维码过期、短信验证失败）。
+
 
 
 
@@ -1325,6 +1337,7 @@ API 返回 code 错误。
 
 
 
+
 ---
 
 ## class SpecialDanmaku()
@@ -1355,6 +1368,7 @@ API 定义语句（data/api/*.json）错误时抛出。
 
 
 
+
 ---
 
 ## class VideoUploadException()
@@ -1365,6 +1379,7 @@ API 定义语句（data/api/*.json）错误时抛出。
 
 
 
+
 ---
 
 ## class WbiRetryTimesExceedException()
@@ -1372,6 +1387,7 @@ API 定义语句（data/api/*.json）错误时抛出。
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 WBI 签名校验失败重试次数超过上限时抛出。
+
 
 
 
@@ -1576,6 +1592,7 @@ BV 号转 AV 号。
 
 
 
+
 ---
 
 ## def refresh_bili_ticket()
@@ -1586,11 +1603,13 @@ BV 号转 AV 号。
 
 
 
+
 ---
 
 ## def refresh_buvid()
 
 刷新模块自动生成的 buvid3 和 buvid4
+
 
 
 
@@ -1733,6 +1752,7 @@ async def handle(desc: str, data: dict) -> None:
 ## var request_settings
 
 请求参数设置
+
 
 
 

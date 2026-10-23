@@ -1,6 +1,7 @@
 # Requires Python 3.10+
 
 import importlib
+import inspect
 import json
 import logging
 import os
@@ -464,6 +465,12 @@ def _symbol_doc(qualname: str) -> str | None:
 
     替代 eval 动态求值：符号名来自 .mypy_cache 缓存清单，
     走属性访问可在缓存被篡改时也不会把符号名当代码执行。
+
+    返回前复现 CPython 3.13+ 编译器的 docstring 归一化（去公共缩进 +
+    tab 展开，经 inspect.cleandoc 等价实现，首尾换行保持编译期形态）。
+    ≤3.12 的 ``__doc__`` 保留源缩进原文，不归一化时同一 docstring 在
+    3.10（CI 矩阵）与 3.13+（本地生成）会渲染出不同文档，漂移校验
+    跨版本不可比；3.13+ 上本变换为恒等。
     """
     parts = qualname.split(".")
     if parts[0] == "bilibili_api":
@@ -471,7 +478,10 @@ def _symbol_doc(qualname: str) -> str | None:
     obj: object = bilibili_api
     for part in parts:
         obj = getattr(obj, part)
-    return obj.__doc__
+    doc = obj.__doc__
+    if not doc:
+        return doc
+    return "\n" + inspect.cleandoc(doc) + "\n"
 
 
 # _video_* / _live_danmaku 为本仓库内部私有模块，不单独生成文档；

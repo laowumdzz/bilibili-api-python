@@ -1,6 +1,8 @@
 # Module video.py
 
+
 bilibili_api.video — 视频相关接口。
+
 
 ``` python
 from bilibili_api import video
@@ -932,7 +934,6 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
-
 ### async def triple()
 
 给阿婆主送上一键三连
@@ -1000,9 +1001,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
+
 ### def DANGEROUS()
 
 危险行为
+
 
 
 
@@ -1016,9 +1019,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
+
 ### def ILLEGAL_OTHER()
 
 其他不规范行为
+
 
 
 
@@ -1032,9 +1037,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
+
 ### def ILLEGAL_URL()
 
 违法信息外链
+
 
 
 
@@ -1048,9 +1055,11 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 
 
 
+
 ### def OTHER_NEW()
 
 其他
+
 
 
 
@@ -1087,6 +1096,7 @@ page_index 和 cid 至少提供其中一个，其中 cid 优先级最高
 ### def VIDEO_INFRINGEMENT()
 
 盗搬稿件-路人举报
+
 
 
 
