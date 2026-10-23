@@ -12,6 +12,8 @@ git 仓库）。目录缺失或未读到 REST 条目时，脚本以非零状态�
 
 - 纯增量：已存在的接口（按规范化 URL 判断）一律不动，仅追加缺失项；
   gRPC（本项目无运行时支持）与 method=OTHER（网页地址等）条目跳过。
+- 未映射类别兜底：CATEGORY_FILE 与 SUBTOPIC_OVERRIDES 均未覆盖的类别
+  条目跳过并按类别聚合告警（含类别名与条目数），不因映射缺项崩溃。
 - 字节级保留：既有文件只做文本插入（在最后一个 `}` 前追加新 section），
   不重排、不重格式化，避免无关 diff。
 - 键名生成：取 URL 路径最后一个非泛型段（跳过 v1/v2/纯数字），驼峰转
@@ -63,6 +65,8 @@ CATEGORY_FILE: dict[str, str] = {
     "audio": "audio",
     "bangumi": "bangumi",
     "blackroom": "black-room",
+    "broadcast": "broadcast",
+    "cheese": "cheese",
     "clientinfo": "clientinfo",
     "comment": "common",
     "creativecenter": "creative_center",
@@ -81,6 +85,7 @@ CATEGORY_FILE: dict[str, str] = {
     "misc": "misc",
     "newbie_exam": "newbie_exam",
     "note": "note",
+    "opus": "opus",
     "search": "search",
     "teenager": "teenager",
     "user": "user",
@@ -338,6 +343,7 @@ def main(argv: list[str]) -> int:
     used_urls: set[str] = set()
     used_keys: set[tuple[str, str, str]] = set()
     skipped_known = skipped_dup = 0
+    skipped_unmapped: dict[str, int] = {}
 
     for endpoint in endpoints:
         norm = norm_url(endpoint["url"])
@@ -348,6 +354,12 @@ def main(argv: list[str]) -> int:
             skipped_dup += 1
             continue
         used_urls.add(norm)
+
+        category = endpoint["_category"]
+        if category not in CATEGORY_FILE and (category, endpoint["_subtopic"]) not in SUBTOPIC_OVERRIDES:
+            # 未映射类别兜底：跳过并按类别聚合，循环后统一告警，不因映射缺项崩溃
+            skipped_unmapped[category] = skipped_unmapped.get(category, 0) + 1
+            continue
 
         file_name, section = target_cache.get((endpoint["_category"], endpoint["_subtopic"])) or resolve_target(
             endpoint, file_sections
@@ -361,12 +373,16 @@ def main(argv: list[str]) -> int:
         used_keys.add((file_name, section, key))
         file_additions.setdefault(file_name, {}).setdefault(section, {})[key] = build_entry(endpoint)
 
+    for unmapped_category, count in sorted(skipped_unmapped.items()):
+        logger.warning("跳过未映射类别 %s：%d 条待同步条目", unmapped_category, count)
+
     total = sum(len(eps) for secs in file_additions.values() for eps in secs.values())
     logger.info(
-        "registry REST 条目 %d：已存在 %d，registry 内重复 %d，本次新增 %d",
+        "registry REST 条目 %d：已存在 %d，registry 内重复 %d，无映射跳过 %d，本次新增 %d",
         len(endpoints),
         skipped_known,
         skipped_dup,
+        sum(skipped_unmapped.values()),
         total,
     )
 
