@@ -179,7 +179,9 @@ class Api:
         self.params = dict.fromkeys(self.params.keys(), "")
         # 占位清空：仅保留键，真实文件字典经 update_files 恢复
         self.files = cast("dict[str, BiliAPIFile]", dict.fromkeys(self.files.keys(), ""))
-        self.headers = dict.fromkeys(self.headers.keys(), "")
+        # 请求头原样保留（浅拷贝隔离可变状态）：构造参数显式传入的头原样送达，
+        # 不要求调用方随后经 update_headers 恢复
+        self.headers = dict(self.headers)
         self.credential = self.credential if self.credential else Credential()
 
     def update_data(self, **kwargs) -> "Api":

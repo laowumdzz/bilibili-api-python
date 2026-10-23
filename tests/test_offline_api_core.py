@@ -11,7 +11,7 @@ import pytest
 from bilibili_api.exceptions import NetworkException
 from bilibili_api.utils import _api as api_mod
 from bilibili_api.utils._api import Api, bili_simple_download
-from bilibili_api.utils._types import BiliAPIResponse
+from bilibili_api.utils._types import HEADERS, BiliAPIResponse
 
 
 class FakeDownloadClient:
@@ -269,3 +269,33 @@ async def test_prepare_request_dict_param_serialized_to_compact_json(monkeypatch
     assert params["x-bili-redirect"] == 1
     assert params["flag"] == 1
     assert "drop" not in params
+
+
+async def test_prepare_request_keeps_constructor_headers(monkeypatch):
+    """构造参数显式传入的请求头名称与值原样送达，不被占位清空（FR-003）。"""
+    _fake_buvid(monkeypatch)
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+            " (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0"
+        ),
+        "Referer": "https://passport.bilibili.com/risk/verify?tmp_token=fake",
+    }
+    # 与 login_v2 短信风控交换分支同形：构造即传 headers=（POST + no_csrf=True）
+    api = Api(url="https://example.com/exchange", method="POST", no_csrf=True, headers=headers)
+    config = await api._prepare_request()
+    assert config["headers"] == headers
+    # 浅拷贝隔离：Api 实例不与调用方字典共享可变状态
+    assert config["headers"] is not headers
+
+
+async def test_prepare_request_headers_fallback_and_update_semantics(monkeypatch):
+    """未传 headers 仍回落全局 HEADERS；update_headers 整体替换语义不变（FR-003 回归）。"""
+    _fake_buvid(monkeypatch)
+    config = await Api(url="https://example.com/poll", method="GET")._prepare_request()
+    assert config["headers"] == HEADERS
+
+    api = Api(url="https://example.com/poll", method="GET", headers={"A": "1"}).update_headers(**{"B": "2"})
+    config = await api._prepare_request()
+    assert config["headers"] == {"B": "2"}
+    assert "A" not in config["headers"]
