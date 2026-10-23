@@ -493,10 +493,12 @@ for module in all_funcs:
         raise ValueError(f"非法模块名，拒绝生成文档: {module[0][0]!r}")
     docs_dir = "./docs/modules/" + module[0][0] + ".md"
     # 显式 pin UTF-8：docsify 站点声明 charset=UTF-8，且编码不随运行环境 locale 变化
-    # 才能保证 doc_gen 输出确定性（漂移校验依赖）；行尾交由 .gitattributes 的 text 属性归一化
+    # 才能保证 doc_gen 输出确定性（漂移校验依赖）。行尾显式写 CRLF，与 .gitattributes
+    # 的 *.md text eol=crlf 全平台检出形态字节一致——默认换行转换在 Linux 上写 LF，
+    # 会使 CI 端漂移校验对全部文件误报；入库时行尾经 text 属性归一化为 LF
     # 模块名已经白名单校验，输出固定落在 docs/modules/ 下
     # mimosa-ignore
-    file = open(docs_dir, "w+", encoding="utf-8")
+    file = open(docs_dir, "w+", encoding="utf-8", newline="\r\n")
     logger.info("BEGIN %s", module[0][0])
     if module[0][0] != "bilibili_api":
         file.write(
