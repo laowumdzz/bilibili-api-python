@@ -22,3 +22,19 @@
 - `select_client()` 选择未注册的客户端名时，异常信息会列出当前已注册的客户端清单（字典序）并给出 `register_client()` 自定义注册提示。
 - `impersonate` 设置随 curl_cffi 适配一并消亡；`http2` 设置由 httpx 客户端保留。
 - 开发依赖（dev 组）不再包含 `curl-cffi`；运行时依赖从未包含它。
+
+## Fixed
+
+### fix(exceptions): 恢复 17 个按类异常子模块导入路径兼容层
+
+此前的异常重构将 17 个按类拆分的异常模块并入 `exceptions/_simple.py`，包级导出（`from bilibili_api.exceptions import ...`）与 `__all__` 保持不变，但按类子模块导入路径以 `ModuleNotFoundError` 失败，且该兼容性破坏未在变更记录中告知。本次恢复全部 17 条历史导入路径（与首次提交 `99648df` 一致）：
+
+| 恢复的导入路径（`bilibili_api.exceptions.` 前缀） |
+|---------------------------------------------------|
+| `ArgsException`、`CredentialNoAcTimeValueException`、`CredentialNoBiliJctException`、`CredentialNoBuvid3Exception`、`CredentialNoBuvid4Exception`、`CredentialNoDedeUserIDException`、`CredentialNoSessdataException`、`DanmakuClosedException`、`DynamicExceedImagesException`、`GeetestException`、`InitialStateException`、`LiveException`、`LoginError`、`ResponseException`、`StatementException`、`VideoUploadException`、`WbiRetryTimesExceedException` |
+
+**兼容层语义：**
+
+- 17 个薄兼容模块仅 re-export `_simple.py` 中的同一类对象（`from ._simple import X as X`），不含任何类定义；异常类的定义、继承关系与构造签名零改动，子模块路径与包级导入得到的类对象严格同一（`is` 判定为真），`except` 精确捕获在两种导入写法下行为一致。
+- 包级导入面与 `__all__`（22 项）保持不变；`__init__.py` 中 17 个类改为经各自薄子模块导入（与首次提交的导入结构一致），以在包初始化时缓存子模块，避免 Python 导入机制的子模块属性重绑定影响包级导出。
+- 未来如需废弃这些兼容路径，须另行裁决并在变更记录中告知。
