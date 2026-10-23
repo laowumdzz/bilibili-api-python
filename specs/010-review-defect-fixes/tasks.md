@@ -209,9 +209,9 @@ Task T016-T019 (US5, scripts/ + 新测试)
 
 ---
 
-## Implementation Record（2026-10-23）
+## Implementation Record（2026-10-23，T024 补录 2026-10-24）
 
-全部任务 T001–T023 完成并勾选。六个本地 `main` 提交（不 push）：
+全部任务 T001–T024 完成并勾选。本地 `main` 提交（不 push）：
 
 | 提交 | 内容 |
 |------|------|
@@ -221,6 +221,9 @@ Task T016-T019 (US5, scripts/ + 新测试)
 | `acedca0` | `fix(test)`: T002/T003 衍生修复——回环用例结束后按当前循环清理全局会话池条目，消除对会话池生命周期回归的跨用例污染 |
 | `634a4bf` | `fix(exceptions)`: T012–T015 恢复 17 个按类异常子模块导入路径兼容层（US4） |
 | `e4ab653` | `fix(scripts)`: T016–T019 同步脚本补齐 broadcast/cheese/opus 映射并兜底未映射类别告警（US5） |
+| `f9f7efc` | `docs(010)`: 特性 010 规格设计文档入库并勾选 T001–T023 |
+| `154c8fb` | `docs`: T024 宪法 v1.2.1 修订入库（离线用例外网边界与本机回环例外澄清） |
+| `30874e8` | `docs`: T024 AGENTS.md 离线用例边界对齐宪法 v1.2.1（紧随宪法修订独立提交，沿 v1.2.0 先例） |
 
 ### 与任务文本的偏差（已核验必要）
 
@@ -234,3 +237,9 @@ Task T016-T019 (US5, scripts/ + 新测试)
 - `uv run python scripts/lint.py`：ruff / 阻断检查 / pyrefly 零容忍 / 棘轮 / 文档漂移全绿。
 - `uv run --with "mypy==1.18.2" python scripts/doc_gen.py`：`docs/modules/` 零漂移（17 个兼容模块不进文档）。
 - 真实 registry `--dry-run`：609 已存在 / 0 重复 / 0 无映射跳过 / 0 新增，无 WARNING，无 `broadcast.json`。
+
+---
+
+## Phase 9: Convergence
+
+- [x] T024 以独立提交入库宪法 v1.2.1 修订与 AGENTS.md 离线边界对齐（提交信息 `docs: amend constitution to v1.2.1 ...`，正文说明离线用例"禁止网络请求"澄清为"禁止外网请求"及本机回环例外；AGENTS.md 对齐可并入该笔或紧随其后独立提交）per spec Clarifications Session 2026-10-23 C1 裁决 / Constitution Governance (partial)
