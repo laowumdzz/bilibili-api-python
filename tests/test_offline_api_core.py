@@ -299,3 +299,33 @@ async def test_prepare_request_headers_fallback_and_update_semantics(monkeypatch
     config = await api._prepare_request()
     assert config["headers"] == {"B": "2"}
     assert "A" not in config["headers"]
+
+
+async def test_prepare_request_data_bool_stays_in_data(monkeypatch):
+    """请求体布尔字段转为 0/1 后保留在请求体，不错位写入查询参数（FR-004）。"""
+    _fake_buvid(monkeypatch)
+    api = Api(url="https://example.com/action", method="POST", no_csrf=True).update_data(
+        **{"switch": True, "count": 5, "name": "中文", "gone": None}
+    )
+    config = await api._prepare_request()
+    # 布尔字段 0/1 保留在请求体；None 字段剔除、其余字段原样（既有行为不变）
+    assert config["data"] == {"switch": 1, "count": 5, "name": "中文"}
+    # 请求体布尔字段不得迁移到查询参数
+    assert "switch" not in config["params"]
+
+    api_false = Api(url="https://example.com/action", method="POST", no_csrf=True).update_data(**{"switch": False})
+    config_false = await api_false._prepare_request()
+    assert config_false["data"] == {"switch": 0}
+
+
+async def test_prepare_request_params_bool_and_json_body_regression(monkeypatch):
+    """查询参数布尔→整数与 json_body 整体序列化行为不回归（FR-004 回归）。"""
+    _fake_buvid(monkeypatch)
+    config = await Api(url="https://example.com/poll", method="GET").update_params(**{"open": False})._prepare_request()
+    assert config["params"]["open"] == 0
+
+    api = Api(url="https://example.com/action", method="POST", no_csrf=True, json_body=True).update_data(
+        **{"switch": True, "name": "值"}
+    )
+    config = await api._prepare_request()
+    assert json.loads(config["data"]) == {"switch": 1, "name": "值"}

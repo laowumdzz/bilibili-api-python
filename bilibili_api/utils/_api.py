@@ -238,7 +238,7 @@ class Api:
                 new_params[key] = value
         for key, value in self.data.items():
             if isinstance(value, bool):
-                new_params[key] = int(value)
+                new_data[key] = int(value)
             elif value is not None:
                 new_data[key] = value
         self.params, self.data = new_params, new_data
