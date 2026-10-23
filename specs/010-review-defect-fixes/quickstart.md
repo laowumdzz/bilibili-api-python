@@ -61,5 +61,5 @@ uv run pytest -m cred0                             # 核心冒烟全绿（可选
 - [x] 第 1 节全部用例通过，且抽查证明扫码轮回环用例与布尔用例在缺陷态失败（2026-10-23：US1–US3 各用例在实现前逐项验证缺陷态失败）
 - [x] 第 2 节门禁全绿（含 `docs/modules/` 零漂移）（2026-10-23：`scripts/lint.py` 全绿 + 离线全量 345 passed / 1 skipped）
 - [x] 第 3 节 dry-run 计数与修复前语义一致，无未映射告警（2026-10-23：609 已存在 / 0 重复 / 0 无映射跳过 / 0 新增，无 WARNING，无 `broadcast.json`）
-- [ ] （具备条件时）第 4 节真机扫码成功 —— **待补验**：本会话无扫码环境，SC-001 真机项不阻塞收口（spec Assumptions），具备条件时执行 `uv run python scripts/login_and_cache.py qrcode` 补验
+- [x] （具备条件时）第 4 节真机扫码成功（2026-10-24：`login_and_cache.py qrcode` 在默认 aiohttp 客户端下生成→扫码→确认→凭据写入 TEMP 缓存全流程成功；随后 `pytest -m cred0` 12 passed 全绿，SC-001 真机项闭环）
 - [x] `CHANGELOGS/UNRELEASED.md` 含异常导入路径恢复条目（FR-005）
