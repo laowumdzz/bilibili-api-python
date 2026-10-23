@@ -228,3 +228,44 @@ async def test_request_still_returns_data_only(monkeypatch):
     assert ret["refresh_token"] == "fake-refresh-token"
     ret2 = await Api(url="https://example.com/poll", method="GET")._request()
     assert ret2 == ret
+
+
+# ---------------------------------------------------------------- 请求准备归一化（FR-002 / FR-004 回归锚点）
+
+
+def _fake_buvid(monkeypatch) -> None:
+    """隔离 _prepare_request 的 buvid 自动获取，保证用例不触外网。"""
+
+    async def _fake_get_buvid() -> tuple[str, str]:
+        return ("fake-buvid3", "fake-buvid4")
+
+    monkeypatch.setattr(api_mod, "get_buvid", _fake_get_buvid)
+
+
+async def test_prepare_request_dict_param_serialized_to_compact_json(monkeypatch):
+    """值为字典的查询参数在统一层序列化为紧凑 JSON 字符串：UTF-8 原文保留、无 Python repr 形态（FR-002）。"""
+    _fake_buvid(monkeypatch)
+    locale = {"c_locale": {"language": "中文", "script": "Hans"}, "always_translate": True, "nested_list": [1, "二"]}
+    api = Api(url="https://example.com/poll", method="GET").update_params(
+        **{
+            "qrcode_key": "fake-key",
+            "x-bili-locale-json": locale,
+            "x-bili-redirect": 1,
+            "flag": True,
+            "drop": None,
+        }
+    )
+    config = await api._prepare_request()
+    params = config["params"]
+    serialized = params["x-bili-locale-json"]
+    # 紧凑 JSON 字符串：可解析回原对象、无单引号 repr 形态、无分隔空格
+    assert json.loads(serialized) == locale
+    assert "'" not in serialized
+    assert ", " not in serialized
+    # 非 ASCII 以 UTF-8 原文保留（ensure_ascii=False），未转义为 \\uXXXX
+    assert "中文" in serialized
+    # 标量原样、bool→int、None 剔除（既有行为不变）
+    assert params["qrcode_key"] == "fake-key"
+    assert params["x-bili-redirect"] == 1
+    assert params["flag"] == 1
+    assert "drop" not in params

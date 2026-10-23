@@ -223,11 +223,15 @@ class Api:
         return self
 
     async def _prepare_request(self) -> dict:
-        # 处理 bool
+        # 归一化：输出仅含可编码标量（反爬层见到的 params / data 恒为标量）
         new_params, new_data = {}, {}
         for key, value in self.params.items():
             if isinstance(value, bool):
                 new_params[key] = int(value)
+            elif isinstance(value, dict):
+                # 值为字典的查询参数序列化为紧凑 JSON 字符串（UTF-8 原文保留，
+                # 与浏览器行为及库内手工先例同形态）；序列化异常自然传播不吞掉
+                new_params[key] = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
             elif value is not None:
                 new_params[key] = value
         for key, value in self.data.items():

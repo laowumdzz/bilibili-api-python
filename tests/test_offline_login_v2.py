@@ -7,12 +7,15 @@
 # RSA 密码加密往返；发送验证码/实际登录等触网入口不测。
 
 import base64
+import json
 
+from aiohttp import web
 from Cryptodome.Cipher import PKCS1_v1_5
 from Cryptodome.PublicKey import RSA
 import pytest
 
 from bilibili_api.exceptions import ArgsException, StatementException
+import bilibili_api.login_v2 as login_v2_mod
 from bilibili_api.login_v2 import (
     LoginCheck,
     PhoneNumber,
@@ -27,7 +30,9 @@ from bilibili_api.login_v2 import (
     have_country,
     search_countries,
 )
+from bilibili_api.utils import _api as api_core_mod
 from bilibili_api.utils._api import Api
+from bilibili_api.utils._session import get_client
 
 # 由内置地区表保证存在的样例：中国大陆 +86
 MAINLAND_NAME = "中国大陆"
@@ -307,6 +312,101 @@ async def test_check_state_tv_uses_cookie_info_path(monkeypatch):
     assert cred.bili_jct == "fake-jct"
     assert cred.dedeuserid == "fake-uid"
     assert cred.ac_time_value == "fake-rt"
+
+
+# ---------------------------------------------------------------- 扫码轮询客户端编码边界（本地回环，FR-001 / FR-007）
+
+
+async def test_check_state_web_loopback_sends_compact_json_params(monkeypatch):
+    """本地回环全链路：真实 QrCodeLogin 生成 → 轮询经默认 aiohttp 客户端编码发出。
+
+    凭据 / 网络均不出本机：127.0.0.1 属本机进程间通信，buvid 自动获取被隔离，
+    零凭据、零账号状态。断言位置在客户端编码边界（FR-007）：服务端收到的查询
+    参数全部为标量，两个结构化参数为合法紧凑 JSON 字符串；修复前该用例在客户端
+    编码阶段抛 TypeError、服务端收不到请求。
+    """
+
+    async def _fake_get_buvid() -> tuple[str, str]:
+        return ("fake-buvid3", "fake-buvid4")
+
+    monkeypatch.setattr(api_core_mod, "get_buvid", _fake_get_buvid)
+
+    received: list[dict[str, str]] = []
+
+    async def _poll_handler(request: web.Request) -> web.Response:
+        received.append(dict(request.query))
+        resp = web.json_response(
+            {
+                "code": 0,
+                "message": "0",
+                "ttl": 1,
+                "data": {
+                    "url": "https://passport.biligame.com/x/passport-login/web/crossDomain?ticket=fake",
+                    "refresh_token": "fake-rt",
+                    "timestamp": 1788414542857,
+                    "code": 0,
+                    "message": "",
+                },
+            }
+        )
+        resp.set_cookie("SESSDATA", "fake-sessdata")
+        resp.set_cookie("bili_jct", "fake-jct")
+        resp.set_cookie("DedeUserID", "fake-uid")
+        return resp
+
+    async def _qrcode_handler(request: web.Request) -> web.Response:
+        return web.json_response(
+            {
+                "code": 0,
+                "message": "0",
+                "data": {
+                    "url": "https://passport.bilibili.com/h5-app/passport/login/scan?qrcode_key=loopback-key",
+                    "qrcode_key": "loopback-key",
+                },
+            }
+        )
+
+    app = web.Application()
+    app.router.add_get("/qrcode", _qrcode_handler)
+    app.router.add_get("/poll", _poll_handler)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "127.0.0.1", 0)
+    await site.start()
+    try:
+        host, port = runner.addresses[0]
+        monkeypatch.setitem(
+            login_v2_mod.API["qrcode"]["web"]["get_qrcode_and_token"], "url", f"http://{host}:{port}/qrcode"
+        )
+        monkeypatch.setitem(login_v2_mod.API["qrcode"]["web"]["get_events"], "url", f"http://{host}:{port}/poll")
+
+        login = QrCodeLogin(platform=QrCodeLoginChannel.WEB)
+        await login.generate_qrcode()
+        assert await login.check_state() == QrCodeLoginEvents.DONE
+        cred = login.get_credential()
+        assert cred.sessdata == "fake-sessdata"
+        assert cred.bili_jct == "fake-jct"
+        assert cred.dedeuserid == "fake-uid"
+    finally:
+        await get_client().close()
+        await runner.cleanup()
+
+    # 客户端编码边界断言（FR-007）：请求真正到达服务端，查询参数全为标量
+    assert len(received) == 1
+    query = received[0]
+    for key, value in query.items():
+        assert isinstance(value, str), f"查询参数 {key} 非标量: {value!r}"
+    assert query["qrcode_key"] == "loopback-key"
+    assert query["source"] == "main-fe-header"
+    locale = json.loads(query["x-bili-locale-json"])
+    assert locale == {"c_locale": {"language": "zh", "script": "Hans"}, "always_translate": True}
+    device = json.loads(query["x-bili-device-req-json"])
+    assert device == {"platform": "web", "device": "pc", "spmid": "333.1007", "mobi_app": "web_cn"}
+    # 紧凑形态：无 Python repr 单引号、无分隔空格
+    assert "'" not in query["x-bili-locale-json"]
+    assert ", " not in query["x-bili-locale-json"]
+    assert "'" not in query["x-bili-device-req-json"]
+    assert ", " not in query["x-bili-device-req-json"]
 
 
 # ---------------------------------------------------------------- LoginCheck 链接解析
