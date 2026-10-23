@@ -28,7 +28,8 @@ except ImportError:  # pragma: no cover - direct execution from unusual cwd
 
 
 def _json_line(payload: object) -> str:
-    return json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n"
+    # ASCII escapes keep the JSON intact on a legacy Windows stdout code page.
+    return json.dumps(payload, ensure_ascii=True, separators=(",", ":")) + "\n"
 
 
 HELP_TEXT = """Usage: check_prerequisites.py [OPTIONS]
@@ -266,9 +267,7 @@ def main(argv: list[str] | None = None) -> int:
     template_content = None
     if args.template_name:
         try:
-            template_content = resolve_template_content(
-                args.template_name, paths.repo_root
-            )
+            template_content = resolve_template_content(args.template_name, paths.repo_root)
         except TemplateResolutionError as exc:
             print(f"ERROR: {exc}", file=sys.stderr)
             return 1
@@ -287,9 +286,7 @@ def main(argv: list[str] | None = None) -> int:
         }
         if args.template_name:
             payload["TEMPLATE_CONTENT"] = template_content
-        sys.stdout.write(
-            _json_line(payload)
-        )
+        sys.stdout.write(_json_line(payload))
     else:
         _print_text_results(paths, args.include_tasks)
     return 0

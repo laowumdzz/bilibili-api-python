@@ -37,8 +37,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     if content is None:
         print(
-            f"ERROR: Could not resolve required {args.template_name} from the "
-            f"template override stack for {repo_root}",
+            f"ERROR: Could not resolve required {args.template_name} from the template override stack for {repo_root}",
             file=sys.stderr,
         )
         return 1
@@ -50,7 +49,8 @@ def main(argv: list[str] | None = None) -> int:
                     "TEMPLATE_NAME": args.template_name,
                     "TEMPLATE_CONTENT": content,
                 },
-                ensure_ascii=False,
+                # ASCII escapes keep the JSON intact on a legacy Windows stdout code page.
+                ensure_ascii=True,
                 separators=(",", ":"),
             )
         )

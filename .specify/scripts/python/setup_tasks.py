@@ -29,7 +29,8 @@ except ImportError:  # pragma: no cover - direct execution from unusual cwd
 
 
 def _json_line(payload: object) -> str:
-    return json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n"
+    # ASCII escapes keep the JSON intact on a legacy Windows stdout code page.
+    return json.dumps(payload, ensure_ascii=True, separators=(",", ":")) + "\n"
 
 
 def _help_text(argv0: str) -> str:
@@ -125,16 +126,13 @@ def main(argv: list[str] | None = None) -> int:
     docs = _available_docs(paths)
 
     try:
-        tasks_template_content = resolve_template_content(
-            "tasks-template", paths.repo_root
-        )
+        tasks_template_content = resolve_template_content("tasks-template", paths.repo_root)
     except TemplateResolutionError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     if tasks_template_content is None:
         print(
-            "ERROR: Could not resolve required tasks-template from the template "
-            f"override stack for {paths.repo_root}",
+            f"ERROR: Could not resolve required tasks-template from the template override stack for {paths.repo_root}",
             file=sys.stderr,
         )
         print(
