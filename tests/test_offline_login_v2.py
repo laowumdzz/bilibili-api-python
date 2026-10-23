@@ -6,6 +6,7 @@
 # （凭据构造 / 缺字段报错 / 状态回归 / TV 通道）、LoginCheck 链接解析、
 # RSA 密码加密往返；发送验证码/实际登录等触网入口不测。
 
+import asyncio
 import base64
 import json
 
@@ -31,6 +32,7 @@ from bilibili_api.login_v2 import (
     search_countries,
 )
 from bilibili_api.utils import _api as api_core_mod
+from bilibili_api.utils import _session
 from bilibili_api.utils._api import Api
 from bilibili_api.utils._session import get_client
 
@@ -389,6 +391,13 @@ async def test_check_state_web_loopback_sends_compact_json_params(monkeypatch):
         assert cred.dedeuserid == "fake-uid"
     finally:
         await get_client().close()
+        # 清理本用例在全局会话池中按当前循环留下的条目（close 只关会话不清池），
+        # 避免残留条目影响后续会话池生命周期回归
+        current_loop = asyncio.get_running_loop()
+        for pool in _session.session_pool.values():
+            pool.pop(current_loop, None)
+        for settings in _session.lazy_settings.values():
+            settings.pop(current_loop, None)
         await runner.cleanup()
 
     # 客户端编码边界断言（FR-007）：请求真正到达服务端，查询参数全为标量
