@@ -97,7 +97,7 @@ CI 口径以 `.github/workflows/ci.yml` 为准：PR 跑 `-m readonly`；每周�
 - **限速与预算**：`BILI_RATELIMIT` 缺省 **1.5** 秒（显式设置含 0 按设置值生效）；循环遍历型用例在循环体内 `await asyncio.sleep(0.5)`。层预算以 `BILI_COUNT_REQUESTS=1` 的计数器读数为准（cred0 ≤ 30、cred0+cred1 ≤ 400）。`BILI_ABORT_ON_RISK=1` 时首个 412 类响应（HTTP 412 或 -352 等效码）即中止会话；`BILI_REQUEST_BUDGET=<n>` 超限以失败退出。完整计数口径见契约 §5–6。
 - **凭据来源**（优先级从高到低）：`--login qrcode|phone` 显式重新登录（成功写系统 TEMP 缓存）> TEMP 缓存 > `BILI_*` 环境变量（`BILI_SESSDATA` / `BILI_CSRF` / `BILI_BUVID3` / `BILI_DEDEUSERID`）> 项目根 `.bilibili.cookie`。全部不可用时集成用例自动 skip。**任何提示、错误、日志都不得输出凭据字段值**；`.bilibili.cookie` 与 TEMP 缓存永不入库。
 - **独立登录**：`uv run python scripts/login_and_cache.py qrcode`（扫码）或 `phone`（短信）。
-- **离线用例**：只验证纯本地逻辑，禁止网络请求、真实凭据或改变账号状态的操作；放在 `tests/test_offline_*.py`。
+- **离线用例**：只验证纯本地逻辑，禁止外网请求、真实凭据或改变账号状态的操作；本机回环（`127.0.0.1`）测试服务器属本机通信，允许，但不得离开本机或触碰外部服务；放在 `tests/test_offline_*.py`。
 - **只读集成**：`readonly` 标记仅允许 GET 式读请求与反爬参数获取，严禁写操作；可与 `cred0` 并存。
 - **顺序无关**：用例所需资源在用例或其夹具内创建并在结束时清理（`teardown_retry` fixture）；任意子集（含单用例）独立运行都应通过。
 - **已知覆盖缺口**：login_v2 登录链路、视频上传链路暂无集成覆盖（追踪见 `specs/007-credential-test-tiers/spec.md`）。
