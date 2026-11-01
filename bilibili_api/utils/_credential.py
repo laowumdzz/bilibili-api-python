@@ -2,6 +2,8 @@
 bilibili_api.utils._credential — 凭据管理和 Cookies 刷新。
 """
 
+from __future__ import annotations
+
 import binascii
 import re
 import time
@@ -12,6 +14,7 @@ import uuid
 from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.Hash import SHA256
 from Cryptodome.PublicKey import RSA
+from pydantic import BaseModel, ConfigDict
 
 from ..exceptions import (
     CookiesRefreshException,
@@ -39,10 +42,21 @@ def _get_Api():
     return Api
 
 
-class Credential:
+class Credential(BaseModel):
     """
     凭据类，用于各种请求操作的验证。
     """
+
+    # extra="allow"：允许调用方经 **kwargs 注入任意附加字段（既有语义），并随序列化保留。
+    model_config = ConfigDict(extra="allow")
+
+    sessdata: str | None = None
+    bili_jct: str | None = None
+    buvid3: str | None = None
+    buvid4: str | None = None
+    dedeuserid: str | None = None
+    ac_time_value: str | None = None
+    proxy: str | None = None
 
     def __init__(
         self,
@@ -73,6 +87,7 @@ class Credential:
 
             proxy (str | None, optional): 凭据类可选择携带的代理. Defaults to None.
         """
+        super().__init__()
         self.sessdata = (
             None if sessdata is None else (sessdata if sessdata.find("%") != -1 else urllib.parse.quote(sessdata))
         )
@@ -103,7 +118,10 @@ class Credential:
         if self.dedeuserid:
             cookies.update({"DedeUserID": self.dedeuserid})
 
-        for key, value in self.__dict__.items():
+        # pydantic v2 下 kwargs 注入的 extra 字段存于 __pydantic_extra__（不在 __dict__），
+        # 合并两者以保持既有语义：附加字段照旧进入 Cookies。
+        extra_fields = getattr(self, "__pydantic_extra__", None) or {}
+        for key, value in {**self.__dict__, **extra_fields}.items():
             if key not in cookies and value is not None:
                 cookies[key] = value
         if cookies.get("proxy"):
