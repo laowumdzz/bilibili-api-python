@@ -6,6 +6,8 @@
 # 模块内类与包级导出为同一对象（is 判定）、包级 __all__ 集合不变
 # （specs/010-review-defect-fixes FR-005 / SC-003）。
 
+from __future__ import annotations
+
 import importlib
 
 import pytest
@@ -60,10 +62,25 @@ THIN_COMPAT_PATHS = [
     "WbiRetryTimesExceedException",
 ]
 
+# 特性 011（specs/011-aiosqlite-credential-store）新增的按类异常子模块：
+# 一文件一类（同 ApiException.py 模式），非薄兼容层。
+CREDENTIAL_STORE_PATHS = [
+    "CredentialStoreCorruptException",
+    "CredentialStoreException",
+    "CredentialStoreVersionMismatchException",
+]
+
 
 @pytest.mark.parametrize("name", HISTORICAL_PATHS)
 def test_historical_submodule_path_importable_and_identical(name):
     """任一历史子模块路径均可导入，且模块内类与包级导出为同一对象（except 精确捕获行为一致）。"""
+    module = importlib.import_module(f"bilibili_api.exceptions.{name}")
+    assert getattr(module, name) is getattr(exceptions_pkg, name)
+
+
+@pytest.mark.parametrize("name", CREDENTIAL_STORE_PATHS)
+def test_credential_store_submodule_path_importable_and_identical(name):
+    """特性 011 新增异常子模块可导入，且模块内类与包级导出为同一对象（except 精确捕获行为一致）。"""
     module = importlib.import_module(f"bilibili_api.exceptions.{name}")
     assert getattr(module, name) is getattr(exceptions_pkg, name)
 
@@ -77,5 +94,5 @@ def test_thin_compat_module_shape(name):
 
 
 def test_package_all_unchanged():
-    """包级 __all__ 集合与修复前完全一致（22 项）。"""
-    assert set(exceptions_pkg.__all__) == set(HISTORICAL_PATHS)
+    """包级 __all__ 集合与基线一致（历史 22 项 + 特性 011 新增 3 项）。"""
+    assert set(exceptions_pkg.__all__) == set(HISTORICAL_PATHS) | set(CREDENTIAL_STORE_PATHS)

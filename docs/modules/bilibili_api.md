@@ -64,6 +64,9 @@ from bilibili_api import ...
 - [class CredentialNoBuvid4Exception()](#class-CredentialNoBuvid4Exception)
 - [class CredentialNoDedeUserIDException()](#class-CredentialNoDedeUserIDException)
 - [class CredentialNoSessdataException()](#class-CredentialNoSessdataException)
+- [class CredentialStoreCorruptException()](#class-CredentialStoreCorruptException)
+- [class CredentialStoreException()](#class-CredentialStoreException)
+- [class CredentialStoreVersionMismatchException()](#class-CredentialStoreVersionMismatchException)
 - [class Danmaku()](#class-Danmaku)
   - [def \_\_init\_\_()](#def-\_\_init\_\_)
   - [def crack\_uid()](#def-crack\_uid)
@@ -105,6 +108,12 @@ from bilibili_api import ...
 - [class ResourceType()](#class-ResourceType)
 - [class ResponseCodeException()](#class-ResponseCodeException)
 - [class ResponseException()](#class-ResponseException)
+- [class SQLiteCredentialStoreManager()](#class-SQLiteCredentialStoreManager)
+  - [def \_\_init\_\_()](#def-\_\_init\_\_)
+  - [async def add\_credential()](#async-def-add\_credential)
+  - [async def close()](#async-def-close)
+  - [async def remove\_credential()](#async-def-remove\_credential)
+  - [async def store\_data()](#async-def-store\_data)
 - [class SpecialDanmaku()](#class-SpecialDanmaku)
   - [def \_\_init\_\_()](#def-\_\_init\_\_)
 - [class StatementException()](#class-StatementException)
@@ -790,6 +799,51 @@ Cookies 刷新错误。
 
 ---
 
+## class CredentialStoreCorruptException()
+
+**Extend: bilibili_api.exceptions.CredentialStoreException.CredentialStoreException**
+
+凭据存储库损坏异常。
+
+语义统一为"存量数据不可读，需重新添加账号"，涵盖：数据库文件损坏 /
+截断 / 非本库格式、记录解密或认证失败、密钥文件丢失或损坏。
+抛出后不静默清空或重建存量数据；异常消息只包含文件路径与原因类别，
+不包含任何凭据字段值。
+
+
+
+
+---
+
+## class CredentialStoreException()
+
+**Extend: bilibili_api.exceptions.ApiException.ApiException**
+
+凭据存储模块异常基类。
+
+凭据存储管理器（如 SQLiteCredentialStoreManager）抛出的存储层异常均继承
+本类，调用方可据此统一捕获存储相关错误。异常消息只包含文件路径与原因
+类别，不包含任何凭据字段值。
+
+
+
+
+---
+
+## class CredentialStoreVersionMismatchException()
+
+**Extend: bilibili_api.exceptions.CredentialStoreException.CredentialStoreException**
+
+凭据存储 schema 版本不匹配异常。
+
+库文件中的 schema 版本高于或低于当前实现支持的版本时抛出（明确失败
+优于静默兼容），消息包含双方版本号与升级提示，不包含任何凭据字段值。
+
+
+
+
+---
+
 ## class Danmaku()
 
 弹幕类。
@@ -1334,6 +1388,108 @@ API 返回 code 错误。
 **Extend: bilibili_api.exceptions.ApiException.ApiException**
 
 请求响应不符合预期时抛出（如无法解析响应内容）。
+
+
+
+
+---
+
+## class SQLiteCredentialStoreManager()
+
+**Extend: bilibili_api.utils.credential_store.BaseCredentialStoreManager**
+
+基于 aiosqlite 的凭据存储管理器。
+
+单例模式：每个具体子类各有一个实例（基类强制）。构造参数 db_path /
+key_path 仅在首次实例化时生效；后续以不同路径重复实例化将抛出
+之后跨事件循环使用会显式抛出 ArgsException。
+
+
+
+
+### def \_\_init\_\_()
+
+初始化管理器。
+
+首次实例化时解析并固定存储路径；后续实例化返回单例，传入与已配置
+不同的路径将抛出 ArgsException（防止调用方误以为新参数生效）。
+
+platformdirs 默认目录下的 credentials.db. Defaults to None.
+key_path (str | Path | None, optional): 密钥文件路径；None 时取
+数据库同目录下的 credentials.key. Defaults to None.
+
+Raises:
+
+| name | type | description |
+| - | - | - |
+| `db_path` | `str \| Path \| None, optional` | 数据库文件路径；None 时取 |
+
+
+### async def add_credential()
+
+添加或覆盖一条凭据（覆写基类以增加落盘失败回滚，FR-004）。
+
+校验、返回值与加锁语义与基类一致（FR-002）；auto_persist 落盘失败时
+回滚该 uid 的内存态（新增则回删、覆盖则还原旧值）后重抛原异常，
+保证内存态不受损。
+
+
+| name | type | description |
+| - | - | - |
+| `uid` | `int` | 用户 ID，须与 credential.dedeuserid 一致。 |
+| `credential` | `Credential` | 凭据实例。 |
+| `auto_persist` | `bool, optional` | 是否自动持久化. Defaults to True. |
+
+**Returns:** `bool`:  True 为新 uid，False 为覆盖了同 uid 的旧记录。
+
+
+Raises:
+ValueError: uid 与 credential.dedeuserid 不一致（基类校验，原样传播）。
+
+
+### async def close()
+
+显式关闭数据库连接（实现附加 API，基类无此方法；幂等）。
+
+关闭后实例不可再用于 IO，需重建实例（清除子类单例后重新构造）。
+
+Raises:
+
+
+
+
+
+### async def remove_credential()
+
+移除凭据（覆写基类以增加落盘失败回滚，FR-004）。
+
+校验、返回值与加锁语义与基类一致（FR-002）；auto_persist 落盘失败时
+将该 uid 放回内存后重抛原异常，保证内存态不受损。
+
+
+| name | type | description |
+| - | - | - |
+| `uid` | `int` | 用户 ID。 |
+| `auto_persist` | `bool, optional` | 是否自动持久化. Defaults to True. |
+
+**Returns:** `bool`:  是否移除成功。
+
+
+Raises:
+
+
+### async def store_data()
+
+持久化给定快照；失败抛异常。
+
+单事务内全量重写 credential 表：DELETE 后按内存快照顺序以
+MAX(order_seq)+1 重排 INSERT，并更新 meta（原子，FR-004）。失败时
+回滚事务，上一次落盘数据不受影响。
+
+
+| name | type | description |
+| - | - | - |
+| `credentials` | `Dict[int, Credential]` | 内存态凭据快照，按插入顺序排列。 |
 
 
 

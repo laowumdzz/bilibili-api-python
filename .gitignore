@@ -40,3 +40,6 @@ temp/
 # Mimosa 安全插件本地状态（finding ledger / 扫描历史 / hook 状态）
 .mimosa/
 .zcode/
+# 凭据存储管理器（特性 011）：存储文件与密钥文件兜底条目，自定义路径落入仓库目录时不得入库（FR-007）
+credentials.db
+credentials.key

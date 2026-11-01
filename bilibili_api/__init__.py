@@ -6,12 +6,15 @@ bilibili_api
 （功能子模块如 `bilibili_api.video`、`bilibili_api.user` 为惰性导入，首次访问时加载）
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 import importlib
 
 # 注意：本文件导入顺序经过精心设计以避免循环引用，禁止 isort 重排（I001 已在 pyproject 中豁免）
 from .utils.aid_bvid_transformer import aid2bvid, bvid2aid
 from .utils.AsyncEvent import AsyncEvent
+from .utils.credential_store_sqlite import SQLiteCredentialStoreManager
 from .utils.danmaku import Danmaku, DmFontSize, DmMode, SpecialDanmaku
 from .utils.geetest import Geetest, GeetestMeta, GeetestType
 from .utils.network import (
@@ -61,6 +64,9 @@ from .exceptions import (
     CredentialNoBuvid4Exception,
     CredentialNoDedeUserIDException,
     CredentialNoSessdataException,
+    CredentialStoreCorruptException,
+    CredentialStoreException,
+    CredentialStoreVersionMismatchException,
     DanmakuClosedException,
     DynamicExceedImagesException,
     ExClimbWuzhiException,
@@ -238,6 +244,9 @@ __all__ = [
     "CredentialNoBuvid4Exception",
     "CredentialNoDedeUserIDException",
     "CredentialNoSessdataException",
+    "CredentialStoreCorruptException",
+    "CredentialStoreException",
+    "CredentialStoreVersionMismatchException",
     "Danmaku",
     "DanmakuClosedException",
     "DmFontSize",
@@ -255,6 +264,7 @@ __all__ = [
     "ResourceType",
     "ResponseCodeException",
     "ResponseException",
+    "SQLiteCredentialStoreManager",
     "SpecialDanmaku",
     "StatementException",
     "VideoUploadException",

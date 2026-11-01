@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .ApiException import ApiException
 from .ArgsException import ArgsException
 from .CookiesRefreshException import CookiesRefreshException
@@ -7,6 +9,9 @@ from .CredentialNoBuvid3Exception import CredentialNoBuvid3Exception
 from .CredentialNoBuvid4Exception import CredentialNoBuvid4Exception
 from .CredentialNoDedeUserIDException import CredentialNoDedeUserIDException
 from .CredentialNoSessdataException import CredentialNoSessdataException
+from .CredentialStoreCorruptException import CredentialStoreCorruptException
+from .CredentialStoreException import CredentialStoreException
+from .CredentialStoreVersionMismatchException import CredentialStoreVersionMismatchException
 from .DanmakuClosedException import DanmakuClosedException
 from .DynamicExceedImagesException import DynamicExceedImagesException
 from .ExClimbWuzhiException import ExClimbWuzhiException
@@ -31,6 +36,9 @@ __all__ = [
     "CredentialNoBuvid4Exception",
     "CredentialNoDedeUserIDException",
     "CredentialNoSessdataException",
+    "CredentialStoreCorruptException",
+    "CredentialStoreException",
+    "CredentialStoreVersionMismatchException",
     "DanmakuClosedException",
     "DynamicExceedImagesException",
     "ExClimbWuzhiException",
