@@ -8,7 +8,8 @@
 - 计数低于基线 -> 提示同步下调脚本中的基线（基线只允许下调，不允许上调）。
 
 基线冻结于 2026-08-29（测量方式与本脚本一致：
-`pyrefly check ./bilibili_api/ --error <豁免码列表> --output-format min-text`）。
+`pyrefly check --error <豁免码列表> --output-format min-text`，配置驱动的
+项目范围以 [tool.pyrefly] 为准）。
 修复存量错误后，请仅向下更新基线；某错误码基线归零后，应从
 `pyproject.toml` 豁免表中移除该条目并从本脚本基线中删除，恢复默认启用。
 
@@ -41,10 +42,11 @@ ERROR_LINE = re.compile(r"^ERROR .+\[([a-z][a-z\-]*)\]\s*$")
 
 def run_pyrefly() -> tuple[int, str]:
     """以强制启用全部豁免错误码的方式运行 pyrefly，返回（进程返回码, min-text 输出）。"""
+    # 不带显式路径调用：使 pyproject [tool.pyrefly] 的 project-includes /
+    # project-excludes 生效（显式路径调用会绕过 excludes，与 lint.py 口径一致）。
     cmd = [
         "pyrefly",
         "check",
-        str(REPO_ROOT / "bilibili_api"),
     ]
     if BASELINE:
         # 基线尚存豁免码时强制启用重跑；全部退役后默认全量启用即为最强检查

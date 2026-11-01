@@ -36,7 +36,9 @@ if ret != 0:
     sys.exit(ret)
 
 print("Running pyrefly check ...")
-ret = run(["pyrefly", "check", "./bilibili_api/"])
+# 不带显式路径调用：使 pyproject [tool.pyrefly] 的 project-includes / project-excludes
+# 生效（显式路径调用会绕过 excludes，nonebot/adapters WIP 豁免将失效）。
+ret = run(["pyrefly", "check"])
 if ret != 0:
     sys.exit(ret)
 
