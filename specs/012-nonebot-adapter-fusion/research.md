@@ -168,6 +168,14 @@ nav（WBI 密钥）与 buvid 由库内 `_wbi` / `_anti_spider` 负责，适配�
 
 **Consequences**: 需要一个 `scripts/record_nonebot_frames.py`（只读、人工执行、不入 CI）；离线用例只读 `fixtures/`，不触网。
 
+**执行结果（T062，2026-11-22）**: 已按决策完成两轮 90 秒只读录制：房间 `6`（真实 `7734200`，8 `cmd` / 28 帧）与房间 `21452505`（13 `cmd` / 358 帧），两轮均 `live_status=1`、匿名凭据。人工脱敏后作为第二组样本入库 `tests/fixtures/nonebot_frames/recorded/`（每 `cmd` 首帧，8 个已建模 + 4 个未建模）。
+
+- 已录到并覆盖（8 个已建模 `cmd`）：`DANMU_MSG`（确证线上网页帧**无顶层 `data`**、`cmd` 无 `:4:0:2:2:1` 后缀、用户信息内嵌在 `info[0][15]`）、`LIKE_INFO_V3_CLICK`、`LIKE_INFO_V3_UPDATE`、`ONLINE_RANK_COUNT`、`POPULAR_RANK_CHANGED`、`ROOM_REAL_TIME_MESSAGE_UPDATE`、`STOP_LIVE_ROOM_LIST`、`WATCHED_CHANGE`。
+- 录制会话内验证可解析、但**未入库**的 pb 帧：`INTERACT_WORD_V2`（157 帧，全部产出 `UserEnterEvent`）、`ONLINE_RANK_V3`（11 帧，全部产出 `OnlineRankEvent`）。未入库原因：betterproto 载荷的 base64 内含真实昵称与头像 URL，需 pb 级重编码才能安全提交；结构覆盖由合成样本承担，解析能力以上述实测为准。
+- 未录到的低频 `cmd`：`HOT_RANK_SETTLEMENT`、`ROOM_ADMINS` 在两轮录制窗口内均未出现，仍只由合成样本覆盖。它们只在热榜结算 / 房管变更时下发，短窗口录制无法保证命中，因此没有为它们编造“真实帧”，缺口在 `recorded/README.md` 中登记。
+- 真实流量中的未建模 `cmd`：`ENTRY_EFFECT`（48 帧）、`LOG_IN_NOTICE`、`HOT_ROOM_NOTIFY`、`POPULARITY_CHANGE`（上游 0.2.6 未建模，本特性不扩充事件表）。样本入库并由 `test_recorded_unknown_commands_are_skipped` 锁定“记录并跳过、不中断后续分发”的行为；`NOTICE_MSG` 因正文内嵌真实昵称（`<%昵称%>`）未入库。
+- 原始录制仍不入库；`recorded/` 只保留人工剔除昵称、弹幕正文与哈希后的结构帧。录制的 `LOG_IN_NOTICE` 帧同时佐证了 D15 的“匿名可连”判定（其正文即“未登录无法查看他人昵称”提示）。
+
 ## D14. 驱动桥接的实测结论（含两条自我更正）
 
 **Decision**: 采用 `AsyncExitStack` 持有 `driver.websocket(...)` 上下文；WS 读取只用 `receive()`；关闭码 1000/1001 映射为 `CLOSED`、其余抛出；下载走 `stream_request`；`nonebot2` 下限提到 `>=2.5.0`。
@@ -199,3 +207,15 @@ nav（WBI 密钥）与 buvid 由库内 `_wbi` / `_anti_spider` 负责，适配�
 - 宪章 IV 把 `readonly` 限定为 GET 式读请求，WS 订阅不属于该范围，因此不声明 `readonly`；匿名可连，故无需登录态，也就不声明 `cred1`。
 
 **Consequences**: 该用例默认随 `pytest` 全量运行（集成层），每周 `-m "cred0 or cred1 or cred2"` 任务不会收集它；缺网络或候选房间均未开播时 `skip`，不误报失败。
+
+## D16. `_pydantic.py`：校验装饰器的类型化收窄（T064）
+
+**Decision**: 保留 `bilibili_api/nonebot/adapters/bilibili_live/_pydantic.py` 作为私有模块（不进入公共导出），`config.py` / `event.py` / `models/event.py` 统一从它取 `model_before` / `model_after` / `field_before`。
+
+**Rationale（类型检查零容忍下的取舍）**:
+- pydantic 的 `model_validator(...)` / `field_validator(...)` 在类型层返回「装饰器 | None」，直接当装饰器用会被 pyrefly 判定为不可调用；本特性的校验器共 17 处（`event.py` 12 处 `model_before`、`config.py` 2 组 `model_before` / `model_after`、`models/event.py` 1 处 `field_before`）。
+- 项目已整体退役存量类型豁免（AGENTS.md「类型检查零容忍」），逐处 `# type: ignore` 或 `cast` 会把类型噪声扩散到业务代码，且难以在 pydantic 升级后回收。
+- 收窄集中在 42 行模块内：运行时仍是 pydantic 原装饰器（不改变行为），类型层变成确定的 `Callable[[Any], Any]`，三处调用方各多一行 import。
+- 该文件不在 plan.md 的文件清单内，属实现阶段补齐。合并回调用方会在 3 个文件里重复同一别名、同一段解释与同一处 pydantic 依赖，收益为负。
+
+**Consequences**: 多一个私有文件；`__all__` 只有类型别名与三个装饰器构造函数，不进入 `bilibili_api.nonebot.adapters.bilibili_live` 的公共符号；若 pydantic 修正存根返回类型，可整模块删除并把调用点换回原生装饰器。

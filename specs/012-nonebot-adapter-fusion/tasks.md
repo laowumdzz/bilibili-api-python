@@ -310,9 +310,9 @@ T035 存储异常透传      → adapter.py 启动路径
 | 小节 | 结果 |
 |------|------|
 | §1 导入与身份 | `True`（41 事件 / 6 基类 / 31 模型 / 4 异常 / 2 消息 + Adapter / WebBot / OpenBot） |
-| §2 事件保真与缺陷修复 | `tests/test_offline_nonebot_events.py` + `..._frames.py` 62 passed（48 帧样本 / 41 事件类） |
+| §2 事件保真与缺陷修复 | `tests/test_offline_nonebot_events.py` + `..._frames.py` 73 passed（48 帧合成样本 / 41 事件类；T062 追加 8 帧真实录制样本后） |
 | §3 配置校验 | `tests/test_offline_nonebot_config.py` 21 passed |
-| §4 调度与连接时机 | `tests/test_offline_nonebot_scheduler.py` 12 passed |
+| §4 调度与连接时机 | `tests/test_offline_nonebot_scheduler.py` 13 passed（T061 追加心跳超时用例后） |
 | §5 真实连接冒烟 | `tests/test_nonebot_live.py` 1 passed（匿名） |
 | §6 打包完整性 | wheel `bilibili_api_python-21.0.0-py3-none-any.whl`：含两条路径、无 `nonebot/__init__.py`；解包后两条导入路径均可导入且对象同一 |
 | §7 门禁与文档 | `uv run python scripts/lint.py` 全绿；`docs/modules/` 无漂移 |
@@ -321,9 +321,31 @@ T035 存储异常透传      → adapter.py 启动路径
 
 **未覆盖 / 已知限制**：
 
-- 帧样本为合成最小帧（48 行）而非全量真实录制；真实录制脚本已交付，`raw/`
-  按设计不入库。低频 cmd（如 `HOT_RANK_SETTLEMENT`）尚无真实帧佐证。
+- 帧样本以合成最小帧（48 行）为主，另有 T062 入库的 8 帧真实录制样本
+  （`recorded/`）；`raw/` 原始录制按设计不入库。低频 cmd（如
+  `HOT_RANK_SETTLEMENT` / `ROOM_ADMINS`）仍无真实帧佐证。
 - 提交拆分中 `feat` 与 `fix` 为同一实现的两个提交，中间提交未逐次运行全量门禁；
   最终状态（`HEAD`）全量离线用例与门禁全绿。
 - `docs/modules/` 未新增适配器条目：`doc_gen` 仅扫描 `bilibili_api` 顶层模块，
   与既有子包（`utils` / `exceptions`）处理一致，不构成本特性的手工文档。
+
+---
+
+## Phase 9: Convergence
+
+- [X] T061 为心跳超时到重连补一条离线断言：在 `tests/test_offline_nonebot_scheduler.py` 用假时钟把 `bilibili_api/nonebot/adapters/bilibili_live/adapter.py` 的收帧时间推进到超过 `HEARTBEAT_TIMEOUT`，断言连接被断开并进入 `BACKOFF`（而非静止悬挂）（per FR-021, partial）
+- [X] T062 处理帧样本与 research D13 的偏差：用 `scripts/record_nonebot_frames.py` 录制一批真实帧、脱敏后作为 `tests/fixtures/nonebot_frames/` 的第二组样本（优先 `HOT_RANK_SETTLEMENT`、`ROOM_ADMINS` 等低频 cmd）；若决定维持纯合成样本，则在 `specs/012-nonebot-adapter-fusion/research.md` 把 D13 降级为「仅录制脚本 + 合成样本」并说明理由（per research.md D13, partial）
+- [X] T063 清理计划外改动：`tests/test_ass.py` 存在与本特性无关的纯格式化重排，回滚该文件或单独提交并说明动机（per plan 文件清单, unrequested）
+- [X] T064 说明计划外新增：`bilibili_api/nonebot/adapters/bilibili_live/_pydantic.py` 不在计划的文件清单内（内联理由为收窄 pydantic 装饰器类型以通过 pyrefly 零容忍），在 `specs/012-nonebot-adapter-fusion/research.md` 补一条决策记录，或将其合并回调用方模块（per plan 文件清单, unrequested）
+
+### T061–T064 收敛结果
+
+| 任务 | 结果 | 证据 |
+|------|------|------|
+| T061 | 完成 | `tests/test_offline_nonebot_scheduler.py::test_heartbeat_timeout_disconnects_and_enters_backoff`（该文件 13 passed）。假时钟下 30 / 60 / 90 秒继续发心跳（90 恰好等于 `HEARTBEAT_TIMEOUT`，不判超时），第 4 次推进到 120 秒判定超时 → `ws_close` → 读取循环收 `CLOSED` 并抛 `NetworkException(1000)` → `handle_failure` → `BACKOFF`；`next_retry_at = clock + RECONNECT_INTERVAL`，`retry_due` 到期返回该订阅，另一房间保持 `CONNECTED`。为实现可注入时钟，`Adapter` 新增私有 `_clock` / `_sleep`（默认 `time.monotonic` / `asyncio.sleep`，线上行为不变） |
+| T062 | 完成（真实帧入库） | 2026-11-22 用 `scripts/record_nonebot_frames.py` 完成两轮 90 秒只读录制：房间 6（真实 7734200，8 cmd / 28 帧）与房间 21452505（13 cmd / 358 帧），均 `live_status=1`、匿名凭据。人工脱敏后入库 `tests/fixtures/nonebot_frames/recorded/`（每 cmd 首帧，8 个已建模 + 4 个未建模），新增 8 条结构回放断言、样本清单锁定与未建模 cmd 跳过断言（`test_offline_nonebot_frames.py`，67 passed）。`HOT_RANK_SETTLEMENT` / `ROOM_ADMINS` 未在录制窗口出现，仍只由合成样本覆盖；pb 帧（`INTERACT_WORD_V2` / `ONLINE_RANK_V3`）已在会话内验证可解析但含昵称未入库。全部取舍见 `recorded/README.md` 与 research D13「执行结果」 |
+| T063 | 保留（回滚不可行） | 回滚到 main 版本后实测 `uv run ruff format --check tests/test_ass.py` 失败（3 处 `make_*_file_subtitle` 调用超出行宽）；仓库 `core.hooksPath=.githooks` 的 pre-commit 会对暂存 `.py` 跑 ruff format，回滚将使任何触碰该文件的提交必然被门禁拦截。故保留该纯格式化重排（无逻辑改动），动机记录于本节与对应提交说明 |
+| T064 | 完成（补决策记录） | `research.md` D16：`_pydantic.py` 把 17 处校验器装饰器的返回类型收窄为确定的 `Callable[[Any], Any]`，替代逐处 `# type: ignore` / `cast`（项目类型检查零容忍），并记录不合并回调用方的理由 |
+
+验证：`uv run pytest -m "not integration"` → 532 passed / 1 skipped；`uv run python scripts/lint.py` 全绿（ruff、pyrefly、类型棘轮、`docs/modules/` 无漂移）。
+

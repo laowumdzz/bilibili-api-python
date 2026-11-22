@@ -37,6 +37,7 @@ uv run pytest tests/test_offline_nonebot_events.py tests/test_offline_nonebot_fr
 | 带粉丝勋章的 `INTERACT_WORD` / `SEND_GIFT` / `LIKE_INFO_V3_CLICK` | 产出事件，`is_lighted` 与原始 `is_light` 一致 |
 | `INTERACT_WORD_V2` / `ONLINE_RANK_V3` | betterproto 字段解出且形状不变 |
 | 畸形帧 / 未知 `cmd` | 记录并跳过，不影响后续帧 |
+| 真实录制帧（`tests/fixtures/nonebot_frames/recorded/`） | 8 个已建模 `cmd` 结构回放与快照一致；`ENTRY_EFFECT` / `POPULARITY_CHANGE` 等未建模 `cmd` 只记录并跳过 |
 
 ## 3. 配置校验（SC-011 / V-01..V-10）
 
