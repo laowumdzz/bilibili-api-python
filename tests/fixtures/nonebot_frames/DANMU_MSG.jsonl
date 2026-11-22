@@ -1,0 +1,1 @@
+{"cmd": "DANMU_MSG:4:0:2:2:1", "info": [[0, 1, 25, 16777215, 1700000000000, 0, 0, "", 0, 0, 0, "", 0, null, {"text": "x"}, {"extra": "{\"emots\": null, \"send_from_me\": false, \"reply_mid\": 0, \"reply_uname\": \"\", \"reply_uname_color\": \"\"}", "user": {"base": {"face": "f", "name": "user", "name_color": 0}, "medal": null, "uid": 123}}], "hello world"], "room_id": 999}

@@ -28,15 +28,21 @@ async def test_base_ass_json_data(credential):
 
 
 async def test_c_ass_subtitle(tmp_path, credential):
-    await ass.make_ass_file_subtitle(v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.ass"), credential=credential)
+    await ass.make_ass_file_subtitle(
+        v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.ass"), credential=credential
+    )
 
 
 async def test_c_srt_subtitle(tmp_path, credential):
-    await ass.make_srt_file_subtitle(v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.srt"), credential=credential)
+    await ass.make_srt_file_subtitle(
+        v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.srt"), credential=credential
+    )
 
 
 async def test_c_lrc_subtitle(tmp_path, credential):
-    await ass.make_lrc_file_subtitle(v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.lrc"), credential=credential)
+    await ass.make_lrc_file_subtitle(
+        v, lan_name="中文（中国）", out=str(tmp_path / "subtitle.lrc"), credential=credential
+    )
 
 
 async def test_c_json_subtitle(tmp_path, credential):
