@@ -299,6 +299,9 @@ T035 存储异常透传      → adapter.py 启动路径
 | `2c8ae3f` | `test(nonebot)` 离线回归 + 帧样本 + 真实连接冒烟 + 录制脚本 |
 | `f0ab976` | `docs(nonebot)` 归属声明与迁移说明 |
 | `043a36f` | `fix(nonebot)` 账号池耗尽时收束房间，避免未处理任务异常 |
+| `e98253a` | `test(nonebot)` 心跳超时到退避重连的离线断言（T061） |
+| `61016e8` | `test(nonebot)` 真实录制帧样本与未建模 cmd 跳过回归（T062） |
+| `f46edd1` | `docs(spec)` T061–T064 收敛结果与 D13/D16 决策（T063 动机在此说明：回滚会触发 ruff format 门禁） |
 
 ### T057 判定
 
