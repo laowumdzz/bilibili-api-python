@@ -161,6 +161,82 @@ select_client("aiohttp") # 选择 aiohttp
 select_client("httpx") # 选择 httpx，不支持 WebSocket
 ```
 
+# NoneBot 直播适配器（融合）
+
+本仓库同时交付 [nonebot-adapter-bilibili-live](https://github.com/MingxuanGame/nonebot-adapter-bilibili-live) 0.2.6
+（MIT，基线 commit `3f2c9bc2e74e02eaeb1a2192335f84eb3391782e`，`Copyright (c) 2025 MingxuanGame`）融合后的直播适配器。
+上游 MIT 全文、来源与融合范围见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)；本仓库整体仍为 GPL-3.0-or-later。
+
+- 导入路径保持 `nonebot.adapters.bilibili_live`（与上游一致），实现位于
+  `bilibili_api.nonebot.adapters.bilibili_live`，两条路径取到同一批对象。
+- 安装：本地开发用 `uv sync --extra nonebot`；从构建产物安装时用 `pip install "<wheel>[nonebot]"`（需要 `nonebot2>=2.5.0` 与 `betterproto`）。
+- 驱动要求：需同时支持 HTTP 与 WebSocket（nonebot2 的 aiohttp 驱动满足；纯 httpx 驱动只能跑 REST，
+  适配器启动时会明确报错）。
+- 登录态、账号与网络全部由本库承担：HTTP / WebSocket 经 `BiliAPIClient`（由你配置的驱动承载），
+  账号以 **凭据存储中的 uid** 为唯一事实源，WBI / buvid / bili_ticket 复用库内实现。
+
+## 从上游适配器迁移（破坏性变更）
+
+上游配置里的 `cookie` 字符串**不再被接受**。请先把账号写入库的加密凭据存储，再用 `uid` 引用。
+
+第 1 步：写入凭据存储（一次性，可重复执行以更新）：
+
+```python
+import asyncio
+
+from bilibili_api.utils.credential_store_sqlite import SQLiteCredentialStoreManager
+from bilibili_api.utils.network import Credential
+
+
+async def main() -> None:
+    store = await SQLiteCredentialStoreManager.load()
+    await store.add_credential(
+        uid=10001,
+        credential=Credential(
+            sessdata="<浏览器 Cookie 中的 SESSDATA>",
+            bili_jct="<浏览器 Cookie 中的 bili_jct>",
+            buvid3="<可选>",
+            buvid4="<可选>",
+            dedeuserid="10001",  # 必须与 uid 一致
+        ),
+    )
+
+
+asyncio.run(main())
+```
+
+第 2 步：把 `BILIBILI_LIVE_BOTS` 改为 uid 引用：
+
+```dotenv
+# 迁移前（不再支持，启动即报错）
+BILIBILI_LIVE_BOTS='[{"cookie": "SESSDATA=...; bili_jct=...", "room_ids": [544853]}]'
+
+# 迁移后
+BILIBILI_LIVE_BOTS='[{"uid": 10001, "room_ids": [544853]}]'
+```
+
+完整配置字段与默认值：
+
+```dotenv
+BILIBILI_LIVE_BOTS='{
+  "connect_timing": "on",
+  "poll_interval": 60,
+  "min_poll_interval": 2,
+  "max_rooms": 50,
+  "max_concurrent_connects": 5,
+  "db_path": null,
+  "key_path": null,
+  "bots": [
+    {"uid": 10001, "room_ids": [544853, 21452505]},
+    {"uid": 10002, "room_ids": [544853], "connect_timing": "auto"}
+  ]
+}'
+```
+
+- `connect_timing`：`on`（注册即连，默认）/ `auto`（开播才连，逐房间轮询）/ `manual`（仅业务代码显式连接）。
+- `db_path` / `key_path`：覆盖凭据存储路径；不填使用库默认目录。
+- 开放平台形态（`access_key` / `app_id` / `identify_codes`）尚未支持，配置出现即启动报错。
+
 # FA♂Q
 
 **Q: 关于 API 调用的正确姿势是什么？**
