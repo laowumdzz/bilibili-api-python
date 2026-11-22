@@ -19,12 +19,12 @@ def run(cmd: list[str]) -> int:
 
 
 print("Running ruff check ...")
-ret = run(["ruff", "check", "./bilibili_api/"])
+ret = run(["ruff", "check", "./bilibili_api/", "./nonebot/"])
 if ret != 0:
     sys.exit(ret)
 
 print("Running ruff format --check ...")
-ret = run(["ruff", "format", "--check", "./bilibili_api/"])
+ret = run(["ruff", "format", "--check", "./bilibili_api/", "./nonebot/"])
 if ret != 0:
     sys.exit(ret)
 
