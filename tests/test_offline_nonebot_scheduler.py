@@ -6,13 +6,17 @@ import asyncio
 
 from bilibili_api.exceptions import NetworkException
 from bilibili_api.nonebot.adapters.bilibili_live.accounts import AccountPool, FailureClass
+from bilibili_api.nonebot.adapters.bilibili_live.adapter import Adapter
 from bilibili_api.nonebot.adapters.bilibili_live.config import NoneBotLiveConfig
+from bilibili_api.nonebot.adapters.bilibili_live.const import RECONNECT_INTERVAL
+from bilibili_api.nonebot.adapters.bilibili_live.packet import OpCode, Packet
 from bilibili_api.nonebot.adapters.bilibili_live.scheduler import (
     ConnectionPolicy,
     ConnectionScheduler,
     RoomState,
 )
-from tests.nonebot_fakes import FakeCredential, FakeOps
+from bilibili_api.utils._types import BiliWsMsgType
+from tests.nonebot_fakes import FakeCredential, FakeDriver, FakeOps
 
 
 class FakeClock:
@@ -188,3 +192,62 @@ def test_policy_values_match_config() -> None:
     assert ConnectionPolicy.ON.value == "on"
     assert ConnectionPolicy.AUTO.value == "auto"
     assert ConnectionPolicy.MANUAL.value == "manual"
+
+
+class FakeHeartbeatClient:
+    """记录心跳发送与连接关闭；关闭后让读取循环按 `CLOSED` 返回。"""
+
+    def __init__(self) -> None:
+        self.sent: list[bytes] = []
+        self.closed: list[int] = []
+        self._closed = asyncio.Event()
+
+    async def ws_send(self, ws_id: int, data: bytes) -> None:
+        self.sent.append(data)
+
+    async def ws_close(self, ws_id: int) -> None:
+        self.closed.append(ws_id)
+        self._closed.set()
+
+    async def ws_recv(self, ws_id: int) -> tuple[bytes, BiliWsMsgType]:
+        await self._closed.wait()
+        return b"", BiliWsMsgType.CLOSED
+
+
+async def test_heartbeat_timeout_disconnects_and_enters_backoff() -> None:
+    """FR-021：心跳超时只断开连接是不够的，必须交回调度器进入退避重连。"""
+    scheduler, _ops, clock = build_scheduler([101, 102])
+    adapter = Adapter(FakeDriver())
+    client = FakeHeartbeatClient()
+    adapter._client = client
+    adapter._clock = clock
+    adapter._sleep = clock.sleep
+    adapter._scheduler = scheduler
+
+    subscription = scheduler.subscriptions[101]
+    subscription.room_real_id = 101
+    subscription.state = RoomState.CONNECTED
+    scheduler.note_frame(subscription)
+    other = scheduler.subscriptions[102]
+    other.state = RoomState.CONNECTED
+    ws_id = 7
+    adapter._ws_ids[101] = ws_id
+
+    read_task = asyncio.create_task(adapter._read_loop(subscription, ws_id))
+    heartbeat_task = asyncio.create_task(adapter._heartbeat_loop(subscription, ws_id))
+    await asyncio.wait_for(heartbeat_task, timeout=5)
+    await asyncio.wait_for(read_task, timeout=5)
+
+    # 收帧时间停在 0：30 / 60 / 90 秒（恰好等于超时阈值）仍在发心跳，
+    # 第 4 次推进到 120 秒才判定超时，判定后不再发送。
+    assert [Packet.from_bytes(data).opcode for data in client.sent] == [OpCode.Heartbeat] * 3
+    assert client.closed
+    assert set(client.closed) == {ws_id}
+    assert 101 not in adapter._ws_ids
+    # 读取循环看到 CLOSED 后交回调度器：进入退避，而不是静止悬挂
+    assert subscription.state is RoomState.BACKOFF
+    assert subscription.next_retry_at == clock.now + RECONNECT_INTERVAL
+    assert scheduler.retry_due(clock.now) == []
+    assert scheduler.retry_due(subscription.next_retry_at) == [subscription]
+    # 超时只影响本房间：另一个房间的连接保持不动
+    assert other.state is RoomState.CONNECTED

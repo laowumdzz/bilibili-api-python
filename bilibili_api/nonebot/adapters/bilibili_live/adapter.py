@@ -10,6 +10,7 @@ bilibili_api.nonebot.adapters.bilibili_live.adapter
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Awaitable, Callable
 from contextlib import suppress
 import time
 from typing import Any
@@ -68,6 +69,8 @@ class Adapter(BaseAdapter):
         self._client: BiliAPIClient | None = None
         self._ws_ids: dict[int, int] = {}
         self._closed = False
+        self._clock: Callable[[], float] = time.monotonic
+        self._sleep: Callable[[float], Awaitable[None]] = asyncio.sleep
         self.setup()
 
     @classmethod
@@ -482,17 +485,19 @@ class Adapter(BaseAdapter):
         """
         心跳循环：定时发送心跳；超过 `HEARTBEAT_TIMEOUT` 未收帧则断开以触发重连。
 
+        关闭连接后由读取循环把 `CLOSED` 交回调度器，进入退避重连（FR-021）。
+
         Args:
             subscription (RoomSubscription): 房间订阅。
             ws_id (int): WebSocket 连接编号。
         """
         assert self._client is not None
         while not self._closed:
-            await asyncio.sleep(HEARTBEAT_INTERVAL)
+            await self._sleep(HEARTBEAT_INTERVAL)
             if subscription.state is not RoomState.CONNECTED:
                 return
             last_frame = subscription.last_frame_at
-            if last_frame is not None and time.monotonic() - last_frame > HEARTBEAT_TIMEOUT:
+            if last_frame is not None and self._clock() - last_frame > HEARTBEAT_TIMEOUT:
                 log("WARNING", f"房间 {subscription.room_real_id} 心跳超时，准备重连")
                 with suppress(Exception):
                     await self._client.ws_close(ws_id)
