@@ -308,19 +308,19 @@ class ConnectionScheduler:
             if failure is FailureClass.UNREFRESHABLE:
                 # 可继续只读但不可刷新：首次鉴权失败即换号（research D10）
                 self.pool.mark_dead(uid, f"凭据不可刷新：{type(error).__name__}")
-                await self.migrate_account(uid)
+                await self._migrate_or_close(subscription, uid)
                 return
             if is_permanent_credential_error(error):
                 # 永久不可用（如业务码 -102）直接弃用，不尝试刷新（research D10）
                 self.pool.mark_dead(uid, f"凭据永久不可用：{type(error).__name__}")
-                await self.migrate_account(uid)
+                await self._migrate_or_close(subscription, uid)
                 return
             if await self._refresh_or_switch(uid):
                 # 刷新成功：账号继续可用，仅该房间按退避重连
                 self.note_failure(subscription)
                 return
             # 刷新失败：账号已判死，整号切换
-            await self.migrate_account(uid)
+            await self._migrate_or_close(subscription, uid)
             return
         if failure in (FailureClass.NETWORK, FailureClass.RISK_CONTROL):
             self.note_failure(subscription)
@@ -328,6 +328,20 @@ class ConnectionScheduler:
         # PROTOCOL / NO_DATA：只记录，不改变连接状态
         if subscription.state in (RoomState.CONNECTING, RoomState.BACKOFF):
             subscription.state = RoomState.IDLE
+
+    async def _migrate_or_close(self, subscription: RoomSubscription, uid: int) -> None:
+        """
+        整号切换；账号池耗尽时记录明确错误并停止该房间（不空转）。
+
+        Args:
+            subscription (RoomSubscription): 触发失败的订阅。
+            uid (int): 已死亡账号 uid。
+        """
+        try:
+            await self.migrate_account(uid)
+        except ArgsException as e:
+            log("ERROR", f"账号池已无可用账号，停止重连：{e}")
+            subscription.state = RoomState.CLOSED
 
     async def _refresh_or_switch(self, uid: int) -> bool:
         """
@@ -469,12 +483,12 @@ class ConnectionScheduler:
         Raises:
             ArgsException: 账号池已无可用账号（V-08）。
         """
-        next_slot = self.pool.next_after(dead_uid)
-        if next_slot is None:
-            raise ArgsException("所有账号均不可用：请检查凭据存储并为相关账号重新添加有效凭据后重启。")
         affected = [sub for sub in self.subscriptions.values() if sub.uid == dead_uid]
         if not affected:
             return
+        next_slot = self.pool.next_after(dead_uid)
+        if next_slot is None:
+            raise ArgsException("所有账号均不可用：请检查凭据存储并为相关账号重新添加有效凭据后重启。")
         log(
             "WARNING",
             f"账号 {redact_credential(dead_uid)} 不可用，{len(affected)} 个房间切换到 "

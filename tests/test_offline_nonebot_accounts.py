@@ -230,3 +230,16 @@ async def test_manual_policy_never_auto_connects() -> None:
 def test_policy_from_timing() -> None:
     """配置取值可直接映射为连接策略。"""
     assert ConnectionPolicy.from_timing("auto") is ConnectionPolicy.AUTO
+
+
+async def test_exhausted_pool_stops_room_without_raising() -> None:
+    """账号池耗尽时记录错误并停止该房间，不抛出未处理异常（V-08 收束）。"""
+    scheduler, _ = make_scheduler({1: FakeCredential(1)})
+    room = scheduler.subscriptions[101]
+    room.uid = 1
+    await scheduler.handle_failure(room, ResponseCodeException(-102, "封停"))
+    slot = scheduler.pool.get(1)
+    assert slot is not None
+    assert slot.state is AccountState.DEAD
+    assert room.state is RoomState.CLOSED
+    assert scheduler.pool.available_uids() == []
