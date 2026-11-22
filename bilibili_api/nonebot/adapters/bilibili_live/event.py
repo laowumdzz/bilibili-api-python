@@ -361,6 +361,8 @@ class SuperChatEvent(MessageEvent):
     message_jpn: str | None = None
 
     msg_id: str = ""
+    message_id: str = ""
+    """醒目留言的原始消息 id（网页帧可能缺失）。"""
 
     to_me: bool = False
 
@@ -410,9 +412,18 @@ class SuperChatEvent(MessageEvent):
             start_time = data_["start_time"] / 1000
             end_time = data_["end_time"] / 1000
             message_font_color = data_.get("message_font_color", "")
+        # 上游 0.2.6 在此对缺失 `message_id` / 顶层 `rmb` 的帧必抛 KeyError
+        # （dict.get 的默认值会被预求值）。改为逐级安全取值（FR-010a）。
+        message_id_value = data_.get("message_id", "")
+        id_value = data_.get("id")
+        if not isinstance(id_value, int):
+            id_value = message_id_value if isinstance(message_id_value, int) else 0
+        price_value = data_.get("price")
+        if price_value is None:
+            price_value = data_.get("rmb", 0)
         return {
-            "id": data["data"].get("id", data["data"]["message_id"]),
-            "price": data["data"].get("price", data["rmb"]),
+            "id": id_value,
+            "price": price_value,
             "sender": sender,
             "message": Message.construct(data["data"]["message"], None),
             "message_font_color": message_font_color,
@@ -422,6 +433,7 @@ class SuperChatEvent(MessageEvent):
             "message_jpn": message_jpn,
             "room_id": data["room_id"],
             "msg_id": msg_id,
+            "message_id": message_id_value,
         }
 
     @override
@@ -1704,7 +1716,9 @@ def packet_to_event(packet: Packet, room_id: int) -> Event:
     if cmd == "LIVE_OPEN_PLATFORM_INTERACTION_END":
         raise InteractionEndException(data["data"]["game_id"], data["data"]["timestamp"])
     if packet.opcode == OpCode.Command.value:
-        if "data" not in data:
+        # 上游 0.2.6 对全部命令要求顶层 `data`，导致网页 DANMU_MSG（字段在
+        # `info` 里）被静默丢弃。网页帧允许没有 `data`，仅开放平台命令需要（FR-010a）。
+        if "data" not in data and (cmd in COMMAND_TO_PB or cmd.startswith("LIVE_OPEN_PLATFORM")):
             raise RuntimeError(f"Command {cmd} missing data field")
         if (pb := COMMAND_TO_PB.get(cmd)) is not None:
             # https://github.com/SocialSisterYi/bilibili-API-collect/issues/1332

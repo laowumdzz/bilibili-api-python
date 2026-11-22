@@ -3,7 +3,7 @@ from __future__ import annotations
 from enum import IntEnum
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .._pydantic import field_before
 
@@ -23,6 +23,10 @@ class GuardLevel(IntEnum):
 
 class Medal(BaseModel):
     """粉丝勋章。"""
+
+    # 网页帧同时存在 `is_light`（上游字段名）与 `is_lighted`（规范别名）两种写法，
+    # 双写法都接受；`is_lighted` 为规范名称（FR-010a）。
+    model_config = ConfigDict(populate_by_name=True)
 
     name: str
     level: int
