@@ -1,0 +1,1 @@
+{"cmd": "HOT_ROOM_NOTIFY", "data": {"exit_no_refresh": 1, "random_delay_req_v2": [{"delay": 10, "path": "/live/getRoundPlayVideo"}, {"delay": 120000, "path": "/xlive/web-room/v1/index/getOffLiveList"}], "threshold": 10000, "ttl": 300}}

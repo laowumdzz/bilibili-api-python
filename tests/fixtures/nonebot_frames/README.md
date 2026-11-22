@@ -14,14 +14,16 @@
      `:4:0:2:2:1` 后缀）；
   2. `SUPER_CHAT_MESSAGE*.jsonl`：中 / 日文醒目留言（`price` / `rmb` 双形态）；
   3. `INTERACT_WORD.jsonl`：带粉丝勋章的进场帧（`is_light` 写法）。
-- **录制层（不入库）**：`scripts/record_nonebot_frames.py` 以匿名凭据只读连接
-  真实直播间，将收到的帧脱敏后写入 `raw/`（该目录的 `.gitignore` 排除全部
-  文件）。人工挑选、精简后再放入本目录，并在相应文件的补充说明中注明来源
-  房间与采集日期。
+- **真实录制层（已入库，`recorded/`）**：2026-11-22 对房间 6 与 21452505 的只读
+  录制后人工脱敏与精简的第二组样本，只校验结构真实性（字段布局 / `cmd` 取值），
+  不重复覆盖全部事件类。来源、脱敏步骤与未入库帧的取舍见 `recorded/README.md`。
+- **原始录制层（不入库，`raw/`）**：`scripts/record_nonebot_frames.py` 以匿名
+  凭据只读连接真实直播间，将收到的帧脱敏后写入 `raw/`（该目录的 `.gitignore`
+  排除全部文件）。放入 `recorded/` 前必须人工剔除昵称、弹幕正文与哈希。
 
 ## 约束
 
 - 帧内不得包含任何凭据字段值；录制脚本会把用户名 / 头像 / uid 替换为占位值。
 - 用例只读本目录，不触网（`tests/test_offline_nonebot_frames.py`）。
 - 修改样本必须同步更新 `tests/test_offline_nonebot_frames.py` 的
-  `EXPECTATIONS` 快照。
+  `EXPECTATIONS` / `RECORDED_EXPECTATIONS` 快照。

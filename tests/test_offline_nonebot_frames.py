@@ -17,6 +17,7 @@ from bilibili_api.nonebot.adapters.bilibili_live.scheduler import RoomSubscripti
 from tests.nonebot_fakes import FakeDriver
 
 FIXTURE_DIR = pathlib.Path(__file__).parent / "fixtures" / "nonebot_frames"
+RECORDED_DIR = FIXTURE_DIR / "recorded"
 ROOM_ID = 999
 
 # (fixture 文件, 行号, 事件类名, 关键字段快照)
@@ -72,6 +73,38 @@ EXPECTATIONS: list[tuple[str, int, str, dict[str, object]]] = [
 ]
 
 EVENT_CLASSES = [expectation[2] for expectation in EXPECTATIONS]
+
+# 第二组样本：2026-11-22 房间 6（7734200）与房间 21452505 只读录制后人工脱敏
+# （见 recorded/README.md）；(fixture 文件, 事件类名, 关键字段快照)
+RECORDED_EXPECTATIONS: list[tuple[str, str, dict[str, object]]] = [
+    ("DANMU_MSG", "DanmakuEvent", {"content": "recorded hello", "sender.uid": 123, "sender.name": "user"}),
+    ("LIKE_INFO_V3_CLICK", "LikeEvent", {"uname": "user", "uid": 2, "like_text": "为主播点赞了"}),
+    ("LIKE_INFO_V3_UPDATE", "LikeInfoUpdateEvent", {"click_count": 30411629}),
+    ("ONLINE_RANK_COUNT", "OnlineRankCountEvent", {"count": 1044}),
+    ("POPULAR_RANK_CHANGED", "PopularRankChangedEvent", {"rank": 0, "uid": 1}),
+    ("ROOM_REAL_TIME_MESSAGE_UPDATE", "RoomRealTimeMessageUpdateEvent", {"fans": 18193849, "fans_club": 826}),
+    ("STOP_LIVE_ROOM_LIST", "StopLiveRoomListEvent", {"room_id_list": [1722167807, 1741631397, 22473142]}),
+    ("WATCHED_CHANGE", "WatchedChangeEvent", {"num": 355421029, "text_large": "35542.1万人看过"}),
+]
+
+UNMODELLED_RECORDED: tuple[str, ...] = ("ENTRY_EFFECT", "HOT_ROOM_NOTIFY", "LOG_IN_NOTICE", "POPULARITY_CHANGE")
+"""真实流量中出现、但上游 0.2.6 事件层未建模的 `cmd`。"""
+
+
+def load_recorded_frame(stem: str) -> dict:
+    """
+    读取 `recorded/` 目录内某 `cmd` 的首帧。
+
+    Args:
+        stem (str): 文件名（不含扩展名）。
+
+    Returns:
+        dict: 帧 JSON。
+    """
+    lines = [
+        json.loads(line) for line in (RECORDED_DIR / f"{stem}.jsonl").read_text(encoding="utf-8").splitlines() if line
+    ]
+    return lines[0]
 
 
 def load_frame(stem: str, index: int) -> dict:
@@ -151,6 +184,62 @@ def test_all_41_event_classes_covered() -> None:
     """41 个可实例化事件类均有帧样本覆盖。"""
     assert len(EVENT_CLASSES) == 48  # 部分事件类由多个 cmd / 变体重复覆盖
     assert len(set(EVENT_CLASSES)) == 41
+
+
+@pytest.mark.parametrize(("stem", "class_name", "snapshot"), RECORDED_EXPECTATIONS)
+def test_recorded_frame_replay(stem: str, class_name: str, snapshot: dict[str, object]) -> None:
+    """真实录制帧回放：事件类型与关键字段与快照一致（结构真实性校验）。"""
+    frame = load_recorded_frame(stem)
+    packet = Packet.from_bytes(Packet.new(OpCode.Command, 0, frame).to_bytes())
+    event = packet_to_event(packet, room_id=ROOM_ID)
+    assert type(event).__name__ == class_name
+    for path, expected in snapshot.items():
+        assert read_path(event, path) == expected, f"{class_name}.{path}"
+
+
+def test_recorded_group_covers_recorded_commands() -> None:
+    """第二组样本锁定清单：8 个已建模 cmd + 4 个未建模 cmd。"""
+    assert [stem for stem, _, _ in RECORDED_EXPECTATIONS] == [
+        "DANMU_MSG",
+        "LIKE_INFO_V3_CLICK",
+        "LIKE_INFO_V3_UPDATE",
+        "ONLINE_RANK_COUNT",
+        "POPULAR_RANK_CHANGED",
+        "ROOM_REAL_TIME_MESSAGE_UPDATE",
+        "STOP_LIVE_ROOM_LIST",
+        "WATCHED_CHANGE",
+    ]
+    for stem in UNMODELLED_RECORDED:
+        assert load_recorded_frame(stem)["cmd"] == stem
+
+
+def test_recorded_web_danmaku_shape() -> None:
+    """真实网页 DANMU_MSG：无顶层 `data`、`cmd` 无后缀、`info[0][15]` 内嵌 extra / user。"""
+    frame = load_recorded_frame("DANMU_MSG")
+    assert "data" not in frame
+    assert frame["cmd"] == "DANMU_MSG"
+    assert isinstance(frame["info"][0], list)
+    assert isinstance(frame["info"][0][15], dict)
+    assert "extra" in frame["info"][0][15]
+    assert "user" in frame["info"][0][15]
+
+
+async def test_recorded_unknown_commands_are_skipped() -> None:
+    """真实流量中的未建模 cmd 只记录并跳过，不中断后续帧分发。"""
+    adapter = Adapter(FakeDriver())
+    bot = WebBot(adapter, self_id="1")
+    adapter.bot_connect(bot)
+    subscription = RoomSubscription(room_display_id=ROOM_ID, room_real_id=ROOM_ID, uid=1)
+    delivered: list[str] = []
+
+    async def fake_handle(event) -> None:  # type: ignore[no-untyped-def]
+        delivered.append(type(event).__name__)
+
+    bot._handle_event = fake_handle  # type: ignore[method-assign]
+    for stem in (*UNMODELLED_RECORDED, "DANMU_MSG"):
+        packet = Packet.new(OpCode.Command, 0, load_recorded_frame(stem))
+        await adapter._handle_ws_message(subscription, packet.to_bytes())
+    assert delivered == ["DanmakuEvent"]
 
 
 def test_defect1_web_danmaku_without_top_level_data() -> None:
