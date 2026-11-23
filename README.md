@@ -15,6 +15,8 @@
 </div>
 
 > 注：本项目Fork自https://github.com/nemo2011/bilibili-api的commit SHA为027563d2fe7604967242986aac51d693c905的分支并由AI维护
+>
+> **分支说明**：`main` 为 v20.0.0 稳定线；当前 `nonebot` 分支在 `main` 基础上开发 **v21.0.0**，新增 NoneBot 直播适配器。合入 `main` 前，适配器相关功能请从 `nonebot` 分支安装（见下文「快速上手」与「NoneBot 直播适配器（融合）」）。
 
 **注意事项：使用此模块时请仅用于学习和测试，禁止用于非法用途及其他恶劣的社区行为如：恶意刷屏、辱骂黄暴、各种形式的滥用等，违规此模块许可证 `GNU General Public License Version 3` 及此条注意事项而产生的任何后果自负，模块的所有贡献者不负任何责任。**
 
@@ -41,6 +43,7 @@
 - 不仅仅是官方提供的 API！还附加：AV 号与 BV 号互转[^2]、连接直播弹幕 Websocket 服务器、视频弹幕反查、下载弹幕、字幕文件[^3]、专栏内容爬取、cookies 刷新等[^4]。
 - 支持采用各种手段避免触发反爬虫风控[^5]。
 - **全部是异步操作**。
+- 可选交付 NoneBot 直播适配器（`nonebot.adapters.bilibili_live`），支持多账号调度与 `on` / `auto` / `manual` 连接时机。
 - 默认使用 `aiohttp`（运行时依赖，安装时自动引入），可选 `httpx`。
 - 需要 Python 3.10 及以上版本。
 
@@ -49,10 +52,13 @@
 首先使用以下指令安装本模块（本模块不在 PyPI 发布，均从本仓库安装）：
 
 ```
-# 从本仓库安装 main 分支最新代码
+# 从本仓库安装 main 分支最新代码（v20.0.0 稳定线）
 $ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@main
 
-# 开发中代码在 dev 分支（待 dev 分支建立后可用，当前请先用 main）
+# nonebot 分支（v21.0.0，含 NoneBot 直播适配器；末尾 [nonebot] 为可选依赖）
+$ pip3 install "bilibili-api-python[nonebot] @ git+https://github.com/laowumdzz/bilibili-api-python.git@nonebot"
+
+# 开发中代码在 dev 分支（待 dev 分支建立后可用，当前请先用 main 或 nonebot 分支）
 $ pip3 install git+https://github.com/laowumdzz/bilibili-api-python.git@dev
 
 # 或锁定某个发布版本（将 <tag> 替换为 GitHub Releases 页面中的 tag 名）
@@ -169,11 +175,51 @@ select_client("httpx") # 选择 httpx，不支持 WebSocket
 
 - 导入路径保持 `nonebot.adapters.bilibili_live`（与上游一致），实现位于
   `bilibili_api.nonebot.adapters.bilibili_live`，两条路径取到同一批对象。
-- 安装：本地开发用 `uv sync --extra nonebot`；从构建产物安装时用 `pip install "<wheel>[nonebot]"`（需要 `nonebot2>=2.5.0` 与 `betterproto`）。
-- 驱动要求：需同时支持 HTTP 与 WebSocket（nonebot2 的 aiohttp 驱动满足；纯 httpx 驱动只能跑 REST，
+- 安装：`nonebot` 分支用
+  `pip install "bilibili-api-python[nonebot] @ git+https://github.com/laowumdzz/bilibili-api-python.git@nonebot"`；
+  本地开发用 `uv sync --extra nonebot`；从构建产物安装时用 `pip install "<wheel>[nonebot]"`（需要 `nonebot2>=2.5.0` 与 `betterproto`）。
+- 驱动要求：需同时支持 HTTP 与 WebSocket（nonebot2 的 aiohttp 驱动满足，`.env` 中设 `DRIVER=~aiohttp`；纯 httpx 驱动只能跑 REST，
   适配器启动时会明确报错）。
 - 登录态、账号与网络全部由本库承担：HTTP / WebSocket 经 `BiliAPIClient`（由你配置的驱动承载），
   账号以 **凭据存储中的 uid** 为唯一事实源，WBI / buvid / bili_ticket 复用库内实现。
+
+## 启用适配器
+
+在 bot 入口注册适配器（也可在 `pyproject.toml` 的 `[tool.nonebot] adapters` 中加入
+`nonebot.adapters.bilibili_live`）：
+
+```python
+import nonebot
+
+from nonebot.adapters.bilibili_live import Adapter
+
+
+nonebot.init()
+nonebot.get_driver().register_adapter(Adapter)
+nonebot.run()
+```
+
+`.env` 至少需要账号配置与一个同时支持 HTTP / WebSocket 的驱动：
+
+```dotenv
+DRIVER=~aiohttp
+BILIBILI_LIVE_BOTS='[{"uid": 10001, "room_ids": [544853]}]'
+```
+
+弹幕是 `message` 事件，进场 / 礼物 / 上舰等是 `notice` 事件。最小弹幕处理器：
+
+```python
+from nonebot import logger, on
+from nonebot.adapters.bilibili_live import DanmakuEvent
+from nonebot.rule import Rule
+
+danmaku = on("message", rule=Rule(lambda event: isinstance(event, DanmakuEvent)))
+
+
+@danmaku.handle()
+async def _(event: DanmakuEvent) -> None:
+    logger.info(f"[{event.room_id}] {event.sender.name}: {event.get_message().extract_plain_text()}")
+```
 
 ## 从上游适配器迁移（破坏性变更）
 
